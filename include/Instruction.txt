@@ -1,0 +1,17 @@
+Put here every header file (".h", ".hpp", ...) of the project.
+
+
+If your Visual studio is well configured and you follow those instructions, you can :
+
+-> Access it from the src cpp in your project by :
+#include "../include/NameOfYourHeader.h"
+
+-> Access it from the main.cpp (in the same directory of your vcxproj) by :
+#include "../../../include/NameOfYourHeader.h"
+
+
+
+Do not forget that the relative path for the header file must be setted in your Visual Studio
+property window.
+I know it is annoying but you'll see, you will gain a lot of time in the future and avoid a lot
+of nerve-wracking debugging session just by doing so.

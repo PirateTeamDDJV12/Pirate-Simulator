@@ -1,0 +1,1 @@
+Put here every file that contains ressources for the project (texture, gif, png, dialogue, ...) that is not cpp or header files.
