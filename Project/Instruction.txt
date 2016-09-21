@@ -1,0 +1,18 @@
+Put here every project directory of this big project.
+
+Those repositories must contain a :
+-> .sln
+-> .vcxproj
+-> .vcxproj.filter
+-> the "main.cpp"
+-> When finished, a ".exe" that can be used as unitary test
+-> other not so important files and directory
+
+
+Do not forget that the relative path for the header file and source file must be setted in 
+your Visual Studio property window.
+I know it is annoying but you'll see, you will gain a lot of time in the future and avoid a lot
+of nerve-wracking debugging session just by doing so.
+
+
+For coding rules, see the "ExampleClass" project
