@@ -1,0 +1,10 @@
+*.vs
+
+*.db
+*.opendb
+
+Project/*/*/Debug/*
+Project/*/*/Release/*
+
+Project/*/Debug/*
+Project/*/Release/*
