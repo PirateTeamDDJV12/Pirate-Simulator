@@ -3,7 +3,7 @@ Created by Sun-lay Gagneux
 Project : La grande course
 */
 
-#include "ExampleClass.h"
+#include "../include/ExampleClass.h"
 
 /*
 Include your header.

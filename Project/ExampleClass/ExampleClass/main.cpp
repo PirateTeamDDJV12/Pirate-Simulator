@@ -1,4 +1,4 @@
-#include "ExampleClass.h"
+#include "../../../include/ExampleClass.h"
 
 /*
 include your unitary test
