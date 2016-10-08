@@ -110,8 +110,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AttachedCamera.h" />
     <ClInclude Include="BaseCamera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="LevelCamera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
