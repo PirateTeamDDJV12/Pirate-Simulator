@@ -1,50 +1,42 @@
 #ifndef VECT4_H
 #define VECT4_H
-
-class Vect4
+#include "Vect3.h"
+class Vect4: Vect3
 {
 private:
-    float m_X;
-    float m_Y;
-    float m_Z;
+    Vect3 m_Pos;
     float m_T;
 
 public:
     Vect4() noexcept :
-        m_X{},
-        m_Y{},
-        m_Z{},
+        m_Pos{},
         m_T{}
     {}
 
     Vect4(float x, float y, float z, float t) noexcept :
-        m_X{ x },
-        m_Y{ y },
-        m_Z{ z },
+        m_Pos{Vect3::Vect3(x,y,z)},
         m_T{ t }
     {}
 
     Vect4( float x, float y, float z) noexcept :
-        m_X{ x },
-        m_Y{ y },
-        m_Z{ z },
+        m_Pos{ Vect3::Vect3(x,y,z) },
         m_T{}
     {}
 
 public:
     float x() const noexcept
     {
-        return m_X;
+        return m_Pos.x();
     }
 
     float y() const noexcept
     {
-        return m_Y;
+        return m_Pos.y();
     }
 
     float z() const noexcept
     {
-        return m_Z;
+        return m_Pos.z();
     }
     float t() const noexcept
     {
@@ -53,17 +45,17 @@ public:
 
     void x(float newValue) noexcept
     {
-        m_X = newValue;
+        m_Pos.x(newValue);
     }
 
     void y(float newValue) noexcept
     {
-        m_Y = newValue;
+        m_Pos.y(newValue);
     }
 
     void z(float newValue) noexcept
     {
-        m_Z = newValue;
+        m_Pos.z(newValue);
     }
     void t(float newValue) noexcept
     {
@@ -119,31 +111,31 @@ public:
         return !(*this == other);
     }
 
-    Vect4& operator+(const Vect4& other) noexcept;
-    Vect4& operator-(const Vect4& other) noexcept;
+    Vect4& operator+=(const Vect4& other) noexcept;
+    Vect4& operator-=(const Vect4& other) noexcept;
 
-    Vect4& operator*(float scalar) noexcept;
-    Vect4& operator/(float scalar) noexcept;
+    Vect4& operator*=(float scalar) noexcept;
+    Vect4& operator/=(float scalar) noexcept;
 
 
     Vect4& operator+(Vect4& other) const noexcept
     {
-        return (other + *this);
+        return (other += *this);
     }
 
     Vect4& operator-(const Vect4& other) const noexcept
     {
-        return (*this - other);
+        return (Vect4(*this) -= other);
     }
 
     Vect4& operator*(float scalar) const noexcept
     {
-        return ((*this) * scalar);
+        return (Vect4(*this) *= scalar);
     }
 
     Vect4& operator/(float scalar) const noexcept
     {
-        return ((*this) / scalar);
+        return (Vect4(*this) /= scalar);
     }
 
 

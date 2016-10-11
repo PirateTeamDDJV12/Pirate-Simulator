@@ -1,6 +1,6 @@
 #ifndef VECT3_H
 #define VECT3_H
-#include "Vect.h"
+
 
     class Vect3
     {
@@ -115,32 +115,32 @@
             return !(*this == other);
         }
 
-        Vect3& operator+(const Vect3& other) noexcept;
-        Vect3& operator-(const Vect3& other) noexcept;
-        Vect3& operator*(const Vect3& other) noexcept;
+        Vect3& operator+=(const Vect3& other) noexcept;
+        Vect3& operator-=(const Vect3& other) noexcept;
+        Vect3& operator*=(const Vect3& other) noexcept;
 
-        Vect3& operator*(float scalar) noexcept;
-        Vect3& operator/(float scalar) noexcept;
+        Vect3& operator*=(float scalar) noexcept;
+        Vect3& operator/=(float scalar) noexcept;
 
 
         Vect3 operator+(Vect3 other) const noexcept
         {
-            return (other + *this);
+            return (other += *this);
         }
 
         Vect3& operator-(const Vect3& other) const noexcept
         {
-            return (Vect3(*this) - other);
+            return (Vect3(*this) -= other);
         }
 
         Vect3 operator*(float scalar) const noexcept
         {
-            return (Vect3(*this) * scalar);
+            return (Vect3(*this) *= scalar);
         }
 
         Vect3 operator/(float scalar) const noexcept
         {
-            return (Vect3(*this) / scalar);
+            return (Vect3(*this) /= scalar);
         }
         Vect3 operator*(Vect3 other) const noexcept;
 

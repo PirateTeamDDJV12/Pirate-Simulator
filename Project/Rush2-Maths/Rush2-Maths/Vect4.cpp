@@ -6,20 +6,16 @@
 
 
 
-Vect4& Vect4::operator+(const Vect4& other) noexcept
+Vect4& Vect4::operator+=(const Vect4& other) noexcept
 {
-    m_X += other.x();
-    m_Y += other.y();
-    m_Z += other.z();
+    m_Pos += Vect3::Vect3(other.x(), other.y(), other.z());
     m_T += other.t();
     return *this;
 }
 
-Vect4& Vect4::operator-(const Vect4& other) noexcept
+Vect4& Vect4::operator-=(const Vect4& other) noexcept
 {
-    m_X -= other.x();
-    m_Y -= other.y();
-    m_Z -= other.z();
+    m_Pos -= Vect3::Vect3(other.x(),other.y(),other.z());
     m_T -= other.t();
 
     return *this;
@@ -27,20 +23,16 @@ Vect4& Vect4::operator-(const Vect4& other) noexcept
 
 
 
-Vect4& Vect4::operator*(float scalar) noexcept
+Vect4& Vect4::operator*=(float scalar) noexcept
 {
-    m_X *= scalar;
-    m_Y *= scalar;
-    m_Z *= scalar;
+    m_Pos *= scalar;
     m_T *= scalar;
     return *this;
 }
 
-Vect4& Vect4::operator/(float scalar) noexcept
+Vect4& Vect4::operator/=(float scalar) noexcept
 {
-    m_X /= scalar;
-    m_Y /= scalar;
-    m_Z /= scalar;
+    m_Pos /= scalar;
     m_T /= scalar;
     return *this;
 }

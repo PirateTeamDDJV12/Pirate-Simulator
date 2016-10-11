@@ -4,7 +4,7 @@
 
 
 
-    Vect3& Vect3::operator+(const Vect3& other) noexcept
+    Vect3& Vect3::operator+=(const Vect3& other) noexcept
     {
         m_X += other.x();
         m_Y += other.y();
@@ -13,7 +13,7 @@
         return *this;
     }
 
-    Vect3& Vect3::operator-(const Vect3& other) noexcept
+    Vect3& Vect3::operator-=(const Vect3& other) noexcept
     {
         m_X -= other.x();
         m_Y -= other.y();
@@ -21,13 +21,13 @@
 
         return *this;
     }
-    Vect3& Vect3::operator*(const Vect3& other) noexcept
+    Vect3& Vect3::operator*=(const Vect3& other) noexcept
     {
         *this = (*this + other);
         return *this;
     }
 
-    Vect3 Vect3::operator*(Vect3 other) const noexcept
+    Vect3 Vect3::operator*(const Vect3 other) const noexcept
     {
         return (Vect3(((y() * other.z()) - (z() * other.y())),
             ((z() * other.x()) - (x() * other.z())),
@@ -36,7 +36,7 @@
             );
     }
 
-    Vect3& Vect3::operator*(float scalar) noexcept
+    Vect3& Vect3::operator*=(float scalar) noexcept
     {
         m_X *= scalar;
         m_Y *= scalar;
@@ -45,7 +45,7 @@
         return *this;
     }
 
-    Vect3& Vect3::operator/(float scalar) noexcept
+    Vect3& Vect3::operator/=(float scalar) noexcept
     {
         m_X /= scalar;
         m_Y /= scalar;
