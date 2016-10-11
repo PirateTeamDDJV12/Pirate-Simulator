@@ -1,10 +1,7 @@
 #ifndef VECT4_H
 #define VECT4_H
-#include "Vect.h"
 
-
-//template<typename valueType>
-class Vect4 //: public Vect
+class Vect4
 {
 private:
     float m_X;
@@ -101,14 +98,6 @@ public:
         return ((vect1.x() * vect2.x()) + (vect1.y() * vect2.y()) + (vect1.z() * vect2.z()) + (vect1.t() * vect2.t()));
     }
 
-    /*
-    first x second
-    */
-    /*static Vect4 crossProduct(const Vect4& first, const Vect4& second) noexcept
-    {
-    return (first * second);
-    }*/
-
     static float length2(const Vect4& vect4) noexcept
     {
         return vect4.length2();
@@ -132,7 +121,6 @@ public:
 
     Vect4& operator+(const Vect4& other) noexcept;
     Vect4& operator-(const Vect4& other) noexcept;
-    //Vect4& operator*=(const Vect4& other) noexcept; Produit vectoriel en 4D -> inutile
 
     Vect4& operator*(float scalar) noexcept;
     Vect4& operator/(float scalar) noexcept;
@@ -157,12 +145,6 @@ public:
     {
         return ((*this) / scalar);
     }
-
-    /*
-    Vectorial product :
-    this x other
-    */
-    //	Vect4<valueType> operator*(Vect4<valueType> other) const noexcept;
 
 
 };

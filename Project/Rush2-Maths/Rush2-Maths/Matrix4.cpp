@@ -1,8 +1,8 @@
 #include "Matrix4.h"
 #include "Vect4.h"
 #include <algorithm>
-//template <typename valueType>
-//Matrix4<valueType>::Matrix4(Vect4<valueType> col1, Vect4<valueType> col2, Vect4<valueType> col3, Vect4<valueType> col4)
+#include <array>
+
 Matrix4::Matrix4(Vect4 col1, Vect4 col2, Vect4 col3, Vect4 col4)
 {
     m_elements[0] = col1.x();
@@ -23,34 +23,30 @@ Matrix4::Matrix4(Vect4 col1, Vect4 col2, Vect4 col3, Vect4 col4)
     m_elements[15] = col4.t();
 }
 
-//template <typename valueType>
-//Matrix4<valueType> Matrix4::transpose()
+
 Matrix4 Matrix4::transpose()
 {
-    float elements[16];
+    std::array<float, 16> elements;
     for (int i = 0; i < m_nbRows; i++)
     {
-        for (int j = 0; i < m_nbColumns; i++)
+        for (int j = 0; j < m_nbColumns; j++)
         {
-            elements[i * 4 + j] = m_elements[j * 4 + i];
+            elements[j * m_nbColumns + i] = m_elements[j * m_nbColumns + i];
         }
     }
     return Matrix4(elements);
 }
 
-//template <typename valueType>
-//Vect4<valueType>& Matrix4::operator*(Vect4& other)
+
 Vect4& Matrix4::operator*(Vect4& other)
 {
     return(Vect4::Vect4(m_elements[0] * other.x() + m_elements[1] * other.y() + m_elements[2] * other.z() + m_elements[3] * other.t(),
         m_elements[4] * other.x() + m_elements[5] * other.y() + m_elements[6] * other.z() + m_elements[7] * other.t(),
         m_elements[8] * other.x() + m_elements[9] * other.y() + m_elements[10] * other.z() + m_elements[11] * other.t(),
         m_elements[12] * other.x() + m_elements[13] * other.y() + m_elements[14] * other.z() + m_elements[15] * other.t()));
-
 }
 
-//template <typename valueType>
-//Matrix4<valueType>& Matrix4::operator*(Matrix4& other)
+
 Matrix4& Matrix4::operator*(Matrix4& other)
 {
     Vect4 otherCol1 = Vect4::Vect4(other(0, 0), other(1, 0), other(2, 0), other(3, 0));
@@ -63,23 +59,21 @@ Matrix4& Matrix4::operator*(Matrix4& other)
     Vect4 resCol4 = *this*otherCol4;
     return Matrix4(resCol1, resCol2, resCol3, resCol4);
 }
-//template <typename valueType>
-//Matrix4<valueType>& Matrix4::operator+(Matrix4& other)
+
 Matrix4& Matrix4::operator+(Matrix4& other)
 {
-    float res[16];
-        for (int i = 0; i < 15; i++)
+    std::array<float, 16> res;
+        for (int i = 0; i < 16; i++)
         {
             res[i] = other.elements()[i] + m_elements[i];
         }
     return Matrix4::Matrix4(res);
 }
-//template <typename valueType>
-//Matrix4<valueType>& Matrix4::operator-(Matrix4& other)
+
 Matrix4& Matrix4::operator-(Matrix4& other)
 {
-    float res[16];
-    for (int i = 0; i < 15; i++)
+    std::array<float, 16> res;
+    for (int i = 0; i < 16; i++)
     {
         res[i] = other.elements()[i] - m_elements[i];
     }

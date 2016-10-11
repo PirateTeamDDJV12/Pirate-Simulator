@@ -2,8 +2,7 @@
 #define VECT3_H
 #include "Vect.h"
 
-//    template<typename valueType>
-    class Vect3//: Vect
+    class Vect3
     {
     private:
         float m_X;
@@ -66,9 +65,7 @@
             return scalarProduct(*this, other);
         }
 
-        /*
-        this x other
-        */
+
         Vect3 crossProduct(const Vect3& other) const noexcept
         {
             return (*this * other);
@@ -87,17 +84,11 @@
         }
 
     public:
-        /*
-        vect1 . vect2
-        */
         static float scalarProduct(const Vect3& vect1, const Vect3& vect2) noexcept
         {
             return ((vect1.x() * vect2.x()) + (vect1.y() * vect2.y()) + (vect1.z() * vect2.z()));
         }
 
-        /*
-        first x second
-        */
         static Vect3& crossProduct(const Vect3& first, const Vect3& second) noexcept
         {
             return (first * second);
@@ -151,11 +142,6 @@
         {
             return (Vect3(*this) / scalar);
         }
-
-        /*
-        Vectorial product :
-        this x other
-        */
         Vect3 operator*(Vect3 other) const noexcept;
 
 

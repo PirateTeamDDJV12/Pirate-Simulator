@@ -1,12 +1,15 @@
 #ifndef MATRIX3_H
 #define MATRIX_H
 #include "Matrix.h"
+#include <memory>
+#include <array>
+
 class Vect3;
-//template<typename valueType>
-class Matrix3 //: public Matrix//<valueType>
+
+class Matrix3
 {
 private:
-    float m_elements[9];
+    std::array<float, 9> m_elements{};
     unsigned int m_nbColumns = 3;
     unsigned int m_nbRows = 3;
 public:
@@ -19,22 +22,24 @@ public:
     {
         return m_nbColumns;
     }
-    float *elements()
+    std::array<float, 9> elements()
     {
         return m_elements;
     }
-    //Matrix3(valueType elements[9]) : m_elements{ elements }, m_nbRows{ 3 }, M_nbColumns{ 3 } {}
-    Matrix3(float elements[9]) : m_elements{ *elements }, m_nbRows{ 3 }, m_nbColumns{ 3 } {}
+   
+    Matrix3(std::array<float, 9> elements ): m_nbRows{ 3 }, m_nbColumns{ 3 } {
+        std::copy(elements.begin(), elements.end(), m_elements.begin());
+    }
     Matrix3 transpose();
-    Vect3& operator*(Vect3& other);
+    Vect3 operator*(Vect3& other);
     Matrix3& operator*(Matrix3& other);
     Matrix3& Matrix3::operator+(Matrix3& other);
     Matrix3& Matrix3::operator-(Matrix3& other);
-    float& operator()(unsigned i, unsigned j)
+    float& operator()(unsigned i, unsigned j) //i,j=0..3
     {
         return m_elements[i*m_nbColumns + j];
     }
-   // Matrix3& Matrix3::operator=(const Matrix3& other);
+   
  
 };
 

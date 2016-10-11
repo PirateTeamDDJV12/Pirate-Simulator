@@ -1,6 +1,4 @@
-/*
-Created by Sun-lay gagneux
-*/
+
 #include "Vect4.h"
 
 #include <cmath>
@@ -8,7 +6,6 @@ Created by Sun-lay gagneux
 
 
 
-//template<typename valueType>
 Vect4& Vect4::operator+(const Vect4& other) noexcept
 {
     m_X += other.x();
@@ -18,7 +15,6 @@ Vect4& Vect4::operator+(const Vect4& other) noexcept
     return *this;
 }
 
-//template<typename valueType>
 Vect4& Vect4::operator-(const Vect4& other) noexcept
 {
     m_X -= other.x();
@@ -28,20 +24,9 @@ Vect4& Vect4::operator-(const Vect4& other) noexcept
 
     return *this;
 }
-//template<typename valueType>
 
 
-/*template<typename valueType>
-Vect4 Vect4::operator*(Vect4 other) const noexcept
-{
-return (Vect4(((y() * other.z()) - (z() * other.y())),
-((z() * other.x()) - (x() * other.z())),
-((x() * other.y()) - (y() * other.x()))
-)
-);
-}*/
 
-//template<typename valueType>
 Vect4& Vect4::operator*(float scalar) noexcept
 {
     m_X *= scalar;
@@ -51,7 +36,6 @@ Vect4& Vect4::operator*(float scalar) noexcept
     return *this;
 }
 
-//template<typename valueType>
 Vect4& Vect4::operator/(float scalar) noexcept
 {
     m_X /= scalar;
@@ -61,7 +45,6 @@ Vect4& Vect4::operator/(float scalar) noexcept
     return *this;
 }
 
-//template<typename valueType>
 float Vect4::length() const noexcept
 {
     return sqrtf(this->length2());
