@@ -110,6 +110,9 @@
     <ClCompile Include="PetitMoteur3D.cpp" />
     <ClCompile Include="PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="PirateSimulator\Terrain.cpp" />
+    <ClCompile Include="PirateSimulator\Triangle.cpp" />
+    <ClCompile Include="PirateSimulator\Vect3f.cpp" />
+    <ClCompile Include="PirateSimulator\Vertex.cpp" />
     <ClCompile Include="sommetbloc.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -129,6 +132,9 @@
     <ClInclude Include="PirateSimulator\FilesManager.h" />
     <ClInclude Include="PirateSimulator\RessourcesManager.h" />
     <ClInclude Include="PirateSimulator\Terrain.h" />
+    <ClInclude Include="PirateSimulator\Triangle.h" />
+    <ClInclude Include="PirateSimulator\Vect3f.h" />
+    <ClInclude Include="PirateSimulator\Vertex.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="sommetbloc.h" />
     <ClInclude Include="stdafx.h" />

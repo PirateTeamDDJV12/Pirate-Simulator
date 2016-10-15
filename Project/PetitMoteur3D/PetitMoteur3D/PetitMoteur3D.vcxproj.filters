@@ -54,6 +54,15 @@
     <ClCompile Include="PirateSimulator\FilesManager.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="PirateSimulator\Triangle.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="PirateSimulator\Vect3f.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="PirateSimulator\Vertex.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -102,6 +111,15 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="PirateSimulator\FilesManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="PirateSimulator\Triangle.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="PirateSimulator\Vect3f.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="PirateSimulator\Vertex.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

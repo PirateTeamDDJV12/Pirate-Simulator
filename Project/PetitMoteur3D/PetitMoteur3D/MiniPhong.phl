@@ -34,7 +34,7 @@ float4 couleur;
 	float3 R = normalize(2 * diff * N - L);
     
 	// Puissance de 4 - pour l'exemple
-	float4 S = pow(saturate(dot(R, V)), 4); 
+	float4 S = pow(saturate(dot(R, V)), 10);
 
 	// I = A + D * N.L + (R.V)n
 	couleur =  vAEcl * vAMat + 

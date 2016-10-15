@@ -2,6 +2,8 @@
 
 #include "FilesManager.h"
 #include <fstream>
+#include <vector>
+#include <iterator>
 
 std::string FilesManager::readFile(std::string filePath) const
 {
@@ -17,4 +19,10 @@ std::string FilesManager::readFile(std::string filePath) const
     infile.close();
 
     return allFile;
+}
+
+std::vector<float> FilesManager::readFileHeightMap(std::string filePath)
+{
+    std::ifstream ifs(filePath);
+    return std::vector<float>(std::istream_iterator<float>(ifs), {});
 }

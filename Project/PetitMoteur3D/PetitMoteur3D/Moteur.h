@@ -9,6 +9,9 @@
 #include "PirateSimulator/RessourcesManager.h"
 #include <algorithm>
 #include <sstream>
+#include "PirateSimulator/Triangle.h"
+#include "PirateSimulator/Vertex.h"
+#include "PirateSimulator/Terrain.h"
 
 namespace PM3D
 {
@@ -179,14 +182,14 @@ namespace PM3D
 
 		// Initialisation des matrices View et Proj
 		// Dans notre cas, ces matrices sont fixes
-		matView = XMMatrixLookAtLH( XMVectorSet( 0.0f, 0.0f,-10.0f, 1.0f ),
-       								XMVectorSet( 0.0f, 0.0f, 0.0f, 1.0f ),
+		matView = XMMatrixLookAtLH( XMVectorSet( 120.0f, 120.0f, 500.0f, 1.0f ),
+       								XMVectorSet( 120.0f, 120.0f, 0.0f, 1.0f ),
                      				XMVectorSet( 0.0f, 1.0f, 0.0f, 1.0f ) );
 
 		float champDeVision = XM_PI/4; 	// 45 degrés
 		float ratioDAspect = pDispositif->GetLargeur()/pDispositif->GetHauteur();		
 		float planRapproche = 2.0;
-		float planEloigne = 20.0;
+		float planEloigne = 3000.0;
 		
 		matProj = XMMatrixPerspectiveFovLH( 
 									champDeVision,
@@ -202,24 +205,34 @@ namespace PM3D
 
 	bool InitObjets()
 	{
-        std::string myFile = RessourcesManager::GetInstance().ReadFile("PirateSimulator/test.txt");
-        std::vector<std::string> allInfo = split(myFile, '_');
-        std::for_each(begin(allInfo), end(allInfo), [](std::string s) {
-            std::vector<std::string> temp = split(s, ' ');
-            std::string myPoint = "(" + temp[1] + ", " + temp[2] + ", " + temp[3] + ")";
-            std::string myNormal = "(" + temp[4] + ", " + temp[5] + ", " + temp[6] + ")";
-            std::string myString = temp[0] + " " + myPoint + " " + myNormal;
-        });
+        /*
+         * Init the terrain
+         */
+        Terrain* pTerrain = new Terrain(pDispositif);
+        std::vector<float> myFile = RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/test.txt");
+        int nbPoint = 7 * 257 * 257;
+        for(int i = 0; i < 7 * 257 * 257; i += 7)
+        {
+            PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 2], myFile[i + 3], myFile[i + 4], myFile[i + 5], myFile[i + 6]};
+            pTerrain->addSommet(p);
+        }
+        for(int i = nbPoint; i < myFile.size(); i += 3)
+        {
+            PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
+            pTerrain->addTriangle(t);
+        }
+
+        pTerrain->Init();
 
         CBloc* pBloc;
 
 		// Création d'un cube de 2 X 2 X 2 unités
 		// Le bloc est créé dans notre programme et sur le dispositif
-		pBloc = new CBloc( 1, 1, 1, pDispositif );
+		pBloc = new CBloc( 2, 2, 2, pDispositif );
 		
 		// Puis, il est ajouté à la scène
-        ListeScene.push_back(pBloc);
-        ListeScene.push_back(new CBloc(2, 2, 2, pDispositif));
+        //ListeScene.push_back(pBloc);
+        ListeScene.push_back(pTerrain);
 		
 		return true;
 	}

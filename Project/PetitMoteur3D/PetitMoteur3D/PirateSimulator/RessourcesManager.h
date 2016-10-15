@@ -7,13 +7,9 @@ class RessourcesManager : public PM3D::CSingleton<RessourcesManager>
 {
     FilesManager m_filesManager;
 public:
-    std::string ReadFile(std::string filePath)
+    std::vector<float> ReadHeightMapFile(std::string filePath) const
     {
-        return m_filesManager.readFile(filePath);
-    }
-    void ReadFile(std::string filePath, std::string &returnString) const
-    {
-        returnString = m_filesManager.readFile(filePath);
+        return m_filesManager.readFileHeightMap(filePath);
     }
 };
 
