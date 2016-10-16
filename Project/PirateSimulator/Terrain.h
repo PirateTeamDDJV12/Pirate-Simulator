@@ -1,27 +1,24 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
-#include "../Objet3D.h"
-#include "../d3dx11effect.h"
-#include "../sommetbloc.h"
 #include <vector>
 #include "Vertex.h"
 #include "Triangle.h"
+#include "../Chapitre 10/PetitMoteur3D/Objet3D.h"
+#include "../Chapitre 10/PetitMoteur3D/sommetbloc.h"
+#include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
 
-namespace PM3D
+namespace PirateSimulator
 {
-    class CDispositifD3D11;
-
-
     //  Classe : Terrain
     //
     //  BUT : 	Classe du terrain de notre jeu
     //
-    class Terrain : public CObjet3D
+    class Terrain : public PM3D::CObjet3D
     {
         std::vector<CSommetBloc> m_sommets;
         std::vector<unsigned int> m_index_bloc;
     public:
-        Terrain(CDispositifD3D11* pDispositif);
+        Terrain(PM3D::CDispositifD3D11* pDispositif);
 
         // Destructeur
         virtual ~Terrain(void);
@@ -32,8 +29,8 @@ namespace PM3D
 
         void Init();
         
-        void addSommet(PirateSimulator::Vertex v);
-        void addTriangle(PirateSimulator::Triangle t);
+        void addSommet(Vertex v);
+        void addTriangle(Triangle t);
 
     protected:
         // Constructeur par défaut
@@ -42,7 +39,7 @@ namespace PM3D
 
         void InitShaders();
 
-        CDispositifD3D11* pDispositif;
+        PM3D::CDispositifD3D11* pDispositif;
 
         ID3D11Buffer* pVertexBuffer;
         ID3D11Buffer* pIndexBuffer;

@@ -1,13 +1,12 @@
 #include "stdafx.h"
 
 #include "Terrain.h"
-#include "../sommetbloc.h"
-#include "../util.h"
-#include "../resource.h"
-#include "../Bloc.h"
-#include "../MoteurWindows.h"
+#include "../Chapitre 10/PetitMoteur3D/MoteurWindows.h"
+#include "../Chapitre 10/PetitMoteur3D/resource.h"
+#include "../Chapitre 10/PetitMoteur3D/util.h"
+#include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
 
-namespace PM3D
+namespace PirateSimulator
 {
     struct ShadersParams
     {
@@ -21,7 +20,7 @@ namespace PM3D
         XMVECTOR vDMat; 			// la valeur diffuse du matériau 
     };
 
-    Terrain::Terrain(CDispositifD3D11* pDispositif_)
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
     {
         pDispositif = pDispositif_;  // Prendre en note le dispositif
     }
@@ -31,10 +30,10 @@ namespace PM3D
 
     void Terrain::Anime(float tempsEcoule)
     {
-        rotation = rotation + ((XM_PI * 2.0f) / 10.0f * tempsEcoule);
-
+        rotation =  rotation + ( (XM_PI * 2.0f) / 20.0f * tempsEcoule );
+        
         // modifier la matrice de l'objet bloc
-        matWorld = XMMatrixRotationZ(rotation);
+        matWorld = XMMatrixRotationZ( rotation );
     }
 
     void Terrain::Draw()
@@ -61,12 +60,12 @@ namespace PM3D
 
         // Initialiser et sélectionner les «constantes» du VS
         ShadersParams sp;
-        XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
+        XMMATRIX viewProj = PM3D::CMoteurWindows::GetInstance().GetMatViewProj();
 
         sp.matWorldViewProj = XMMatrixTranspose(matWorld * viewProj);
         sp.matWorld = XMMatrixTranspose(matWorld);
 
-        sp.vLumiere = XMVectorSet(-10.0f, 10.0f, -10.0f, 1.0f);
+        sp.vLumiere = XMVectorSet(120.0f, 120.0f, 300.0f, 1.0f);
         sp.vCamera = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
         sp.vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
         sp.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);

@@ -4,6 +4,9 @@
 #include <fstream>
 #include <vector>
 #include <iterator>
+#include <string>
+
+using namespace PirateSimualtor;
 
 std::string FilesManager::readFile(std::string filePath) const
 {

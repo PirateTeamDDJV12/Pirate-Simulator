@@ -1,16 +1,9 @@
-#ifndef RESSOURCES_MANAGER_H
-#define RESSOURCES_MANAGER_H
-#include "../Singleton.h"
-#include "FilesManager.h"
+#ifndef RESSOURCES_MANAGER_H_
+#define RESSOURCES_MANAGER_H_
 
-class RessourcesManager : public PM3D::CSingleton<RessourcesManager>
+class Test
 {
-    FilesManager m_filesManager;
-public:
-    std::vector<float> ReadHeightMapFile(std::string filePath) const
-    {
-        return m_filesManager.readFileHeightMap(filePath);
-    }
+    
 };
 
-#endif // RESSOURCES_MANAGER_H
+#endif // RESSOURCES_MANAGER_H_
