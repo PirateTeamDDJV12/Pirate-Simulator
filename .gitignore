@@ -3,6 +3,7 @@
 *.db
 *.opendb
 *.ipch
+*.lnk
 **/heightmapOutput.txt
 
 Project/*/*/Debug/*
