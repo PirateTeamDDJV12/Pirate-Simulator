@@ -30,10 +30,10 @@ namespace PirateSimulator
 
     void Terrain::Anime(float tempsEcoule)
     {
-        rotation =  rotation + ( (XM_PI * 2.0f) / 20.0f * tempsEcoule );
-        
-        // modifier la matrice de l'objet bloc
-        matWorld = XMMatrixRotationZ( rotation );
+        //rotation =  rotation + ( (XM_PI * 2.0f) / 20.0f * tempsEcoule );
+        //
+        //// modifier la matrice de l'objet bloc
+        //matWorld = XMMatrixRotationZ( rotation );
     }
 
     void Terrain::Draw()

@@ -207,8 +207,8 @@ namespace PM3D
         {
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
-            matView = XMMatrixLookAtLH(XMVectorSet(120.0f, 120.0f, 500.0f, 1.0f),
-                                       XMVectorSet(120.0f, 120.0f, 0.0f, 1.0f),
+            matView = XMMatrixLookAtLH(XMVectorSet(130.0f, -100.0f, 200.0f, 1.0f),
+                                       XMVectorSet(130.0f, 130.0f, 0.0f, 1.0f),
                                        XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
 
             float champDeVision = XM_PI / 4; 	// 45 degrés
@@ -239,7 +239,7 @@ namespace PM3D
             PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif);
             std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/test.txt");
             int nbPoint = 7 * 257 * 257;
-            for(int i = 0; i < 7 * 257 * 257; i += 7)
+            for(int i = 0; i < nbPoint; i += 7)
             {
                 PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 2], myFile[i + 3], myFile[i + 4], myFile[i + 5], myFile[i + 6]};
                 pTerrain->addSommet(p);
