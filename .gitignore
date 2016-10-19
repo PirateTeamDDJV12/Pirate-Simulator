@@ -2,9 +2,17 @@
 
 *.db
 *.opendb
+*.ipch
 
 Project/*/*/Debug/*
 Project/*/*/Release/*
+Project/*/*/x64/*
+
+Project/*/*/*/Debug/*
+Project/*/*/*/Release/*
+Project/*/*/*/x64/*
+Project/*/*/ipch/*
 
 Project/*/Debug/*
 Project/*/Release/*
+Project/*/x64/*
