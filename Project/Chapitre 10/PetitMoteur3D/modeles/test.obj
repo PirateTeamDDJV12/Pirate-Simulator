@@ -1,0 +1,11 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 26.07.2011 13:47:43
+
+mtllib spaceCompound.mtl
+
+#
+# object Window
+#
+
+v  -8.6007 1.3993 10.0000
+v  -8.6007 8.6007 10.0000
