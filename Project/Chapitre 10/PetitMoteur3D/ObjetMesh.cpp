@@ -221,35 +221,6 @@ namespace PM3D
             matWorld = XMMatrixRotationY(rotation);
         }
 
-        // Vérifier l'état de la touche droite
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_UPARROW))
-        {
-            // XMFloat3 position , direction
-            position = position + (direction * (vitesse * tempsEcoule));  // vitesse U/sec
-
-            XMFLOAT3 pos;
-            XMStoreFloat3(&pos, position);
-
-            matTranslation = XMMatrixTranslation(pos.x, pos.y, pos.z);
-
-            matWorld = matRotation * matTranslation;
-        }
-
-
-
-        // Vérifier l'état de la touche droite                   
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWNARROW))
-        {
-            position = position + (-direction * (vitesse * tempsEcoule));  // vitesse U/sec
-
-            XMFLOAT3 pos;
-            XMStoreFloat3(&pos, position);
-
-            matTranslation = XMMatrixTranslation(pos.x, pos.y, pos.z);
-
-            matWorld = matRotation * matTranslation;
-        }
-
         // ******** POUR LA SOURIS ************
         // Vérifier si déplacement vers la gauche
         if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
@@ -271,7 +242,62 @@ namespace PM3D
             matWorld = XMMatrixRotationY(rotation);
         }
 
+        /*
+         * CAMERA INPUT MANAGER
+         * TODO - A bouger autre part !!
+         * TODO - Changer les lettres d'input par la suite
+         */
 
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
+        {
+            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(-1.f, 0.f, 0.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
+        {
+            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(1.f, 0.f, 0.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
+        {
+            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, 1.f, 0.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
+        {
+            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, -1.f, 0.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_R))
+        {
+            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, 0.f, 1.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_F))
+        {
+            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, 0.f, -1.f));
+        }
+
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_H))
+        {
+            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(0.f, 1.f, 0.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_J))
+        {
+            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(0.f, -1.f, 0.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_K))
+        {
+            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(1.f, 0.f, 0.f));
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_L))
+        {
+            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(-1.f, 0.f, 0.f));
+        }
     }
 
     void CObjetMesh::Draw()

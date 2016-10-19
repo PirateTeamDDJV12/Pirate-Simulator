@@ -16,6 +16,7 @@
 
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/RessourceManager.h"
+#include "../../PirateSimulator/FreeCamera.h"
 
 namespace PM3D
 {
@@ -104,17 +105,18 @@ namespace PM3D
             return true;
         }
 
+
         XMMATRIX GetMatView()
         {
-            return matView;
+            return m_camera->view();
         }
         XMMATRIX GetMatProj()
         {
-            return matProj;
+            return m_camera->proj();
         }
         XMMATRIX GetMatViewProj()
         {
-            return matViewProj;
+            return m_camera->getViewProjMatrix();
         }
 
         CGestionnaireDeTextures& GetTextureManager()
@@ -126,6 +128,10 @@ namespace PM3D
             return GestionnaireDeSaisie;
         }
 
+        PirateSimulator::cameraModule::BaseCamera* getCamera()
+        {
+            return m_camera;
+        }
 
     protected:
 
@@ -205,25 +211,15 @@ namespace PM3D
 
         virtual int InitScene()
         {
+            auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(XM_PI / 4, 1.0f, 3000.0f, pDispositif->GetLargeur(), pDispositif->GetHauteur());
+            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.1f, 0.1f);
+            XMVECTOR camPos = XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
+            XMVECTOR camDir = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
+            XMVECTOR camUp = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
+
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
-            matView = XMMatrixLookAtLH(XMVectorSet(130.0f, -100.0f, 200.0f, 1.0f),
-                                       XMVectorSet(130.0f, 130.0f, 0.0f, 1.0f),
-                                       XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
-
-            float champDeVision = XM_PI / 4; 	// 45 degrés
-            float ratioDAspect = pDispositif->GetLargeur() / pDispositif->GetHauteur();
-            float planRapproche = 2.0;
-            float planEloigne = 3000.0;
-
-            matProj = XMMatrixPerspectiveFovLH(
-                champDeVision,
-                ratioDAspect,
-                planRapproche,
-                planEloigne);
-
-            // Calcul de VP à l'avance
-            matViewProj = matView * matProj;
+            m_camera = new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
 
             // Initialisation des objets 3D - création et/ou chargement
             if(!InitObjets()) return 1;
@@ -259,7 +255,7 @@ namespace PM3D
             pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
 
             // Puis, il est ajouté à la scène
-            //ListeScene.push_back(pMesh);
+            ListeScene.push_back(pMesh);
             ListeScene.push_back(pTerrain);
 
             // Création de l'afficheur de sprites et ajout des sprites
@@ -332,10 +328,7 @@ namespace PM3D
         // La seule scène
         std::vector<CObjet3D*> ListeScene;
 
-        // Les matrices
-        XMMATRIX matView;
-        XMMATRIX matProj;
-        XMMATRIX matViewProj;
+        PirateSimulator::cameraModule::BaseCamera* m_camera;
 
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;
