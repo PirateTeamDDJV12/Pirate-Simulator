@@ -233,11 +233,11 @@ namespace PM3D
             * Init the terrain
             */
             PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif);
-            std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/test.txt");
+            std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
             int nbPoint = 7 * 257 * 257;
             for(int i = 0; i < nbPoint; i += 7)
             {
-                PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 2], myFile[i + 3], myFile[i + 4], myFile[i + 5], myFile[i + 6]};
+                PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6]};
                 pTerrain->addSommet(p);
             }
             for(int i = nbPoint; i < myFile.size(); i += 3)

@@ -3,6 +3,7 @@
 *.db
 *.opendb
 *.ipch
+**/heightmapOutput.txt
 
 Project/*/*/Debug/*
 Project/*/*/Release/*

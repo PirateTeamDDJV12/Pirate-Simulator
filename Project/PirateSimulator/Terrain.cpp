@@ -65,8 +65,8 @@ namespace PirateSimulator
         sp.matWorldViewProj = XMMatrixTranspose(matWorld * viewProj);
         sp.matWorld = XMMatrixTranspose(matWorld);
 
-        sp.vLumiere = XMVectorSet(120.0f, 120.0f, 300.0f, 1.0f);
-        sp.vCamera = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+        sp.vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
+        sp.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->position();
         sp.vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
         sp.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
         sp.vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
