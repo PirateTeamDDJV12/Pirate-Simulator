@@ -2,47 +2,170 @@
 
 #include "FreeCamera.h"
 
-using namespace  PirateSimulator::cameraModule;
+
+//#define TAKE_ELAPSED_TIME_INTO_ACCOUNT
 
 
-void FreeCamera::move(const DirectX::XMFLOAT3& direction)
+using namespace  PirateSimulator;
+using namespace  cameraModule;
+
+
+void FreeCamera::move(Move::Translation::Direction direction)
 {
-    m_position = m_position + XMLoadFloat3(
-        &DirectX::XMFLOAT3(
-            direction.x * m_moveParams.translationVelocity, 
-            direction.y * m_moveParams.translationVelocity, 
-            direction.z * m_moveParams.translationVelocity)
-    );
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+    using namespace std::chrono;
 
-    setMatrixView(XMMatrixLookToLH(m_position,
-        m_direction,
-        m_up));
+    time_point<system_clock> nowTime = std::chrono::system_clock::now();
+
+    float elapsedTime = duration_cast<milliseconds>(nowTime - m_lastTime).count() / 1000.f;
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+
+    switch (direction)
+    {
+    case PirateSimulator::Move::Translation::FORWARD:
+        m_position += m_direction * m_moveParams.translationVelocity 
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Translation::BACKWARD:
+        m_position -= m_direction * m_moveParams.translationVelocity 
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Translation::LEFT:
+        m_position -= m_rightDirection * m_moveParams.translationVelocity
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Translation::RIGHT:
+        m_position += m_rightDirection * m_moveParams.translationVelocity
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Translation::UP:
+        m_position.vector4_f32[1] += m_moveParams.translationVelocity 
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Translation::DOWN:
+        m_position.vector4_f32[1] -= m_moveParams.translationVelocity 
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Translation::NONE:
+    default:
+        return;
+    }
+
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+    m_lastTime = nowTime;
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+
+    setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
 }
 
 
-void FreeCamera::rotate(const DirectX::XMFLOAT3& axis)
+void FreeCamera::rotate(Move::Rotation::Direction direction)
 {
+    using namespace std::chrono;
+
+    time_point<system_clock> nowTime = std::chrono::system_clock::now();
+
+    float elapsedTime = duration_cast<milliseconds>(nowTime - m_lastTime).count() / 1000.f;
+
+    switch (direction)
+    {
+    case PirateSimulator::Move::Rotation::X_CLOCKWISE:
+        m_rotationAroundX -= m_moveParams.rotationVelocity
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Rotation::X_INVERT_CLOCKWISE:
+        m_rotationAroundX += m_moveParams.rotationVelocity 
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Rotation::Y_CLOCKWISE:
+        m_rotationAroundY -= m_moveParams.rotationVelocity 
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Rotation::Y_INVERT_CLOCKWISE:
+        m_rotationAroundY += m_moveParams.rotationVelocity 
+#ifdef TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            * elapsedTime
+#endif //TAKE_ELAPSED_TIME_INTO_ACCOUNT
+            ;
+        break;
+
+    case PirateSimulator::Move::Rotation::Z_CLOCKWISE:
+    case PirateSimulator::Move::Rotation::Z_INVERT_CLOCKWISE:
+    case PirateSimulator::Move::Rotation::NONE:
+    default:
+        return;
+    }
+
+    m_lastTime = nowTime;
+
+    const float cosAngleAroundX = cosf(m_rotationAroundX.getAngle());
+    const float sinAngleAroundX = sinf(m_rotationAroundX.getAngle());
+    const float cosAngleAroundY = cosf(m_rotationAroundY.getAngle());
+    const float sinAngleAroundY = sinf(m_rotationAroundY.getAngle());
 
 
-    //m_view = m_view + DirectX::XMMatrixRotationY(axis.y * m_moveParams.rotationVelocity) + DirectX::XMMatrixRotationX(axis.x * m_moveParams.rotationVelocity);
-    
 
-    // rotate vectors
-    //DirectX::XMFLOAT3 look_at_target = MathVF(DirectX::XMVectorSubtract(MathFV(m_Target), MathFV(m_Position)));
-    DirectX::XMFLOAT3 lookAtUp;
-    DirectX::XMStoreFloat3(&lookAtUp, m_direction - m_position);
+    DirectX::XMMATRIX rotationMatrix
+    {
+        cosAngleAroundY     ,   sinAngleAroundX * sinAngleAroundY   ,    cosAngleAroundX * sinAngleAroundY  ,   0.f,
 
+              0.f           ,             cosAngleAroundX           ,            -sinAngleAroundX           ,   0.f,
 
-    //look_at_target = MathVF(DirectX::XMVector3Transform(MathFV(look_at_target),
-        //DirectX::XMMatrixRotationAxis(MathFV(axis), DirectX::XMConvertToRadians(degrees))));
+        -sinAngleAroundY    ,   sinAngleAroundX * cosAngleAroundY   ,    cosAngleAroundX * cosAngleAroundY  ,   0.f,
 
-    XMStoreFloat3(&lookAtUp, DirectX::XMVector3Transform(XMLoadFloat3(&lookAtUp), DirectX::XMMatrixRotationAxis(XMLoadFloat3(&axis), DirectX::XMConvertToRadians(m_moveParams.rotationVelocity))));
+              0.f           ,                  0.f                  ,                   0.f                 ,   1.f
+    };
 
-    // restore vectors's end points mTarget and mUp from new rotated vectors
-    //m_Target = MathVF(DirectX::XMVectorAdd(MathFV(m_Position), MathFV(look_at_target)));
-    m_direction = m_position + XMLoadFloat3(&lookAtUp);
+// 
+//     float AngleVision;
+// 
+// 
+//     AngleVision = AngleVision + vitesseRotation * tempsEcoule;
+// 
+// 
+// 
+//     m_direction.vector4_f32[0] = cosf(AngleVision);
+//     m_direction.vector4_f32[1] = 0.0f;
+//     m_direction.vector4_f32[2] = sinf(AngleVision);
 
-    setMatrixView(XMMatrixLookToLH(m_position,
-        m_direction,
-        m_up));
+    m_direction = DirectX::XMVector4Transform(m_direction, rotationMatrix);
+    m_rightDirection = DirectX::XMVector4Transform(m_rightDirection, rotationMatrix);
+
+    setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up)); // OK
 }

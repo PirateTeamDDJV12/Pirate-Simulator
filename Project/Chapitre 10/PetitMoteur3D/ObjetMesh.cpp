@@ -7,6 +7,8 @@
 #include "util.h"
 #include "resource.h"
 
+#include "../../PirateSimulator/Moves.h"
+
 #include <fstream>
 
 using namespace UtilitairesDX;
@@ -250,53 +252,53 @@ namespace PM3D
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(-1.f, 0.f, 0.f));
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::LEFT);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(1.f, 0.f, 0.f));
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::RIGHT);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, 1.f, 0.f));
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::UP);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, -1.f, 0.f));
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::DOWN);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_R))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, 0.f, 1.f));
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::FORWARD);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_F))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(DirectX::XMFLOAT3(0.f, 0.f, -1.f));
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::BACKWARD);
         }
 
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_H))
-        {
-            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(0.f, 1.f, 0.f));
-        }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_J))
         {
-            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(0.f, -1.f, 0.f));
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_K))
-        {
-            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(1.f, 0.f, 0.f));
+            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::Y_INVERT_CLOCKWISE);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_L))
         {
-            CMoteurWindows::GetInstance().getCamera()->rotate(DirectX::XMFLOAT3(-1.f, 0.f, 0.f));
+            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::Y_CLOCKWISE);
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_I))
+        {
+            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::X_INVERT_CLOCKWISE);
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_K))
+        {
+            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::X_CLOCKWISE);
         }
     }
 

@@ -2,6 +2,7 @@
 #define BASECAMERA_H
 
 #include "Component.h"
+#include "Moves.h"
 
 #include <directxmath.h>
 #include <d3d11.h>
@@ -84,11 +85,11 @@ namespace PirateSimulator
             /*** View matrix transformation interfaces ***/
 
             // Move camera
-            virtual void move(const DirectX::XMFLOAT3& direction) = 0;
+            virtual void move(Move::Translation::Direction direction) = 0;
 
             // Rotate camera around axis by degrees. Camera's position is a
             // pivot point of rotation, so it doesn't change
-            virtual void rotate(const DirectX::XMFLOAT3& axis) = 0;
+            virtual void rotate(Move::Rotation::Direction direction) = 0;
 
             // Get camera position coordinates
             const DirectX::XMVECTOR& position() const

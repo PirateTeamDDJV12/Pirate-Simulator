@@ -212,7 +212,7 @@ namespace PM3D
         virtual int InitScene()
         {
             auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(XM_PI / 4, 1.0f, 3000.0f, pDispositif->GetLargeur(), pDispositif->GetHauteur());
-            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.1f, 0.1f);
+            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.1f, 0.001f);
             XMVECTOR camPos = XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
             XMVECTOR camDir = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
             XMVECTOR camUp = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
