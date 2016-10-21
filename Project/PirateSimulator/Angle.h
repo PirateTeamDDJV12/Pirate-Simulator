@@ -35,8 +35,8 @@ namespace PirateSimulator
     private:
         void loopPiMinusPi() noexcept
         {
-            while (m_angle > DirectX::XM_PI) { m_angle -= DirectX::XM_PI; }
-            while (m_angle < -DirectX::XM_PI) { m_angle += DirectX::XM_PI; }
+            while (m_angle > DirectX::XM_2PI) { m_angle -= DirectX::XM_2PI; }
+            while (m_angle < -DirectX::XM_2PI) { m_angle += DirectX::XM_2PI; }
         }
 
 
@@ -67,7 +67,6 @@ namespace PirateSimulator
         {
             AngleRad intermediary(*this);
             intermediary.m_angle += angle;
-            intermediary.loopPiMinusPi();
             return intermediary;
         }
 
@@ -75,7 +74,6 @@ namespace PirateSimulator
         {
             AngleRad intermediary(*this);
             intermediary += other.m_angle;
-            intermediary.loopPiMinusPi();
             return intermediary;
         }
 
@@ -97,7 +95,6 @@ namespace PirateSimulator
         {
             AngleRad intermediary(*this);
             intermediary.m_angle -= angle;
-            intermediary.loopPiMinusPi();
             return intermediary;
         }
 
@@ -105,7 +102,6 @@ namespace PirateSimulator
         {
             AngleRad intermediary(*this);
             intermediary -= other.m_angle;
-            intermediary.loopPiMinusPi();
             return intermediary;
         }
 
