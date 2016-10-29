@@ -234,10 +234,11 @@ namespace PM3D
             */
             PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif);
             std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
-            int nbPoint = 7 * 257 * 257;
-            for(int i = 0; i < nbPoint; i += 7)
+			const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
+            int nbPoint = vertexLineCount * 257 * 257;
+            for(int i = 0; i < nbPoint; i += vertexLineCount)
             {
-                PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6]};
+                PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
                 pTerrain->addSommet(p);
             }
             for(int i = nbPoint; i < myFile.size(); i += 3)

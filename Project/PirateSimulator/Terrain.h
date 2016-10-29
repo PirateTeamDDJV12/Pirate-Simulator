@@ -1,11 +1,19 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
-#include <vector>
+
 #include "Vertex.h"
 #include "Triangle.h"
 #include "../Chapitre 10/PetitMoteur3D/Objet3D.h"
 #include "../Chapitre 10/PetitMoteur3D/sommetbloc.h"
 #include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
+
+#include <vector>
+#include <string>
+
+namespace PM3D
+{
+	class CTexture;
+}
 
 namespace PirateSimulator
 {
@@ -32,6 +40,10 @@ namespace PirateSimulator
         void addSommet(Vertex v);
         void addTriangle(Triangle t);
 
+		void setTexture(PM3D::CTexture* texture);
+
+		void loadTexture(const std::string& filename);
+
     protected:
         // Constructeur par défaut
         Terrain(void)
@@ -53,6 +65,8 @@ namespace PirateSimulator
         XMMATRIX matWorld;
         float rotation;
 
+		//Pour texture
+		ID3D11ShaderResourceView* pTextureD3D;
     };
 
 }
