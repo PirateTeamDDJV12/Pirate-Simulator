@@ -6,6 +6,12 @@ namespace PirateSimulator
 {
     class Vect3f
     {
+	public:
+		enum
+		{
+			INFO_COUNT = 3
+		};
+
     private:
         float m_X;
         float m_Y;
