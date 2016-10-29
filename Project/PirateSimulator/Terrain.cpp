@@ -5,6 +5,9 @@
 #include "../Chapitre 10/PetitMoteur3D/resource.h"
 #include "../Chapitre 10/PetitMoteur3D/util.h"
 #include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
+#include "../Chapitre 10/PetitMoteur3D/Texture.h"
+#include "../Chapitre 10/PetitMoteur3D/GestionnaireDeTextures.h"
+
 
 namespace PirateSimulator
 {
@@ -128,13 +131,19 @@ namespace PirateSimulator
         matWorld = XMMatrixIdentity();
 
         rotation = 0.0f;
+
+
+		
+		// Chargement des textures
+		this->loadTexture("PirateSimulator/terrainTexture.jpg");
     }
 
     void Terrain::addSommet(PirateSimulator::Vertex v)
     {
         XMFLOAT3 pos{v.position().x(), v.position().y(), v.position().z()};
         XMFLOAT3 nor{v.normalVector().x(), v.normalVector().y(), v.normalVector().z()};
-        CSommetBloc c{pos, nor};
+		XMFLOAT2 textCoord{ v.getTextureCoordinate().m_U, v.getTextureCoordinate().m_V };
+        CSommetBloc c{pos, nor, textCoord};
         m_sommets.push_back(c);
     }
 
@@ -206,4 +215,19 @@ namespace PirateSimulator
         pPSBlob->Release(); //  On n'a plus besoin du blob
     }
 
+
+	void Terrain::setTexture(PM3D::CTexture* texture)
+	{
+		pTextureD3D = texture->GetD3DTexture();
+	}
+
+	void Terrain::loadTexture(const std::string& filename)
+	{
+		PM3D::CGestionnaireDeTextures& TexturesManager = PM3D::CMoteurWindows::GetInstance().GetTextureManager();
+
+		wstring ws;
+		ws.assign(filename.begin(), filename.end());
+
+		this->setTexture(TexturesManager.GetNewTexture(ws.c_str(), pDispositif));
+	}
 }
