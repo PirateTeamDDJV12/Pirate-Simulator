@@ -31,8 +31,9 @@ namespace PirateSimulator
                 m_rotationAroundX{},
                 m_rotationAroundY{},
                 m_lastTime{},
-                m_rightDirection(DirectX::XMVector3Cross(m_up, m_direction))
-            {}
+                m_rightDirection(DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_up, m_direction)))
+            {
+            }
 
             // Move camera
             virtual void move(Move::Translation::Direction direction);

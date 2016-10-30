@@ -262,43 +262,48 @@ namespace PM3D
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::UP);
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::FORWARD);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::DOWN);
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::BACKWARD);
         }
 
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_R))
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_SPACE))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::FORWARD);
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::UP);
         }
 
         if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_F))
         {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::BACKWARD);
+            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::DOWN);
         }
 
 
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_J))
-        {
-            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::Y_INVERT_CLOCKWISE);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_L))
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
         {
             CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::Y_CLOCKWISE);
         }
 
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_I))
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
+        {
+            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::Y_INVERT_CLOCKWISE);
+        }
+
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
         {
             CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::X_INVERT_CLOCKWISE);
         }
 
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_K))
+        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
         {
             CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::X_CLOCKWISE);
+        }
+
+        if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
+        {
+            CMoteurWindows::GetInstance().getCamera()->changeVelocity();
         }
     }
 

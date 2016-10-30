@@ -140,6 +140,7 @@
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\RessourcesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
@@ -175,6 +176,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PetitMoteur3D.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\PirateSimulator\test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
