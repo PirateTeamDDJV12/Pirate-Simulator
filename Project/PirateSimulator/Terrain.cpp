@@ -335,7 +335,7 @@ namespace PirateSimulator
                                                 vsCodePtr,
                                                 vsCodeLen,
                                                 &pVertexLayout),
-                  DXE_CREATIONLAYOUT);
+                  DXE_CREATIONLAYOUT);*/
 
         // Initialisation des paramètres de sampling de la texture
         D3D11_SAMPLER_DESC samplerDesc;
@@ -355,6 +355,6 @@ namespace PirateSimulator
         samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
         // Création de l'état de sampling
-        pD3DDevice->CreateSamplerState(&samplerDesc, &pSampleState);*/
+        pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
 	}
 }
