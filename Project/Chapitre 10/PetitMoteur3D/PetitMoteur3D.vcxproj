@@ -136,8 +136,10 @@
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\FreeCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\LevelCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\Material.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\Effect.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
