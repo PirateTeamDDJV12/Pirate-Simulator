@@ -1,11 +1,14 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
+#include "Material.h"
+#include "Effect.h"
 #include "Vertex.h"
 #include "Triangle.h"
 #include "../Chapitre 10/PetitMoteur3D/Objet3D.h"
 #include "../Chapitre 10/PetitMoteur3D/sommetbloc.h"
 #include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
+#include "../Chapitre 10/PetitMoteur3D/d3dx11effect.h"
 
 #include <vector>
 #include <string>
@@ -66,7 +69,9 @@ namespace PirateSimulator
         float rotation;
 
 		//Pour texture
-		ID3D11ShaderResourceView* pTextureD3D;
+        Material m_material;
+
+        Effect m_textureEffect;
     };
 
 }
