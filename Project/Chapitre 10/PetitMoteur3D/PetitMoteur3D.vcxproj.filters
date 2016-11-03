@@ -209,6 +209,15 @@
     <ClInclude Include="..\..\PirateSimulator\RessourcesManager.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Vect2f.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Material.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Effect.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PetitMoteur3D.ico">
