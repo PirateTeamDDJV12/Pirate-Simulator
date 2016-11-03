@@ -5,7 +5,6 @@
 #include "Moves.h"
 
 #include <directxmath.h>
-#include <d3d11.h>
 
 
 namespace PirateSimulator
@@ -244,6 +243,8 @@ namespace PirateSimulator
             {
                 m_moveParams.rotationVelocity = speed;
             }
+
+            void listenInput();
         };
     }
 }

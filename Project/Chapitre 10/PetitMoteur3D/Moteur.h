@@ -262,16 +262,16 @@ namespace PM3D
             pAfficheurSprite = new CAfficheurSprite(pDispositif);
 
             // ajout de panneaux 
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(1.0f, 0.0f, 1.0f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(0.0f, 0.0f, -1.0f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(-1.0f, 0.0f, 0.5f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(-0.5f, 0.0f, 1.0f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(-2.0f, 0.0f, 2.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(1.0f, 0.0f, 1.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(0.0f, 0.0f, -1.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-1.0f, 0.0f, 0.5f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-0.5f, 0.0f, 1.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-2.0f, 0.0f, 2.0f));
 
             //pAfficheurSprite->AjouterSprite("tree02s.dds", 200,400);
             //pAfficheurSprite->AjouterSprite("tree02s.dds", 500,500, 100, 100);
@@ -302,6 +302,7 @@ namespace PM3D
             // Prendre en note l'état de la souris
             GestionnaireDeSaisie.SaisirEtatSouris();
 
+            m_camera->listenInput();
 
             std::vector<CObjet3D*>::iterator It;
 

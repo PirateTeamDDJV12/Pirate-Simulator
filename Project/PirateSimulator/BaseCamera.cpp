@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "BaseCamera.h"
+#include "../Chapitre 10/PetitMoteur3D/MoteurWindows.h"
 
 using namespace PirateSimulator;
 using namespace PirateSimulator::cameraModule;
@@ -52,4 +53,67 @@ void BaseCamera::position(const DirectX::XMVECTOR& position)
     setMatrixView(XMMatrixLookToLH(position,
                                    m_direction,
                                    m_up));
+}
+
+void BaseCamera::listenInput()
+{
+    // Pour les mouvements, nous utilisons le gestionnaire de saisie
+    PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
+    CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
+    {
+        move(PirateSimulator::Move::Translation::LEFT);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
+    {
+        move(PirateSimulator::Move::Translation::RIGHT);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
+    {
+        move(PirateSimulator::Move::Translation::FORWARD);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
+    {
+        move(PirateSimulator::Move::Translation::BACKWARD);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_SPACE))
+    {
+        move(PirateSimulator::Move::Translation::UP);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_F))
+    {
+        move(PirateSimulator::Move::Translation::DOWN);
+    }
+
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
+    {
+        rotate(PirateSimulator::Move::Rotation::Y_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
+    {
+        rotate(PirateSimulator::Move::Rotation::Y_INVERT_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
+    {
+        rotate(PirateSimulator::Move::Rotation::X_INVERT_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
+    {
+        rotate(PirateSimulator::Move::Rotation::X_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
+    {
+        changeVelocity();
+    }
 }

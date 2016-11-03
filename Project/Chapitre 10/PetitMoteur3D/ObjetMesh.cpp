@@ -204,25 +204,7 @@ namespace PM3D
         // Pour les mouvements, nous utilisons le gestionnaire de saisie
         CMoteurWindows& rMoteur = CMoteurWindows::GetInstance();
         CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
-
-        // Vérifier l'état de la touche gauche
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
-        {
-            rotation = rotation + ((XM_PI * 2.0f) / 5.0f * tempsEcoule);
-
-            // modifier la matrice de l'objet X
-            matWorld = XMMatrixRotationY(rotation);
-        }
-
-        // Vérifier l'état de la touche droite
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
-        {
-            rotation = rotation - ((XM_PI * 2.0f) / 5.0f * tempsEcoule);
-
-            // modifier la matrice de l'objet X
-            matWorld = XMMatrixRotationY(rotation);
-        }
-
+        
         // ******** POUR LA SOURIS ************
         // Vérifier si déplacement vers la gauche
         if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
@@ -242,68 +224,6 @@ namespace PM3D
 
             // modifier la matrice de l'objet X
             matWorld = XMMatrixRotationY(rotation);
-        }
-
-        /*
-         * CAMERA INPUT MANAGER
-         * TODO - A bouger autre part !!
-         * TODO - Changer les lettres d'input par la suite
-         */
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
-        {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::LEFT);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
-        {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::RIGHT);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
-        {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::FORWARD);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
-        {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::BACKWARD);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_SPACE))
-        {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::UP);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_F))
-        {
-            CMoteurWindows::GetInstance().getCamera()->move(PirateSimulator::Move::Translation::DOWN);
-        }
-
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
-        {
-            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::Y_CLOCKWISE);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
-        {
-            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::Y_INVERT_CLOCKWISE);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
-        {
-            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::X_INVERT_CLOCKWISE);
-        }
-
-        if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
-        {
-            CMoteurWindows::GetInstance().getCamera()->rotate(PirateSimulator::Move::Rotation::X_CLOCKWISE);
-        }
-
-        if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
-        {
-            CMoteurWindows::GetInstance().getCamera()->changeVelocity();
         }
     }
 
