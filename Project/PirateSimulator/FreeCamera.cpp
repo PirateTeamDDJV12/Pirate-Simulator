@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "FreeCamera.h"
+#include "../Chapitre 10/PetitMoteur3D/MoteurWindows.h"
 
 using namespace  PirateSimulator;
 using namespace  cameraModule;
@@ -13,37 +14,36 @@ void FreeCamera::move(Move::Translation::Direction direction)
 {
     switch (direction)
     {
-    case PirateSimulator::Move::Translation::FORWARD:
+    case Move::Translation::FORWARD:
         m_position += m_direction * m_moveParams.translationVelocity;
         break;
 
-    case PirateSimulator::Move::Translation::BACKWARD:
+    case Move::Translation::BACKWARD:
         m_position -= m_direction * m_moveParams.translationVelocity;
         break;
 
-    case PirateSimulator::Move::Translation::LEFT:
+    case Move::Translation::LEFT:
         m_position -= m_rightDirection * m_moveParams.translationVelocity;
         break;
 
-    case PirateSimulator::Move::Translation::RIGHT:
+    case Move::Translation::RIGHT:
         m_position += m_rightDirection * m_moveParams.translationVelocity;
         break;
 
-    case PirateSimulator::Move::Translation::UP:
+    case Move::Translation::UP:
         m_position += m_up * m_moveParams.translationVelocity;
         break;
 
-    case PirateSimulator::Move::Translation::DOWN:
+    case Move::Translation::DOWN:
         m_position -= m_up * m_moveParams.translationVelocity;
         break;
 
-    case PirateSimulator::Move::Translation::NONE:
+    case Move::Translation::NONE:
     default:
         return;
     }
     setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
 }
-
 
 void FreeCamera::rotate(Move::Rotation::Direction direction)
 {
@@ -55,25 +55,25 @@ void FreeCamera::rotate(Move::Rotation::Direction direction)
 
     switch (direction)
     {
-    case PirateSimulator::Move::Rotation::X_CLOCKWISE:
+    case Move::Rotation::X_CLOCKWISE:
         m_rotationAroundX -= m_moveParams.rotationVelocity;
         break;
 
-    case PirateSimulator::Move::Rotation::X_INVERT_CLOCKWISE:
+    case Move::Rotation::X_INVERT_CLOCKWISE:
         m_rotationAroundX += m_moveParams.rotationVelocity;
         break;
 
-    case PirateSimulator::Move::Rotation::Y_CLOCKWISE:
+    case Move::Rotation::Y_CLOCKWISE:
         m_rotationAroundY -= m_moveParams.rotationVelocity;
         break;
 
-    case PirateSimulator::Move::Rotation::Y_INVERT_CLOCKWISE:
+    case Move::Rotation::Y_INVERT_CLOCKWISE:
         m_rotationAroundY += m_moveParams.rotationVelocity;
         break;
 
-    case PirateSimulator::Move::Rotation::Z_CLOCKWISE:
-    case PirateSimulator::Move::Rotation::Z_INVERT_CLOCKWISE:
-    case PirateSimulator::Move::Rotation::NONE:
+    case Move::Rotation::Z_CLOCKWISE:
+    case Move::Rotation::Z_INVERT_CLOCKWISE:
+    case Move::Rotation::NONE:
     default:
         return;
     }
@@ -99,4 +99,67 @@ void FreeCamera::rotate(Move::Rotation::Direction direction)
 #endif //MODIFY_UP_VECTOR_AT_ROTATE
 
     setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
+}
+
+void FreeCamera::listenInput()
+{
+    // Pour les mouvements, nous utilisons le gestionnaire de saisie
+    PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
+    CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
+    {
+        move(Move::Translation::LEFT);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
+    {
+        move(Move::Translation::RIGHT);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
+    {
+        move(Move::Translation::FORWARD);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
+    {
+        move(Move::Translation::BACKWARD);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_SPACE))
+    {
+        move(Move::Translation::UP);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_F))
+    {
+        move(Move::Translation::DOWN);
+    }
+
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
+    {
+        rotate(Move::Rotation::Y_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
+    {
+        rotate(Move::Rotation::Y_INVERT_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
+    {
+        rotate(Move::Rotation::X_INVERT_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
+    {
+        rotate(Move::Rotation::X_CLOCKWISE);
+    }
+
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
+    {
+        changeVelocity();
+    }
 }

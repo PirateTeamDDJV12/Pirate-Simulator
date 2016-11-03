@@ -15,12 +15,7 @@ namespace PirateSimulator
         private:
             AngleRad m_rotationAroundY;
             AngleRad m_rotationAroundX;
-
-
             std::chrono::time_point<std::chrono::system_clock> m_lastTime;
-
-            DirectX::XMVECTOR m_rightDirection;
-
 
         public:
             FreeCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams,
@@ -30,17 +25,16 @@ namespace PirateSimulator
                 BaseCamera{defaultParameters, moveParams, camPos, camDir, camUp},
                 m_rotationAroundX{},
                 m_rotationAroundY{},
-                m_lastTime{},
-                m_rightDirection(DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_up, m_direction)))
+                m_lastTime{}
             {
             }
 
             // Move camera
-            virtual void move(Move::Translation::Direction direction);
+            void move(Move::Translation::Direction direction) override;
 
             // Rotate camera around axis by degrees. Camera's position is a
             // pivot point of rotation, so it doesn't change
-            virtual void rotate(Move::Rotation::Direction direction);
+            void rotate(Move::Rotation::Direction direction) override;
 
             // Change camera target position
             virtual void getTarget(const DirectX::XMVECTOR& target)
@@ -48,6 +42,8 @@ namespace PirateSimulator
 
             virtual void lookAtTarget()
             {}
+
+            void listenInput() override;
         };
     }
 }

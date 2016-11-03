@@ -20,6 +20,12 @@ namespace PirateSimulator
         XMVECTOR vDMat; 			// la valeur diffuse du matériau 
     };
 
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w)
+        : m_terrainWidth(w), m_terrainHeight(h)
+    {
+        pDispositif = pDispositif_; // Prendre en note le dispositif
+    }
+
     Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
     {
         pDispositif = pDispositif_;  // Prendre en note le dispositif
@@ -135,6 +141,12 @@ namespace PirateSimulator
         XMFLOAT3 pos{v.position().x(), v.position().y(), v.position().z()};
         XMFLOAT3 nor{v.normalVector().x(), v.normalVector().y(), v.normalVector().z()};
         CSommetBloc c{pos, nor};
+
+        if(m_arraySommets.size() == v.position().x())
+        {
+            m_arraySommets.push_back(vector<Vertex>{});
+        }
+        m_arraySommets[v.position().x()].push_back(v);
         m_sommets.push_back(c);
     }
 
@@ -145,6 +157,32 @@ namespace PirateSimulator
         m_index_bloc.push_back(t.thirdPointIndex());
     }
 
+    float Terrain::getHeight(XMVECTOR pos)
+    {
+        float myFirstX = floor(pos.vector4_f32[0]);
+        float mySecondX = ceil(pos.vector4_f32[0]);
+        float myFirstZ = floor(pos.vector4_f32[2]);
+        float mySecondZ = ceil(pos.vector4_f32[2]);
+
+        if(myFirstZ < 0 || mySecondZ > m_terrainHeight || myFirstX < 0 || mySecondX > m_terrainWidth)
+        {
+            return 0.0f;
+        }
+
+        Vertex bottomLeft = m_arraySommets[myFirstX][myFirstZ];
+        Vertex topLeft = m_arraySommets[myFirstX][mySecondZ];
+        Vertex bottomRight = m_arraySommets[mySecondX][myFirstZ];
+        Vertex topRight = m_arraySommets[mySecondX][mySecondZ];
+
+        float p = pos.vector4_f32[2] - myFirstZ;
+        float q = pos.vector4_f32[0] - myFirstX;
+
+        return (1 - p) * (1 - q) * (topLeft.position().y())
+            + (1 - p) * q * topRight.position().y()
+            + p * (1 - q) * bottomLeft.position().y()
+            + p * q * bottomRight.position().y();
+    }
+
     void Terrain::InitShaders()
     {
         // Compilation et chargement du vertex shader
@@ -152,27 +190,27 @@ namespace PirateSimulator
 
         ID3DBlob* pVSBlob = NULL;
         UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.vhl",
-                                     NULL, NULL,
-                                     "MiniPhongVS",
-                                     "vs_4_0",
-                                     D3DCOMPILE_ENABLE_STRICTNESS,
-                                     0,
-                                     &pVSBlob, NULL), DXE_FICHIER_VS);
+                                                    NULL, NULL,
+                                                    "MiniPhongVS",
+                                                    "vs_4_0",
+                                                    D3DCOMPILE_ENABLE_STRICTNESS,
+                                                    0,
+                                                    &pVSBlob, NULL), DXE_FICHIER_VS);
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreateVertexShader(pVSBlob->GetBufferPointer(),
-                                                 pVSBlob->GetBufferSize(),
-                                                 NULL,
-                                                 &pVertexShader),
-                  DXE_CREATION_VS);
+                                                                pVSBlob->GetBufferSize(),
+                                                                NULL,
+                                                                &pVertexShader),
+                                 DXE_CREATION_VS);
 
         // Créer l'organisation des sommets
         pVertexLayout = NULL;
         UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(CSommetBloc::layout,
-                                                CSommetBloc::numElements,
-                                                pVSBlob->GetBufferPointer(),
-                                                pVSBlob->GetBufferSize(),
-                                                &pVertexLayout),
-                  DXE_CREATIONLAYOUT);
+                                                               CSommetBloc::numElements,
+                                                               pVSBlob->GetBufferPointer(),
+                                                               pVSBlob->GetBufferSize(),
+                                                               &pVertexLayout),
+                                 DXE_CREATIONLAYOUT);
 
         pVSBlob->Release(); //  On n'a plus besoin du blob
 
@@ -189,19 +227,19 @@ namespace PirateSimulator
         // Compilation et chargement du pixel shader
         ID3DBlob* pPSBlob = NULL;
         UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.phl",
-                                     NULL, NULL,
-                                     "MiniPhongPS",
-                                     "ps_4_0",
-                                     D3DCOMPILE_ENABLE_STRICTNESS,
-                                     0,
-                                     &pPSBlob,
-                                     NULL), DXE_FICHIER_PS);
+                                                    NULL, NULL,
+                                                    "MiniPhongPS",
+                                                    "ps_4_0",
+                                                    D3DCOMPILE_ENABLE_STRICTNESS,
+                                                    0,
+                                                    &pPSBlob,
+                                                    NULL), DXE_FICHIER_PS);
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreatePixelShader(pPSBlob->GetBufferPointer(),
-                                                pPSBlob->GetBufferSize(),
-                                                NULL,
-                                                &pPixelShader),
-                  DXE_CREATION_PS);
+                                                               pPSBlob->GetBufferSize(),
+                                                               NULL,
+                                                               &pPixelShader),
+                                 DXE_CREATION_PS);
 
         pPSBlob->Release(); //  On n'a plus besoin du blob
     }
