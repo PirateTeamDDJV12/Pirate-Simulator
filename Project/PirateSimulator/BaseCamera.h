@@ -2,6 +2,7 @@
 #define BASECAMERA_H
 
 #include "Component.h"
+#include "Moves.h"
 
 #include <directxmath.h>
 #include <d3d11.h>
@@ -20,11 +21,11 @@ namespace PirateSimulator
             float clientHeight;             // Window's height
 
             CameraProjectionParameters(float angle, float nearest, float farthest, float clientWidth, float clientHeight) :
-                angle{angle},
-                nearest{nearest},
-                farthest{farthest},
-                clientWidth{clientWidth},
-                clientHeight{clientHeight}
+                angle{ angle },
+                nearest{ nearest },
+                farthest{ farthest },
+                clientWidth{ clientWidth },
+                clientHeight{ clientHeight }
             {}
 
             const float aspectRatio() const noexcept
@@ -39,11 +40,20 @@ namespace PirateSimulator
             float rotationVelocity;
 
             CameraMovingParameters(float translationVelocity, float rotationVelocity) :
-                translationVelocity{translationVelocity},
-                rotationVelocity{rotationVelocity}
+                translationVelocity{ translationVelocity },
+                rotationVelocity{ rotationVelocity }
             {}
-        };
 
+            void setTranslationVelocity(float velocity)
+            {
+                translationVelocity = velocity;
+            }
+
+            void setRotationVelocity(float velocity)
+            {
+                rotationVelocity = velocity;
+            }
+        };
 
         class BaseCamera : public Component
         {
@@ -80,15 +90,28 @@ namespace PirateSimulator
             // Resize matrices when window size changes
             void onResize(unsigned int width, unsigned int height);
 
+            void changeVelocity()
+            {
+                if (m_moveParams.translationVelocity == 5.0f)
+                {
+                    m_moveParams.setTranslationVelocity(0.5f);
+                    m_moveParams.setRotationVelocity(0.02f);
+                }
+                else
+                {
+                    m_moveParams.setTranslationVelocity(5.0f);
+                }
+            }
+
 
             /*** View matrix transformation interfaces ***/
 
             // Move camera
-            virtual void move(const DirectX::XMFLOAT3& direction) = 0;
+            virtual void move(Move::Translation::Direction direction) = 0;
 
             // Rotate camera around axis by degrees. Camera's position is a
             // pivot point of rotation, so it doesn't change
-            virtual void rotate(const DirectX::XMFLOAT3& axis) = 0;
+            virtual void rotate(Move::Rotation::Direction direction) = 0;
 
             // Get camera position coordinates
             const DirectX::XMVECTOR& position() const

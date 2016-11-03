@@ -200,6 +200,15 @@
     <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Moves.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Angle.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\RessourcesManager.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PetitMoteur3D.ico">
@@ -214,5 +223,10 @@
     <ResourceCompile Include="PetitMoteur3D.rc">
       <Filter>Fichiers de ressources</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\PirateSimulator\test.txt">
+      <Filter>Fichiers sources</Filter>
+    </Text>
   </ItemGroup>
 </Project>
