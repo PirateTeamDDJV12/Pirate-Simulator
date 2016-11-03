@@ -39,11 +39,11 @@ void LevelCamera::move(Move::Translation::Direction direction)
         default:
             return;
     }
+
     auto temp = m_position;
     temp.vector4_f32[1] = m_terrain->getHeight(m_position) + m_offsetCam;
 
     m_position = XMVectorLerp(m_position, temp, .1f);
-
 
     setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
 }
