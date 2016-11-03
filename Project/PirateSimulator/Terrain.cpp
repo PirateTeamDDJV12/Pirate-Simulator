@@ -159,28 +159,46 @@ namespace PirateSimulator
 
     float Terrain::getHeight(XMVECTOR pos)
     {
-        float myFirstX = floor(pos.vector4_f32[0]);
-        float mySecondX = ceil(pos.vector4_f32[0]);
-        float myFirstZ = floor(pos.vector4_f32[2]);
-        float mySecondZ = ceil(pos.vector4_f32[2]);
+        float x = pos.vector4_f32[0], z = pos.vector4_f32[2];
 
-        if(myFirstZ < 0 || mySecondZ > m_terrainHeight || myFirstX < 0 || mySecondX > m_terrainWidth)
+
+        if(z < 0 || z + 1 > m_terrainHeight || x < 0 || x + 1 > m_terrainWidth)
         {
             return 0.0f;
         }
+
+        float myFirstX = floor(x);
+        float mySecondX = ceil(x);
+        float myFirstZ = floor(z);
+        float mySecondZ = ceil(z);
 
         Vertex bottomLeft = m_arraySommets[myFirstX][myFirstZ];
         Vertex topLeft = m_arraySommets[myFirstX][mySecondZ];
         Vertex bottomRight = m_arraySommets[mySecondX][myFirstZ];
         Vertex topRight = m_arraySommets[mySecondX][mySecondZ];
 
-        float p = pos.vector4_f32[2] - myFirstZ;
-        float q = pos.vector4_f32[0] - myFirstX;
+        float height = 0;
 
-        return (1 - p) * (1 - q) * (topLeft.position().y())
-            + (1 - p) * q * topRight.position().y()
-            + p * (1 - q) * bottomLeft.position().y()
-            + p * q * bottomRight.position().y();
+        if(x + z >= 1.0f)
+        {
+            // Top Right triangle
+            // A = BR  -  B = TR  -  C = TL
+            float Ax = bottomRight.position().x(), Ay = bottomRight.position().y(), Az = bottomRight.position().z();
+            float Bx = topRight.position().x(), By = topRight.position().y(), Bz = topRight.position().z();
+            float Cx = topLeft.position().x(), Cy = topLeft.position().y(), Cz = topLeft.position().z();
+            height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
+        }
+        else
+        {
+            // Bottom Left triangle
+            // A = BL  -  B = BR  -  C = TL
+            float Ax = bottomLeft.position().x(), Ay = bottomLeft.position().y(), Az = bottomLeft.position().z();
+            float Bx = bottomRight.position().x(), By = bottomRight.position().y(), Bz = bottomRight.position().z();
+            float Cx = topLeft.position().x(), Cy = topLeft.position().y(), Cz = topLeft.position().z();
+            height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
+        }
+
+        return height;
     }
 
     void Terrain::InitShaders()
