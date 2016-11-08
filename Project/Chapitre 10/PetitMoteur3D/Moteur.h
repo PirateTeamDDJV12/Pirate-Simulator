@@ -220,16 +220,18 @@ namespace PM3D
         {
             auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(XM_PI / 4, 1.0f, 3000.0f, pDispositif->GetLargeur(), pDispositif->GetHauteur());
             auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.33f, 0.02f);
-            XMVECTOR camPos = XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
-            XMVECTOR camDir = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
-            XMVECTOR camUp = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
+
+            PirateSimulator::Transform transform;
+            transform.m_position = XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
+            transform.m_forward = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
+            transform.m_up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
 
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
 #ifdef USE_LEVEL_CAMERA
-            m_camera = new PirateSimulator::cameraModule::LevelCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
+            m_camera = new PirateSimulator::cameraModule::LevelCamera(camProjParameters, camMovParameters, transform);
 #else
-            m_camera = new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
+            m_camera = new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, transform);
 #endif
 
             // Initialisation des objets 3D - création et/ou chargement

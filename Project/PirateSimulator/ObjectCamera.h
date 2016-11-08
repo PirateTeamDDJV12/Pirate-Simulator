@@ -15,11 +15,34 @@ namespace PirateSimulator
 	{
 		class ObjectCamera : public BaseCamera
 		{
+        public:
+            enum
+            {
+                DEFAULT_OFFSET = 10
+            };
+
         private:
-            Transform m_tranform;
             Transform *m_target;
+            float m_offset;
 
         public:
+            ObjectCamera(const CameraProjectionParameters& defaultProjParameters,
+                const CameraMovingParameters& moveParams,
+                const Transform &transform,
+                Transform* target = nullptr,
+                float offset = DEFAULT_OFFSET)
+                : BaseCamera(defaultProjParameters, moveParams, transform),
+                m_offset{ offset },
+                m_target{ target }
+            {}
+
+            ~ObjectCamera() {}
+
+            virtual void move(Move::Translation::Direction direction);
+
+            virtual void rotate(Move::Rotation::Direction direction);
+
+            virtual void listenInput();
 		};
 	}
 }

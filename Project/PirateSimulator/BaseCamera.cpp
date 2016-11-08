@@ -9,16 +9,16 @@ using namespace DirectX;
 
 
 
-BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams, const XMVECTOR camPos, const XMVECTOR camDir, const XMVECTOR camUp) :
+BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams, const Transform &transform) :
     m_Parameters{ defaultParameters },
     m_moveParams{ moveParams }
 {
-    m_tranform.m_position = camPos;
-    m_tranform.m_forward = camDir;
-    m_tranform.m_up = camUp;
+    m_tranform.m_position = transform.m_position;
+    m_tranform.m_forward = transform.m_forward;
+    m_tranform.m_up = transform.m_up;
     m_tranform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_tranform.m_up, m_tranform.m_forward));
 
-    setMatrixView(XMMatrixLookToLH(camPos, camDir, camUp));
+    setMatrixView(XMMatrixLookToLH(m_tranform.m_position, m_tranform.m_forward, m_tranform.m_up));
 
     this->initViewMatrix();
     this->initProjMatrix();

@@ -12,8 +12,7 @@ namespace PirateSimulator {
         DirectX::XMVECTOR m_right;
 
     public:
-        Transform();
-        ~Transform();
+        Transform() {};
     };
 
 }

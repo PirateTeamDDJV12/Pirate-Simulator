@@ -19,10 +19,8 @@ namespace PirateSimulator
 
         public:
             FreeCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams,
-                       const DirectX::XMVECTOR camPos,
-                       const DirectX::XMVECTOR camDir,
-                       const DirectX::XMVECTOR camUp) :
-                BaseCamera{defaultParameters, moveParams, camPos, camDir, camUp},
+                       const Transform &transform) :
+                BaseCamera{ defaultParameters, moveParams, transform },
                 m_rotationAroundX{},
                 m_rotationAroundY{},
                 m_lastTime{}

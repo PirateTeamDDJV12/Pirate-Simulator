@@ -3,11 +3,3 @@
 
 using PirateSimulator::Transform;
 
-Transform::Transform()
-{
-}
-
-
-Transform::~Transform()
-{
-}

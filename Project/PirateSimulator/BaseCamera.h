@@ -72,9 +72,7 @@ namespace PirateSimulator
             BaseCamera(
                 const CameraProjectionParameters& defaultProjParameters,
                 const CameraMovingParameters& moveParams,
-                const DirectX::XMVECTOR camPos,
-                const DirectX::XMVECTOR camDir,
-                const DirectX::XMVECTOR camUp);
+                const Transform &transform);
 
 
         protected:

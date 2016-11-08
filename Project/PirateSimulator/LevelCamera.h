@@ -22,10 +22,8 @@ namespace PirateSimulator
         public:
             LevelCamera(const CameraProjectionParameters& defaultProjParameters,
                         const CameraMovingParameters& moveParams,
-                        const DirectX::XMVECTOR& camPos,
-                        const DirectX::XMVECTOR& camDir,
-                        const DirectX::XMVECTOR& camUp)
-                : BaseCamera(defaultProjParameters, moveParams, camPos, camDir, camUp),
+                const Transform &transform)
+                : BaseCamera(defaultProjParameters, moveParams, transform),
                 m_offsetCam{10.0f}
             {}
 
