@@ -14,9 +14,16 @@
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
 
+#define USE_LEVEL_CAMERA
+
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/RessourceManager.h"
+#ifdef USE_LEVEL_CAMERA
+#include "../../PirateSimulator/LevelCamera.h"
+#else
 #include "../../PirateSimulator/FreeCamera.h"
+#endif
+
 
 namespace PM3D
 {
@@ -212,14 +219,18 @@ namespace PM3D
         virtual int InitScene()
         {
             auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(XM_PI / 4, 1.0f, 3000.0f, pDispositif->GetLargeur(), pDispositif->GetHauteur());
-            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.5f, 0.02f);
+            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.33f, 0.02f);
             XMVECTOR camPos = XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
             XMVECTOR camDir = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
             XMVECTOR camUp = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
 
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
+#ifdef USE_LEVEL_CAMERA
+            m_camera = new PirateSimulator::cameraModule::LevelCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
+#else
             m_camera = new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
+#endif
 
             // Initialisation des objets 3D - création et/ou chargement
             if(!InitObjets()) return 1;
@@ -232,7 +243,10 @@ namespace PM3D
             /*
             * Init the terrain
             */
-            PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif);
+            // TODO - Get this with a config
+            int terrainH = 257;
+            int terrainW = 257;
+            PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif, terrainH - 1, terrainW - 1);
             std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
 			const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
             int nbPoint = vertexLineCount * 257 * 257;
@@ -248,6 +262,7 @@ namespace PM3D
             }
 
             pTerrain->Init();
+            static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(pTerrain);
 
             CObjetMesh* pMesh;
             CAfficheurSprite* pAfficheurSprite;
@@ -263,16 +278,16 @@ namespace PM3D
             pAfficheurSprite = new CAfficheurSprite(pDispositif);
 
             // ajout de panneaux 
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(1.0f, 0.0f, 1.0f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(0.0f, 0.0f, -1.0f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(-1.0f, 0.0f, 0.5f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(-0.5f, 0.0f, 1.0f));
-            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-            //                                 XMFLOAT3(-2.0f, 0.0f, 2.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(1.0f, 0.0f, 1.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(0.0f, 0.0f, -1.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-1.0f, 0.0f, 0.5f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-0.5f, 0.0f, 1.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-2.0f, 0.0f, 2.0f));
 
             //pAfficheurSprite->AjouterSprite("tree02s.dds", 200,400);
             //pAfficheurSprite->AjouterSprite("tree02s.dds", 500,500, 100, 100);
@@ -303,6 +318,7 @@ namespace PM3D
             // Prendre en note l'état de la souris
             GestionnaireDeSaisie.SaisirEtatSouris();
 
+            m_camera->listenInput();
 
             std::vector<CObjet3D*>::iterator It;
 

@@ -26,10 +26,14 @@ namespace PirateSimulator
     //
     class Terrain : public PM3D::CObjet3D
     {
+        int m_terrainWidth;
+        int m_terrainHeight;
+        std::vector<std::vector<Vertex>> m_arraySommets;
         std::vector<CSommetBloc> m_sommets;
         std::vector<unsigned int> m_index_bloc;
     public:
         Terrain(PM3D::CDispositifD3D11* pDispositif);
+        Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w);
 
         // Destructeur
         virtual ~Terrain(void);
@@ -39,9 +43,10 @@ namespace PirateSimulator
         void Draw();
 
         void Init();
-        
+
         void addSommet(Vertex v);
         void addTriangle(Triangle t);
+        float getHeight(XMVECTOR pos);
 
 		void setTexture(PM3D::CTexture* texture);
 

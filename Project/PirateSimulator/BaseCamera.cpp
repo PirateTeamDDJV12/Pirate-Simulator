@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "BaseCamera.h"
+#include "../Chapitre 10/PetitMoteur3D/MoteurWindows.h"
 
 using namespace PirateSimulator;
 using namespace PirateSimulator::cameraModule;
@@ -15,6 +16,7 @@ BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, cons
     m_position = camPos;
     m_direction = camDir;
     m_up = camUp;
+    m_rightDirection = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_up, m_direction));
 
     setMatrixView(XMMatrixLookToLH(camPos, camDir, camUp));
 

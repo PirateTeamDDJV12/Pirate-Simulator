@@ -5,7 +5,6 @@
 #include "Moves.h"
 
 #include <directxmath.h>
-#include <d3d11.h>
 
 
 namespace PirateSimulator
@@ -58,10 +57,11 @@ namespace PirateSimulator
         class BaseCamera : public Component
         {
         protected:
-            DirectX::XMVECTOR m_position;     // Camera's coordinates
-            DirectX::XMVECTOR m_direction;    // View at a specific direction
-            DirectX::XMVECTOR m_target;       // View target's coordinates
-            DirectX::XMVECTOR m_up;           // Camera's up vector end coordinates
+            DirectX::XMVECTOR m_position;       // Camera's coordinates
+            DirectX::XMVECTOR m_direction;      // View at a specific direction
+            DirectX::XMVECTOR m_rightDirection; // View on the cross product with direction
+            DirectX::XMVECTOR m_target;         // View target's coordinates
+            DirectX::XMVECTOR m_up;             // Camera's up vector end coordinates
 
             CameraProjectionParameters m_Parameters;
             CameraMovingParameters m_moveParams;
@@ -244,6 +244,8 @@ namespace PirateSimulator
             {
                 m_moveParams.rotationVelocity = speed;
             }
+
+            virtual void listenInput()= 0;
         };
     }
 }
