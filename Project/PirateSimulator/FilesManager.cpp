@@ -6,7 +6,7 @@
 #include <iterator>
 #include <string>
 
-using namespace PirateSimualtor;
+using namespace PirateSimulator;
 
 std::string FilesManager::readFile(std::string filePath) const
 {

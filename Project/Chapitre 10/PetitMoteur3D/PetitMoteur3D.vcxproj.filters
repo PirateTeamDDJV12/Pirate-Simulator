@@ -96,6 +96,9 @@
     <ClCompile Include="..\..\PirateSimulator\LevelCamera.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Transform.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -185,9 +188,6 @@
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\AttachedCamera.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
@@ -219,6 +219,15 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Effect.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Transform.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

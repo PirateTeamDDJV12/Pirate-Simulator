@@ -2,7 +2,7 @@
 #define FILES_MANAGER_H
 #include <vector>
 
-namespace PirateSimualtor
+namespace PirateSimulator
 {
     class FilesManager
     {

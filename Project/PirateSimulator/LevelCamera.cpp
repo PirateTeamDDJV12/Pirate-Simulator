@@ -12,27 +12,27 @@ void LevelCamera::move(Move::Translation::Direction direction)
     switch(direction)
     {
         case Move::Translation::FORWARD:
-            m_position += m_direction * m_moveParams.translationVelocity;
+            m_tranform.m_position += m_tranform.m_forward * m_moveParams.translationVelocity;
             break;
 
         case Move::Translation::BACKWARD:
-            m_position -= m_direction * m_moveParams.translationVelocity;
+            m_tranform.m_position -= m_tranform.m_forward * m_moveParams.translationVelocity;
             break;
 
         case Move::Translation::LEFT:
-            m_position -= m_rightDirection * m_moveParams.translationVelocity;
+            m_tranform.m_position -= m_tranform.m_right * m_moveParams.translationVelocity;
             break;
 
         case Move::Translation::RIGHT:
-            m_position += m_rightDirection * m_moveParams.translationVelocity;
+            m_tranform.m_position += m_tranform.m_right * m_moveParams.translationVelocity;
             break;
 
         case Move::Translation::UP:
-            m_position += m_up * m_moveParams.translationVelocity;
+            m_tranform.m_position += m_tranform.m_up * m_moveParams.translationVelocity;
             break;
 
         case Move::Translation::DOWN:
-            m_position -= m_up * m_moveParams.translationVelocity;
+            m_tranform.m_position -= m_tranform.m_up * m_moveParams.translationVelocity;
             break;
 
         case Move::Translation::NONE:
@@ -40,12 +40,12 @@ void LevelCamera::move(Move::Translation::Direction direction)
             return;
     }
 
-    auto temp = m_position;
-    temp.vector4_f32[1] = m_terrain->getHeight(m_position) + m_offsetCam;
+    auto temp = m_tranform.m_position;
+    temp.vector4_f32[1] = m_terrain->getHeight(m_tranform.m_position) + m_offsetCam;
 
-    m_position = XMVectorLerp(m_position, temp, .1f);
+    m_tranform.m_position = XMVectorLerp(m_tranform.m_position, temp, .1f);
 
-    setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
+    setMatrixView(XMMatrixLookToLH(m_tranform.m_position, m_tranform.m_forward, m_tranform.m_up));
 }
 
 void LevelCamera::rotate(Move::Rotation::Direction direction)
@@ -80,12 +80,12 @@ void LevelCamera::rotate(Move::Rotation::Direction direction)
     else if(XMConvertToDegrees(m_rotationAroundX.getAngle()) > 89.0f)
         m_rotationAroundX = XMConvertToRadians(89.0f);
 
-    m_direction.vector4_f32[0] = sin(m_rotationAroundY.getAngle()) * cos(m_rotationAroundX.getAngle());
-    m_direction.vector4_f32[1] = sin(m_rotationAroundX.getAngle());
-    m_direction.vector4_f32[2] = cos(m_rotationAroundX.getAngle()) * cos(m_rotationAroundY.getAngle());
+    m_tranform.m_forward.vector4_f32[0] = sin(m_rotationAroundY.getAngle()) * cos(m_rotationAroundX.getAngle());
+    m_tranform.m_forward.vector4_f32[1] = sin(m_rotationAroundX.getAngle());
+    m_tranform.m_forward.vector4_f32[2] = cos(m_rotationAroundX.getAngle()) * cos(m_rotationAroundY.getAngle());
 
     // Update the rightDirection vector when rotating
-    m_rightDirection = XMVector3Normalize(XMVector3Cross(m_up, m_direction));
+    m_tranform.m_right = XMVector3Normalize(XMVector3Cross(m_tranform.m_up, m_tranform.m_forward));
 
 
 #ifdef MODIFY_UP_VECTOR_AT_ROTATE
@@ -95,7 +95,7 @@ void LevelCamera::rotate(Move::Rotation::Direction direction)
     m_up.vector4_f32[2] = -sinAngleAroundX;
 #endif //MODIFY_UP_VECTOR_AT_ROTATE
 
-    setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
+    setMatrixView(XMMatrixLookToLH(m_tranform.m_position, m_tranform.m_forward, m_tranform.m_up));
 }
 
 void LevelCamera::listenInput()

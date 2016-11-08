@@ -33,12 +33,6 @@ namespace PirateSimulator
             void rotate(Move::Rotation::Direction direction) override;
             void listenInput() override;
 
-            void getTarget(const DirectX::XMVECTOR& target) override
-            {}
-
-            void lookAtTarget() override
-            {}
-
             void setTerrain(Terrain* t)
             {
                 m_terrain = t;

@@ -15,34 +15,34 @@ void FreeCamera::move(Move::Translation::Direction direction)
     switch (direction)
     {
     case Move::Translation::FORWARD:
-        m_position += m_direction * m_moveParams.translationVelocity;
+        m_tranform.m_position += m_tranform.m_forward * m_moveParams.translationVelocity;
         break;
 
     case Move::Translation::BACKWARD:
-        m_position -= m_direction * m_moveParams.translationVelocity;
+        m_tranform.m_position -= m_tranform.m_forward * m_moveParams.translationVelocity;
         break;
 
     case Move::Translation::LEFT:
-        m_position -= m_rightDirection * m_moveParams.translationVelocity;
+        m_tranform.m_position -= m_tranform.m_right * m_moveParams.translationVelocity;
         break;
 
     case Move::Translation::RIGHT:
-        m_position += m_rightDirection * m_moveParams.translationVelocity;
+        m_tranform.m_position += m_tranform.m_right * m_moveParams.translationVelocity;
         break;
 
     case Move::Translation::UP:
-        m_position += m_up * m_moveParams.translationVelocity;
+        m_tranform.m_position += m_tranform.m_up * m_moveParams.translationVelocity;
         break;
 
     case Move::Translation::DOWN:
-        m_position -= m_up * m_moveParams.translationVelocity;
+        m_tranform.m_position -= m_tranform.m_up * m_moveParams.translationVelocity;
         break;
 
     case Move::Translation::NONE:
     default:
         return;
     }
-    setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
+    setMatrixView(XMMatrixLookToLH(m_tranform.m_position, m_tranform.m_forward, m_tranform.m_up));
 }
 
 void FreeCamera::rotate(Move::Rotation::Direction direction)
@@ -83,12 +83,12 @@ void FreeCamera::rotate(Move::Rotation::Direction direction)
     else if (DirectX::XMConvertToDegrees(m_rotationAroundX.getAngle()) > 89.0f)
         m_rotationAroundX = DirectX::XMConvertToRadians(89.0f);
 
-    m_direction.vector4_f32[0] = sin(m_rotationAroundY.getAngle()) * cos(m_rotationAroundX.getAngle());
-    m_direction.vector4_f32[1] = sin(m_rotationAroundX.getAngle());
-    m_direction.vector4_f32[2] = cos(m_rotationAroundX.getAngle()) * cos(m_rotationAroundY.getAngle());
+    m_tranform.m_forward.vector4_f32[0] = sin(m_rotationAroundY.getAngle()) * cos(m_rotationAroundX.getAngle());
+    m_tranform.m_forward.vector4_f32[1] = sin(m_rotationAroundX.getAngle());
+    m_tranform.m_forward.vector4_f32[2] = cos(m_rotationAroundX.getAngle()) * cos(m_rotationAroundY.getAngle());
 
     // Update the rightDirection vector when rotating
-    m_rightDirection = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_up, m_direction));
+    m_tranform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_tranform.m_up, m_tranform.m_forward));
 
 
 #ifdef MODIFY_UP_VECTOR_AT_ROTATE
@@ -98,7 +98,7 @@ void FreeCamera::rotate(Move::Rotation::Direction direction)
     m_up.vector4_f32[2] = -sinAngleAroundX;
 #endif //MODIFY_UP_VECTOR_AT_ROTATE
 
-    setMatrixView(XMMatrixLookToLH(m_position, m_direction, m_up));
+    setMatrixView(XMMatrixLookToLH(m_tranform.m_position, m_tranform.m_forward, m_tranform.m_up));
 }
 
 void FreeCamera::listenInput()

@@ -2,6 +2,7 @@
 #define BASECAMERA_H
 
 #include "Component.h"
+#include "Transform.h"
 #include "Moves.h"
 
 #include <directxmath.h>
@@ -57,11 +58,7 @@ namespace PirateSimulator
         class BaseCamera : public Component
         {
         protected:
-            DirectX::XMVECTOR m_position;       // Camera's coordinates
-            DirectX::XMVECTOR m_direction;      // View at a specific direction
-            DirectX::XMVECTOR m_rightDirection; // View on the cross product with direction
-            DirectX::XMVECTOR m_target;         // View target's coordinates
-            DirectX::XMVECTOR m_up;             // Camera's up vector end coordinates
+            Transform m_tranform;
 
             CameraProjectionParameters m_Parameters;
             CameraMovingParameters m_moveParams;
@@ -116,41 +113,30 @@ namespace PirateSimulator
             // Get camera position coordinates
             const DirectX::XMVECTOR& position() const
             {
-                return m_position;
+                return m_tranform.m_position;
             }
 
             // Set camera position coordinates
             void position(const DirectX::XMVECTOR& position);
 
-            // Change camera target position
-            virtual void getTarget(const DirectX::XMVECTOR& target) = 0;
-
-            // Get camera's target position coordinates
-            DirectX::XMVECTOR target() const
-            {
-                return m_target;
-            }
 
             // Get camera's direction coordinates
             DirectX::XMVECTOR direction() const
             {
-                return m_direction;
+                return m_tranform.m_forward;
             }
 
             // Set camera's direction coordinates
             void direction(DirectX::XMVECTOR& direction)
             {
-                m_direction = direction;
+                m_tranform.m_forward = direction;
             }
 
             // Get camera's up vector
             DirectX::XMVECTOR up() const
             {
-                return m_up;
+                return m_tranform.m_up;
             }
-
-            // Get camera's look at target vector
-            virtual void lookAtTarget() = 0;
 
             // Returns transposed camera's View matrix
             DirectX::XMMATRIX& view()
@@ -245,7 +231,7 @@ namespace PirateSimulator
                 m_moveParams.rotationVelocity = speed;
             }
 
-            virtual void listenInput()= 0;
+            virtual void listenInput() = 0;
         };
     }
 }

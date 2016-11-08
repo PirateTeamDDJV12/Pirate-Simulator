@@ -10,13 +10,13 @@ using namespace DirectX;
 
 
 BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams, const XMVECTOR camPos, const XMVECTOR camDir, const XMVECTOR camUp) :
-    m_Parameters{defaultParameters},
-    m_moveParams{moveParams}
+    m_Parameters{ defaultParameters },
+    m_moveParams{ moveParams }
 {
-    m_position = camPos;
-    m_direction = camDir;
-    m_up = camUp;
-    m_rightDirection = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_up, m_direction));
+    m_tranform.m_position = camPos;
+    m_tranform.m_forward = camDir;
+    m_tranform.m_up = camUp;
+    m_tranform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_tranform.m_up, m_tranform.m_forward));
 
     setMatrixView(XMMatrixLookToLH(camPos, camDir, camUp));
 
@@ -49,9 +49,9 @@ void BaseCamera::onResize(unsigned int width, unsigned int height)
 
 void BaseCamera::position(const DirectX::XMVECTOR& position)
 {
-    m_position = position;
+    m_tranform.m_position = position;
 
     setMatrixView(XMMatrixLookToLH(position,
-                                   m_direction,
-                                   m_up));
+        m_tranform.m_forward,
+        m_tranform.m_up));
 }

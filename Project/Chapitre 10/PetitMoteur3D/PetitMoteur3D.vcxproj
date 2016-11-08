@@ -106,6 +106,7 @@
     <ClCompile Include="..\..\PirateSimulator\FreeCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vertex.cpp" />
@@ -132,7 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\PirateSimulator\Angle.h" />
-    <ClInclude Include="..\..\PirateSimulator\AttachedCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\Component.h" />
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
@@ -147,6 +147,7 @@
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
+    <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />

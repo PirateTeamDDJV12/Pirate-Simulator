@@ -5,16 +5,21 @@ Created by Sun-lay Gagneux
 #define OBJECTCAMERA_H
 
 
-#include "AttachedCamera.h"
+#include "BaseCamera.h"
+#include "Transform.h"
 
 
 namespace PirateSimulator
 {
 	namespace cameraModule
 	{
-		class ObjectCamera : public AttachedCamera
+		class ObjectCamera : public BaseCamera
 		{
-			//...
+        private:
+            Transform m_tranform;
+            Transform *m_target;
+
+        public:
 		};
 	}
 }
