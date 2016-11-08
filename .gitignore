@@ -4,6 +4,10 @@
 *.opendb
 *.ipch
 *.lnk
+*.dds
+*.jpg
+**/testOutput.txt
+**/heightmapOutput2.txt
 **/heightmapOutput.txt
 
 Project/*/*/Debug/*
