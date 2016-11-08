@@ -38,6 +38,11 @@ namespace PirateSimulator
 
             ~ObjectCamera() {}
 
+            virtual type typeId() const noexcept { return BaseCamera::OBJECT_CAMERA; }
+
+            const Transform *getTarget() const noexcept { return m_target; }
+            void setTarget(Transform *target) noexcept;
+
             virtual void move(Move::Translation::Direction direction);
 
             virtual void rotate(Move::Rotation::Direction direction);

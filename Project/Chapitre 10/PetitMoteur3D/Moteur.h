@@ -14,15 +14,12 @@
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
 
-#define USE_LEVEL_CAMERA
 
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/RessourceManager.h"
-#ifdef USE_LEVEL_CAMERA
 #include "../../PirateSimulator/LevelCamera.h"
-#else
 #include "../../PirateSimulator/FreeCamera.h"
-#endif
+#include "../../PirateSimulator/ObjectCamera.h"
 
 
 namespace PM3D
@@ -228,11 +225,8 @@ namespace PM3D
 
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
-#ifdef USE_LEVEL_CAMERA
-            m_camera = new PirateSimulator::cameraModule::LevelCamera(camProjParameters, camMovParameters, transform);
-#else
-            m_camera = new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, transform);
-#endif
+
+            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA, camProjParameters, camMovParameters, transform);
 
             // Initialisation des objets 3D - création et/ou chargement
             if(!InitObjets()) return 1;
@@ -264,13 +258,19 @@ namespace PM3D
             }
 
             pTerrain->Init();
-            static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(pTerrain);
+            if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+            {
+                static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(pTerrain);
+            }
+            
 
             CObjetMesh* pMesh;
             CAfficheurSprite* pAfficheurSprite;
 
             // Constructeur avec format binaire
             pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
+
+
 
             // Puis, il est ajouté à la scène
             ListeScene.push_back(pMesh);
@@ -330,6 +330,27 @@ namespace PM3D
             }
 
             return true;
+        }
+
+        PirateSimulator::cameraModule::BaseCamera* createCamera(PirateSimulator::cameraModule::BaseCamera::type cameraType,
+            const PirateSimulator::cameraModule::CameraProjectionParameters &camProjParameters,
+            const PirateSimulator::cameraModule::CameraMovingParameters &camMovParameters,
+            const PirateSimulator::Transform &transform)
+        {
+            switch (cameraType)
+            {
+            case PirateSimulator::cameraModule::BaseCamera::FREE_CAMERA:
+                return new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, transform);
+
+            case PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA:
+                return new PirateSimulator::cameraModule::LevelCamera(camProjParameters, camMovParameters, transform);
+
+            case PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA:
+                return new PirateSimulator::cameraModule::ObjectCamera(camProjParameters, camMovParameters, transform);
+
+            default:
+                return nullptr;
+            }
         }
 
 

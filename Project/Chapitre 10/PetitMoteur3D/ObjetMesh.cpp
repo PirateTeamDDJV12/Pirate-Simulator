@@ -62,6 +62,8 @@ namespace PM3D
 
         rotation = 0.0f;
         vitesse = 2.0f;
+
+        position = { 0,0,0,0 };
     }
 
     // Constructeur de conversion
@@ -87,6 +89,8 @@ namespace PM3D
 
         rotation = 0.0f;
         vitesse = 2.0f;
+
+        position = { 0,0,0,0 };
     }
 
     // Constructeur pour lecture d'un objet de format OMB
@@ -107,6 +111,8 @@ namespace PM3D
 
         rotation = 0.0f;
         vitesse = 2.0f;
+
+        position = { 0,0,0,0 };
     }
 
     CObjetMesh::~CObjetMesh(void)
@@ -205,6 +211,7 @@ namespace PM3D
         CMoteurWindows& rMoteur = CMoteurWindows::GetInstance();
         CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
         
+        /*
         // ******** POUR LA SOURIS ************
         // Vérifier si déplacement vers la gauche
         if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
@@ -224,6 +231,31 @@ namespace PM3D
 
             // modifier la matrice de l'objet X
             matWorld = XMMatrixRotationY(rotation);
+        }*/
+
+
+
+        // ******** POUR LA SOURIS ************
+        // Vérifier si déplacement vers la gauche
+        if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
+            (rGestionnaireDeSaisie.EtatSouris().lX < 0))
+        {
+            rotation = rotation + ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
+
+
+            // modifier la matrice de l'objet X
+            matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
+        }
+
+        // Vérifier si déplacement vers la droite
+        if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
+            (rGestionnaireDeSaisie.EtatSouris().lX > 0))
+        {
+            rotation = rotation - ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
+
+
+            // modifier la matrice de l'objet X
+            matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
         }
     }
 

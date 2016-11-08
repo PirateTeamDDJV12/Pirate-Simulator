@@ -27,6 +27,8 @@ namespace PirateSimulator
             {
             }
 
+            virtual type typeId() const noexcept { return BaseCamera::FREE_CAMERA; }
+
             // Move camera
             void move(Move::Translation::Direction direction) override;
 

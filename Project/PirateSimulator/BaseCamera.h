@@ -57,8 +57,16 @@ namespace PirateSimulator
 
         class BaseCamera : public Component
         {
+        public:
+            enum type
+            {
+                FREE_CAMERA,
+                LEVEL_CAMERA,
+                OBJECT_CAMERA
+            };
+
         protected:
-            Transform m_tranform;
+            Transform m_transform;
 
             CameraProjectionParameters m_Parameters;
             CameraMovingParameters m_moveParams;
@@ -99,6 +107,8 @@ namespace PirateSimulator
             }
 
 
+            virtual type typeId() const noexcept = 0;
+
             /*** View matrix transformation interfaces ***/
 
             // Move camera
@@ -111,7 +121,7 @@ namespace PirateSimulator
             // Get camera position coordinates
             const DirectX::XMVECTOR& position() const
             {
-                return m_tranform.m_position;
+                return m_transform.m_position;
             }
 
             // Set camera position coordinates
@@ -121,19 +131,19 @@ namespace PirateSimulator
             // Get camera's direction coordinates
             DirectX::XMVECTOR direction() const
             {
-                return m_tranform.m_forward;
+                return m_transform.m_forward;
             }
 
             // Set camera's direction coordinates
             void direction(DirectX::XMVECTOR& direction)
             {
-                m_tranform.m_forward = direction;
+                m_transform.m_forward = direction;
             }
 
             // Get camera's up vector
             DirectX::XMVECTOR up() const
             {
-                return m_tranform.m_up;
+                return m_transform.m_up;
             }
 
             // Returns transposed camera's View matrix

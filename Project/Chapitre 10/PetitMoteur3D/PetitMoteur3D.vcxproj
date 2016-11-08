@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FreeCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\ObjectCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />

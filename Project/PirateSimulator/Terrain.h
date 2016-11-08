@@ -26,6 +26,11 @@ namespace PirateSimulator
     //
     class Terrain : public PM3D::CObjet3D
     {
+    public:
+        static D3D11_INPUT_ELEMENT_DESC Terrain::layout[];
+        static UINT numElements;
+
+    private:
         int m_terrainWidth;
         int m_terrainHeight;
         std::vector<std::vector<Vertex>> m_arraySommets;

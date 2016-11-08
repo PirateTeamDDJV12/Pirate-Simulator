@@ -27,6 +27,8 @@ namespace PirateSimulator
                 m_offsetCam{10.0f}
             {}
 
+            virtual type typeId() const noexcept { return BaseCamera::LEVEL_CAMERA; }
+
             void move(Move::Translation::Direction direction) override;
             void rotate(Move::Rotation::Direction direction) override;
             void listenInput() override;

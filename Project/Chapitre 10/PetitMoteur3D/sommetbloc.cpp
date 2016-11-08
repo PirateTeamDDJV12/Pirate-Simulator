@@ -14,7 +14,7 @@ UINT CSommetBloc::numElements = ARRAYSIZE(CSommetBloc::layout);
 
 CSommetBloc::CSommetBloc(XMFLOAT3 _position, XMFLOAT3 _normal, XMFLOAT2 _coordTex)
 {
-	position=_position;
+	position = _position;
 	normal = _normal;
 	coordTex = _coordTex;
 }
