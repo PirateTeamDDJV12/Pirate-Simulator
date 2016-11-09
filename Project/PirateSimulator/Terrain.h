@@ -5,7 +5,7 @@
 #include "Effect.h"
 #include "Vertex.h"
 #include "Triangle.h"
-#include "../Chapitre 10/PetitMoteur3D/Objet3D.h"
+#include "Mesh.h"
 #include "../Chapitre 10/PetitMoteur3D/sommetbloc.h"
 #include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
 #include "../Chapitre 10/PetitMoteur3D/d3dx11effect.h"
@@ -24,7 +24,7 @@ namespace PirateSimulator
     //
     //  BUT : 	Classe du terrain de notre jeu
     //
-    class Terrain : public PM3D::CObjet3D
+    class Terrain : public Mesh
     {
     public:
         static D3D11_INPUT_ELEMENT_DESC Terrain::layout[];
@@ -38,7 +38,7 @@ namespace PirateSimulator
         std::vector<unsigned int> m_index_bloc;
     public:
         Terrain(PM3D::CDispositifD3D11* pDispositif);
-        Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w);
+        Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w, const std::string& fieldFileName, const std::string& textureFileName);
 
         // Destructeur
         virtual ~Terrain(void);
@@ -47,7 +47,7 @@ namespace PirateSimulator
 
         void Draw();
 
-        void Init();
+        void Init(const std::string& textureFileName);
 
         void addSommet(Vertex v);
         void addTriangle(Triangle t);

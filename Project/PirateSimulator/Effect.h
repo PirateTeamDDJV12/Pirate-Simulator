@@ -2,7 +2,7 @@
 #define EFFECT_H
 
 
-#include "../Chapitre 10/PetitMoteur3D/objet3d.h"
+#include "Mesh.h"
 #include "../Chapitre 10/PetitMoteur3D/dispositifD3D11.h"
 #include "../Chapitre 10/PetitMoteur3D/d3dx11effect.h"
 

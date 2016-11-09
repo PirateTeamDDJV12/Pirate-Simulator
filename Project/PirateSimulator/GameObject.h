@@ -7,14 +7,14 @@ Created by Sun-lay Gagneux
 
 #include "Transform.h"
 #include "IBehaviour.h"
-#include "../Chapitre 10/PetitMoteur3D/objet3d.h"
+#include "Mesh.h"
 
 #include <memory>
 
 
 namespace PirateSimulator
 {
-    using MeshRef = std::shared_ptr<PM3D::CObjet3D>;
+    using MeshRef = std::shared_ptr<Mesh>;
     using BehaviourRef = std::shared_ptr<IBehaviour>;
 
     class GameObject
@@ -29,7 +29,8 @@ namespace PirateSimulator
         GameObject(const Transform& transform) :
             m_transform{ transform },
             m_mesh{},
-            m_matWorld{ DirectX::XMMatrixIdentity() }
+            m_matWorld{ DirectX::XMMatrixIdentity() },
+            m_behaviour{ new IBehaviour() }
         {}
 
     public:
@@ -38,7 +39,7 @@ namespace PirateSimulator
         void addComponent(T *component);
 
         template<>
-        void addComponent<PM3D::CObjet3D>(PM3D::CObjet3D *component)
+        void addComponent<Mesh>(Mesh *component)
         {
             m_mesh = MeshRef(component);
             m_mesh->setGameObject(this);

@@ -143,6 +143,7 @@
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\LevelCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
@@ -173,7 +174,6 @@
     <ClInclude Include="MeshVertex.h" />
     <ClInclude Include="Moteur.h" />
     <ClInclude Include="MoteurWindows.h" />
-    <ClInclude Include="objet3d.h" />
     <ClInclude Include="ObjetMesh.h" />
     <ClInclude Include="PetitMoteur3D.h" />
     <ClInclude Include="Resource.h" />

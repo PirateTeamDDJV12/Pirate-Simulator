@@ -9,7 +9,7 @@ namespace PirateSimulator
     class IBehaviour : public Component
     {
     public:
-        virtual void anime(float ellapsedTime) = 0;
+        virtual void anime(float ellapsedTime) {} ;
     };
 }
 

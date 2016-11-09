@@ -1,6 +1,6 @@
 #pragma once
 #include "d3dx11effect.h"
-#include "Objet3D.h"
+#include "../../PirateSimulator/Mesh.h"
 #include "DispositifD3D11.h"
 #include "Bloc.h"   // Pour l'index du bloc
 #include "Texture.h"
@@ -13,7 +13,7 @@ namespace PM3D
 	//
 	//  BUT : 	Classe de bloc avec effet version 1 section 6.5
 	//
-	class CBlocEffet1 : public CObjet3D 
+	class CBlocEffet1 : public PirateSimulator::Mesh
 	{
 	public:
 		CBlocEffet1(const float dx, const float dy, const float dz, 

@@ -40,10 +40,26 @@ namespace PirateSimulator
 
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w)
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, const std::string& fieldFileName, const std::string& textureFileName)
         : m_terrainWidth(w), m_terrainHeight(h)
     {
         pDispositif = pDispositif_; // Prendre en note le dispositif
+
+        std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile(fieldFileName);
+        const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
+        int nbPoint = vertexLineCount * m_terrainWidth * m_terrainHeight;
+        for (int i = 0; i < nbPoint; i += vertexLineCount)
+        {
+            PirateSimulator::Vertex p{ myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8] };
+            addSommet(p);
+        }
+        for (int i = nbPoint; i < myFile.size(); i += 3)
+        {
+            PirateSimulator::Triangle t{ static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2]) };
+            addTriangle(t);
+        }
+
+        Init(textureFileName);
     }
 
     Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
@@ -151,7 +167,7 @@ namespace PirateSimulator
         pImmediateContext->DrawIndexed(m_index_bloc.size(), 0, 0);
     }
 
-    void Terrain::Init()
+    void Terrain::Init(const std::string& textureFileName)
     {
         // Création du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -196,7 +212,7 @@ namespace PirateSimulator
 
 
         // Chargement des textures
-        this->loadTexture("PirateSimulator/textureTerrain.dds");
+        this->loadTexture(textureFileName);
     }
 
     void Terrain::addSommet(PirateSimulator::Vertex v)

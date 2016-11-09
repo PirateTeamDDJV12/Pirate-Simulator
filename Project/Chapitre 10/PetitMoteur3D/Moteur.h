@@ -3,7 +3,7 @@
 #include "dispositif.h" 
 
 #include <vector>
-#include "Objet3D.h"
+#include "../../PirateSimulator/Mesh.h"
 #include "Bloc.h"
 #include "BlocEffet1.h"
 #include "ObjetMesh.h"
@@ -241,30 +241,12 @@ namespace PM3D
             * Init the terrain
             */
             // TODO - Get this with a config
-   //         int terrainH = 257;
-   //         int terrainW = 257;
-   //         PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif, terrainH - 1, terrainW - 1);
-   //         std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
-			//const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
-   //         int nbPoint = vertexLineCount * 257 * 257;
-   //         for(int i = 0; i < nbPoint; i += vertexLineCount)
-   //         {
-   //             PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
-   //             pTerrain->addSommet(p);
-   //         }
-   //         for(int i = nbPoint; i < myFile.size(); i += 3)
-   //         {
-   //             PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
-   //             pTerrain->addTriangle(t);
-   //         }
+            
 
-   //         pTerrain->Init();
-   //         if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
-   //         {
-   //             static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(pTerrain);
-   //         }
+            
             
             PirateSimulator::GameObject *personnage;
+            PirateSimulator::GameObject *terrain;
             CObjetMesh* pMesh;
             CAfficheurSprite* pAfficheurSprite;
 
@@ -279,13 +261,23 @@ namespace PM3D
             // Constructeur avec format binaire
             //pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
             personnage = new PirateSimulator::GameObject(transform);
-            personnage->addComponent<CObjet3D>(new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif));
+            personnage->addComponent<PirateSimulator::Mesh>(new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif));
             personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
+
+            int terrainH = 257;
+            int terrainW = 257;
+            terrain = new PirateSimulator::GameObject(transform);
+            terrain->addComponent<PirateSimulator::Mesh>(new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds"));
+
+            if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+            {
+                static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(terrain);
+            }
 
 
             // Puis, il est ajouté à la scène
             ListeScene.push_back(personnage);
-            //ListeScene.push_back(pTerrain);
+            ListeScene.push_back(terrain);
 
             // Création de l'afficheur de sprites et ajout des sprites
             pAfficheurSprite = new CAfficheurSprite(pDispositif);

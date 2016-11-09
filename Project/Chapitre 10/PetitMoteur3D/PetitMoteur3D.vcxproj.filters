@@ -134,9 +134,6 @@
     <ClInclude Include="dispositifD3D11.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="objet3d.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Bloc.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -252,6 +249,15 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Mesh.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

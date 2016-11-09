@@ -5,6 +5,7 @@
 #include "AttachedCamera.h"
 #include "Angle.h"
 #include "Terrain.h"
+#include "GameObject.h"
 
 
 namespace PirateSimulator
@@ -33,9 +34,9 @@ namespace PirateSimulator
             void rotate(Move::Rotation::Direction direction) override;
             void listenInput() override;
 
-            void setTerrain(Terrain* t)
+            void setTerrain(GameObject* fieldObject)
             {
-                m_terrain = t;
+                m_terrain = static_cast<Terrain*>(fieldObject->getMesh().get());
             }
         };
     }

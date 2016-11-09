@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "d3dx11effect.h"
-#include "Objet3D.h"
+#include "../../PirateSimulator/Mesh.h"
 #include "DispositifD3D11.h"
 #include "Texture.h"
 #include <vector>
@@ -26,7 +26,7 @@ namespace PM3D
         DirectX::XMFLOAT2 coordTex;
 	};
 
-class CAfficheurSprite  : 	public CObjet3D
+class CAfficheurSprite  : 	public PirateSimulator::Mesh
 {
 public:
 	CAfficheurSprite (CDispositifD3D11* _pDispositif);

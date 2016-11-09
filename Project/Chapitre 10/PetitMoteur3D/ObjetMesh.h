@@ -1,5 +1,5 @@
 #pragma once
-#include "objet3d.h"
+#include "../../PirateSimulator/Mesh.h"
 #include "dispositifD3D11.h"
 #include "d3dx11effect.h"
 #include "chargeur.h"
@@ -10,7 +10,7 @@ using namespace std;
 namespace PM3D
 {
 
-class CObjetMesh :	public CObjet3D
+class CObjetMesh :	public PirateSimulator::Mesh
 {
 protected:
 	class CSommetMesh
