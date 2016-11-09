@@ -17,9 +17,10 @@ namespace PirateSimulator
     using MeshRef = std::shared_ptr<Mesh>;
     using BehaviourRef = std::shared_ptr<IBehaviour>;
 
+
     class GameObject
     {
-    private:
+    protected:
         Transform m_transform;
         BehaviourRef m_behaviour;
         MeshRef m_mesh;
@@ -63,6 +64,9 @@ namespace PirateSimulator
 
         const DirectX::XMMATRIX& getWorldMatrix() const noexcept { return m_matWorld; }
         void setWorldMatrix(const DirectX::XMMATRIX& world) noexcept { m_matWorld = world; }
+
+        void translate(float x, float y, float z);
+        void rotate(float angleX, float angleY);
     };
 }
 

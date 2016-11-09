@@ -4,6 +4,9 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Moves.h"
+#include "GameObject.h"
+
+#include <type_traits>
 
 #include <directxmath.h>
 
@@ -55,7 +58,7 @@ namespace PirateSimulator
             }
         };
 
-        class BaseCamera : public Component
+        class BaseCamera : public GameObject
         {
         public:
             enum type
@@ -66,8 +69,6 @@ namespace PirateSimulator
             };
 
         protected:
-            Transform m_transform;
-
             CameraProjectionParameters m_Parameters;
             CameraMovingParameters m_moveParams;
 
@@ -106,6 +107,12 @@ namespace PirateSimulator
                 }
             }
 
+            template<class Origin>
+            Origin* as()
+            {
+                static_assert(std::is_convertible<Origin*, BaseCamera*>::value, "Error, wrong camera casting");
+                return static_cast<Origin*>(this);
+            }
 
             virtual type typeId() const noexcept = 0;
 
@@ -156,11 +163,6 @@ namespace PirateSimulator
             DirectX::XMMATRIX& proj()
             {
                 return m_proj;
-            }
-
-            const Transform& getTransform() const noexcept
-            {
-                return m_transform;
             }
 
             DirectX::XMMATRIX getViewProjMatrix() const

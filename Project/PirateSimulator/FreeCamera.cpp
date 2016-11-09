@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 
 #include <iostream>
 #include <sstream>
@@ -8,6 +8,7 @@
 
 using namespace  PirateSimulator;
 using namespace  cameraModule;
+using namespace DirectX;
 
 
 void FreeCamera::move(Move::Translation::Direction direction)

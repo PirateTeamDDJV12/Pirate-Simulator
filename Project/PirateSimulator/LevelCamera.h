@@ -2,10 +2,9 @@
 #define LEVELCAMERA_H
 
 
-#include "AttachedCamera.h"
 #include "Angle.h"
 #include "Terrain.h"
-#include "GameObject.h"
+#include "BaseCamera.h"
 
 
 namespace PirateSimulator

@@ -22,14 +22,14 @@ namespace PirateSimulator
             };
 
         private:
-            Transform *m_target;
+            GameObject *m_target;
             float m_offset;
 
         public:
             ObjectCamera(const CameraProjectionParameters& defaultProjParameters,
                 const CameraMovingParameters& moveParams,
                 const Transform &transform,
-                Transform* target = nullptr,
+                GameObject* target = nullptr,
                 float offset = DEFAULT_OFFSET)
                 : BaseCamera(defaultProjParameters, moveParams, transform),
                 m_offset{ offset },
@@ -40,8 +40,8 @@ namespace PirateSimulator
 
             virtual type typeId() const noexcept { return BaseCamera::OBJECT_CAMERA; }
 
-            const Transform *getTarget() const noexcept { return m_target; }
-            void setTarget(Transform *target) noexcept;
+            const GameObject *getTarget() const noexcept { return m_target; }
+            void setTarget(GameObject *target) noexcept;
 
             virtual void move(Move::Translation::Direction direction);
 

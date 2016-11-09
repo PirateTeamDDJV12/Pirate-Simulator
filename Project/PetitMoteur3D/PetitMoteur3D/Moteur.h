@@ -228,7 +228,9 @@ namespace PM3D
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
 
-            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::FREE_CAMERA, camProjParameters, camMovParameters, transform);
+            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA, camProjParameters, camMovParameters, transform);
+            
+            
 
             // Skybox
             m_skybox = new PirateSimulator::GameObject(m_camera->getTransform());
@@ -257,8 +259,8 @@ namespace PM3D
 
             PirateSimulator::Transform transform;
 
-            transform.m_position = { 0,0,0,0 };
-            transform.m_right = { -1,0,0,0 };
+            transform.m_position = { 3,-3,0,0 };
+            transform.m_right = { 1,0,0,0 };
             transform.m_up = { 0,1,0,0 };
             transform.m_forward = { 0,0,-1,0 };
 
@@ -284,20 +286,26 @@ namespace PM3D
             ListeScene.push_back(personnage);
             ListeScene.push_back(terrain);
 
-            // Création de l'afficheur de sprites et ajout des sprites
-            pAfficheurSprite = new CAfficheurSprite(pDispositif);
+            //// Création de l'afficheur de sprites et ajout des sprites
+            //pAfficheurSprite = new CAfficheurSprite(pDispositif);
 
-            // ajout de panneaux 
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(1.0f, 0.0f, 1.0f));
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(0.0f, 0.0f, -1.0f));
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(-1.0f, 0.0f, 0.5f));
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(-0.5f, 0.0f, 1.0f));
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(-2.0f, 0.0f, 2.0f));
+            //// ajout de panneaux 
+            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+            //                                 XMFLOAT3(1.0f, 0.0f, 1.0f));
+            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+            //                                 XMFLOAT3(0.0f, 0.0f, -1.0f));
+            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+            //                                 XMFLOAT3(-1.0f, 0.0f, 0.5f));
+            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+            //                                 XMFLOAT3(-0.5f, 0.0f, 1.0f));
+            //pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+            //                                 XMFLOAT3(-2.0f, 0.0f, 2.0f));
+
+            if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
+            {
+                m_camera->as<PirateSimulator::cameraModule::ObjectCamera>()->setTarget(personnage);
+            }
+
 
             //pAfficheurSprite->AjouterSprite("tree02s.dds", 200,400);
             //pAfficheurSprite->AjouterSprite("tree02s.dds", 500,500, 100, 100);
