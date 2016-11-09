@@ -1,5 +1,5 @@
 #pragma once
-#include "../Chapitre 10/PetitMoteur3D/dispositif.h"
+#include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
 
 #include "Component.h"
 

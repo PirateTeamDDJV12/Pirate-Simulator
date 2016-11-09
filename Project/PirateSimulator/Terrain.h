@@ -6,9 +6,9 @@
 #include "Vertex.h"
 #include "Triangle.h"
 #include "Mesh.h"
-#include "../Chapitre 10/PetitMoteur3D/sommetbloc.h"
-#include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
-#include "../Chapitre 10/PetitMoteur3D/d3dx11effect.h"
+#include "../PetitMoteur3D/PetitMoteur3D/sommetbloc.h"
+#include "../PetitMoteur3D/PetitMoteur3D/DispositifD3D11.h"
+#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
 #include <vector>
 #include <string>

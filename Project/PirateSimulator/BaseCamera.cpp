@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "BaseCamera.h"
-#include "../Chapitre 10/PetitMoteur3D/MoteurWindows.h"
+#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 
 using namespace PirateSimulator;
 using namespace PirateSimulator::cameraModule;

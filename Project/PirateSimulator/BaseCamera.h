@@ -158,6 +158,11 @@ namespace PirateSimulator
                 return m_proj;
             }
 
+            const Transform& getTransform() const noexcept
+            {
+                return m_transform;
+            }
+
             DirectX::XMMATRIX getViewProjMatrix() const
             {
                 return m_view * m_proj;
