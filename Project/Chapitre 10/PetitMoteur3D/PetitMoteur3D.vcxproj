@@ -104,9 +104,11 @@
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FreeCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\GameObject.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
@@ -138,6 +140,8 @@
     <ClInclude Include="..\..\PirateSimulator\Component.h" />
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\FreeCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
+    <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\LevelCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h" />
@@ -148,6 +152,7 @@
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
+    <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />

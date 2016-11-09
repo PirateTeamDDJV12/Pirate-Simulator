@@ -55,15 +55,6 @@ namespace PM3D
 
         // Initialisation de l'effet
         InitEffet();
-
-        matWorld = XMMatrixIdentity();
-        matRotation = XMMatrixIdentity();
-        matTranslation = XMMatrixIdentity();
-
-        rotation = 0.0f;
-        vitesse = 2.0f;
-
-        position = { 0,0,0,0 };
     }
 
     // Constructeur de conversion
@@ -82,15 +73,6 @@ namespace PM3D
 
         // Initialisation de l'effet
         InitEffet();
-
-        matWorld = XMMatrixIdentity();
-        matRotation = XMMatrixIdentity();
-        matTranslation = XMMatrixIdentity();
-
-        rotation = 0.0f;
-        vitesse = 2.0f;
-
-        position = { 0,0,0,0 };
     }
 
     // Constructeur pour lecture d'un objet de format OMB
@@ -104,15 +86,6 @@ namespace PM3D
 
         // Initialisation de l'effet
         InitEffet();
-
-        matWorld = XMMatrixIdentity();
-        matRotation = XMMatrixIdentity();
-        matTranslation = XMMatrixIdentity();
-
-        rotation = 0.0f;
-        vitesse = 2.0f;
-
-        position = { 0,0,0,0 };
     }
 
     CObjetMesh::~CObjetMesh(void)
@@ -202,61 +175,61 @@ namespace PM3D
 
     void CObjetMesh::Anime(float tempsEcoule)
     {
-        //rotation =  rotation + ( (XM_PI * 2.0f) / 10.0f * tempsEcoule );
+        ////rotation =  rotation + ( (XM_PI * 2.0f) / 10.0f * tempsEcoule );
+        ////
+        ////// modifier la matrice de l'objet bloc
+        ////matWorld = XMMatrixRotationY( rotation );
+
+        //// Pour les mouvements, nous utilisons le gestionnaire de saisie
+        //CMoteurWindows& rMoteur = CMoteurWindows::GetInstance();
+        //CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
         //
-        //// modifier la matrice de l'objet bloc
-        //matWorld = XMMatrixRotationY( rotation );
+        ///*
+        //// ******** POUR LA SOURIS ************
+        //// Vérifier si déplacement vers la gauche
+        //if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
+        //    (rGestionnaireDeSaisie.EtatSouris().lX < 0))
+        //{
+        //    rotation = rotation + ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
 
-        // Pour les mouvements, nous utilisons le gestionnaire de saisie
-        CMoteurWindows& rMoteur = CMoteurWindows::GetInstance();
-        CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
-        
-        /*
-        // ******** POUR LA SOURIS ************
-        // Vérifier si déplacement vers la gauche
-        if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-            (rGestionnaireDeSaisie.EtatSouris().lX < 0))
-        {
-            rotation = rotation + ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
+        //    // modifier la matrice de l'objet X
+        //    matWorld = XMMatrixRotationY(rotation);
+        //}
 
-            // modifier la matrice de l'objet X
-            matWorld = XMMatrixRotationY(rotation);
-        }
+        //// Vérifier si déplacement vers la droite
+        //if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
+        //    (rGestionnaireDeSaisie.EtatSouris().lX > 0))
+        //{
+        //    rotation = rotation - ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
 
-        // Vérifier si déplacement vers la droite
-        if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-            (rGestionnaireDeSaisie.EtatSouris().lX > 0))
-        {
-            rotation = rotation - ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
-
-            // modifier la matrice de l'objet X
-            matWorld = XMMatrixRotationY(rotation);
-        }*/
+        //    // modifier la matrice de l'objet X
+        //    matWorld = XMMatrixRotationY(rotation);
+        //}*/
 
 
 
-        // ******** POUR LA SOURIS ************
-        // Vérifier si déplacement vers la gauche
-        if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-            (rGestionnaireDeSaisie.EtatSouris().lX < 0))
-        {
-            rotation = rotation + ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
+        //// ******** POUR LA SOURIS ************
+        //// Vérifier si déplacement vers la gauche
+        //if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
+        //    (rGestionnaireDeSaisie.EtatSouris().lX < 0))
+        //{
+        //    rotation = rotation + ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
 
 
-            // modifier la matrice de l'objet X
-            matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
-        }
+        //    // modifier la matrice de l'objet X
+        //    matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
+        //}
 
-        // Vérifier si déplacement vers la droite
-        if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-            (rGestionnaireDeSaisie.EtatSouris().lX > 0))
-        {
-            rotation = rotation - ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
+        //// Vérifier si déplacement vers la droite
+        //if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
+        //    (rGestionnaireDeSaisie.EtatSouris().lX > 0))
+        //{
+        //    rotation = rotation - ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
 
 
-            // modifier la matrice de l'objet X
-            matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
-        }
+        //    // modifier la matrice de l'objet X
+        //    matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
+        //}
     }
 
     void CObjetMesh::Draw()
@@ -281,8 +254,8 @@ namespace PM3D
         ShadersParams sp;
         XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
 
-        sp.matWorldViewProj = XMMatrixTranspose(matWorld * viewProj);
-        sp.matWorld = XMMatrixTranspose(matWorld);
+        sp.matWorldViewProj = XMMatrixTranspose(m_gameObject->getWorldMatrix() * viewProj);
+        sp.matWorld = XMMatrixTranspose(m_gameObject->getWorldMatrix());
 
         sp.vLumiere = XMVectorSet(-10.0f, 10.0f, -15.0f, 1.0f);
         sp.vCamera = XMVectorSet(0.0f, 3.0f, -5.0f, 1.0f);

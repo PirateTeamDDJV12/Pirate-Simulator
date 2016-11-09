@@ -108,14 +108,6 @@ protected:
 
 protected:
 	// ****  Données membres
-	XMMATRIX matWorld;				// Matrice de transformation dans le monde
-	float rotation;
-    XMVECTOR position;
-    XMVECTOR direction;
-    float vitesse;
-    XMMATRIX matTranslation;
-    XMMATRIX matRotation;
-
 
 	// Pour le dessin
 	CDispositifD3D11* pDispositif;		// On prend en note le dispositif

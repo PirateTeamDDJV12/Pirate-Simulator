@@ -20,6 +20,8 @@
 #include "../../PirateSimulator/LevelCamera.h"
 #include "../../PirateSimulator/FreeCamera.h"
 #include "../../PirateSimulator/ObjectCamera.h"
+#include "../../PirateSimulator/GameObject.h"
+#include "../../PirateSimulator/TestBehaviour.h"
 
 
 namespace PM3D
@@ -177,11 +179,10 @@ namespace PM3D
             BeginRenderSceneSpecific();
 
             // Appeler les fonctions de dessin de chaque objet de la scène
-            std::vector<CObjet3D*>::iterator It;
 
-            for(It = ListeScene.begin(); It != ListeScene.end(); It++)
+            for(auto It = ListeScene.begin(); It != ListeScene.end(); It++)
             {
-                (*It)->Draw();
+                (*It)->draw();
             }
 
             EndRenderSceneSpecific();
@@ -196,7 +197,7 @@ namespace PM3D
             TexturesManager.Cleanup();
 
             // détruire les objets
-            std::vector<CObjet3D*>::iterator It;
+            std::vector<PirateSimulator::GameObject*>::iterator It;
 
             for(It = ListeScene.begin(); It != ListeScene.end(); It++)
             {
@@ -240,41 +241,51 @@ namespace PM3D
             * Init the terrain
             */
             // TODO - Get this with a config
-            int terrainH = 257;
-            int terrainW = 257;
-            PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif, terrainH - 1, terrainW - 1);
-            std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
-			const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
-            int nbPoint = vertexLineCount * 257 * 257;
-            for(int i = 0; i < nbPoint; i += vertexLineCount)
-            {
-                PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
-                pTerrain->addSommet(p);
-            }
-            for(int i = nbPoint; i < myFile.size(); i += 3)
-            {
-                PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
-                pTerrain->addTriangle(t);
-            }
+   //         int terrainH = 257;
+   //         int terrainW = 257;
+   //         PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif, terrainH - 1, terrainW - 1);
+   //         std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
+			//const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
+   //         int nbPoint = vertexLineCount * 257 * 257;
+   //         for(int i = 0; i < nbPoint; i += vertexLineCount)
+   //         {
+   //             PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
+   //             pTerrain->addSommet(p);
+   //         }
+   //         for(int i = nbPoint; i < myFile.size(); i += 3)
+   //         {
+   //             PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
+   //             pTerrain->addTriangle(t);
+   //         }
 
-            pTerrain->Init();
-            if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
-            {
-                static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(pTerrain);
-            }
+   //         pTerrain->Init();
+   //         if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+   //         {
+   //             static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(pTerrain);
+   //         }
             
-
+            PirateSimulator::GameObject *personnage;
             CObjetMesh* pMesh;
             CAfficheurSprite* pAfficheurSprite;
 
-            // Constructeur avec format binaire
-            pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
+            PirateSimulator::Transform transform;
 
+            transform.m_position = { 0,0,0,0 };
+            transform.m_right = { -1,0,0,0 };
+            transform.m_up = { 0,1,0,0 };
+            transform.m_forward = { 0,0,-1,0 };
+
+
+            // Constructeur avec format binaire
+            //pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
+            personnage = new PirateSimulator::GameObject(transform);
+            personnage->addComponent<CObjet3D>(new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif));
+            personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
 
 
             // Puis, il est ajouté à la scène
-            ListeScene.push_back(pMesh);
-            ListeScene.push_back(pTerrain);
+            ListeScene.push_back(personnage);
+            //ListeScene.push_back(pTerrain);
 
             // Création de l'afficheur de sprites et ajout des sprites
             pAfficheurSprite = new CAfficheurSprite(pDispositif);
@@ -322,11 +333,9 @@ namespace PM3D
 
             m_camera->listenInput();
 
-            std::vector<CObjet3D*>::iterator It;
-
-            for(It = ListeScene.begin(); It != ListeScene.end(); It++)
+            for(auto It = ListeScene.begin(); It != ListeScene.end(); It++)
             {
-                (*It)->Anime(tempsEcoule);
+                (*It)->anime(tempsEcoule);
             }
 
             return true;
@@ -366,7 +375,7 @@ namespace PM3D
 
 
         // La seule scène
-        std::vector<CObjet3D*> ListeScene;
+        std::vector<PirateSimulator::GameObject*> ListeScene;
 
         PirateSimulator::cameraModule::BaseCamera* m_camera;
 

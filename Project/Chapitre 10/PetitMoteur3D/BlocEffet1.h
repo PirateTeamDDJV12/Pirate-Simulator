@@ -41,8 +41,6 @@ namespace PM3D
 
 		// Définitions des valeurs d'animation
 		ID3D11Buffer* pConstantBuffer;		
-		XMMATRIX matWorld;		
-		float rotation;
 
 		// Pour les effets
 		ID3DX11Effect* pEffet;

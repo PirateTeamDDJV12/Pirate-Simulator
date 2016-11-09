@@ -124,19 +124,12 @@ namespace PM3D
 
 		// Initialisation des shaders
 		InitShaders();
-
-		matWorld = XMMatrixIdentity();
-		
-		rotation = 0.0f;
 	}
 
 
 	void CBloc::Anime(float tempsEcoule)
 	{
 		rotation =  rotation + ( (XM_PI * 2.0f) / 10.0f * tempsEcoule );
-	
-		// modifier la matrice de l'objet bloc
-		matWorld = XMMatrixRotationX( rotation );
 	}
 
 void CBloc::Draw()
@@ -165,8 +158,8 @@ void CBloc::Draw()
 	ShadersParams sp;
 	XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
 	
-	sp.matWorldViewProj = XMMatrixTranspose(matWorld * viewProj );
-	sp.matWorld = XMMatrixTranspose(matWorld);
+	sp.matWorldViewProj = XMMatrixTranspose(m_gameObject->getWorldMatrix() * viewProj );
+	sp.matWorld = XMMatrixTranspose(m_gameObject->getWorldMatrix());
 	
 	sp.vLumiere =  XMVectorSet( -10.0f, 10.0f, -10.0f, 1.0f );
 	sp.vCamera = XMVectorSet( 0.0f, 0.0f, -10.0f, 1.0f  );
