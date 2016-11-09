@@ -6,7 +6,26 @@ Created by Sun-lay Gagneux
 
 namespace PirateSimulator
 {
-	class Component {};
+    class GameObject;
+
+	class Component 
+    {
+    protected:
+        GameObject *m_gameObject;
+
+
+    public:
+        void setGameObject(GameObject* parent)
+        {
+            m_gameObject = parent;
+        }
+
+        GameObject* getGameObject()
+        {
+            return m_gameObject;
+        }
+
+    };
 }
 
 #endif //!COMPONENENT_H

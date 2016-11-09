@@ -7,7 +7,7 @@ namespace PirateSimulator
 {
     class RessourcesManager : public PM3D::CSingleton<RessourcesManager>
     {
-        PirateSimualtor::FilesManager m_filesManager;
+        PirateSimulator::FilesManager m_filesManager;
     public:
         std::vector<float> ReadHeightMapFile(std::string filePath) const
         {

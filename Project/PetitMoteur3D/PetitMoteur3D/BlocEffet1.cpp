@@ -126,19 +126,12 @@ CBlocEffet1::CBlocEffet1(const float dx, const float dy, const float dz,
 
 	// Initialisation de l'effet
 	InitEffet();
-		
-	matWorld = XMMatrixIdentity();
-		
-	rotation = 0.0f;
 }
 
 
 	void CBlocEffet1::Anime(float tempsEcoule)
 	{
-		rotation =  rotation + ( (XM_PI * 2.0f) / 10.0f * tempsEcoule );
-	
-		// modifier la matrice de l'objet bloc
-		matWorld = XMMatrixRotationX( rotation );
+		
 	}
 
 void CBlocEffet1::Draw()
@@ -164,8 +157,8 @@ void CBlocEffet1::Draw()
 	ShadersParams sp;
 	XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
 	
-	sp.matWorldViewProj = XMMatrixTranspose(matWorld * viewProj );
-	sp.matWorld = XMMatrixTranspose(matWorld);
+	sp.matWorldViewProj = XMMatrixTranspose(m_gameObject->getWorldMatrix() * viewProj );
+	sp.matWorld = XMMatrixTranspose(m_gameObject->getWorldMatrix());
 	
 	sp.vLumiere =  XMVectorSet( -10.0f, 10.0f, -10.0f, 1.0f );
 	sp.vCamera = XMVectorSet( 0.0f, 0.0f, -10.0f, 1.0f  );

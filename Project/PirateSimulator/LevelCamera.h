@@ -5,6 +5,7 @@
 #include "AttachedCamera.h"
 #include "Angle.h"
 #include "Terrain.h"
+#include "GameObject.h"
 
 
 namespace PirateSimulator
@@ -22,26 +23,20 @@ namespace PirateSimulator
         public:
             LevelCamera(const CameraProjectionParameters& defaultProjParameters,
                         const CameraMovingParameters& moveParams,
-                        const DirectX::XMVECTOR& camPos,
-                        const DirectX::XMVECTOR& camDir,
-                        const DirectX::XMVECTOR& camUp)
-                : BaseCamera(defaultProjParameters, moveParams, camPos, camDir, camUp),
+                const Transform &transform)
+                : BaseCamera(defaultProjParameters, moveParams, transform),
                 m_offsetCam{10.0f}
             {}
+
+            virtual type typeId() const noexcept { return BaseCamera::LEVEL_CAMERA; }
 
             void move(Move::Translation::Direction direction) override;
             void rotate(Move::Rotation::Direction direction) override;
             void listenInput() override;
 
-            void getTarget(const DirectX::XMVECTOR& target) override
-            {}
-
-            void lookAtTarget() override
-            {}
-
-            void setTerrain(Terrain* t)
+            void setTerrain(GameObject* fieldObject)
             {
-                m_terrain = t;
+                m_terrain = static_cast<Terrain*>(fieldObject->getMesh().get());
             }
         };
     }

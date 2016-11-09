@@ -31,10 +31,35 @@ namespace PirateSimulator
         XMFLOAT2 remplissage;
     };
 
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w)
+    D3D11_INPUT_ELEMENT_DESC Terrain::layout[] =
+    {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+    };
+
+    UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
+
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, const std::string& fieldFileName, const std::string& textureFileName)
         : m_terrainWidth(w), m_terrainHeight(h)
     {
         pDispositif = pDispositif_; // Prendre en note le dispositif
+
+        std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile(fieldFileName);
+        const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
+        int nbPoint = vertexLineCount * m_terrainWidth * m_terrainHeight;
+        for (int i = 0; i < nbPoint; i += vertexLineCount)
+        {
+            PirateSimulator::Vertex p{ myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8] };
+            addSommet(p);
+        }
+        for (int i = nbPoint; i < myFile.size(); i += 3)
+        {
+            PirateSimulator::Triangle t{ static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2]) };
+            addTriangle(t);
+        }
+
+        Init(textureFileName);
     }
 
     Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
@@ -101,7 +126,7 @@ namespace PirateSimulator
         pImmediateContext->PSSetShader(pPixelShader, NULL, 0);
         pImmediateContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 
-
+        /**/
         //Texture
         ID3DX11EffectSamplerVariable* variableSampler;
         variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
@@ -116,28 +141,25 @@ namespace PirateSimulator
         sp.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
         sp.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
         sp.puissance = m_material.m_property.power;
-        
+
         // Activation de la texture ou non
         if (m_material.pTextureD3D != nullptr)
         {
             ID3DX11EffectShaderResourceVariable* variableTexture;
             variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
             variableTexture->SetResource(m_material.pTextureD3D);
-            sp.bTex = 1;
-        }
-        else
-        {
-            sp.bTex = 1;
         }
 
-                // IMPORTANT pour ajuster les param.
+        sp.bTex = 1;
+
+        // IMPORTANT pour ajuster les param.
         m_textureEffect.m_pass->Apply(0, pImmediateContext);
 
         ID3DX11EffectConstantBuffer* pCB = m_textureEffect.m_effect->GetConstantBufferByName("param");  // Nous n'avons qu'un seul CBuffer
         pCB->SetConstantBuffer(pConstantBuffer);
         pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &sp, 0, 0);
-            
-        
+
+
 
 
 
@@ -145,7 +167,7 @@ namespace PirateSimulator
         pImmediateContext->DrawIndexed(m_index_bloc.size(), 0, 0);
     }
 
-    void Terrain::Init()
+    void Terrain::Init(const std::string& textureFileName)
     {
         // Création du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -178,7 +200,7 @@ namespace PirateSimulator
         pIndexBuffer = NULL;
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer),
-                                 DXE_CREATIONINDEXBUFFER);
+            DXE_CREATIONINDEXBUFFER);
 
         // Initialisation des shaders
         InitShaders();
@@ -188,20 +210,20 @@ namespace PirateSimulator
         rotation = 0.0f;
 
 
-		
-		// Chargement des textures
-		this->loadTexture("PirateSimulator/textureTerrain.dds");
+
+        // Chargement des textures
+        this->loadTexture(textureFileName);
     }
 
     void Terrain::addSommet(PirateSimulator::Vertex v)
     {
-        XMFLOAT3 pos{v.position().x(), v.position().y(), v.position().z()};
-        XMFLOAT3 nor{v.normalVector().x(), v.normalVector().y(), v.normalVector().z()};
+        XMFLOAT3 pos{ v.position().x(), v.position().y(), v.position().z() };
+        XMFLOAT3 nor{ v.normalVector().x(), v.normalVector().y(), v.normalVector().z() };
 
-		XMFLOAT2 textCoord{ v.getTextureCoordinate().m_U, v.getTextureCoordinate().m_V };
-        CSommetBloc c{pos, nor, textCoord};
+        XMFLOAT2 textCoord{ v.getTextureCoordinate().m_U, v.getTextureCoordinate().m_V };
+        CSommetBloc c{ pos, nor, textCoord };
 
-        if(m_arraySommets.size() == v.position().x())
+        if (m_arraySommets.size() == v.position().x())
         {
             m_arraySommets.push_back(vector<Vertex>{});
         }
@@ -221,7 +243,7 @@ namespace PirateSimulator
         float x = pos.vector4_f32[0], z = pos.vector4_f32[2];
 
 
-        if(z < 0 || z + 1 > m_terrainHeight || x < 0 || x + 1 > m_terrainWidth)
+        if (z < 0 || z + 1 > m_terrainHeight || x < 0 || x + 1 > m_terrainWidth)
         {
             return 0.0f;
         }
@@ -238,7 +260,7 @@ namespace PirateSimulator
 
         float height = 0;
 
-        if(x + z >= 1.0f)
+        if (x + z >= 1.0f)
         {
             // Top Right triangle
             // A = BR  -  B = TR  -  C = TL
@@ -267,27 +289,27 @@ namespace PirateSimulator
 
         ID3DBlob* pVSBlob = NULL;
         UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.vhl",
-                                                    NULL, NULL,
-                                                    "MiniPhongVS",
-                                                    "vs_4_0",
-                                                    D3DCOMPILE_ENABLE_STRICTNESS,
-                                                    0,
-                                                    &pVSBlob, NULL), DXE_FICHIER_VS);
+            NULL, NULL,
+            "MiniPhongVS",
+            "vs_4_0",
+            D3DCOMPILE_ENABLE_STRICTNESS,
+            0,
+            &pVSBlob, NULL), DXE_FICHIER_VS);
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreateVertexShader(pVSBlob->GetBufferPointer(),
-                                                                pVSBlob->GetBufferSize(),
-                                                                NULL,
-                                                                &pVertexShader),
-                                 DXE_CREATION_VS);
+            pVSBlob->GetBufferSize(),
+            NULL,
+            &pVertexShader),
+            DXE_CREATION_VS);
 
         // Créer l'organisation des sommets
         pVertexLayout = NULL;
-        UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(CSommetBloc::layout,
-                                                               CSommetBloc::numElements,
-                                                               pVSBlob->GetBufferPointer(),
-                                                               pVSBlob->GetBufferSize(),
-                                                               &pVertexLayout),
-                                 DXE_CREATIONLAYOUT);
+        UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(Terrain::layout,
+            Terrain::numElements,
+            pVSBlob->GetBufferPointer(),
+            pVSBlob->GetBufferSize(),
+            &pVertexLayout),
+            DXE_CREATIONLAYOUT);
 
         pVSBlob->Release(); //  On n'a plus besoin du blob
 
@@ -304,39 +326,39 @@ namespace PirateSimulator
         // Compilation et chargement du pixel shader
         ID3DBlob* pPSBlob = NULL;
         UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.phl",
-                                                    NULL, NULL,
-                                                    "MiniPhongPS",
-                                                    "ps_4_0",
-                                                    D3DCOMPILE_ENABLE_STRICTNESS,
-                                                    0,
-                                                    &pPSBlob,
-                                                    NULL), DXE_FICHIER_PS);
+            NULL, NULL,
+            "MiniPhongPS",
+            "ps_4_0",
+            D3DCOMPILE_ENABLE_STRICTNESS,
+            0,
+            &pPSBlob,
+            NULL), DXE_FICHIER_PS);
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreatePixelShader(pPSBlob->GetBufferPointer(),
-                                                               pPSBlob->GetBufferSize(),
-                                                               NULL,
-                                                               &pPixelShader),
-                                 DXE_CREATION_PS);
+            pPSBlob->GetBufferSize(),
+            NULL,
+            &pPixelShader),
+            DXE_CREATION_PS);
 
 
         pPSBlob->Release(); //  On n'a plus besoin du blob
     }
 
 
-	void Terrain::setTexture(PM3D::CTexture* texture)
-	{
+    void Terrain::setTexture(PM3D::CTexture* texture)
+    {
         m_material.pTextureD3D = texture->GetD3DTexture();
-	}
+    }
 
-	void Terrain::loadTexture(const std::string& filename)
-	{
-		PM3D::CGestionnaireDeTextures& TexturesManager = PM3D::CMoteurWindows::GetInstance().GetTextureManager();
+    void Terrain::loadTexture(const std::string& filename)
+    {
+        PM3D::CGestionnaireDeTextures& TexturesManager = PM3D::CMoteurWindows::GetInstance().GetTextureManager();
 
-		wstring ws;
-		ws.assign(filename.begin(), filename.end());
+        wstring ws;
+        ws.assign(filename.begin(), filename.end());
 
-		this->setTexture(TexturesManager.GetNewTexture(ws.c_str(), pDispositif));
-        
+        this->setTexture(TexturesManager.GetNewTexture(ws.c_str(), pDispositif));
+
         ID3D11Resource* pResource;
         ID3D11Texture2D *pTextureInterface = 0;
         m_material.pTextureD3D->GetResource(&pResource);
@@ -365,8 +387,8 @@ namespace PirateSimulator
         ID3DBlob* pFXBlob = NULL;
 
         UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
-                                     "fx_5_0", 0, 0, &pFXBlob, 0),
-                  DXE_ERREURCREATION_FX);
+            "fx_5_0", 0, 0, &pFXBlob, 0),
+            DXE_ERREURCREATION_FX);
 
         D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_textureEffect.m_effect);
 
@@ -387,12 +409,12 @@ namespace PirateSimulator
 
         pVertexLayout = NULL;
 
-        /*UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(CSommetMesh::layout,
-                                                CSommetMesh::numElements,
-                                                vsCodePtr,
-                                                vsCodeLen,
-                                                &pVertexLayout),
-                  DXE_CREATIONLAYOUT);*/
+        UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(Terrain::layout,
+            Terrain::numElements,
+            vsCodePtr,
+            vsCodeLen,
+            &pVertexLayout),
+            DXE_CREATIONLAYOUT);
 
         // Initialisation des paramètres de sampling de la texture
         D3D11_SAMPLER_DESC samplerDesc;
@@ -413,5 +435,5 @@ namespace PirateSimulator
 
         // Création de l'état de sampling
         pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
-	}
+    }
 }

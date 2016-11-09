@@ -2,29 +2,26 @@
 #include "Singleton.h"
 #include "dispositif.h" 
 
-#include "Objet3D.h"
+#include <vector>
+
 #include "Bloc.h"
 #include "BlocEffet1.h"
 #include "ObjetMesh.h"
 #include "ChargeurOBJ.h"
-
 #include "GestionnaireDeTextures.h"
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
-#include "Skybox.h"
 
-#include <vector>
-
-#define USE_LEVEL_CAMERA
-
+#include "../../PirateSimulator/Mesh.h"
+#include "../../PirateSimulator/Skybox.h"
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/RessourceManager.h"
-#ifdef USE_LEVEL_CAMERA
 #include "../../PirateSimulator/LevelCamera.h"
-#else
 #include "../../PirateSimulator/FreeCamera.h"
-#endif
+#include "../../PirateSimulator/ObjectCamera.h"
+#include "../../PirateSimulator/GameObject.h"
+#include "../../PirateSimulator/TestBehaviour.h"
 
 
 namespace PM3D
@@ -183,11 +180,10 @@ namespace PM3D
             BeginRenderSceneSpecific();
 
             // Appeler les fonctions de dessin de chaque objet de la scène
-            std::vector<CObjet3D*>::iterator It;
 
-            for(It = ListeScene.begin(); It != ListeScene.end(); It++)
+            for(auto It = ListeScene.begin(); It != ListeScene.end(); It++)
             {
-                (*It)->Draw();
+                (*It)->draw();
             }
 
             EndRenderSceneSpecific();
@@ -202,7 +198,7 @@ namespace PM3D
             TexturesManager.Cleanup();
 
             // détruire les objets
-            std::vector<CObjet3D*>::iterator It;
+            std::vector<PirateSimulator::GameObject*>::iterator It;
 
             for(It = ListeScene.begin(); It != ListeScene.end(); It++)
             {
@@ -223,22 +219,21 @@ namespace PM3D
         {
             auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(XM_PI / 4, 1.0f, 3000.0f, pDispositif->GetLargeur(), pDispositif->GetHauteur());
             auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.33f, 0.02f);
-            XMVECTOR camPos = XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
-            XMVECTOR camDir = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
-            XMVECTOR camUp = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
+
+            PirateSimulator::Transform transform;
+            transform.m_position = XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
+            transform.m_forward = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
+            transform.m_up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
 
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
-#ifdef USE_LEVEL_CAMERA
-            m_camera = new PirateSimulator::cameraModule::LevelCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
-#else
-            m_camera = new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
-#endif
+
+            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::FREE_CAMERA, camProjParameters, camMovParameters, transform);
 
             // Skybox
-            m_skybox = new PirateSimulator::CSkybox(pDispositif);
-            m_skybox->SetTexture(new CTexture(L"PirateSimulator/skybox.dds", pDispositif));
-            m_skybox->Draw();
+            m_skybox = new PirateSimulator::GameObject(m_camera->getTransform());
+            m_skybox->addComponent<PirateSimulator::Mesh>(new PirateSimulator::CSkybox(pDispositif));
+            static_cast<PirateSimulator::CSkybox*>(m_skybox->getMesh().get())->SetTexture(new CTexture(L"PirateSimulator/skybox.dds", pDispositif));
             ListeScene.push_back(m_skybox);
 
 
@@ -254,36 +249,40 @@ namespace PM3D
             * Init the terrain
             */
             // TODO - Get this with a config
-            int terrainH = 257;
-            int terrainW = 257;
-            PirateSimulator::Terrain* pTerrain = new PirateSimulator::Terrain(pDispositif, terrainH - 1, terrainW - 1);
-            std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
-			const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
-            int nbPoint = vertexLineCount * 257 * 257;
-            for(int i = 0; i < nbPoint; i += vertexLineCount)
-            {
-                PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
-                pTerrain->addSommet(p);
-            }
-            for(int i = nbPoint; i < myFile.size(); i += 3)
-            {
-                PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
-                pTerrain->addTriangle(t);
-            }
-
-            pTerrain->Init();
-            static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(pTerrain);
-
+            
+            PirateSimulator::GameObject *personnage;
+            PirateSimulator::GameObject *terrain;
             CObjetMesh* pMesh;
             CAfficheurSprite* pAfficheurSprite;
 
+            PirateSimulator::Transform transform;
+
+            transform.m_position = { 0,0,0,0 };
+            transform.m_right = { -1,0,0,0 };
+            transform.m_up = { 0,1,0,0 };
+            transform.m_forward = { 0,0,-1,0 };
+
+
             // Constructeur avec format binaire
-            pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
+            //pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
+            personnage = new PirateSimulator::GameObject(transform);
+            personnage->addComponent<PirateSimulator::Mesh>(new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif));
+            personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
+
+            int terrainH = 257;
+            int terrainW = 257;
+            terrain = new PirateSimulator::GameObject(transform);
+            terrain->addComponent<PirateSimulator::Mesh>(new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds"));
+
+            if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+            {
+                static_cast<PirateSimulator::cameraModule::LevelCamera*>(m_camera)->setTerrain(terrain);
+            }
+
 
             // Puis, il est ajouté à la scène
-            
-            ListeScene.push_back(pMesh);
-            ListeScene.push_back(pTerrain);
+            ListeScene.push_back(personnage);
+            ListeScene.push_back(terrain);
 
             // Création de l'afficheur de sprites et ajout des sprites
             pAfficheurSprite = new CAfficheurSprite(pDispositif);
@@ -331,14 +330,33 @@ namespace PM3D
 
             m_camera->listenInput();
 
-            std::vector<CObjet3D*>::iterator It;
-
-            for(It = ListeScene.begin(); It != ListeScene.end(); It++)
+            for(auto It = ListeScene.begin(); It != ListeScene.end(); It++)
             {
-                (*It)->Anime(tempsEcoule);
+                (*It)->anime(tempsEcoule);
             }
 
             return true;
+        }
+
+        PirateSimulator::cameraModule::BaseCamera* createCamera(PirateSimulator::cameraModule::BaseCamera::type cameraType,
+            const PirateSimulator::cameraModule::CameraProjectionParameters &camProjParameters,
+            const PirateSimulator::cameraModule::CameraMovingParameters &camMovParameters,
+            const PirateSimulator::Transform &transform)
+        {
+            switch (cameraType)
+            {
+            case PirateSimulator::cameraModule::BaseCamera::FREE_CAMERA:
+                return new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, transform);
+
+            case PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA:
+                return new PirateSimulator::cameraModule::LevelCamera(camProjParameters, camMovParameters, transform);
+
+            case PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA:
+                return new PirateSimulator::cameraModule::ObjectCamera(camProjParameters, camMovParameters, transform);
+
+            default:
+                return nullptr;
+            }
         }
 
 
@@ -354,10 +372,10 @@ namespace PM3D
 
 
         // La seule scène
-        std::vector<CObjet3D*> ListeScene;
+        std::vector<PirateSimulator::GameObject*> ListeScene;
 
         PirateSimulator::cameraModule::BaseCamera* m_camera;
-        PirateSimulator::CSkybox* m_skybox;
+        PirateSimulator::GameObject* m_skybox;
 
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;

@@ -1,5 +1,5 @@
 #pragma once
-#include "Objet3D.h"
+#include "../../PirateSimulator/Mesh.h"
 #include "DispositifD3D11.h"
 
 namespace PM3D
@@ -23,7 +23,7 @@ namespace PM3D
 	//
 	//  BUT : 	Classe de bloc
 	//
-	class CBloc : public CObjet3D 
+	class CBloc : public PirateSimulator::Mesh
 	{
 	public:
 		CBloc(const float dx, const float dy, const float dz, 
@@ -52,7 +52,6 @@ namespace PM3D
 
 		// Définitions des valeurs d'animation
 		ID3D11Buffer* pConstantBuffer;		
-		XMMATRIX matWorld;		
 		float rotation;
 
 		

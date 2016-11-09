@@ -1,5 +1,5 @@
 #pragma once
-#include "objet3d.h"
+#include "../../PirateSimulator/Mesh.h"
 #include "dispositifD3D11.h"
 #include "d3dx11effect.h"
 #include "chargeur.h"
@@ -10,7 +10,7 @@ using namespace std;
 namespace PM3D
 {
 
-class CObjetMesh :	public CObjet3D
+class CObjetMesh :	public PirateSimulator::Mesh
 {
 protected:
 	class CSommetMesh
@@ -108,14 +108,6 @@ protected:
 
 protected:
 	// ****  Données membres
-	XMMATRIX matWorld;				// Matrice de transformation dans le monde
-	float rotation;
-    XMVECTOR position;
-    XMVECTOR direction;
-    float vitesse;
-    XMMATRIX matTranslation;
-    XMMATRIX matRotation;
-
 
 	// Pour le dessin
 	CDispositifD3D11* pDispositif;		// On prend en note le dispositif

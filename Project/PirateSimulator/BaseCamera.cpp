@@ -9,16 +9,16 @@ using namespace DirectX;
 
 
 
-BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams, const XMVECTOR camPos, const XMVECTOR camDir, const XMVECTOR camUp) :
-    m_Parameters{defaultParameters},
-    m_moveParams{moveParams}
+BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams, const Transform &transform) :
+    m_Parameters{ defaultParameters },
+    m_moveParams{ moveParams }
 {
-    m_position = camPos;
-    m_direction = camDir;
-    m_up = camUp;
-    m_rightDirection = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_up, m_direction));
+    m_transform.m_position = transform.m_position;
+    m_transform.m_forward = transform.m_forward;
+    m_transform.m_up = transform.m_up;
+    m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_transform.m_up, m_transform.m_forward));
 
-    setMatrixView(XMMatrixLookToLH(camPos, camDir, camUp));
+    setMatrixView(XMMatrixLookToLH(m_transform.m_position, m_transform.m_forward, m_transform.m_up));
 
     this->initViewMatrix();
     this->initProjMatrix();
@@ -49,9 +49,9 @@ void BaseCamera::onResize(unsigned int width, unsigned int height)
 
 void BaseCamera::position(const DirectX::XMVECTOR& position)
 {
-    m_position = position;
+    m_transform.m_position = position;
 
     setMatrixView(XMMatrixLookToLH(position,
-                                   m_direction,
-                                   m_up));
+        m_transform.m_forward,
+        m_transform.m_up));
 }
