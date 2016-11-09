@@ -278,7 +278,7 @@ namespace PM3D
             CAfficheurSprite* pAfficheurSprite;
 
             // Constructeur avec format binaire
-            pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
+            pMesh = new CObjetMesh(".\\modeles\\Jin\\jin.OMB", pDispositif);
 
             // Puis, il est ajouté à la scène
             
