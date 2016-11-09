@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "FreeCamera.h"
-#include "../Chapitre 10/PetitMoteur3D/MoteurWindows.h"
+#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 
 using namespace  PirateSimulator;
 using namespace  cameraModule;

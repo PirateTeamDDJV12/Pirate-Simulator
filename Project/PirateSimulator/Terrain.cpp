@@ -1,14 +1,14 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 
 #include "Terrain.h"
-#include "../Chapitre 10/PetitMoteur3D/MoteurWindows.h"
-#include "../Chapitre 10/PetitMoteur3D/resource.h"
-#include "../Chapitre 10/PetitMoteur3D/util.h"
-#include "../Chapitre 10/PetitMoteur3D/DispositifD3D11.h"
-#include "../Chapitre 10/PetitMoteur3D/Texture.h"
-#include "../Chapitre 10/PetitMoteur3D/GestionnaireDeTextures.h"
+#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
+#include "../PetitMoteur3D/PetitMoteur3D/resource.h"
+#include "../PetitMoteur3D/PetitMoteur3D/util.h"
+#include "../PetitMoteur3D/PetitMoteur3D/DispositifD3D11.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
+#include "../PetitMoteur3D/PetitMoteur3D/GestionnaireDeTextures.h"
 
-
+using namespace DirectX;
 
 namespace PirateSimulator
 {
