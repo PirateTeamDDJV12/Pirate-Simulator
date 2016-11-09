@@ -36,10 +36,8 @@ namespace PM3D
 	//		hWnd:	Handle sur la fenêtre Windows de l'application,
 	//    	nécessaire pour la fonction de création du 
 	//				dispositif
-	CDispositifD3D11::CDispositifD3D11(const CDS_MODE cdsMode,
-                   const HWND hWnd)
+	CDispositifD3D11::CDispositifD3D11(const CDS_MODE cdsMode, const HWND hWnd)
 	{
-
 		UINT largeur;
 		UINT hauteur;
 		UINT createDeviceFlags = 0;
@@ -158,8 +156,35 @@ namespace PM3D
 		vp.TopLeftY = 0;
 		pImmediateContext->RSSetViewports( 1, &vp );
 
-		// Création et initialisation des états
-		D3D11_RASTERIZER_DESC rsDesc;
+        // Création et initialisation des états
+
+        // 1. Culling
+        D3D11_RASTERIZER_DESC rsDesc;
+        ZeroMemory(&rsDesc, sizeof(D3D11_RASTERIZER_DESC));
+        rsDesc.FillMode = D3D11_FILL_SOLID;
+        rsDesc.CullMode = D3D11_CULL_BACK;
+        rsDesc.FrontCounterClockwise = false;
+        pD3DDevice->CreateRasterizerState(&rsDesc, &mSolidCullBackRS);
+        ZeroMemory(&rsDesc, sizeof(D3D11_RASTERIZER_DESC));
+        rsDesc.FillMode = D3D11_FILL_SOLID;
+        rsDesc.CullMode = D3D11_CULL_NONE;
+        rsDesc.FrontCounterClockwise = false;
+        pD3DDevice->CreateRasterizerState(&rsDesc, &mSolidCullNoneRS);
+        pImmediateContext->RSSetState(mSolidCullBackRS);
+
+        // 2. Z-Buffer
+        pImmediateContext->OMGetDepthStencilState(&mZBufferActif, 0);
+        D3D11_DEPTH_STENCIL_DESC dsd;
+        if (mZBufferActif)
+            mZBufferActif->GetDesc(&dsd);
+        else
+            ZeroMemory(&dsd, sizeof(D3D11_DEPTH_STENCIL_DESC));
+        dsd.DepthEnable = false;
+        dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+        dsd.DepthFunc = D3D11_COMPARISON_LESS;
+        pD3DDevice->CreateDepthStencilState(&dsd, &mZBufferInactif);
+
+
 		ZeroMemory(&rsDesc, sizeof(D3D11_RASTERIZER_DESC));
 		rsDesc.FillMode = D3D11_FILL_SOLID;
 		rsDesc.CullMode = D3D11_CULL_BACK;   // FRONT,BACK ou NONE
@@ -251,5 +276,24 @@ D3D11_BLEND_DESC blendDesc;
 		pImmediateContext->OMSetBlendState(alphaBlendDisable, facteur, 0xffffffff);
 	}
 
+    void CDispositifD3D11::ActiverZBuffer()
+    {
+        pImmediateContext->OMSetDepthStencilState(mZBufferActif, 0);
+    }
+
+    void CDispositifD3D11::DesactiverZBuffer()
+    {
+        pImmediateContext->OMSetDepthStencilState(mZBufferInactif, 0);
+    }
+
+    void CDispositifD3D11::ActiverCulling()
+    {
+        pImmediateContext->RSSetState(mSolidCullBackRS);
+    }
+
+    void CDispositifD3D11::DesactiverCulling()
+    {
+        pImmediateContext->RSSetState(mSolidCullNoneRS);
+    }
 }
 

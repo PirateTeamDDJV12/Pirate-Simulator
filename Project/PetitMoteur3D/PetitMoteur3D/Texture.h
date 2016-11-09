@@ -10,7 +10,7 @@ public:
 	CTexture(void);
 	virtual ~CTexture(void);
 
-	CTexture(const wchar_t* filename_in,CDispositifD3D11* pDispositif);
+	CTexture(const wchar_t* filename_in, CDispositifD3D11* pDispositif);
 
 	const wchar_t* GetFilename() {return filename;}
 

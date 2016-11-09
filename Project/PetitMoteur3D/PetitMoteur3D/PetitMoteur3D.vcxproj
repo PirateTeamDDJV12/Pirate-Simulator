@@ -123,6 +123,7 @@
     <ClCompile Include="MoteurWindows.cpp" />
     <ClCompile Include="ObjetMesh.cpp" />
     <ClCompile Include="PetitMoteur3D.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="sommetbloc.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -170,6 +171,7 @@
     <ClInclude Include="ObjetMesh.h" />
     <ClInclude Include="PetitMoteur3D.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="sommetbloc.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Texture.h" />

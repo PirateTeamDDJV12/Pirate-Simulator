@@ -2,9 +2,9 @@
 #define MATERIAL_H
 
 
-#include "../Chapitre 10/PetitMoteur3D/objet3d.h"
-#include "../Chapitre 10/PetitMoteur3D/dispositifD3D11.h"
-#include "../Chapitre 10/PetitMoteur3D/d3dx11effect.h"
+#include "../PetitMoteur3D/PetitMoteur3D/objet3d.h"
+#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
+#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
 #include <string>
 

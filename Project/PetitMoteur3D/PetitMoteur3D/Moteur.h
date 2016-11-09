@@ -2,7 +2,6 @@
 #include "Singleton.h"
 #include "dispositif.h" 
 
-#include <vector>
 #include "Objet3D.h"
 #include "Bloc.h"
 #include "BlocEffet1.h"
@@ -13,6 +12,9 @@
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
+#include "Skybox.h"
+
+#include <vector>
 
 #define USE_LEVEL_CAMERA
 
@@ -43,7 +45,8 @@ namespace PM3D
     //        le dispositif Direct3D), l'utilisation d'un singleton 
     //        nous simplifiera plusieurs aspects.
     //
-    template <class T, class TClasseDispositif> class CMoteur :public CSingleton<T>
+    template <class T, class TClasseDispositif> 
+    class CMoteur : public CSingleton<T>
     {
     public:
 
@@ -232,6 +235,13 @@ namespace PM3D
             m_camera = new PirateSimulator::cameraModule::FreeCamera(camProjParameters, camMovParameters, camPos, camDir, camUp);
 #endif
 
+            // Skybox
+            m_skybox = new PirateSimulator::CSkybox(pDispositif);
+            m_skybox->SetTexture(new CTexture(L"PirateSimulator/skybox.dds", pDispositif));
+            m_skybox->Draw();
+            ListeScene.push_back(m_skybox);
+
+
             // Initialisation des objets 3D - création et/ou chargement
             if(!InitObjets()) return 1;
 
@@ -271,6 +281,7 @@ namespace PM3D
             pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
 
             // Puis, il est ajouté à la scène
+            
             ListeScene.push_back(pMesh);
             ListeScene.push_back(pTerrain);
 
@@ -346,6 +357,7 @@ namespace PM3D
         std::vector<CObjet3D*> ListeScene;
 
         PirateSimulator::cameraModule::BaseCamera* m_camera;
+        PirateSimulator::CSkybox* m_skybox;
 
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;

@@ -1,7 +1,7 @@
 #ifndef RESSROUCE_MANAGER_H
 #define RESSROUCE_MANAGER_H
 #include "FilesManager.h"
-#include "../Chapitre 10/PetitMoteur3D/Singleton.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Singleton.h"
 
 namespace PirateSimulator
 {
