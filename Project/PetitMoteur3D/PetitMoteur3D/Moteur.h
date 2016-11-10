@@ -257,8 +257,8 @@ namespace PM3D
             
             PirateSimulator::GameObject *personnage;
             PirateSimulator::GameObject *terrain;
-            CObjetMesh* pMesh;
-            CAfficheurSprite* pAfficheurSprite;
+            /*CObjetMesh* pMesh;
+            CAfficheurSprite* pAfficheurSprite;*/
 
             PirateSimulator::Transform transform;
 

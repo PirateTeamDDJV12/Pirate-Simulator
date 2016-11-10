@@ -36,7 +36,7 @@ void BaseCamera::initProjMatrix()
 }
 
 
-void BaseCamera::onResize(unsigned int width, unsigned int height)
+void BaseCamera::onResize(float width, float height)
 {
     m_Parameters.clientWidth = width;
     m_Parameters.clientHeight = height;

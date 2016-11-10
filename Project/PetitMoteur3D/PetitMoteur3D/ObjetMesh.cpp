@@ -401,7 +401,7 @@ namespace PM3D
         fichier.write((char*)&NbMaterial, sizeof(int));
 
         MaterialBlock mb;
-        for(int i = 0; i < NbMaterial; ++i)
+        for(size_t i = 0; i < NbMaterial; ++i)
         {
             MatLoad[i].MatToBlock(mb);
             fichier.write((char*)&mb, sizeof(MaterialBlock));

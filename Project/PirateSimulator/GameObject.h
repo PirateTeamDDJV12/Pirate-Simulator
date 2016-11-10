@@ -94,6 +94,12 @@ namespace PirateSimulator
             return nullptr;
         }
 
+        template<>
+        IBehaviour* getComponent<IBehaviour>() { return m_behaviour; }
+
+        template<>
+        IMesh* getComponent<IMesh>() { return m_mesh; }
+
 
         virtual void anime(float elapsedTime) { (this->*m_pAnim)(elapsedTime); }
         void draw() 
@@ -113,18 +119,10 @@ namespace PirateSimulator
         }
 
     private:
-        void setWorldMatrixWhenHaving(const DirectX::XMMATRIX& world)
-        {
-            m_mesh->setWorldMatrix(world);
-        }
-
+        void setWorldMatrixWhenHaving(const DirectX::XMMATRIX& world) { m_mesh->setWorldMatrix(world); }
         void setWorldMatrixWhenNotHavingAMesh(const DirectX::XMMATRIX& world) {}
 
-        void animSomething(float elapsedTime)
-        {
-            m_behaviour->anime(elapsedTime);
-        }
-
+        void animSomething(float elapsedTime) { m_behaviour->anime(elapsedTime); }
         void animNothing(float elapsedTime) {}
     };
 }

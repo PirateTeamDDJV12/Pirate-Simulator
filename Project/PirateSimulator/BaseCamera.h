@@ -92,7 +92,7 @@ namespace PirateSimulator
             void initProjMatrix();
 
             // Resize matrices when window size changes
-            void onResize(unsigned int width, unsigned int height);
+            void onResize(float width, float height);
 
             void changeVelocity()
             {
