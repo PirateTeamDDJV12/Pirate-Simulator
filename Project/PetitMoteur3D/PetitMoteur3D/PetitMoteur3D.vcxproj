@@ -103,10 +103,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\FreeCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\LevelCamera.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\ObjectCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
@@ -140,13 +140,13 @@
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\Component.h" />
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
-    <ClInclude Include="..\..\PirateSimulator\FreeCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
-    <ClInclude Include="..\..\PirateSimulator\LevelCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
-    <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourcesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Material.h" />

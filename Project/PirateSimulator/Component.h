@@ -19,7 +19,7 @@ namespace PirateSimulator
 
 
     public:
-        void setGameObject(GameObject* parent)
+        virtual void setGameObject(GameObject* parent)
         {
             m_gameObject = parent;
         }

@@ -26,9 +26,11 @@ namespace PirateSimulator
         void (GameObject::* m_pAnim)(float elapsedTime);
 
 
-    protected:
+    public:
         Transform m_transform;
 
+
+    protected:
         std::vector<ComponentRef> m_attachedComponent;
 
         IBehaviour* m_behaviour;
@@ -42,6 +44,8 @@ namespace PirateSimulator
             m_pAnim{ &GameObject::animNothing }
         {
             m_attachedComponent.push_back(ComponentRef(new IBehaviour()));
+
+            m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_transform.m_up, m_transform.m_forward));
         }
 
 
@@ -63,6 +67,7 @@ namespace PirateSimulator
             {
                 m_attachedComponent[0] = ComponentRef(component);
                 m_behaviour = component;
+                m_behaviour->setGameObject(this);
                 m_pAnim = &GameObject::animSomething;
             }
         }
@@ -74,6 +79,7 @@ namespace PirateSimulator
             {
                 m_attachedComponent.push_back(ComponentRef(component));
                 m_mesh = component;
+                m_mesh->setGameObject(this);
                 m_pSetMatrix = &GameObject::setWorldMatrixWhenHaving;
             }
         }
@@ -106,9 +112,6 @@ namespace PirateSimulator
         { 
             m_mesh->Draw(); 
         }
-
-        const Transform& getTransform() const noexcept { return m_transform; }
-        void setTransform(const Transform& transform) noexcept { m_transform = transform; }
 
         void translate(float x, float y, float z);
         void rotate(float angleX, float angleY);

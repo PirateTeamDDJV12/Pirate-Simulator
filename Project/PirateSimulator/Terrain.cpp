@@ -93,7 +93,7 @@ namespace PirateSimulator
         m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
         m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
 
-        m_shaderParameter.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->position();
+        m_shaderParameter.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->m_transform.m_position;
 
         pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 

@@ -90,16 +90,7 @@
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\FreeCamera.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\LevelCamera.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\ObjectCamera.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp">
@@ -109,6 +100,15 @@
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
   </ItemGroup>
@@ -203,15 +203,6 @@
     <ClInclude Include="..\..\PirateSimulator\Component.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\FreeCamera.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\LevelCamera.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Moves.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
@@ -264,6 +255,15 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Mesh.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

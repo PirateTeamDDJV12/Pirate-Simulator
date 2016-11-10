@@ -8,22 +8,16 @@ using namespace PirateSimulator::cameraModule;
 
 
 
-BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams, const Transform &transform) :
-    GameObject(transform),
-    m_Parameters{ defaultParameters },
-    m_moveParams{ moveParams }
+BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, 
+                       const CameraMovingParameters& moveParams,
+                       GameObject* target = nullptr
+    ) :
+        m_Parameters{ defaultParameters },
+        m_moveParams{ moveParams }
 {
-    m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_transform.m_up, m_transform.m_forward));
-
-    setMatrixView(XMMatrixLookToLH(m_transform.m_position, m_transform.m_forward, m_transform.m_up));
-
-    this->initViewMatrix();
+    setTarget(target);
     this->initProjMatrix();
 }
-
-
-void BaseCamera::initViewMatrix()
-{}
 
 
 void BaseCamera::initProjMatrix()
@@ -40,15 +34,12 @@ void BaseCamera::onResize(float width, float height)
 {
     m_Parameters.clientWidth = width;
     m_Parameters.clientHeight = height;
-    initProjMatrix();
+    this->initProjMatrix();
 }
 
-
-void BaseCamera::position(const DirectX::XMVECTOR& position)
+void BaseCamera::setGameObject(GameObject* parent)
 {
-    m_transform.m_position = position;
+    m_gameObject = parent;
 
-    setMatrixView(XMMatrixLookToLH(m_transform.m_position,
-        m_transform.m_forward,
-        m_transform.m_up));
+    this->updateViewMatrix();
 }
