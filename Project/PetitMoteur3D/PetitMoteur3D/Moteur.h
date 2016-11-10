@@ -225,7 +225,7 @@ namespace PM3D
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
 
-            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::FREE_CAMERA, camProjParameters, camMovParameters);
+            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA, camProjParameters, camMovParameters);
             
             
             
