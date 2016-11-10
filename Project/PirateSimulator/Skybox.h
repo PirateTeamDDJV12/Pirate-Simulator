@@ -25,13 +25,16 @@ namespace PirateSimulator
         static D3D11_INPUT_ELEMENT_DESC layout[];
     };
 
-    class CSkybox : public Mesh
+    namespace ShaderCSkyBox
     {
         struct ShadersParams
         {
             DirectX::XMMATRIX matWorldViewProj;
         };
+    }
 
+    class CSkybox : public Mesh<ShaderCSkyBox::ShadersParams>
+    {
     public:
         CSkybox(PM3D::CDispositifD3D11* pDispositif);
         virtual ~CSkybox(void);
@@ -39,7 +42,10 @@ namespace PirateSimulator
         void SetTexture(PM3D::CTexture* pTexture);
 
     protected:
-        CSkybox(void) {}
+        CSkybox(void) :
+            Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams())
+        {}
+
         void InitEffet();
         PM3D::CDispositifD3D11* pDispositif;
         ID3D11Buffer* pVertexBuffer;

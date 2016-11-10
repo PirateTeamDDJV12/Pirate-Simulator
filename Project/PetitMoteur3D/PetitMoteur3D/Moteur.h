@@ -231,11 +231,14 @@ namespace PM3D
             m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::LEVEL_CAMERA, camProjParameters, camMovParameters, transform);
             
             
+            
 
             // Skybox
+            PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox(pDispositif);
             m_skybox = new PirateSimulator::GameObject(m_camera->getTransform());
-            m_skybox->addComponent<PirateSimulator::Mesh>(new PirateSimulator::CSkybox(pDispositif));
-            static_cast<PirateSimulator::CSkybox*>(m_skybox->getMesh().get())->SetTexture(new CTexture(L"PirateSimulator/skybox.dds", pDispositif));
+            m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
+
+            skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds", pDispositif));
             ListeScene.push_back(m_skybox);
 
 
@@ -268,13 +271,13 @@ namespace PM3D
             // Constructeur avec format binaire
             //pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
             personnage = new PirateSimulator::GameObject(transform);
-            personnage->addComponent<PirateSimulator::Mesh>(new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif));
+            personnage->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif));
             personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
 
             int terrainH = 257;
             int terrainW = 257;
             terrain = new PirateSimulator::GameObject(transform);
-            terrain->addComponent<PirateSimulator::Mesh>(new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds"));
+            terrain->addComponent<PirateSimulator::IMesh>(new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds"));
 
             if (m_camera->typeId() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
             {

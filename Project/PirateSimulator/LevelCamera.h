@@ -35,7 +35,7 @@ namespace PirateSimulator
 
             void setTerrain(GameObject* fieldObject)
             {
-                m_terrain = static_cast<Terrain*>(fieldObject->getMesh().get());
+                m_terrain = fieldObject->getComponent<IMesh>()->as<Terrain>();
             }
         };
     }
