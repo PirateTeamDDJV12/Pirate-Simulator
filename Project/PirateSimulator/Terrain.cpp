@@ -257,7 +257,7 @@ namespace PirateSimulator
         Vertex topLeft = m_arraySommets[myFirstX][mySecondZ];
         Vertex bottomRight = m_arraySommets[mySecondX][myFirstZ];
         Vertex topRight = m_arraySommets[mySecondX][mySecondZ];
-
+        /*
         float height = 0;
 
         if (x + z >= 1.0f)
@@ -279,7 +279,18 @@ namespace PirateSimulator
             height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
         }
 
-        return height;
+        return height;*/
+
+        float diffLeft = topLeft.position().z() - bottomLeft.position().z();
+
+        if (diffLeft == 0.f)
+        {
+            diffLeft = 1.f;
+        }
+
+        float coeff = (topLeft.position().x() - bottomLeft.position().x()) / diffLeft;
+
+        return coeff * (x + z) + bottomLeft.position().y();
     }
 
     void Terrain::InitShaders()

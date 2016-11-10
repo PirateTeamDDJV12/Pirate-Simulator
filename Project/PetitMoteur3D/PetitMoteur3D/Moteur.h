@@ -228,7 +228,7 @@ namespace PM3D
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
 
-            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA, camProjParameters, camMovParameters, transform);
+            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::LEVEL_CAMERA, camProjParameters, camMovParameters, transform);
             
             
 
@@ -259,7 +259,7 @@ namespace PM3D
 
             PirateSimulator::Transform transform;
 
-            transform.m_position = { 3,-3,0,0 };
+            transform.m_position = { 0,0,0,0 };
             transform.m_right = { 1,0,0,0 };
             transform.m_up = { 0,1,0,0 };
             transform.m_forward = { 0,0,-1,0 };
