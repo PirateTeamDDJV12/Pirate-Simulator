@@ -60,6 +60,11 @@ namespace PirateSimulator
         class BaseCamera : public Component
         {
         public:
+            enum
+            {
+                HEIGHT_OFFSET = 10
+            };
+
             enum type
             {
                 FREE_CAMERA,
@@ -135,14 +140,16 @@ namespace PirateSimulator
 
             virtual void updateViewMatrixAsObjectCamera()
             {
+                m_gameObject->m_transform.m_forward = DirectX::XMVector3Normalize(m_target->m_transform.m_position - m_gameObject->m_transform.m_position);
+
+                m_gameObject->m_transform.m_position = m_target->m_transform.m_position - m_gameObject->m_transform.m_forward * 10;
+
+                m_gameObject->m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_gameObject->m_transform.m_up, m_gameObject->m_transform.m_forward));
+
                 setMatrixView(XMMatrixLookAtLH(
                     m_gameObject->m_transform.m_position,
                     m_target->m_transform.m_position,
                     m_gameObject->m_transform.m_up));
-
-                m_gameObject->m_transform.m_forward = DirectX::XMVector3Normalize(m_target->m_transform.m_position - m_gameObject->m_transform.m_position);
-
-                m_gameObject->m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_gameObject->m_transform.m_up, m_gameObject->m_transform.m_forward));
             }
 
         public:

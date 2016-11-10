@@ -17,7 +17,7 @@ namespace PirateSimulator
         public:
             enum
             {
-                HEIGHT_OFFSET = 10
+                HEIGHT_OFFSET = BaseCamera::HEIGHT_OFFSET
             };
 
         private:
