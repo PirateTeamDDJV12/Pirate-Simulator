@@ -120,6 +120,9 @@
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -248,9 +251,6 @@
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\ObjectCamera.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -276,6 +276,9 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

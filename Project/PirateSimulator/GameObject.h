@@ -17,7 +17,7 @@ Created by Sun-lay Gagneux
 namespace PirateSimulator
 {
     using ComponentRef = std::shared_ptr<Component>;
-
+    using GameObjectRef = std::shared_ptr<GameObject>;
 
     class GameObject
     {
