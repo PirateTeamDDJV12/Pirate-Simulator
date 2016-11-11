@@ -113,6 +113,7 @@
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vertex.cpp" />
     <ClCompile Include="AfficheurSprite.cpp" />
     <ClCompile Include="AfficheurTexte.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
+    <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\Vertex.h" />
     <ClInclude Include="AfficheurSprite.h" />
     <ClInclude Include="AfficheurTexte.h" />
