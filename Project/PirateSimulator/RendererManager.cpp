@@ -25,12 +25,13 @@ void RendererManager::drawSorting()
         (*iter)->Draw();
     }
 
-
-    
-
-
-
-
+    for (auto jiter = m_stack.begin(); jiter != m_stack.end(); ++jiter)
+    {
+        for (iter = (*jiter)->begin(); iter != (*jiter)->end(); ++iter)
+        {
+            (*iter)->Draw();
+        }
+    }
 
     for (iter = m_obligatoryBeforeMesh.begin(); iter != m_obligatoryBeforeMesh.end(); ++iter)
     {
@@ -58,12 +59,6 @@ void RendererManager::drawAll()
     }
 }
 
-void RendererManager::sortAndDraw()
-{
-    Transform cameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform;
-
-}
-
 void RendererManager::addAStaticSortableMesh(PirateSimulator::IMesh* mesh)
 {
     size_t x = mesh->getGameObject()->m_transform.m_position.vector4_f32[0] / AREA_WIDTH;
@@ -76,7 +71,7 @@ void RendererManager::addAStaticSortableMesh(PirateSimulator::IMesh* mesh)
     }
 }
 
-void RendererManager::updateRenderedStack() noexcept
+void RendererManager::updateRenderedStack()
 {
     size_t xCameraArea = (CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0] < 0.f ? 
                             0 : 

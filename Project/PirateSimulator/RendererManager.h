@@ -25,6 +25,10 @@ namespace PirateSimulator
     class RendererManager
     {
     private:
+        class Draw;
+        class Update;
+
+    private:
         using RenderStack = std::vector<std::vector<IMesh*>*>;
 
 
@@ -64,6 +68,7 @@ namespace PirateSimulator
         size_t m_rightRight;
 
         void (RendererManager::* m_pMeshDraw)();
+        void (RendererManager::* m_pUpdate)();
 
 
     private:
@@ -100,40 +105,23 @@ namespace PirateSimulator
         void addAnObligatoryMeshToDrawAtEnd(IMesh* mesh)    { m_obligatoryEndMesh.push_back(mesh); }
         void addAStaticSortableMesh(IMesh* mesh);
 
-        size_t getObligatoryMeshBeforeCount() const noexcept 
-        { 
-            return m_obligatoryBeforeMesh.size(); 
-        }
-
-        size_t getObligatoryMeshEndCount() const noexcept
-        {
-            return m_obligatoryEndMesh.size();
-        }
-
-        size_t getMovingSecondaryMeshCount() const noexcept
-        {
-            return m_movingMeshArray.size();
-        }
-
-        size_t getAreaCount() const noexcept
-        {
-            return m_staticMeshArray.size();
-        }
-
-        size_t getStaticMeshInArea(size_t x, size_t z) const noexcept
-        {
-            return m_staticMeshArray[x * z].meshArray.size();
-        }
+        size_t getObligatoryMeshBeforeCount() const noexcept    { return m_obligatoryBeforeMesh.size(); }
+        size_t getObligatoryMeshEndCount() const noexcept       { return m_obligatoryEndMesh.size(); }
+        size_t getMovingSecondaryMeshCount() const noexcept     { return m_movingMeshArray.size(); }
+        size_t getAreaCount() const noexcept                    { return m_staticMeshArray.size(); }
+        size_t getStaticMeshInArea(size_t x, size_t z) const noexcept { return m_staticMeshArray[x * z].meshArray.size(); }
 
         void setSortingMesh(bool mustSortMesh) noexcept
         {
             if (mustSortMesh)
             {
                 m_pMeshDraw = &RendererManager::drawSorting;
+                m_pUpdate = &RendererManager::updateRenderedStack;
             }
             else
             {
                 m_pMeshDraw = &RendererManager::drawAll;
+                m_pUpdate = &RendererManager::updateWithoutStack;
             }
         }
 
@@ -153,9 +141,9 @@ namespace PirateSimulator
         void drawSorting();
         void drawAll();
 
-        void sortAndDraw();
+        void updateWithoutStack(){}
 
-        void updateRenderedStack() noexcept;
+        void updateRenderedStack();
 
         void addToStack(size_t x, size_t z) noexcept
         {
@@ -167,7 +155,10 @@ namespace PirateSimulator
         }
 
     public:
-        void operator()() { (this->*m_pMeshDraw)(); }
+        template<class T> void operator()();
+        
+        template<> void operator()<Draw>()   { (this->*m_pMeshDraw)(); }
+        template<> void operator()<Update>() { (this->*m_pUpdate)(); }
     };
 }
 
