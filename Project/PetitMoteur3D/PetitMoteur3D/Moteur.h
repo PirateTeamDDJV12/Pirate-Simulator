@@ -13,6 +13,7 @@
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
 
+#include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
 #include "../../PirateSimulator/Skybox.h"
 #include "../../PirateSimulator/Terrain.h"
@@ -217,8 +218,17 @@ namespace PM3D
 
         virtual int InitScene()
         {
-            auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(XM_PI / 4, 1.0f, 3000.0f, pDispositif->GetLargeur(), pDispositif->GetHauteur());
-            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(0.33f, 0.02f);
+            auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(
+                XM_PI / 4,
+                PirateSimulator::GameGlobals::CameraGlobals::NEAREST_PLANE,
+                PirateSimulator::GameGlobals::CameraGlobals::FARTHEST_PLANE,
+                pDispositif->GetLargeur(), 
+                pDispositif->GetHauteur()
+            );
+
+            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(
+                PirateSimulator::GameGlobals::CameraGlobals::LINEAR_SPEED, 
+                PirateSimulator::GameGlobals::CameraGlobals::ANGULAR_SPEED);
 
             
 
