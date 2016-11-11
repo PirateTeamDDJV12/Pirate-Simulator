@@ -142,7 +142,7 @@ namespace PirateSimulator
             {
                 m_gameObject->m_transform.m_forward = DirectX::XMVector3Normalize(m_target->m_transform.m_position - m_gameObject->m_transform.m_position);
 
-                m_gameObject->m_transform.m_position = m_target->m_transform.m_position - m_gameObject->m_transform.m_forward * 10;
+                m_gameObject->m_transform.m_position = m_target->m_transform.m_position - m_gameObject->m_transform.m_forward * 50;
 
                 m_gameObject->m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_gameObject->m_transform.m_up, m_gameObject->m_transform.m_forward));
 

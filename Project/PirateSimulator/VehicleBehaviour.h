@@ -14,7 +14,7 @@ namespace PirateSimulator
     public:
         VehicleBehaviour() :
             rotation{ 0.5f },
-            velocity{ 0.5f }
+            velocity{ 1.0f }
         {}
 
         virtual void anime(float ellapsedTime);
