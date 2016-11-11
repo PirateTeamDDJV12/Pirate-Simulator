@@ -25,10 +25,6 @@ namespace PirateSimulator
     class RendererManager
     {
     private:
-        class Draw;
-        class Update;
-
-    private:
         using RenderStack = std::vector<std::vector<IMesh*>*>;
 
 
@@ -73,7 +69,8 @@ namespace PirateSimulator
 
     private:
         RendererManager() :
-            m_pMeshDraw{ m_pMeshDraw = &RendererManager::drawAll },
+            m_pMeshDraw{ &RendererManager::drawAll },
+            m_pUpdate{ &RendererManager::updateWithoutStack },
             m_staticMeshArray{},
             m_obligatoryBeforeMesh{},
             m_obligatoryEndMesh{},
@@ -136,6 +133,9 @@ namespace PirateSimulator
             return nullptr;
         }
 
+        void draw() { (this->*m_pMeshDraw)(); }
+        void update() { (this->*m_pUpdate)(); }
+
 
     private:
         void drawSorting();
@@ -153,12 +153,6 @@ namespace PirateSimulator
                 m_stack.push_back(toAddToStack);
             }
         }
-
-    public:
-        template<class T> void operator()();
-        
-        template<> void operator()<Draw>()   { (this->*m_pMeshDraw)(); }
-        template<> void operator()<Update>() { (this->*m_pUpdate)(); }
     };
 }
 

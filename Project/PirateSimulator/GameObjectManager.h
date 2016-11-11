@@ -73,6 +73,8 @@ namespace PirateSimulator
         {
             return m_gameObjectArray.at(name);
         }
+
+        void animAllGameObject(float elapsedTime);
     };
 }
 

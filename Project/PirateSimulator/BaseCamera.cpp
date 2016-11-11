@@ -8,14 +8,13 @@ using namespace PirateSimulator::cameraModule;
 
 
 
-BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, 
-                       const CameraMovingParameters& moveParams,
-                       GameObject* target = nullptr
-    ) :
-        m_Parameters{ defaultParameters },
-        m_moveParams{ moveParams }
+BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters,
+    const CameraMovingParameters& moveParams
+) :
+    m_Parameters{ defaultParameters },
+    m_moveParams{ moveParams },
+    m_pUpdateViewMatrix { &BaseCamera::updateViewMatrixAsForwardCamera }
 {
-    setTarget(target);
     this->initProjMatrix();
 }
 

@@ -48,12 +48,20 @@ void RendererManager::drawAll()
         (*iter)->Draw();
     }
 
-    for (iter = m_obligatoryBeforeMesh.begin(); iter != m_obligatoryBeforeMesh.end(); ++iter)
+    for (auto jiter = m_staticMeshArray.begin(); jiter != m_staticMeshArray.end(); ++jiter)
+    {
+        for (iter = jiter->meshArray.begin(); iter != jiter->meshArray.end(); ++iter)
+        {
+            (*iter)->Draw();
+        }
+    }
+
+    for (iter = m_movingMeshArray.begin(); iter != m_movingMeshArray.end(); ++iter)
     {
         (*iter)->Draw();
     }
 
-    for (iter = m_obligatoryBeforeMesh.begin(); iter != m_obligatoryBeforeMesh.end(); ++iter)
+    for (iter = m_obligatoryEndMesh.begin(); iter != m_obligatoryEndMesh.end(); ++iter)
     {
         (*iter)->Draw();
     }
