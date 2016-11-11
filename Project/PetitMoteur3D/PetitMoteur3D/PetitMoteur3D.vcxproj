@@ -110,6 +110,7 @@
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\TimeManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />

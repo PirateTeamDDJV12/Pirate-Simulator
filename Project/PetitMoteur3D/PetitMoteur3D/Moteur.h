@@ -22,6 +22,7 @@
 #include "../../PirateSimulator/ObjectCamera.h"
 #include "../../PirateSimulator/GameObject.h"
 #include "../../PirateSimulator/TestBehaviour.h"
+#include "../../PirateSimulator/TimeManager.h"
 
 
 namespace PM3D
@@ -63,6 +64,9 @@ namespace PM3D
 
         virtual int Initialisations()
         {
+            // Initialisation du temps de jeu
+            TimeManager::get()->startGameTime();
+
             // Propre à la plateforme
             InitialisationsSpecific();
 

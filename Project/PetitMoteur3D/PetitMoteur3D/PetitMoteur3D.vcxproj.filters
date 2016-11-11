@@ -111,6 +111,9 @@
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -264,6 +267,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Skybox.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TimeManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>
