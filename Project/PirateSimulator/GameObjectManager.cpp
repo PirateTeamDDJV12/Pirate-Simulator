@@ -16,8 +16,8 @@ void GameObjectManager::animAllGameObject(float elapsedTime)
     std::for_each(
         m_gameObjectArray.begin(),
         m_gameObjectArray.end(),
-        [&elapsedTime](std::pair<std::string, GameObjectRef> GObject){
-            GObject.second->anime(elapsedTime);
+        [&elapsedTime](GameObjectRef GObject){
+            GObject->anime(elapsedTime);
         }
     );
 }

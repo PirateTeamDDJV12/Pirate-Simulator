@@ -21,13 +21,21 @@ namespace PirateSimulator
 
         struct CameraGlobals
         {
-            static const float NEAREST_PLANE;
-            static const float FARTHEST_PLANE;
+            static constexpr float NEAREST_PLANE = 1.f;
+            static constexpr float FARTHEST_PLANE = 3000.f;
 
-            static const float LINEAR_SPEED;
-            static const float ANGULAR_SPEED;
+            static constexpr float LINEAR_SPEED = 0.33f;
+            static constexpr float ANGULAR_SPEED = 0.02f;
         };
     }
+
+
+
+#define DEBUG_PIRATE_SIMULATOR
+
+#ifdef DEBUG_PIRATE_SIMULATOR
+    extern size_t debugCount;
+#endif
 }
 
 

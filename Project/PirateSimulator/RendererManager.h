@@ -25,24 +25,35 @@ namespace PirateSimulator
     class RendererManager
     {
     private:
-        using RenderStack = std::vector<std::vector<IMesh*>*>;
+        using RenderStack = std::vector<IMesh*>;
 
 
     private:
         enum
         {
-            MAX_VISIBLE_AREA = 8
+            MAX_VISIBLE_AREA = 8,
+
+            RENDERED_VISION_MARGIN = 10
         };
+
+        static constexpr float LONG_CAMERA_SQUARE_RANGE = 
+            GameGlobals::CameraGlobals::FARTHEST_PLANE * GameGlobals::CameraGlobals::FARTHEST_PLANE + RENDERED_VISION_MARGIN;
 
     public:
         enum
         {
-            AREA_EDGE_COUNT = 4,
+            AREA_EDGE_COUNT = 6,
             AREA_TOTAL_COUNT = AREA_EDGE_COUNT * AREA_EDGE_COUNT,
             AREA_WIDTH = (GameGlobals::SceneGlobals::MAX_X - GameGlobals::SceneGlobals::MIN_X) / AREA_EDGE_COUNT + 1,
             VISIBLE_AREA = (AREA_TOTAL_COUNT < MAX_VISIBLE_AREA) ? AREA_TOTAL_COUNT : MAX_VISIBLE_AREA,
 
             LAST_AREA = AREA_EDGE_COUNT - 1
+        };
+
+        enum DetailLevel
+        {
+            LIGHT_ARRANGEMENT,
+            DEEP_ARRANGEMENT
         };
 
 
@@ -65,12 +76,14 @@ namespace PirateSimulator
 
         void (RendererManager::* m_pMeshDraw)();
         void (RendererManager::* m_pUpdate)();
+        void (RendererManager::* m_pStackAddingMethod)(size_t x, size_t z);
 
 
     private:
         RendererManager() :
             m_pMeshDraw{ &RendererManager::drawAll },
             m_pUpdate{ &RendererManager::updateWithoutStack },
+            m_pStackAddingMethod{ &RendererManager::lightAddToStack },
             m_staticMeshArray{},
             m_obligatoryBeforeMesh{},
             m_obligatoryEndMesh{},
@@ -79,7 +92,7 @@ namespace PirateSimulator
             m_forwardForward{},
             m_rightRight{}
         {
-            m_stack.reserve(MAX_VISIBLE_AREA);
+            m_stack.reserve(MAX_VISIBLE_AREA + m_movingMeshArray.size());
             m_staticMeshArray.reserve(AREA_TOTAL_COUNT);
             for (size_t z = 0; z < AREA_EDGE_COUNT; ++z)
             {
@@ -122,6 +135,20 @@ namespace PirateSimulator
             }
         }
 
+        void setDetailLevel(DetailLevel level) noexcept
+        {
+            switch (level)
+            {
+            case DEEP_ARRANGEMENT:
+                m_pStackAddingMethod = &RendererManager::deepAddToStack;
+                break;
+
+            case LIGHT_ARRANGEMENT:
+            default:
+                m_pStackAddingMethod = &RendererManager::lightAddToStack;
+            }
+        }
+
         std::vector<IMesh*>* findStaticMeshInArea(size_t x, size_t z) noexcept
         {
             size_t index = z * AREA_EDGE_COUNT + x;
@@ -145,14 +172,9 @@ namespace PirateSimulator
 
         void updateRenderedStack();
 
-        void addToStack(size_t x, size_t z) noexcept
-        {
-            std::vector<IMesh*>* toAddToStack = findStaticMeshInArea(x, z);
-            if (toAddToStack)
-            {
-                m_stack.push_back(toAddToStack);
-            }
-        }
+        void lightAddToStack(size_t x, size_t z) noexcept;
+
+        void deepAddToStack(size_t x, size_t z) noexcept;
     };
 }
 

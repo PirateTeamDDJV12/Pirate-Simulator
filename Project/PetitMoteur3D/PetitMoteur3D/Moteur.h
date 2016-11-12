@@ -236,14 +236,14 @@ namespace PM3D
                 PirateSimulator::GameGlobals::CameraGlobals::LINEAR_SPEED, 
                 PirateSimulator::GameGlobals::CameraGlobals::ANGULAR_SPEED);
 
+            PirateSimulator::RendererManager::singleton.setSortingMesh(true);
+            PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
             
-
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
 
             m_camera = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                createCamera(PirateSimulator::cameraModule::BaseCamera::type::LEVEL_CAMERA, camProjParameters, camMovParameters),
-                "mainCamera"
+                createCamera(PirateSimulator::cameraModule::BaseCamera::type::LEVEL_CAMERA, camProjParameters, camMovParameters, "mainCamera")
             );
             
             
@@ -252,8 +252,8 @@ namespace PM3D
             // Skybox
             PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox(pDispositif);
             m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(m_camera->m_transform),
-                "skybox");
+                new PirateSimulator::GameObject(m_camera->m_transform, "skybox")
+            );
 
             m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
 
@@ -290,8 +290,8 @@ namespace PM3D
             // Constructeur avec format binaire
             //pMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", pDispositif);
             auto personnage = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(transform),
-                "personnage");
+                new PirateSimulator::GameObject(transform, "personnage")
+            );
 
             auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
             personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
@@ -302,8 +302,8 @@ namespace PM3D
             int terrainW = 257;
 
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(transform),
-                "terrain");
+                new PirateSimulator::GameObject(transform, "terrain")
+            );
             
             auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
 
@@ -392,7 +392,8 @@ namespace PM3D
 
         PirateSimulator::GameObject* createCamera(PirateSimulator::cameraModule::BaseCamera::type cameraType,
             const PirateSimulator::cameraModule::CameraProjectionParameters &camProjParameters,
-            const PirateSimulator::cameraModule::CameraMovingParameters &camMovParameters)
+            const PirateSimulator::cameraModule::CameraMovingParameters &camMovParameters,
+            const std::string& name)
         {
             PirateSimulator::GameObject* camera;
             PirateSimulator::Transform cameraInitialPosition;
@@ -401,44 +402,26 @@ namespace PM3D
             cameraInitialPosition.m_forward = XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
             cameraInitialPosition.m_up = XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f);
 
-            camera = new PirateSimulator::GameObject(cameraInitialPosition);
+            camera = new PirateSimulator::GameObject(cameraInitialPosition, name);
 
+            camera->addComponent<PirateSimulator::cameraModule::BaseCamera>(
+                    new PirateSimulator::cameraModule::BaseCamera(
+                        camProjParameters, camMovParameters
+                    )
+                );
             
             switch (cameraType)
             {
             case PirateSimulator::cameraModule::BaseCamera::FREE_CAMERA:
-
-                camera->addComponent<PirateSimulator::cameraModule::BaseCamera>(
-                    new PirateSimulator::cameraModule::BaseCamera(
-                        camProjParameters, camMovParameters
-                    )
-                );
-
                 camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::FreeCameraBehaviour());
-
                 break;
 
             case PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA:
-                camera->addComponent<PirateSimulator::cameraModule::BaseCamera>(
-                    new PirateSimulator::cameraModule::BaseCamera(
-                        camProjParameters, camMovParameters
-                    )
-                );
-
                 camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::LevelCameraBehaviour());
-
                 break;
 
             case PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA:
-
-                camera->addComponent<PirateSimulator::cameraModule::BaseCamera>(
-                    new PirateSimulator::cameraModule::BaseCamera(
-                        camProjParameters, camMovParameters
-                    )
-                );
-
                 camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::ObjectCameraBehaviour());
-
                 break;
 
             default:

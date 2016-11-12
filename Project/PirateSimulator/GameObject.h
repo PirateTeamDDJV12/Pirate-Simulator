@@ -11,6 +11,7 @@ Created by Sun-lay Gagneux
 
 
 #include <vector>
+#include <string>
 #include <memory>
 
 
@@ -28,6 +29,7 @@ namespace PirateSimulator
 
     public:
         Transform m_transform;
+        std::string m_name;
 
 
     protected:
@@ -38,7 +40,8 @@ namespace PirateSimulator
         
 
     public:
-        GameObject(const Transform& transform) :
+        GameObject(const Transform& transform, const std::string& name) :
+            m_name{ name },
             m_transform{ transform },
             m_pSetMatrix{ &GameObject::setWorldMatrixWhenNotHavingAMesh },
             m_pAnim{ &GameObject::animNothing }
@@ -107,11 +110,13 @@ namespace PirateSimulator
         IMesh* getComponent<IMesh>() { return m_mesh; }
 
 
+        const std::string& getName() const noexcept { return m_name; }
+        void setName(const std::string& newName) { m_name = newName; }
+        bool compareName(const std::string& newName) { return m_name.size() == newName.size() && m_name == newName; }
+
+
         virtual void anime(float elapsedTime) { (this->*m_pAnim)(elapsedTime); }
-        void draw() 
-        { 
-            m_mesh->Draw(); 
-        }
+        void draw() { m_mesh->Draw(); }
 
         void translate(float x, float y, float z);
         void rotate(float angleX, float angleY);

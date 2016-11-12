@@ -4,7 +4,7 @@
 #include "GameConfig.h"
 #include "GameObject.h"
 
-#include <map>
+#include <vector>
 #include <string>
 
 
@@ -17,7 +17,7 @@ namespace PirateSimulator
 
 
     private:
-        std::map<std::string, GameObjectRef> m_gameObjectArray;
+        std::vector<GameObjectRef> m_gameObjectArray;
 
 
     private:
@@ -30,48 +30,23 @@ namespace PirateSimulator
 
 
     public:
-        GameObjectRef trySubscribeAGameObject(GameObject* newGameObject, const std::string& name)
+        GameObjectRef subscribeAGameObject(GameObject* newGameObject)
         {
-            auto gameObjectIter = m_gameObjectArray.find(name);
+            m_gameObjectArray.push_back(GameObjectRef(newGameObject));
 
-            if (gameObjectIter != m_gameObjectArray.end())
-            {
-                GameObjectRef intermediary(newGameObject);
-
-                m_gameObjectArray.emplace(std::pair<std::string, GameObjectRef>(name, intermediary));
-
-                return intermediary;
-            }
-
-            delete newGameObject;
-
-            return GameObjectRef();
-        }
-
-        GameObjectRef subscribeAGameObject(GameObject* newGameObject, const std::string& name)
-        {
-            GameObjectRef intermediary(newGameObject);
-
-            m_gameObjectArray.emplace(std::pair<std::string, GameObjectRef>(name, intermediary));
-
-            return intermediary;
-        }
-
-        GameObjectRef tryGettingGameObjectByName(const std::string& name) const
-        {
-            auto gameObjectIter = m_gameObjectArray.find(name);
-
-            if (gameObjectIter != m_gameObjectArray.end())
-            {
-                return gameObjectIter->second;
-            }
-
-            return GameObjectRef();
+            return m_gameObjectArray[m_gameObjectArray.size() - 1];
         }
 
         GameObjectRef getGameObjectByName(const std::string& name) const
         {
-            return m_gameObjectArray.at(name);
+            for (auto iter = m_gameObjectArray.begin(); iter != m_gameObjectArray.end(); ++iter)
+            {
+                if ((*iter)->compareName(name))
+                {
+                    return *iter;
+                }
+            }
+            return GameObjectRef();
         }
 
         void animAllGameObject(float elapsedTime);
