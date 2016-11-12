@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "CameraManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
+#include <DirectXMath.h>
 
 using namespace PirateSimulator;
 using namespace cameraModule;
@@ -23,7 +24,7 @@ void GameObject::translate(float x, float y, float z)
         float rotationAngle = DirectX::XMVector3AngleBetweenVectors(m_transform.m_forward, { 0,0,1,0 }).vector4_f32[0];
         float rotationAngleR = DirectX::XMVector3AngleBetweenVectors(m_transform.m_right, { 1,0,0,0 }).vector4_f32[0];
 
-        if (z > 0)
+        if (x < 0)
         {
             rotationAngle = -rotationAngle;
         }
