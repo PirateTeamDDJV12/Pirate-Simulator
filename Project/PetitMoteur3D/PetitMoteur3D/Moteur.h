@@ -24,6 +24,8 @@
 #include "../../PirateSimulator/TestBehaviour.h"
 #include "../../PirateSimulator/VehicleBehaviour.h"
 
+#include "../../PirateSimulator/CameraManager.h"
+
 
 namespace PM3D
 {
@@ -292,6 +294,8 @@ namespace PM3D
             {
                 m_camera->getComponent<PirateSimulator::cameraModule::LevelCameraBehaviour>()->setTerrain(terrain);
             }
+
+            PirateSimulator::CameraManager::singleton.setMainCamera(m_camera);
 
             // Puis, il est ajouté à la scène
             ListeScene.push_back(vehicule);
