@@ -1,51 +1,53 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 
 #include <iostream>
 #include <sstream>
 
-#include "FreeCamera.h"
+#include "FreeCameraBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 
 using namespace  PirateSimulator;
 using namespace  cameraModule;
+using namespace DirectX;
 
 
-void FreeCamera::move(Move::Translation::Direction direction)
+void FreeCameraBehaviour::move(Move::Translation::Direction direction)
 {
     switch (direction)
     {
     case Move::Translation::FORWARD:
-        m_transform.m_position += m_transform.m_forward * m_moveParams.translationVelocity;
+        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_forward * m_cameraComponent->getTranslationVelocity();
         break;
 
     case Move::Translation::BACKWARD:
-        m_transform.m_position -= m_transform.m_forward * m_moveParams.translationVelocity;
+        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_forward * m_cameraComponent->getTranslationVelocity();
         break;
 
     case Move::Translation::LEFT:
-        m_transform.m_position -= m_transform.m_right * m_moveParams.translationVelocity;
+        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_right * m_cameraComponent->getTranslationVelocity();
         break;
 
     case Move::Translation::RIGHT:
-        m_transform.m_position += m_transform.m_right * m_moveParams.translationVelocity;
+        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_right * m_cameraComponent->getTranslationVelocity();
         break;
 
     case Move::Translation::UP:
-        m_transform.m_position += m_transform.m_up * m_moveParams.translationVelocity;
+        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_up * m_cameraComponent->getTranslationVelocity();
         break;
 
     case Move::Translation::DOWN:
-        m_transform.m_position -= m_transform.m_up * m_moveParams.translationVelocity;
+        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_up * m_cameraComponent->getTranslationVelocity();
         break;
 
     case Move::Translation::NONE:
     default:
         return;
     }
-    setMatrixView(XMMatrixLookToLH(m_transform.m_position, m_transform.m_forward, m_transform.m_up));
+
+    m_cameraComponent->updateViewMatrix();
 }
 
-void FreeCamera::rotate(Move::Rotation::Direction direction)
+void FreeCameraBehaviour::rotate(Move::Rotation::Direction direction)
 {
     using namespace std::chrono;
 
@@ -56,19 +58,19 @@ void FreeCamera::rotate(Move::Rotation::Direction direction)
     switch (direction)
     {
     case Move::Rotation::X_CLOCKWISE:
-        m_rotationAroundX -= m_moveParams.rotationVelocity;
+        m_rotationAroundX -= m_cameraComponent->getRotationVelocity();
         break;
 
     case Move::Rotation::X_INVERT_CLOCKWISE:
-        m_rotationAroundX += m_moveParams.rotationVelocity;
+        m_rotationAroundX += m_cameraComponent->getRotationVelocity();
         break;
 
     case Move::Rotation::Y_CLOCKWISE:
-        m_rotationAroundY -= m_moveParams.rotationVelocity;
+        m_rotationAroundY -= m_cameraComponent->getRotationVelocity();
         break;
 
     case Move::Rotation::Y_INVERT_CLOCKWISE:
-        m_rotationAroundY += m_moveParams.rotationVelocity;
+        m_rotationAroundY += m_cameraComponent->getRotationVelocity();
         break;
 
     case Move::Rotation::Z_CLOCKWISE:
@@ -83,29 +85,28 @@ void FreeCamera::rotate(Move::Rotation::Direction direction)
     else if (DirectX::XMConvertToDegrees(m_rotationAroundX.getAngle()) > 89.0f)
         m_rotationAroundX = DirectX::XMConvertToRadians(89.0f);
 
-    m_transform.m_forward.vector4_f32[0] = sin(m_rotationAroundY.getAngle()) * cos(m_rotationAroundX.getAngle());
-    m_transform.m_forward.vector4_f32[1] = sin(m_rotationAroundX.getAngle());
-    m_transform.m_forward.vector4_f32[2] = cos(m_rotationAroundX.getAngle()) * cos(m_rotationAroundY.getAngle());
+    m_gameObject->m_transform.m_forward.vector4_f32[0] = sin(m_rotationAroundY.getAngle()) * cos(m_rotationAroundX.getAngle());
+    m_gameObject->m_transform.m_forward.vector4_f32[1] = sin(m_rotationAroundX.getAngle());
+    m_gameObject->m_transform.m_forward.vector4_f32[2] = cos(m_rotationAroundX.getAngle()) * cos(m_rotationAroundY.getAngle());
 
     // Update the rightDirection vector when rotating
-    m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_transform.m_up, m_transform.m_forward));
+    m_gameObject->m_transform.m_right = 
+        DirectX::XMVector3Normalize(
+            DirectX::XMVector3Cross(
+                m_gameObject->m_transform.m_up,
+                m_gameObject->m_transform.m_forward
+            )
+    );
 
-
-#ifdef MODIFY_UP_VECTOR_AT_ROTATE
-    //y'' = (x * 0) + (y * cos(b)) + (- z * sin(b))
-    m_up.vector4_f32[0] = 0.f;
-    m_up.vector4_f32[1] = cosAngleAroundX;
-    m_up.vector4_f32[2] = -sinAngleAroundX;
-#endif //MODIFY_UP_VECTOR_AT_ROTATE
-
-    setMatrixView(XMMatrixLookToLH(m_transform.m_position, m_transform.m_forward, m_transform.m_up));
+    m_cameraComponent->updateViewMatrix();
 }
 
-void FreeCamera::listenInput()
+void FreeCameraBehaviour::anime(float ellapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
     CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+    
 
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
     {
@@ -160,6 +161,6 @@ void FreeCamera::listenInput()
 
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
     {
-        changeVelocity();
+        m_cameraComponent->changeVelocity();
     }
 }

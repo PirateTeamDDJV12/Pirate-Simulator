@@ -21,7 +21,7 @@ void TestBehaviour::anime(float ellapsedTime)
 
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->getTransform().m_position));
+        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
     }
 
     // Vérifier si déplacement vers la droite
@@ -32,6 +32,6 @@ void TestBehaviour::anime(float ellapsedTime)
 
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->getTransform().m_position));
+        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
     }
 }

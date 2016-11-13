@@ -1,32 +1,22 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 
 #include "BaseCamera.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 
 using namespace PirateSimulator;
 using namespace PirateSimulator::cameraModule;
-using namespace DirectX;
 
 
 
-BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters, const CameraMovingParameters& moveParams, const Transform &transform) :
+BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters,
+    const CameraMovingParameters& moveParams
+) :
     m_Parameters{ defaultParameters },
-    m_moveParams{ moveParams }
+    m_moveParams{ moveParams },
+    m_pUpdateViewMatrix { &BaseCamera::updateViewMatrixAsForwardCamera }
 {
-    m_transform.m_position = transform.m_position;
-    m_transform.m_forward = transform.m_forward;
-    m_transform.m_up = transform.m_up;
-    m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_transform.m_up, m_transform.m_forward));
-
-    setMatrixView(XMMatrixLookToLH(m_transform.m_position, m_transform.m_forward, m_transform.m_up));
-
-    this->initViewMatrix();
     this->initProjMatrix();
 }
-
-
-void BaseCamera::initViewMatrix()
-{}
 
 
 void BaseCamera::initProjMatrix()
@@ -39,19 +29,16 @@ void BaseCamera::initProjMatrix()
 }
 
 
-void BaseCamera::onResize(unsigned int width, unsigned int height)
+void BaseCamera::onResize(float width, float height)
 {
     m_Parameters.clientWidth = width;
     m_Parameters.clientHeight = height;
-    initProjMatrix();
+    this->initProjMatrix();
 }
 
-
-void BaseCamera::position(const DirectX::XMVECTOR& position)
+void BaseCamera::setGameObject(GameObject* parent)
 {
-    m_transform.m_position = position;
+    m_gameObject = parent;
 
-    setMatrixView(XMMatrixLookToLH(position,
-        m_transform.m_forward,
-        m_transform.m_up));
+    this->updateViewMatrix();
 }

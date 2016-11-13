@@ -17,7 +17,7 @@ namespace PM3D
 
     public:
         void SetWindowsAppInstance(HINSTANCE hInstance);
-        XMVECTOR GetCameraPosition() { return getCamera()->position(); }
+        XMVECTOR GetCameraPosition() { return getCamera()->m_transform.m_position; }
 
     protected:
         ATOM	MyRegisterClass(HINSTANCE hInstance);

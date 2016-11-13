@@ -13,7 +13,7 @@ namespace PM3D
 	//
 	//  BUT : 	Classe de bloc avec effet version 1 section 6.5
 	//
-	class CBlocEffet1 : public PirateSimulator::Mesh
+	class CBlocEffet1 : public PirateSimulator::Mesh<ShaderCBloc::ShadersParams>
 	{
 	public:
 		CBlocEffet1(const float dx, const float dy, const float dz, 
@@ -30,7 +30,9 @@ namespace PM3D
 
 	protected :
 		// Constructeur par défaut
-		CBlocEffet1(void){}
+		CBlocEffet1(void) :
+            PirateSimulator::Mesh<ShaderCBloc::ShadersParams>(ShaderCBloc::ShadersParams())
+        {}
 
 		void InitEffet();
 

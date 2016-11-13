@@ -20,11 +20,82 @@ namespace PM3D
 
 namespace PirateSimulator
 {
+    namespace ShaderTerrain
+    {
+        struct ShadersParams
+        {
+            XMMATRIX matWorldViewProj;	// la matrice totale 
+            XMMATRIX matWorld;			// matrice de transformation dans le monde 
+            
+            XMVECTOR vLumiere; 			// la position de la source d'éclairage (Point)
+            XMVECTOR vCamera; 			// la position de la caméra
+
+            XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
+            XMVECTOR vAMat; 			// la valeur ambiante du matériau
+            XMVECTOR vDEcl; 			// la valeur diffuse de l'éclairage 
+            XMVECTOR vDMat; 			// la valeur diffuse du matériau 
+            XMVECTOR vSEcl; 			// la valeur spéculaire de l'éclairage 
+            XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
+
+            float puissance;
+            int bTex;					// Texture ou materiau 
+            XMFLOAT2 remplissage;
+
+
+            ShadersParams() :
+                bTex{1}
+            {
+                vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
+                vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
+                vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
+                vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
+                vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
+            }
+            
+            ShadersParams(
+                    const XMVECTOR& lumiere,
+                    const XMVECTOR& AEcl,
+                    const XMVECTOR& AMat,
+                    const XMVECTOR& DEcl,
+                    const XMVECTOR& DMat
+                ) :
+                bTex{ 1 }
+            {
+                vLumiere = lumiere;
+                vAEcl = AEcl;
+                vAMat = AMat;
+                vDEcl = DEcl;
+                vDMat = DMat;
+            }
+
+            ShadersParams(
+                const XMVECTOR& lumiere,
+                const XMVECTOR& AEcl,
+                const XMVECTOR& AMat,
+                const XMVECTOR& DEcl,
+                const XMVECTOR& DMat,
+                const XMVECTOR& SEcl,
+                const XMVECTOR& SMat
+            ) :
+                bTex{ 1 }
+            {
+                vLumiere = lumiere;
+                vAEcl = AEcl;
+                vAMat = AMat;
+                vDEcl = DEcl;
+                vDMat = DMat;
+                vSEcl = SEcl;
+                vSMat = SMat;
+            }
+        };
+    }
+    
+
     //  Classe : Terrain
     //
     //  BUT : 	Classe du terrain de notre jeu
     //
-    class Terrain : public Mesh
+    class Terrain : public Mesh<ShaderTerrain::ShadersParams>
     {
     public:
         static D3D11_INPUT_ELEMENT_DESC Terrain::layout[];
@@ -36,6 +107,7 @@ namespace PirateSimulator
         std::vector<std::vector<Vertex>> m_arraySommets;
         std::vector<CSommetBloc> m_sommets;
         std::vector<unsigned int> m_index_bloc;
+
     public:
         Terrain(PM3D::CDispositifD3D11* pDispositif);
         Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w, const std::string& fieldFileName, const std::string& textureFileName);
@@ -59,7 +131,8 @@ namespace PirateSimulator
 
     protected:
         // Constructeur par défaut
-        Terrain(void)
+        Terrain(void) :
+            Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
         {}
 
         void InitShaders();
@@ -75,7 +148,6 @@ namespace PirateSimulator
 
         // Définitions des valeurs d'animation
         ID3D11Buffer* pConstantBuffer;
-        XMMATRIX matWorld;
         float rotation;
 
 		//Pour texture

@@ -41,7 +41,8 @@ D3D11_INPUT_ELEMENT_DESC CSommetSky::layout[] =
 };
 UINT CSommetSky::numElements = ARRAYSIZE(CSommetSky::layout);
 
-CSkybox::CSkybox(CDispositifD3D11* pDispositif_)
+CSkybox::CSkybox(CDispositifD3D11* pDispositif_) :
+    Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams())
 {
     pDispositif = pDispositif_;
 
@@ -132,7 +133,7 @@ void CSkybox::InitEffet()
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(bd));
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(ShadersParams);
+    bd.ByteWidth = sizeof(ShaderCSkyBox::ShadersParams);
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bd.CPUAccessFlags = 0;
     pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
@@ -217,33 +218,40 @@ void CSkybox::Draw()
     // input layout des sommets
     pImmediateContext->IASetInputLayout(pVertexLayout);
 
+
     // Initialiser et sélectionner les «constantes» de l'effet
-    ShadersParams sp;
-    XMVECTOR v = CMoteurWindows::GetInstance().GetCameraPosition();
-    XMMATRIX matPos = XMMatrixTranslation(v.vector4_f32[0], v.vector4_f32[1], v.vector4_f32[2]);
+    XMVECTOR cameraPos = CMoteurWindows::GetInstance().GetCameraPosition();
+
+    m_matWorld = XMMatrixTranslation(cameraPos.vector4_f32[0], cameraPos.vector4_f32[1], cameraPos.vector4_f32[2]);
     XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
-    sp.matWorldViewProj = XMMatrixTranspose(matPos * viewProj);
-    pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &sp, 0, 0);
+
+    m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
+    pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
     ID3DX11EffectConstantBuffer* pCB = pEffet->GetConstantBufferByName("param"); // Nous n'avons qu'un seul CBuffer
         pCB->SetConstantBuffer(pConstantBuffer);
+
 
     // Activation de la texture
     ID3DX11EffectShaderResourceVariable* variableTexture;
     variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
     variableTexture->SetResource(pTextureD3D);
 
+
     // Le sampler state
     ID3DX11EffectSamplerVariable* variableSampler;
     variableSampler = pEffet->GetVariableByName("SampleState")->AsSampler();
     variableSampler->SetSampler(0, pSampleState);
 
+
     // Désactiver Culling et ZBuffer
     pDispositif->DesactiverCulling();
     pDispositif->DesactiverZBuffer();
 
+
     // **** Rendu de l'objet
     pPasse->Apply(0, pImmediateContext);
     pImmediateContext->DrawIndexed(36, 0, 0);
+
 
     // Réactiver Culling et ZBuffer
     pDispositif->ActiverCulling();

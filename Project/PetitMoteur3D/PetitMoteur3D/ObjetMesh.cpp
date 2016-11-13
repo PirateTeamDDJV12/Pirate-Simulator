@@ -27,25 +27,11 @@ namespace PM3D
     UINT CObjetMesh::CSommetMesh::numElements;
 
 
-    struct ShadersParams // toujours un multiple de 16 pour les constantes
-    {
-        XMMATRIX matWorldViewProj;	// la matrice totale 
-        XMMATRIX matWorld;			// matrice de transformation dans le monde 
-        XMVECTOR vLumiere; 			// la position de la source d'éclairage (Point)
-        XMVECTOR vCamera; 			// la position de la caméra
-        XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
-        XMVECTOR vAMat; 			// la valeur ambiante du matériau
-        XMVECTOR vDEcl; 			// la valeur diffuse de l'éclairage 
-        XMVECTOR vDMat; 			// la valeur diffuse du matériau 
-        XMVECTOR vSEcl; 			// la valeur spéculaire de l'éclairage 
-        XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
-        float puissance;
-        int bTex;					// Texture ou materiau 
-        XMFLOAT2 remplissage;
-    };
+    
 
     // Ancien constructeur
-    CObjetMesh::CObjetMesh(IChargeur& chargeur, CDispositifD3D11* _pDispositif)
+    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* _pDispositif) :
+        Mesh<ShaderCObjectMesh::ShadersParams>( shaderParameter )
     {
         // prendre en note le dispositif
         pDispositif = _pDispositif;
@@ -59,7 +45,8 @@ namespace PM3D
 
     // Constructeur de conversion
     // Constructeur pour test ou pour création d'un objet de format OMB
-    CObjetMesh::CObjetMesh(IChargeur& chargeur, string nomfichier, CDispositifD3D11* _pDispositif)
+    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, string nomfichier, CDispositifD3D11* _pDispositif) :
+        PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
         pDispositif = _pDispositif;
@@ -76,7 +63,8 @@ namespace PM3D
     }
 
     // Constructeur pour lecture d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomfichier, CDispositifD3D11* _pDispositif)
+    CObjetMesh::CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, CDispositifD3D11* _pDispositif) :
+        PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
         pDispositif = _pDispositif;
@@ -92,7 +80,7 @@ namespace PM3D
     {
         SubsetMaterialIndex.clear();
         SubsetIndex.clear();
-        Material.clear();
+        m_materials.clear();
 
         DXRelacher(pConstantBuffer);
         DXRelacher(pSampleState);
@@ -113,7 +101,7 @@ namespace PM3D
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(ShadersParams);
+        bd.ByteWidth = sizeof(ShaderCObjectMesh::ShadersParams);
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         bd.CPUAccessFlags = 0;
         HRESULT hr = pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
@@ -172,68 +160,14 @@ namespace PM3D
         // Création de l'état de sampling
         pD3DDevice->CreateSamplerState(&samplerDesc, &pSampleState);
     }
-
-    void CObjetMesh::Anime(float tempsEcoule)
-    {
-        ////rotation =  rotation + ( (XM_PI * 2.0f) / 10.0f * tempsEcoule );
-        ////
-        ////// modifier la matrice de l'objet bloc
-        ////matWorld = XMMatrixRotationY( rotation );
-
-        //// Pour les mouvements, nous utilisons le gestionnaire de saisie
-        //CMoteurWindows& rMoteur = CMoteurWindows::GetInstance();
-        //CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
-        //
-        ///*
-        //// ******** POUR LA SOURIS ************
-        //// Vérifier si déplacement vers la gauche
-        //if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-        //    (rGestionnaireDeSaisie.EtatSouris().lX < 0))
-        //{
-        //    rotation = rotation + ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
-
-        //    // modifier la matrice de l'objet X
-        //    matWorld = XMMatrixRotationY(rotation);
-        //}
-
-        //// Vérifier si déplacement vers la droite
-        //if((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-        //    (rGestionnaireDeSaisie.EtatSouris().lX > 0))
-        //{
-        //    rotation = rotation - ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
-
-        //    // modifier la matrice de l'objet X
-        //    matWorld = XMMatrixRotationY(rotation);
-        //}*/
-
-
-
-        //// ******** POUR LA SOURIS ************
-        //// Vérifier si déplacement vers la gauche
-        //if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-        //    (rGestionnaireDeSaisie.EtatSouris().lX < 0))
-        //{
-        //    rotation = rotation + ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
-
-
-        //    // modifier la matrice de l'objet X
-        //    matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
-        //}
-
-        //// Vérifier si déplacement vers la droite
-        //if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
-        //    (rGestionnaireDeSaisie.EtatSouris().lX > 0))
-        //{
-        //    rotation = rotation - ((XM_PI * 2.0f) / 2.0f * tempsEcoule);
-
-
-        //    // modifier la matrice de l'objet X
-        //    matWorld = XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(position);
-        //}
-    }
-
+    
     void CObjetMesh::Draw()
     {
+#ifdef DEBUG_PIRATE_SIMULATOR
+        OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
+#endif
+        
+
         // Obtenir le contexte
         ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
 
@@ -245,52 +179,44 @@ namespace PM3D
 
         // Index buffer
         pImmediateContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
         // Vertex buffer
         UINT stride = sizeof(CSommetMesh);
         UINT offset = 0;
         pImmediateContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
 
+
         // Initialiser et sélectionner les «constantes» de l'effet
-        ShadersParams sp;
         XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
 
-        sp.matWorldViewProj = XMMatrixTranspose(m_gameObject->getWorldMatrix() * viewProj);
-        sp.matWorld = XMMatrixTranspose(m_gameObject->getWorldMatrix());
+        m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
+        m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-        sp.vLumiere = XMVectorSet(-10.0f, 10.0f, -15.0f, 1.0f);
-        sp.vCamera = XMVectorSet(0.0f, 3.0f, -5.0f, 1.0f);
-        sp.vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
-        sp.vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
-        sp.vSEcl = XMVectorSet(0.6f, 0.6f, 0.6f, 1.0f);
 
         // Le sampler state
         ID3DX11EffectSamplerVariable* variableSampler;
         variableSampler = pEffet->GetVariableByName("SampleState")->AsSampler();
         variableSampler->SetSampler(0, pSampleState);
 
+
         // Dessiner les subsets non-transparents
         for(int i = 0; i < NombreSubset; ++i)
         {
             int indexStart = SubsetIndex[i];
-            int indexDrawAmount = SubsetIndex[i + 1] - SubsetIndex[i];
+            int indexDrawAmount = SubsetIndex[i + 1] - indexStart;
             if(indexDrawAmount)
             {
-                sp.vAMat = XMLoadFloat4(&Material[SubsetMaterialIndex[i]].Ambient);
-                sp.vDMat = XMLoadFloat4(&Material[SubsetMaterialIndex[i]].Diffuse);
-                sp.vSMat = XMLoadFloat4(&Material[SubsetMaterialIndex[i]].Specular);
-                sp.puissance = Material[SubsetMaterialIndex[i]].Puissance;
+                m_shaderParameter.vAMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Ambient);
+                m_shaderParameter.vDMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Diffuse);
+                m_shaderParameter.vSMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Specular);
+                m_shaderParameter.puissance = m_materials[SubsetMaterialIndex[i]].Puissance;
 
                 // Activation de la texture ou non
-                if(Material[SubsetMaterialIndex[i]].pTextureD3D != NULL)
+                if(m_materials[SubsetMaterialIndex[i]].pTextureD3D != NULL)
                 {
                     ID3DX11EffectShaderResourceVariable* variableTexture;
                     variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
-                    variableTexture->SetResource(Material[SubsetMaterialIndex[i]].pTextureD3D);
-                    sp.bTex = 1;
-                }
-                else
-                {
-                    sp.bTex = 1;
+                    variableTexture->SetResource(m_materials[SubsetMaterialIndex[i]].pTextureD3D);
                 }
 
                 // IMPORTANT pour ajuster les param.
@@ -298,7 +224,7 @@ namespace PM3D
 
                 ID3DX11EffectConstantBuffer* pCB = pEffet->GetConstantBufferByName("param");  // Nous n'avons qu'un seul CBuffer
                 pCB->SetConstantBuffer(pConstantBuffer);
-                pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &sp, 0, 0);
+                pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
                 pImmediateContext->DrawIndexed(indexDrawAmount, indexStart, 0);
             }
@@ -368,7 +294,7 @@ namespace PM3D
         //     Vous pourriez changer les valeurs, j'ai conservé 
         //     celles du constructeur
         CMaterial m;
-        Material.push_back(m);
+        m_materials.push_back(m);
 
         // 4b) Copie des matériaux dans la version locale
         for(int i = 0; i < chargeur.GetNombreMaterial(); ++i)
@@ -382,19 +308,19 @@ namespace PM3D
                                  mat.Specular,
                                  mat.Puissance);
 
-            Material.push_back(mat);
+            m_materials.push_back(mat);
         }
 
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble
         for(int i = 0; i < chargeur.GetNombreSubset(); ++i)
         {
             int index;
-            for(index = 0; index < Material.size(); ++index)
+            for(index = 0; index < m_materials.size(); ++index)
             {
-                if(Material[index].NomMateriau == chargeur.GetMaterialName(i)) break;
+                if(m_materials[index].NomMateriau == chargeur.GetMaterialName(i)) break;
             }
 
-            if(index >= Material.size()) index = 0;  // valeur de défaut
+            if(index >= m_materials.size()) index = 0;  // valeur de défaut
 
             SubsetMaterialIndex.push_back(index);
         }
@@ -403,14 +329,14 @@ namespace PM3D
         // 4d) Chargement des textures
         CGestionnaireDeTextures& TexturesManager = CMoteurWindows::GetInstance().GetTextureManager();
 
-        for(unsigned int i = 0; i < Material.size(); ++i)
+        for(unsigned int i = 0; i < m_materials.size(); ++i)
         {
-            if(Material[i].NomFichierTexture != "")
+            if(m_materials[i].NomFichierTexture != "")
             {
                 wstring ws;
-                ws.assign(Material[i].NomFichierTexture.begin(), Material[i].NomFichierTexture.end());
+                ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
 
-                Material[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
             }
 
         }
@@ -480,7 +406,7 @@ namespace PM3D
         fichier.write((char*)&NbMaterial, sizeof(int));
 
         MaterialBlock mb;
-        for(int i = 0; i < NbMaterial; ++i)
+        for(size_t i = 0; i < NbMaterial; ++i)
         {
             MatLoad[i].MatToBlock(mb);
             fichier.write((char*)&mb, sizeof(MaterialBlock));
@@ -584,13 +510,13 @@ namespace PM3D
         int NbMaterial;
         fichier.read((char*)&NbMaterial, sizeof(int));
 
-        Material.resize(NbMaterial);
+        m_materials.resize(NbMaterial);
 
         MaterialBlock mb;
         for(int i = 0; i < NbMaterial; ++i)
         {
             fichier.read((char*)&mb, sizeof(MaterialBlock));
-            Material[i].BlockToMat(mb);
+            m_materials[i].BlockToMat(mb);
         }
 
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble
@@ -602,14 +528,14 @@ namespace PM3D
         // 4d) Chargement des textures
         CGestionnaireDeTextures& TexturesManager = CMoteurWindows::GetInstance().GetTextureManager();
 
-        for(unsigned int i = 0; i < Material.size(); ++i)
+        for(unsigned int i = 0; i < m_materials.size(); ++i)
         {
-            if(Material[i].NomFichierTexture != "")
+            if(m_materials[i].NomFichierTexture != "")
             {
                 wstring ws;
-                ws.assign(Material[i].NomFichierTexture.begin(), Material[i].NomFichierTexture.end());
+                ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
 
-                Material[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
             }
 
         }

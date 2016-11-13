@@ -12,25 +12,6 @@ using namespace DirectX;
 
 namespace PirateSimulator
 {
-
-    struct ShadersParams
-    {
-        XMMATRIX matWorldViewProj;	// la matrice totale 
-        XMMATRIX matWorld;			// matrice de transformation dans le monde 
-        XMVECTOR vLumiere; 			// la position de la source d'éclairage (Point)
-        XMVECTOR vCamera; 			// la position de la caméra
-        XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
-        XMVECTOR vAMat; 			// la valeur ambiante du matériau
-        XMVECTOR vDEcl; 			// la valeur diffuse de l'éclairage 
-        XMVECTOR vDMat; 			// la valeur diffuse du matériau 
-
-        XMVECTOR vSEcl; 			// la valeur spéculaire de l'éclairage 
-        XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
-        float puissance;
-        int bTex;					// Texture ou materiau 
-        XMFLOAT2 remplissage;
-    };
-
     D3D11_INPUT_ELEMENT_DESC Terrain::layout[] =
     {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -41,7 +22,8 @@ namespace PirateSimulator
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
     Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, const std::string& fieldFileName, const std::string& textureFileName)
-        : m_terrainWidth(w), m_terrainHeight(h)
+        : m_terrainWidth(w), m_terrainHeight(h),
+        Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
     {
         pDispositif = pDispositif_; // Prendre en note le dispositif
 
@@ -62,7 +44,8 @@ namespace PirateSimulator
         Init(textureFileName);
     }
 
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_) :
+        Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
     {
         pDispositif = pDispositif_;  // Prendre en note le dispositif
     }
@@ -102,20 +85,17 @@ namespace PirateSimulator
         pImmediateContext->IASetInputLayout(pVertexLayout);
 
         // Initialiser et sélectionner les «constantes» du VS
-        ShadersParams sp;
         XMMATRIX viewProj = PM3D::CMoteurWindows::GetInstance().GetMatViewProj();
 
-        sp.matWorldViewProj = XMMatrixTranspose(matWorld * viewProj);
-        sp.matWorld = XMMatrixTranspose(matWorld);
+        m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
+        m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-        sp.vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
-        sp.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->position();
-        sp.vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
-        sp.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-        sp.vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
-        sp.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
+        m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
+        m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
 
-        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &sp, 0, 0);
+        m_shaderParameter.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->m_transform.m_position;
+
+        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
         pImmediateContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
 
@@ -137,10 +117,10 @@ namespace PirateSimulator
         // Dessiner les subsets non-transparents    
         //m_material = Material(MaterialProperties());
 
-        sp.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
-        sp.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
-        sp.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
-        sp.puissance = m_material.m_property.power;
+        m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
+        m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
+        m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
+        m_shaderParameter.puissance = m_material.m_property.power;
 
         // Activation de la texture ou non
         if (m_material.pTextureD3D != nullptr)
@@ -150,14 +130,12 @@ namespace PirateSimulator
             variableTexture->SetResource(m_material.pTextureD3D);
         }
 
-        sp.bTex = 1;
-
         // IMPORTANT pour ajuster les param.
         m_textureEffect.m_pass->Apply(0, pImmediateContext);
 
         ID3DX11EffectConstantBuffer* pCB = m_textureEffect.m_effect->GetConstantBufferByName("param");  // Nous n'avons qu'un seul CBuffer
         pCB->SetConstantBuffer(pConstantBuffer);
-        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &sp, 0, 0);
+        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
 
 
@@ -205,7 +183,7 @@ namespace PirateSimulator
         // Initialisation des shaders
         InitShaders();
 
-        matWorld = XMMatrixIdentity();
+        m_matWorld = XMMatrixIdentity();
 
         rotation = 0.0f;
 
@@ -257,7 +235,7 @@ namespace PirateSimulator
         Vertex topLeft = m_arraySommets[myFirstX][mySecondZ];
         Vertex bottomRight = m_arraySommets[mySecondX][myFirstZ];
         Vertex topRight = m_arraySommets[mySecondX][mySecondZ];
-
+        /*
         float height = 0;
 
         if (x + z >= 1.0f)
@@ -279,7 +257,18 @@ namespace PirateSimulator
             height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
         }
 
-        return height;
+        return height;*/
+
+        float diffLeft = topLeft.position().z() - bottomLeft.position().z();
+
+        if (diffLeft == 0.f)
+        {
+            diffLeft = 1.f;
+        }
+
+        float coeff = (topLeft.position().x() - bottomLeft.position().x()) / diffLeft;
+
+        return coeff * (x + z) + bottomLeft.position().y();
     }
 
     void Terrain::InitShaders()
@@ -318,7 +307,7 @@ namespace PirateSimulator
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(ShadersParams);
+        bd.ByteWidth = sizeof(ShaderTerrain::ShadersParams);
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         bd.CPUAccessFlags = 0;
         pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
@@ -378,7 +367,7 @@ namespace PirateSimulator
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(ShadersParams);
+        bd.ByteWidth = sizeof(ShaderTerrain::ShadersParams);
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         bd.CPUAccessFlags = 0;
         HRESULT hr = pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
