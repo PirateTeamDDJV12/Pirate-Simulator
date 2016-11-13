@@ -6,5 +6,4 @@
 
 using PirateSimulator::CameraManager;
 
-
 CameraManager CameraManager::singleton;

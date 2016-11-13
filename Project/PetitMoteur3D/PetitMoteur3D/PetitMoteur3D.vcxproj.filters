@@ -111,6 +111,9 @@
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
+	  <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
+	  <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\RendererManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>

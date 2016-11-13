@@ -10,6 +10,7 @@
 #include "../../PirateSimulator/Moves.h"
 
 #include <fstream>
+#include <corecrt_io.h>
 
 using namespace UtilitairesDX;
 
@@ -27,6 +28,25 @@ namespace PM3D
     UINT CObjetMesh::CSommetMesh::numElements;
 
 
+    //void CObjetMesh::ConvertToOMB(string totalFileNameIn, const string& totalFileNameOut)
+    //{
+    //    if (totalFileNameIn != totalFileNameOut)
+    //    {
+    //        if (access(totalFileNameIn.c_str(), 0) != -1)
+    //        {
+    //            CParametresChargement param;
+
+    //            param.bInverserCulling = false;
+    //            param.bMainGauche = true;
+    //            param.NomFichier = totalFileNameIn;
+
+    //            CChargeurOBJ chargeur;
+    //            chargeur.Chargement(param);
+
+    //            EcrireFichierBinaire(chargeur, totalFileNameOut);
+    //        }
+    //    }        
+    //}
     
 
     // Ancien constructeur
@@ -45,32 +65,33 @@ namespace PM3D
 
     // Constructeur de conversion
     // Constructeur pour test ou pour création d'un objet de format OMB
-    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, string nomfichier, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* _pDispositif) :
         PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
         pDispositif = _pDispositif;
 
+
         //// Placer l'objet sur la carte graphique
         // TransfertObjet(chargeur); // On n'utilisera plus cette fonction
 
-        EcrireFichierBinaire(chargeur, nomfichier);
+        EcrireFichierBinaire(chargeur, nomFichier);
 
-        LireFichierBinaire(nomfichier);
+        LireFichierBinaire(nomFichier);
 
         // Initialisation de l'effet
         InitEffet();
     }
 
     // Constructeur pour lecture d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, CDispositifD3D11* _pDispositif) :
         PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
         pDispositif = _pDispositif;
 
         // Placer l'objet sur la carte graphique
-        LireFichierBinaire(nomfichier);
+        LireFichierBinaire(nomFichier);
 
         // Initialisation de l'effet
         InitEffet();
@@ -342,7 +363,7 @@ namespace PM3D
         }
     }
 
-    void CObjetMesh::EcrireFichierBinaire(IChargeur& chargeur, string nomFichier)
+    void CObjetMesh::EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier)
     {
         // 1. SOMMETS a) Créations des sommets dans un tableau temporaire
         unsigned int nombreSommets = chargeur.GetNombreSommets();
