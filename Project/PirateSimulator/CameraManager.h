@@ -15,12 +15,12 @@ namespace PirateSimulator
 {
     struct CameraInfo
     {
-        GameObject* m_mainCamera;
+        GameObjectRef m_mainCamera;
         cameraModule::BaseCamera* m_cameraComponent;
         IBehaviour* m_cameraBehavior;
 
         cameraModule::BaseCamera::type m_cameraType;
-        GameObject* m_cameraTarget;
+        GameObjectRef m_cameraTarget;
     };
 
     class CameraManager
@@ -32,13 +32,13 @@ namespace PirateSimulator
     private:
         CameraInfo m_cameraInfo;
 
-
+        
     private:
-        CameraManager() {}
+        CameraManager(){}
 
 
     public:
-        GameObject* getMainCameraGO() const noexcept { return m_cameraInfo.m_mainCamera; }
+        GameObjectRef getMainCameraGO() const noexcept { return m_cameraInfo.m_mainCamera; }
         cameraModule::BaseCamera* getMainCameraComponent() const noexcept { return m_cameraInfo.m_cameraComponent; }
         IBehaviour* getMainCameraBehaviour() const noexcept { return m_cameraInfo.m_cameraBehavior; }
 
@@ -49,7 +49,7 @@ namespace PirateSimulator
 
 
     public:
-        void setMainCamera(GameObject* camera) noexcept
+        void setMainCamera(GameObjectRef camera) noexcept
         {
             if (camera)
             {
@@ -57,10 +57,10 @@ namespace PirateSimulator
 
                 if (cameraComponent)
                 {
-                    m_cameraInfo.m_mainCamera = camera;
+                    m_cameraInfo.m_mainCamera      = camera;
                     m_cameraInfo.m_cameraComponent = cameraComponent;
 
-                    m_cameraInfo.m_cameraType = cameraComponent->getCameraType();
+                    m_cameraInfo.m_cameraType   = cameraComponent->getCameraType();
                     m_cameraInfo.m_cameraTarget = cameraComponent->getTarget();
 
                     switch (m_cameraInfo.m_cameraType)

@@ -43,7 +43,7 @@ namespace PirateSimulator
             void rotate(Move::Rotation::Direction direction);
             void anime(float ellapsedTime);
 
-            void setTerrain(GameObject* fieldObject)
+            void setTerrain(GameObjectRef fieldObject)
             {
                 m_terrain = fieldObject->getComponent<IMesh>()->as<Terrain>();
             }

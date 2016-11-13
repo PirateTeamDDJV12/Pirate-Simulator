@@ -92,7 +92,7 @@ namespace PirateSimulator
             DirectX::XMMATRIX  m_view;      // View matrix
             DirectX::XMMATRIX  m_proj;      // Projection matrix
 
-            GameObject* m_target;
+            GameObjectRef m_target;
 
             type m_cameraType;
 
@@ -100,13 +100,12 @@ namespace PirateSimulator
         public:
             BaseCamera(
                 const CameraProjectionParameters& defaultProjParameters,
-                const CameraMovingParameters& moveParams,
-                GameObject* m_target);
+                const CameraMovingParameters& moveParams);
 
             static std::string typeId() noexcept { return "CameraComponent"; }
             virtual std::string getTypeId() const noexcept { return BaseCamera::typeId(); }
 
-            void setTarget(GameObject* target) noexcept
+            void setTarget(GameObjectRef target) noexcept
             {
                 m_target = target;
 
@@ -114,7 +113,7 @@ namespace PirateSimulator
                     &BaseCamera::updateViewMatrixAsObjectCamera : &BaseCamera::updateViewMatrixAsForwardCamera);
             }
 
-            GameObject* getTarget() noexcept { return m_target; }
+            GameObjectRef getTarget() noexcept { return m_target; }
 
             void updateViewMatrix() { (this->*m_pUpdateViewMatrix)(); }
 
