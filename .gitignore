@@ -1,10 +1,23 @@
 *.vs
-
+*.obj
 *.db
 *.opendb
+*.ipch
+*.lnk
+*.jpg
+**/testOutput.txt
+**/heightmapOutput2.txt
+**/heightmapOutput.txt
 
 Project/*/*/Debug/*
 Project/*/*/Release/*
+Project/*/*/x64/*
+
+Project/*/*/*/Debug/*
+Project/*/*/*/Release/*
+Project/*/*/*/x64/*
+Project/*/*/ipch/*
 
 Project/*/Debug/*
 Project/*/Release/*
+Project/*/x64/*
