@@ -10,6 +10,8 @@ Created by Sun-lay Gagneux
 
 #include "GameObject.h"
 
+#include <sstream>
+
 
 namespace PirateSimulator
 {
@@ -27,16 +29,26 @@ namespace PirateSimulator
             cameraModule::BaseCamera* m_cameraComponent;
 
             float m_offset;
+            float m_rotationAroundY;
+            float m_rotationAroundX;
+            GameObjectRef m_target;
 
         public:
             ObjectCameraBehaviour(float offset = DEFAULT_OFFSET) :
-                m_offset{ offset }
+                m_offset{ offset },
+                m_rotationAroundY{ 0.0f },
+                m_rotationAroundX{ 0.0f }
             {}
 
             void setGameObject(GameObject* parent)
             {
                 m_gameObject = parent;
                 m_cameraComponent = m_gameObject->getComponent<BaseCamera>();
+            }
+
+            void setTarget(GameObjectRef target)
+            {
+                m_target = target;
             }
 
             virtual void move(Move::Translation::Direction direction);
