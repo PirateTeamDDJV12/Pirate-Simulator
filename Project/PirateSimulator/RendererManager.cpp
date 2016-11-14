@@ -117,30 +117,25 @@ void RendererManager::deepAddToStack(size_t x, size_t z) noexcept
 
 void RendererManager::updateRenderedStack()
 {
-    size_t xCameraArea = (CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0] < 0.f ? 
-                            0 : 
-                            CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0] / AREA_WIDTH);
+    float xCameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0];
+    float zCameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[2];
 
-    size_t zCameraArea = (CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[2] < 0.f ? 
-                            0 : 
-                            CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[2] / AREA_WIDTH);
-
-    float scalarProductCForwardWForward = CameraManager::singleton.getMainCameraGO()->m_transform.m_forward.vector4_f32[2];
-    float scalarProductCRightWRight = CameraManager::singleton.getMainCameraGO()->m_transform.m_forward.vector4_f32[0];
+    size_t xCameraArea = (xCameraPosition < 0.f ? 0 : xCameraPosition / AREA_WIDTH);
+    size_t zCameraArea = (zCameraPosition < 0.f ? 0 : zCameraPosition / AREA_WIDTH);
 
     if (xCameraArea != m_currentX || 
         zCameraArea != m_currentZ || 
-        scalarProductCForwardWForward != m_forwardForward || 
-        scalarProductCRightWRight != m_rightRight)
+        zCameraPosition != m_forwardForward ||
+        xCameraPosition != m_rightRight)
     {
         m_stack.clear();
         m_stack.reserve(MAX_VISIBLE_AREA + m_movingMeshArray.size());
 
         (this->*m_pStackAddingMethod)(xCameraArea, zCameraArea);
 
-        if (scalarProductCForwardWForward > 0.f) 
+        if (zCameraPosition > 0.f)
         {
-            if (scalarProductCRightWRight > 0.f) // NE
+            if (xCameraPosition > 0.f) // NE
             {
                 if (xCameraArea != 0 && xCameraArea != LAST_AREA)
                 {
@@ -294,7 +289,7 @@ void RendererManager::updateRenderedStack()
         }
         else
         {
-            if (scalarProductCRightWRight > 0.f) // SE
+            if (xCameraPosition > 0.f) // SE
             {
                 if (xCameraArea != 0 && xCameraArea != LAST_AREA)
                 {
@@ -444,9 +439,20 @@ void RendererManager::updateRenderedStack()
             }
         }
 
-        xCameraArea = m_currentX;
-        zCameraArea = m_currentZ;
-        scalarProductCForwardWForward = m_forwardForward;
-        scalarProductCRightWRight = m_rightRight;
+        m_currentX = xCameraArea;
+        m_currentZ = zCameraArea;
+        m_forwardForward = zCameraPosition;
+        m_rightRight = xCameraPosition;
+    }
+
+    for (auto iter = m_movingMeshArray.begin(); iter != m_movingMeshArray.end(); ++iter)
+    {
+        float xM = (*iter)->getGameObject()->m_transform.m_position.vector4_f32[0] - xCameraPosition;
+        float zM = (*iter)->getGameObject()->m_transform.m_position.vector4_f32[2] - zCameraPosition;
+
+        if ((xM*xM + zM*zM) < LONG_CAMERA_SQUARE_RANGE)
+        {
+            m_stack.push_back((*iter));
+        }
     }
 }
