@@ -185,7 +185,7 @@ namespace PM3D
     void CObjetMesh::Draw()
     {
 #ifdef DEBUG_PIRATE_SIMULATOR
-        OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
+        //OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
 #endif
         
 

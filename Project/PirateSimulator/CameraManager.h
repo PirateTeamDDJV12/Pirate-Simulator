@@ -66,7 +66,7 @@ namespace PirateSimulator
                     switch (m_cameraInfo.m_cameraType)
                     {
                     case cameraModule::BaseCamera::OBJECT_CAMERA:
-                        m_cameraInfo.m_cameraBehavior = m_cameraInfo.m_cameraTarget->getComponent<cameraModule::ObjectCameraBehaviour>();
+                        m_cameraInfo.m_cameraBehavior = m_cameraInfo.m_mainCamera->getComponent<cameraModule::ObjectCameraBehaviour>();
 
                         if (!m_cameraInfo.m_cameraBehavior)
                         {
