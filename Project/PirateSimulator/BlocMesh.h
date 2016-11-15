@@ -309,7 +309,6 @@ namespace PirateSimulator
 
         // Définitions des valeurs d'animation
         ID3D11Buffer* pConstantBuffer;
-        float m_rotation;
     };
 }
 
