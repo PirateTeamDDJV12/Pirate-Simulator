@@ -337,7 +337,7 @@ namespace PM3D
 
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
-            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(vehiculeMesh);
+            PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             //PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
 
 
