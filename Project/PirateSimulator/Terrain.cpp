@@ -21,8 +21,8 @@ namespace PirateSimulator
 
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, const std::string& fieldFileName, const std::string& textureFileName)
-        : m_terrainWidth(w), m_terrainHeight(h),
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
+        : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
         Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
     {
         pDispositif = pDispositif_; // Prendre en note le dispositif
@@ -220,14 +220,14 @@ namespace PirateSimulator
         float x = pos.vector4_f32[0], z = pos.vector4_f32[2];
 
 
-        if (z < 0 || z + 1 > m_terrainHeight || x < 0 || x + 1 > m_terrainWidth)
+        if (z < 0 || z + 1 > m_terrainHeight * m_terrainScale || x < 0 || x + 1 > m_terrainWidth * m_terrainScale)
         {
             return 0.0f;
         }
 
-        float myFirstX = floor(x);
-        float myFirstZ = floor(z);
-        float mySecondZ = ceil(z);
+        float myFirstX = UtilitairesDX::roundNum(x, m_terrainScale, false) / m_terrainScale;
+        float myFirstZ = UtilitairesDX::roundNum(z, m_terrainScale, false) / m_terrainScale;
+        float mySecondZ = UtilitairesDX::roundNum(z, m_terrainScale, true) / m_terrainScale;
 
         Vertex bottomLeft = m_vertexArray[myFirstX + myFirstZ * m_terrainWidth];
         Vertex topLeft = m_vertexArray[myFirstX + mySecondZ * m_terrainWidth];
