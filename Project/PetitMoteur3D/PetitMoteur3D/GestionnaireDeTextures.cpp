@@ -1,5 +1,3 @@
-
-#include "StdAfx.h"
 #include "dispositifD3D11.h"
 #include "GestionnaireDeTextures.h"
 

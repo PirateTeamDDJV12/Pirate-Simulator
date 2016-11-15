@@ -104,13 +104,16 @@ namespace PirateSimulator
     private:
         int m_terrainWidth;
         int m_terrainHeight;
-        std::vector<std::vector<Vertex>> m_arraySommets;
-        std::vector<CSommetBloc> m_sommets;
+        int m_terrainScale;
+        std::vector<Vertex> m_vertexArray;
+        std::vector<CSommetBloc> m_csommetsArray;
         std::vector<unsigned int> m_index_bloc;
 
     public:
+        // Get the configuration from the config file
         Terrain(PM3D::CDispositifD3D11* pDispositif);
-        Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w, const std::string& fieldFileName, const std::string& textureFileName);
+        // Override the configuration file
+        Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
 
         // Destructeur
         virtual ~Terrain(void);
