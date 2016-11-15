@@ -13,7 +13,6 @@
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
 
-#include "../../PirateSimulator/Config.h"
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
 #include "../../PirateSimulator/Skybox.h"

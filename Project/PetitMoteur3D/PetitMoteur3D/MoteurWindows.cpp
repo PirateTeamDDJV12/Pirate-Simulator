@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "resource.h"
 
 #include "MoteurWindows.h"

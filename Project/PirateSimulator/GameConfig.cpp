@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include "GameConfig.h"
 
 using namespace PirateSimulator::GameGlobals;

@@ -68,6 +68,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -87,6 +88,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -103,7 +105,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp" />
     <ClCompile Include="..\..\PirateSimulator\CameraManager.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\Config.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="Bloc.cpp" />
     <ClCompile Include="BlocEffet1.cpp" />
     <ClCompile Include="ChargeurOBJ.cpp" />
+    <ClCompile Include="Config\Config.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DIManipulateur.cpp" />
     <ClCompile Include="dispositifD3D11.cpp" />
@@ -148,7 +150,6 @@
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\CameraManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Component.h" />
-    <ClInclude Include="..\..\PirateSimulator\Config.h" />
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="BlocEffet1.h" />
     <ClInclude Include="chargeur.h" />
     <ClInclude Include="ChargeurOBJ.h" />
+    <ClInclude Include="Config\Config.hpp" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DIManipulateur.h" />
     <ClInclude Include="dispositif.h" />
@@ -199,8 +201,8 @@
     <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Config\Ressources\heightmap.conf" />
     <None Include="PetitMoteur3D.ico" />
-    <None Include="PirateSimulator\heightmap.conf" />
     <None Include="small.ico" />
     <None Include="ReadMe.txt" />
   </ItemGroup>

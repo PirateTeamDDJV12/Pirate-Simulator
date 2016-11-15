@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "LevelCameraBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 
