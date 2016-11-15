@@ -108,6 +108,7 @@
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\InputManager.h" />
     <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
