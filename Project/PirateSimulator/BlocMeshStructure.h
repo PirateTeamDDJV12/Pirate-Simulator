@@ -38,19 +38,25 @@ namespace PirateSimulator
         {}
     };
 
+    class Transform;
 
     struct BlocStructure
     {
     public:
-        DirectX::XMFLOAT3 position[8];
+        DirectX::XMFLOAT3 m_position[8];
 
         BlocPoint m_apex[24];
 
 
     public:
         BlocStructure(const DirectX::XMFLOAT3& centralPoint, float xLength, float yLength, float zLength);
+        BlocStructure(const PirateSimulator::Transform& centralPoint, float xLength, float yLength, float zLength);
         BlocStructure(BlocPoint* blocDatas);
         BlocStructure(float xLength, float yLength, float zLength);
+
+
+    public:
+        void mapPoints(const DirectX::XMFLOAT3& centralPoint, float xLength, float yLength, float zLength);
     };
 }
 
