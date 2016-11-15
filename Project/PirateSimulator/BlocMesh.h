@@ -25,6 +25,8 @@ namespace PirateSimulator
             DirectX::XMVECTOR vDEcl; 			// la valeur diffuse de l'éclairage 
             DirectX::XMVECTOR vDMat; 			// la valeur diffuse du matériau 
 
+            /*DirectX::XMVECTOR fill1;
+            DirectX::XMVECTOR fill2;*/
 
             ShadersParams()
             {

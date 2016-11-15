@@ -17,22 +17,22 @@ namespace PirateSimulator
 
 
     public:
-        DirectX::XMFLOAT3* m_position;
+        DirectX::XMFLOAT3 m_position;
         DirectX::XMFLOAT3 m_normal;
         DirectX::XMFLOAT2 m_textureCoordinate;
 
     public:
         BlocPoint() :
-            m_position{ nullptr },
+            m_position{},
             m_normal{},
             m_textureCoordinate{}
         {}
 
-        BlocPoint(DirectX::XMFLOAT3& _position, 
+        BlocPoint(const DirectX::XMFLOAT3& _position, 
             const DirectX::XMFLOAT3& _normal, 
             const DirectX::XMFLOAT2& _coordTex = DirectX::XMFLOAT2(0, 0)
         ) :
-            m_position{&_position},
+            m_position{_position},
             m_normal{_normal},
             m_textureCoordinate{_coordTex}
         {}
