@@ -104,6 +104,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\BlocMesh.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\BlocMeshStructure.cpp" />
     <ClCompile Include="..\..\PirateSimulator\CameraManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp" />
@@ -149,6 +151,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\PirateSimulator\Angle.h" />
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\BlocMesh.h" />
+    <ClInclude Include="..\..\PirateSimulator\BlocMesh.inline.h" />
+    <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h" />
     <ClInclude Include="..\..\PirateSimulator\CameraManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Component.h" />
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />

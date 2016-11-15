@@ -144,6 +144,12 @@
     <ClCompile Include="Config\Config.cpp">
       <Filter>Fichiers sources\PirateSimulator\Config</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\BlocMesh.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\BlocMeshStructure.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -316,6 +322,15 @@
     </ClInclude>
     <ClInclude Include="Config\Config.hpp">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\BlocMesh.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\BlocMesh.inline.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,7 @@
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/CameraManager.h"
 #include "../../PirateSimulator/InputManager.h"
+#include "../../PirateSimulator/BlocMesh.h"
 
 
 namespace PM3D
@@ -340,6 +341,23 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             //PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
+
+            PirateSimulator::Transform transformCube{};
+            transformCube.m_position.vector4_f32[1] = 3.f;
+
+            auto cube = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+                new PirateSimulator::GameObject(
+                    transformCube, "Cube"
+                )
+            );
+
+            cube->addComponent<PirateSimulator::IMesh>(
+                new PirateSimulator::BlocMesh<PirateSimulator::BlocStructure>(
+                    0,0,0, pDispositif, PirateSimulator::ShaderBloc::ShadersParams()
+                )
+            );
+
+            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(cube->getComponent<PirateSimulator::IMesh>());
 
             return true;
         }
