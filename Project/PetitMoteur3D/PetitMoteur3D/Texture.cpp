@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "strsafe.h"
 #include "dispositifD3D11.h"
 #include "Texture.h"

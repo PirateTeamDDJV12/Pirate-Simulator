@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Vect3f.h"
 
 #include <cmath>

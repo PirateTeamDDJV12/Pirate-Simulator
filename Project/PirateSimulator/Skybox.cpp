@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "Skybox.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Resource.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Singleton.h"

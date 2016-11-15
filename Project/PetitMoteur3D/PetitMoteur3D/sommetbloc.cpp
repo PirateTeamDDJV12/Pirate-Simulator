@@ -1,5 +1,3 @@
-
-#include "StdAfx.h"
 #include "sommetbloc.h"
 using namespace DirectX;
 // Definir l'organisation de notre sommet

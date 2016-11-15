@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "InfoDispositif.h"
 
 #include "util.h"

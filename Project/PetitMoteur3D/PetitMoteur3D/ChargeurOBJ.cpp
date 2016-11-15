@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "ChargeurOBJ.h"
 #include <fstream>
 #include <sstream>

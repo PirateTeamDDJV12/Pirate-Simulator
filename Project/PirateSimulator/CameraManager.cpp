@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include "CameraManager.h"
 
 #include <algorithm>

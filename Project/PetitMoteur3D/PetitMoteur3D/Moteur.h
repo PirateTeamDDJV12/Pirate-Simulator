@@ -259,7 +259,7 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
 
             // Initialisation des objets 3D - création et/ou chargement
-            if (!InitObjets()) return 1;
+            if(!InitObjets()) return 1;
 
             return 0;
         }
@@ -299,21 +299,27 @@ namespace PM3D
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
 
             /*          auto personnage = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                          new PirateSimulator::GameObject(transform, "personnage")
-                      );
-
-                      auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
-                      personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
-                      personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());*/
-
-            int terrainH = 257;
-            int terrainW = 257;
+            new PirateSimulator::GameObject(transform, "personnage")
+            );
+            auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
+            personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
+            personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());*/
 
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transform, "terrain")
             );
+            
+#ifdef DEBUG_TEST_TERRAIN        
+            // If we want to test our own terrain and not the one int the config file
+            int terrainH = 257;
+            int terrainW = 257;
+            int terrainScale = 4;
 
-            auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
+            auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, terrainScale, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
+#else
+            // Get all the information from the config file
+            auto fieldMesh = new PirateSimulator::Terrain(pDispositif);
+#endif
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
 
 
@@ -332,7 +338,7 @@ namespace PM3D
 
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
-            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(vehiculeMesh);
+            PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             //PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
 
             return true;

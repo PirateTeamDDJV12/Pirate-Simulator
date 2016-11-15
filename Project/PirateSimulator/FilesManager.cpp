@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include "FilesManager.h"
 #include <fstream>
 #include <vector>

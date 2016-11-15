@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "../PetitMoteur3D/PetitMoteur3D/resource.h"
@@ -7,6 +5,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/DispositifD3D11.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
 #include "../PetitMoteur3D/PetitMoteur3D/GestionnaireDeTextures.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
 using namespace DirectX;
 
@@ -21,11 +20,45 @@ namespace PirateSimulator
 
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, const std::string& fieldFileName, const std::string& textureFileName)
-        : m_terrainWidth(w), m_terrainHeight(h),
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
+        : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
+    {
+        // Get the configuration from the config file
+        Config* terrainConfig = Config::getInstance();
+        m_terrainWidth = terrainConfig->getWidth();
+        m_terrainHeight = terrainConfig->getHeight();
+        m_terrainScale = terrainConfig->getMapScale();
+
+        pDispositif = pDispositif_; // Prendre en note le dispositif
+
+        m_vertexArray.reserve(m_terrainWidth * m_terrainHeight);
+        m_csommetsArray.reserve(m_terrainWidth * m_terrainHeight);
+
+        std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile(terrainConfig->getExportName());
+        const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
+        int nbPoint = vertexLineCount * m_terrainWidth * m_terrainHeight;
+        for(int i = 0; i < nbPoint; i += vertexLineCount)
+        {
+            PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
+            addSommet(p);
+        }
+        for(int i = nbPoint; i < myFile.size(); i += 3)
+        {
+            PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
+            addTriangle(t);
+        }
+
+        Init(terrainConfig->getTexturePath());
+    }
+
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
+        : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
         Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
     {
         pDispositif = pDispositif_; // Prendre en note le dispositif
+
+        m_vertexArray.reserve(m_terrainWidth * m_terrainHeight);
+        m_csommetsArray.reserve(m_terrainWidth * m_terrainHeight);
 
         std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile(fieldFileName);
         const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
@@ -42,12 +75,6 @@ namespace PirateSimulator
         }
 
         Init(textureFileName);
-    }
-
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_) :
-        Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
-    {
-        pDispositif = pDispositif_;  // Prendre en note le dispositif
     }
 
     Terrain::~Terrain()
@@ -154,13 +181,13 @@ namespace PirateSimulator
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(CSommetBloc) * m_sommets.size();
+        bd.ByteWidth = sizeof(CSommetBloc) * m_csommetsArray.size();
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = 0;
 
         D3D11_SUBRESOURCE_DATA InitData;
         ZeroMemory(&InitData, sizeof(InitData));
-        InitData.pSysMem = m_sommets.data();
+        InitData.pSysMem = m_csommetsArray.data();
         pVertexBuffer = NULL;
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
@@ -201,12 +228,8 @@ namespace PirateSimulator
         XMFLOAT2 textCoord{ v.getTextureCoordinate().m_U, v.getTextureCoordinate().m_V };
         CSommetBloc c{ pos, nor, textCoord };
 
-        if (m_arraySommets.size() == v.position().x())
-        {
-            m_arraySommets.push_back(vector<Vertex>{});
-        }
-        m_arraySommets[v.position().x()].push_back(v);
-        m_sommets.push_back(c);
+        m_vertexArray.push_back(v);
+        m_csommetsArray.push_back(c);
     }
 
     void Terrain::addTriangle(PirateSimulator::Triangle t)
@@ -221,43 +244,17 @@ namespace PirateSimulator
         float x = pos.vector4_f32[0], z = pos.vector4_f32[2];
 
 
-        if (z < 0 || z + 1 > m_terrainHeight || x < 0 || x + 1 > m_terrainWidth)
+        if (z < 0 || z + 1 > m_terrainHeight * m_terrainScale || x < 0 || x + 1 > m_terrainWidth * m_terrainScale)
         {
             return 0.0f;
         }
 
-        float myFirstX = floor(x);
-        float mySecondX = ceil(x);
-        float myFirstZ = floor(z);
-        float mySecondZ = ceil(z);
+        float myFirstX = UtilitairesDX::roundNum(x, m_terrainScale, false) / m_terrainScale;
+        float myFirstZ = UtilitairesDX::roundNum(z, m_terrainScale, false) / m_terrainScale;
+        float mySecondZ = UtilitairesDX::roundNum(z, m_terrainScale, true) / m_terrainScale;
 
-        Vertex bottomLeft = m_arraySommets[myFirstX][myFirstZ];
-        Vertex topLeft = m_arraySommets[myFirstX][mySecondZ];
-        Vertex bottomRight = m_arraySommets[mySecondX][myFirstZ];
-        Vertex topRight = m_arraySommets[mySecondX][mySecondZ];
-        /*
-        float height = 0;
-
-        if (x + z >= 1.0f)
-        {
-            // Top Right triangle
-            // A = BR  -  B = TR  -  C = TL
-            float Ax = bottomRight.position().x(), Ay = bottomRight.position().y(), Az = bottomRight.position().z();
-            float Bx = topRight.position().x(), By = topRight.position().y(), Bz = topRight.position().z();
-            float Cx = topLeft.position().x(), Cy = topLeft.position().y(), Cz = topLeft.position().z();
-            height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
-        }
-        else
-        {
-            // Bottom Left triangle
-            // A = BL  -  B = BR  -  C = TL
-            float Ax = bottomLeft.position().x(), Ay = bottomLeft.position().y(), Az = bottomLeft.position().z();
-            float Bx = bottomRight.position().x(), By = bottomRight.position().y(), Bz = bottomRight.position().z();
-            float Cx = topLeft.position().x(), Cy = topLeft.position().y(), Cz = topLeft.position().z();
-            height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
-        }
-
-        return height;*/
+        Vertex bottomLeft = m_vertexArray[myFirstX + myFirstZ * m_terrainWidth];
+        Vertex topLeft = m_vertexArray[myFirstX + mySecondZ * m_terrainWidth];
 
         float diffLeft = topLeft.position().z() - bottomLeft.position().z();
 
