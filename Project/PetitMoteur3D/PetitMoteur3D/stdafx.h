@@ -46,4 +46,3 @@
 #include <d3dcompiler.h>
 
 #include <dinput.h>
-

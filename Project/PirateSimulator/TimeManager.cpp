@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "TimeManager.h"
 
 TimeManager TimeManager::m_instance;

@@ -19,6 +19,12 @@
     <Filter Include="Fichiers sources\PirateSimulator">
       <UniqueIdentifier>{9ac6fd63-37b8-46cb-b4a3-e2bc9a718a97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Config">
+      <UniqueIdentifier>{264400cd-f7c5-4558-9323-7485946dccbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\Config">
+      <UniqueIdentifier>{fb917fb2-1066-421a-9b27-93cbe4ed2245}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Moteur.cpp">
@@ -129,8 +135,8 @@
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Config.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
+    <ClCompile Include="Config\Config.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,8 +302,8 @@
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Config.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    <ClInclude Include="Config\Config.hpp">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -308,7 +314,7 @@
       <Filter>Fichiers de ressources</Filter>
     </None>
     <None Include="ReadMe.txt" />
-    <None Include="PirateSimulator\heightmap.conf">
+    <None Include="Config\Ressources\heightmap.conf">
       <Filter>Fichiers de ressources</Filter>
     </None>
   </ItemGroup>

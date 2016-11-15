@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include "RendererManager.h"
 #include "GameObject.h"
 #include "CameraManager.h"

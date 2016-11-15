@@ -1,0 +1,3 @@
+[submodule "Project/PetitMoteur3D/PetitMoteur3D/Config"]
+	path = Project/PetitMoteur3D/PetitMoteur3D/Config
+	url = https://github.com/PirateTeamDDJV12/ConfigRepo

@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "BlocEffet1.h"
 #include "sommetbloc.h"
 #include "util.h"

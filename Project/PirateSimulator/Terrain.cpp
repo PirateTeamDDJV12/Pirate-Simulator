@@ -1,5 +1,3 @@
-#include <stdafx.h>
-
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "../PetitMoteur3D/PetitMoteur3D/resource.h"
@@ -7,6 +5,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/DispositifD3D11.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
 #include "../PetitMoteur3D/PetitMoteur3D/GestionnaireDeTextures.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
 using namespace DirectX;
 

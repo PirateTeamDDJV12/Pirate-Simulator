@@ -1,5 +1,4 @@
-﻿#include "StdAfx.h"
-#include "AfficheurSprite.h"
+﻿#include "AfficheurSprite.h"
 #include "resource.h"
 #include "MoteurWindows.h"
 #include "util.h"
