@@ -13,6 +13,7 @@
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
 
+#include "../../PirateSimulator/Config.h"
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
 #include "../../PirateSimulator/Skybox.h"
@@ -307,17 +308,21 @@ namespace PM3D
             personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
             personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
 
-
-
-            int terrainH = 257;
-            int terrainW = 257;
-            int terrainScale = 4;
-
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transform, "terrain")
             );
             
-            auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, terrainScale, "PirateSimulator/testScaleMap.txt", "PirateSimulator/textureTerrain.dds");
+#ifdef DEBUG_TEST_TERRAIN        
+            // If we want to test our own terrain and not the one int the config file
+            int terrainH = 257;
+            int terrainW = 257;
+            int terrainScale = 4;
+
+            auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, terrainScale, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
+#else
+            // Get all the information from the config file
+            auto fieldMesh = new PirateSimulator::Terrain(pDispositif);
+#endif
 
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
 

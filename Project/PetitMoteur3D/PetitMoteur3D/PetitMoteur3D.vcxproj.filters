@@ -112,7 +112,7 @@
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
-	  <Filter>Fichiers sources\PirateSimulator</Filter>
+      <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
@@ -127,6 +127,9 @@
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Config.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
   </ItemGroup>
@@ -276,7 +279,7 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
-	  <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\RendererManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
@@ -293,6 +296,9 @@
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Config.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PetitMoteur3D.ico">
@@ -302,6 +308,9 @@
       <Filter>Fichiers de ressources</Filter>
     </None>
     <None Include="ReadMe.txt" />
+    <None Include="PirateSimulator\heightmap.conf">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PetitMoteur3D.rc">
