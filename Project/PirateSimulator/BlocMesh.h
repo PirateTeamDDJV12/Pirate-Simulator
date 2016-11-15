@@ -90,9 +90,8 @@ namespace PirateSimulator
 
 
     public:
-        BlocMesh(
+        BlocMesh(const BlocInternalData& internalBlocDatas,
             PM3D::CDispositifD3D11* dispositif,
-            const BlocInternalData& internalBlocDatas,
             const ShaderBloc::ShadersParams& shaderParams
         ) :
             Mesh<ShaderBloc::ShadersParams>(m_shaderParameter),
