@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "PlayerBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include <dinput.h>
@@ -7,9 +5,8 @@
 using namespace PirateSimulator;
 using namespace DirectX;
 
-PlayerBehaviour::PlayerBehaviour() : m_speed{ 1.0f }, m_cameraRef{ CameraManager::singleton.getMainCameraGO() }
-{
-}
+PlayerBehaviour::PlayerBehaviour() : m_speed{1.0f}, m_cameraRef{CameraManager::singleton.getMainCameraGO()}
+{}
 
 void PlayerBehaviour::move(Move::Translation::Direction direction)
 {
@@ -20,38 +17,38 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
     m_gameObject->m_transform.m_forward.vector4_f32[0] = camera->m_transform.m_forward.vector4_f32[0];
     m_gameObject->m_transform.m_forward.vector4_f32[1] = 0.0f;
     m_gameObject->m_transform.m_forward.vector4_f32[2] = camera->m_transform.m_forward.vector4_f32[2];
-   
+
     m_gameObject->m_transform.m_forward = XMVector3Normalize(m_gameObject->m_transform.m_forward);
 
-    switch (direction)
+    switch(direction)
     {
-    case Move::Translation::FORWARD:
-    {
-        m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed);
-    }
-    break;
+        case Move::Translation::FORWARD:
+        {
+            m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed);
+        }
+        break;
 
-    case Move::Translation::BACKWARD:
-    {
-        m_gameObject->translate(-m_gameObject->m_transform.m_forward * m_speed);
-    }
-    break;
+        case Move::Translation::BACKWARD:
+        {
+            m_gameObject->translate(-m_gameObject->m_transform.m_forward * m_speed);
+        }
+        break;
 
-    case Move::Translation::LEFT:
-    {
-        m_gameObject->translate(-transform.m_right * m_speed);
+        case Move::Translation::LEFT:
+        {
+            m_gameObject->translate(-transform.m_right * m_speed);
 
-    }
-    break;
+        }
+        break;
 
-    case Move::Translation::RIGHT:
-    {
-        m_gameObject->translate(transform.m_right * m_speed);
-    }
-    break;
+        case Move::Translation::RIGHT:
+        {
+            m_gameObject->translate(transform.m_right * m_speed);
+        }
+        break;
 
-    default:
-        return;
+        default:
+            return;
     }
 }
 
@@ -66,7 +63,7 @@ void PlayerBehaviour::anime(float ellapsedTime)
     PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
     CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
     {
         m_speed = 5.0f;
     }
@@ -74,22 +71,22 @@ void PlayerBehaviour::anime(float ellapsedTime)
     /*
     * Rotation
     */
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
     {
         rotate(Move::Rotation::Y_CLOCKWISE);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
     {
         rotate(Move::Rotation::Y_INVERT_CLOCKWISE);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
     {
         rotate(Move::Rotation::X_INVERT_CLOCKWISE);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
     {
         rotate(Move::Rotation::X_CLOCKWISE);
     }
@@ -98,22 +95,22 @@ void PlayerBehaviour::anime(float ellapsedTime)
     /*
     * Translation
     */
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
     {
         move(Move::Translation::LEFT);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
     {
         move(Move::Translation::RIGHT);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
     {
         move(Move::Translation::FORWARD);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_S))
     {
         move(Move::Translation::BACKWARD);
     }

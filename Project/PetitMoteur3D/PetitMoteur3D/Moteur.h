@@ -242,9 +242,7 @@ namespace PM3D
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
 
-            m_camera = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                createCamera(PirateSimulator::cameraModule::BaseCamera::type::LEVEL_CAMERA, camProjParameters, camMovParameters, "mainCamera")
-            );
+            m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA, camProjParameters, camMovParameters, "mainCamera");
 
             // Skybox
             PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox(pDispositif);
@@ -260,7 +258,7 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
 
             // Initialisation des objets 3D - création et/ou chargement
-            if (!InitObjets()) return 1;
+            if(!InitObjets()) return 1;
 
             return 0;
         }
@@ -298,6 +296,13 @@ namespace PM3D
             auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
             vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
+
+            /*          auto personnage = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+            new PirateSimulator::GameObject(transform, "personnage")
+            );
+            auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
+            personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
+            personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());*/
 
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transform, "terrain")
