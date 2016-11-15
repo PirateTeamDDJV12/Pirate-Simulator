@@ -353,7 +353,7 @@ namespace PM3D
 
             cube->addComponent<PirateSimulator::IMesh>(
                 new PirateSimulator::BlocMesh<PirateSimulator::BlocStructure>(
-                    0,0,0, pDispositif, PirateSimulator::ShaderBloc::ShadersParams()
+                    2,2,2, pDispositif, PirateSimulator::ShaderBloc::ShadersParams()
                 )
             );
 
