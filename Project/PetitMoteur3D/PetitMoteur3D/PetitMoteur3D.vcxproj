@@ -152,7 +152,6 @@
     <ClInclude Include="..\..\PirateSimulator\Angle.h" />
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
     <ClInclude Include="..\..\PirateSimulator\BlocMesh.h" />
-    <ClInclude Include="..\..\PirateSimulator\BlocMesh.inline.h" />
     <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h" />
     <ClInclude Include="..\..\PirateSimulator\CameraManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Component.h" />

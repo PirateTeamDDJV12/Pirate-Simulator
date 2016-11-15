@@ -326,9 +326,6 @@
     <ClInclude Include="..\..\PirateSimulator\BlocMesh.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\BlocMesh.inline.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>

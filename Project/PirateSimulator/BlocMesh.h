@@ -313,6 +313,4 @@ namespace PirateSimulator
     };
 }
 
-#include "BlocMesh.inline.h"
-
 #endif //!BLOCMESH_H_INCLUDED
