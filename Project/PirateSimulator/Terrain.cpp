@@ -27,6 +27,9 @@ namespace PirateSimulator
     {
         pDispositif = pDispositif_; // Prendre en note le dispositif
 
+        m_vertexArray.reserve(m_terrainWidth * m_terrainHeight);
+        m_csommetsArray.reserve(m_terrainWidth * m_terrainHeight);
+
         std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile(fieldFileName);
         const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
         int nbPoint = vertexLineCount * m_terrainWidth * m_terrainHeight;
@@ -154,13 +157,13 @@ namespace PirateSimulator
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(CSommetBloc) * m_sommets.size();
+        bd.ByteWidth = sizeof(CSommetBloc) * m_csommetsArray.size();
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = 0;
 
         D3D11_SUBRESOURCE_DATA InitData;
         ZeroMemory(&InitData, sizeof(InitData));
-        InitData.pSysMem = m_sommets.data();
+        InitData.pSysMem = m_csommetsArray.data();
         pVertexBuffer = NULL;
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
@@ -201,12 +204,8 @@ namespace PirateSimulator
         XMFLOAT2 textCoord{ v.getTextureCoordinate().m_U, v.getTextureCoordinate().m_V };
         CSommetBloc c{ pos, nor, textCoord };
 
-        if (m_arraySommets.size() == v.position().x())
-        {
-            m_arraySommets.push_back(vector<Vertex>{});
-        }
-        m_arraySommets[v.position().x()].push_back(v);
-        m_sommets.push_back(c);
+        m_vertexArray.push_back(v);
+        m_csommetsArray.push_back(c);
     }
 
     void Terrain::addTriangle(PirateSimulator::Triangle t)
@@ -227,37 +226,11 @@ namespace PirateSimulator
         }
 
         float myFirstX = floor(x);
-        float mySecondX = ceil(x);
         float myFirstZ = floor(z);
         float mySecondZ = ceil(z);
 
-        Vertex bottomLeft = m_arraySommets[myFirstX][myFirstZ];
-        Vertex topLeft = m_arraySommets[myFirstX][mySecondZ];
-        Vertex bottomRight = m_arraySommets[mySecondX][myFirstZ];
-        Vertex topRight = m_arraySommets[mySecondX][mySecondZ];
-        /*
-        float height = 0;
-
-        if (x + z >= 1.0f)
-        {
-            // Top Right triangle
-            // A = BR  -  B = TR  -  C = TL
-            float Ax = bottomRight.position().x(), Ay = bottomRight.position().y(), Az = bottomRight.position().z();
-            float Bx = topRight.position().x(), By = topRight.position().y(), Bz = topRight.position().z();
-            float Cx = topLeft.position().x(), Cy = topLeft.position().y(), Cz = topLeft.position().z();
-            height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
-        }
-        else
-        {
-            // Bottom Left triangle
-            // A = BL  -  B = BR  -  C = TL
-            float Ax = bottomLeft.position().x(), Ay = bottomLeft.position().y(), Az = bottomLeft.position().z();
-            float Bx = bottomRight.position().x(), By = bottomRight.position().y(), Bz = bottomRight.position().z();
-            float Cx = topLeft.position().x(), Cy = topLeft.position().y(), Cz = topLeft.position().z();
-            height = Ay + ((Bx - Ax)*(Cy - Ay) - (Cx - Ax)*(By - Ay)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (z - Az) - ((By - Ay)*(Cz - Az) - (Cy - Ay) * (Bz - Az)) / ((Bx - Ax)*(Cz - Az) - (Cx - Ax)*(Bz - Az)) * (x - Ax);
-        }
-
-        return height;*/
+        Vertex bottomLeft = m_vertexArray[myFirstX + myFirstZ * m_terrainWidth];
+        Vertex topLeft = m_vertexArray[myFirstX + mySecondZ * m_terrainWidth];
 
         float diffLeft = topLeft.position().z() - bottomLeft.position().z();
 

@@ -104,8 +104,8 @@ namespace PirateSimulator
     private:
         int m_terrainWidth;
         int m_terrainHeight;
-        std::vector<std::vector<Vertex>> m_arraySommets;
-        std::vector<CSommetBloc> m_sommets;
+        std::vector<Vertex> m_vertexArray;
+        std::vector<CSommetBloc> m_csommetsArray;
         std::vector<unsigned int> m_index_bloc;
 
     public:
