@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include <stdafx.h>
 
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
@@ -20,6 +20,37 @@ namespace PirateSimulator
     };
 
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
+
+    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
+        : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
+    {
+        // Get the configuration from the config file
+        Config* terrainConfig = Config::getInstance();
+        m_terrainWidth = terrainConfig->getWidth();
+        m_terrainHeight = terrainConfig->getHeight();
+        m_terrainScale = terrainConfig->getMapScale();
+
+        pDispositif = pDispositif_; // Prendre en note le dispositif
+
+        m_vertexArray.reserve(m_terrainWidth * m_terrainHeight);
+        m_csommetsArray.reserve(m_terrainWidth * m_terrainHeight);
+
+        std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile(terrainConfig->getExportName());
+        const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
+        int nbPoint = vertexLineCount * m_terrainWidth * m_terrainHeight;
+        for(int i = 0; i < nbPoint; i += vertexLineCount)
+        {
+            PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
+            addSommet(p);
+        }
+        for(int i = nbPoint; i < myFile.size(); i += 3)
+        {
+            PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
+            addTriangle(t);
+        }
+
+        Init(terrainConfig->getTexturePath());
+    }
 
     Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
         : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
@@ -45,12 +76,6 @@ namespace PirateSimulator
         }
 
         Init(textureFileName);
-    }
-
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_) :
-        Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
-    {
-        pDispositif = pDispositif_;  // Prendre en note le dispositif
     }
 
     Terrain::~Terrain()

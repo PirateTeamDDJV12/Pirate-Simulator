@@ -1,7 +1,6 @@
 #ifndef GAMECONFIG_H_INCLUDED
 #define GAMECONFIG_H_INCLUDED
 
-
 namespace PirateSimulator
 {
     namespace GameGlobals
@@ -18,7 +17,6 @@ namespace PirateSimulator
             };
         };
 
-
         struct CameraGlobals
         {
             static constexpr float NEAREST_PLANE = 1.f;
@@ -29,7 +27,7 @@ namespace PirateSimulator
         };
     }
 
-
+//#define DEBUG_TEST_TERRAIN
 
 #define DEBUG_PIRATE_SIMULATOR
 

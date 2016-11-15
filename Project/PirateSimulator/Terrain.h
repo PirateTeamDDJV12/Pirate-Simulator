@@ -110,7 +110,9 @@ namespace PirateSimulator
         std::vector<unsigned int> m_index_bloc;
 
     public:
+        // Get the configuration from the config file
         Terrain(PM3D::CDispositifD3D11* pDispositif);
+        // Override the configuration file
         Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
 
         // Destructeur
