@@ -244,7 +244,7 @@ namespace PM3D
             // Dans notre cas, ces matrices sont fixes
 
             m_camera = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                createCamera(PirateSimulator::cameraModule::BaseCamera::type::FREE_CAMERA, camProjParameters, camMovParameters, "mainCamera")
+                createCamera(PirateSimulator::cameraModule::BaseCamera::type::LEVEL_CAMERA, camProjParameters, camMovParameters, "mainCamera")
             );
 
             // Skybox
@@ -311,12 +311,13 @@ namespace PM3D
 
             int terrainH = 257;
             int terrainW = 257;
+            int terrainScale = 4;
 
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transform, "terrain")
             );
             
-            auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
+            auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, terrainScale, "PirateSimulator/testScaleMap.txt", "PirateSimulator/textureTerrain.dds");
 
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
 
