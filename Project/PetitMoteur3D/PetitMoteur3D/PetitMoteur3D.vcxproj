@@ -111,6 +111,8 @@
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Shader.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\ShaderManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
@@ -161,6 +163,8 @@
     <ClInclude Include="..\..\PirateSimulator\RessourcesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Material.h" />
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
+    <ClInclude Include="..\..\PirateSimulator\Shader.h" />
+    <ClInclude Include="..\..\PirateSimulator\ShaderManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />

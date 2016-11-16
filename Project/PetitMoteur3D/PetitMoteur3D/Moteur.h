@@ -25,7 +25,9 @@
 #include "../../PirateSimulator/TestBehaviour.h"
 #include "../../PirateSimulator/VehicleBehaviour.h"
 
+// Managers includes
 #include "../../PirateSimulator/TimeManager.h"
+#include "../../PirateSimulator/ShaderManager.h"
 
 #include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
@@ -79,6 +81,11 @@ namespace PM3D
 
             // * Initialisation du dispositif de rendu
             pDispositif = CreationDispositifSpecific(CDS_FENETRE);
+
+            // Initialisation du ShaderManager
+            PirateSimulator::ShaderManager::GetInstance().initialize(pDispositif);
+
+            //PirateSimulator::ShaderManager test(PirateSimulator::ShaderManager::GetInstance());
 
             // * Initialisation de la scène
             InitScene();
@@ -306,8 +313,6 @@ namespace PM3D
             auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
             personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
             personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
-
-
 
             int terrainH = 257;
             int terrainW = 257;
