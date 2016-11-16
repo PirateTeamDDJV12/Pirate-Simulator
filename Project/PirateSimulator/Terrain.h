@@ -45,7 +45,8 @@ namespace PirateSimulator
             ShadersParams() :
                 bTex{1}
             {
-                vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
+                vLumiere = XMVectorSet(-10.0f, 10.0f, -15.0f, 1.0f);
+                //vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
                 vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
                 vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
                 vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
