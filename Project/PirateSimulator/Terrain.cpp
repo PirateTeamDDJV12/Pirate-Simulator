@@ -6,6 +6,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
 #include "../PetitMoteur3D/PetitMoteur3D/GestionnaireDeTextures.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
+#include "RessourceManager.h"
 
 using namespace DirectX;
 

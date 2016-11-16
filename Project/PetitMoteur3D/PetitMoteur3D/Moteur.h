@@ -17,19 +17,25 @@
 #include "../../PirateSimulator/Mesh.h"
 #include "../../PirateSimulator/Skybox.h"
 #include "../../PirateSimulator/Terrain.h"
-#include "../../PirateSimulator/RessourceManager.h"
 #include "../../PirateSimulator/LevelCameraBehaviour.h"
 #include "../../PirateSimulator/FreeCameraBehaviour.h"
 #include "../../PirateSimulator/ObjectCameraBehaviour.h"
 #include "../../PirateSimulator/GameObject.h"
 #include "../../PirateSimulator/PlayerBehaviour.h"
 
+// Manager
 #include "../../PirateSimulator/TimeManager.h"
-
 #include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/CameraManager.h"
 #include "../../PirateSimulator/InputManager.h"
+#include "../../PirateSimulator/TaskManager.h"
+
+// Tasks
+#include "../../PirateSimulator/TimeTask.h"
+#include "../../PirateSimulator/InputTask.h"
+#include "../../PirateSimulator/PhysicsTask.h"
+#include "../../PirateSimulator/RenderTask.h"
 
 
 namespace PM3D
@@ -53,10 +59,18 @@ namespace PM3D
     template <class T, class TClasseDispositif>
     class CMoteur : public CSingleton<T>
     {
+        enum
+        {
+            TIMETASK,
+            INPUTTASK,
+            PHYSICSTASK,
+            RENDERTASK,
+        };
     public:
 
         virtual void Run()
         {
+            // TODO - Changer la boucle de jeu pour faire l'update du TaskManager (qui s'occupera de faire l'update des Tasks dans le bonne ordre)
             bool bBoucle = true;
 
             while (bBoucle)
@@ -71,18 +85,20 @@ namespace PM3D
 
         virtual int Initialisations()
         {
-            // Initialisation du temps de jeu
-            TimeManager::get()->startGameTime();
-
+            // Création des tasks
+            CreateTasks();
+            
             // Propre à la plateforme
             InitialisationsSpecific();
 
+            // TODO - Deplacer cela dans le rendererManager pour le rendre dispo pour tous et faire l'init dans l'init du renderTask
             // * Initialisation du dispositif de rendu
             pDispositif = CreationDispositifSpecific(CDS_FENETRE);
 
             // * Initialisation de la scène
             InitScene();
 
+            // TODO - Ne pas faire cela ici, le TimeManager va s'occuper de préparer le temps pour les animes et le premier rendu ne doit pas se faire tout de suite, il faut le faire dans le premier tour de boucle du jeu !!
             // * Initialisation des paramètres de l'animation et 
             //   préparation de la première image
             InitAnimation();
@@ -123,6 +139,15 @@ namespace PM3D
             return true;
         }
 
+        void CreateTasks()
+        {
+            PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
+
+            taskManager->addTask<PirateSimulator::TimeTask>(TIMETASK);
+            taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
+            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
+            taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
+        }
 
         XMMATRIX GetMatView()
         {
@@ -191,7 +216,6 @@ namespace PM3D
             BeginRenderSceneSpecific();
 
             // Appeler les fonctions de dessin de chaque objet de la scène
-
             PirateSimulator::RendererManager::singleton.draw();
 
             EndRenderSceneSpecific();

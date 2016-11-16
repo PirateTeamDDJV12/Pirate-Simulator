@@ -13,14 +13,7 @@ class TimeManager : public PM3D::CSingleton<TimeManager>
     time_point<system_clock> m_startGameTime = system_clock::now();
     milliseconds m_turnTimeLimit = 0ms;
     std::map<std::string, time_point<system_clock>> m_saveTimePoints;
-    static TimeManager m_instance;
-    TimeManager()
-    {}
 public:
-    static TimeManager *get()
-    {
-        return &m_instance;
-    }
     static time_point<system_clock> now()
     {
         return system_clock::now();
