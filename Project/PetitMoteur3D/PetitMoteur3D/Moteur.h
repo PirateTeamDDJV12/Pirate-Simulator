@@ -77,8 +77,8 @@ namespace PM3D
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
 
-                // appeler la fonction d'animation
-                if (bBoucle) bBoucle = Animation();
+                PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
+                taskManager->update();
             }
         }
 
@@ -92,7 +92,7 @@ namespace PM3D
 
             // TODO - Deplacer cela dans le rendererManager pour le rendre dispo pour tous et faire l'init dans l'init du renderTask
             // * Initialisation du dispositif de rendu
-            pDispositif = CreationDispositifSpecific(CDS_FENETRE);
+            PirateSimulator::RendererManager::singleton.setDispositif(CreationDispositifSpecific(CDS_FENETRE));
 
             // * Initialisation de la scène
             InitScene();
@@ -437,10 +437,6 @@ namespace PM3D
         __int64 TempsPrecedent;
         unsigned long EcartTemps;
         double EchelleTemps;
-
-        // Le dispositif de rendu
-        TClasseDispositif* pDispositif;
-
 
         PirateSimulator::GameObjectRef m_camera;
         PirateSimulator::GameObjectRef m_skybox;
