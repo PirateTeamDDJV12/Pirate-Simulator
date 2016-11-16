@@ -129,10 +129,10 @@
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\ShaderManager.cpp">
+    <ClCompile Include="..\..\PirateSimulator\Shader.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Shader.cpp">
+    <ClCompile Include="..\..\PirateSimulator\ShaderManager.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
   </ItemGroup>

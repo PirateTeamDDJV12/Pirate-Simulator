@@ -251,7 +251,7 @@ namespace PM3D
             // Dans notre cas, ces matrices sont fixes
 
             m_camera = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                createCamera(PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA, camProjParameters, camMovParameters, "mainCamera")
+                createCamera(PirateSimulator::cameraModule::BaseCamera::type::FREE_CAMERA, camProjParameters, camMovParameters, "mainCamera")
             );
 
             // Skybox

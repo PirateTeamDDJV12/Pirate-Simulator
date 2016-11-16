@@ -15,7 +15,7 @@
 
 namespace PM3D
 {
-	class CTexture;
+    class CTexture;
 }
 
 namespace PirateSimulator
@@ -26,7 +26,7 @@ namespace PirateSimulator
         {
             XMMATRIX matWorldViewProj;	// la matrice totale 
             XMMATRIX matWorld;			// matrice de transformation dans le monde 
-            
+
             XMVECTOR vLumiere; 			// la position de la source d'éclairage (Point)
             XMVECTOR vCamera; 			// la position de la caméra
 
@@ -43,7 +43,7 @@ namespace PirateSimulator
 
 
             ShadersParams() :
-                bTex{1}
+                bTex{ 1 }
             {
                 vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
                 vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
@@ -51,14 +51,14 @@ namespace PirateSimulator
                 vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
                 vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
             }
-            
+
             ShadersParams(
-                    const XMVECTOR& lumiere,
-                    const XMVECTOR& AEcl,
-                    const XMVECTOR& AMat,
-                    const XMVECTOR& DEcl,
-                    const XMVECTOR& DMat
-                ) :
+                const XMVECTOR& lumiere,
+                const XMVECTOR& AEcl,
+                const XMVECTOR& AMat,
+                const XMVECTOR& DEcl,
+                const XMVECTOR& DMat
+            ) :
                 bTex{ 1 }
             {
                 vLumiere = lumiere;
@@ -89,7 +89,7 @@ namespace PirateSimulator
             }
         };
     }
-    
+
 
     //  Classe : Terrain
     //
@@ -115,8 +115,6 @@ namespace PirateSimulator
         // Destructeur
         virtual ~Terrain(void);
 
-        virtual void Anime(float tempsEcoule);
-
         void Draw();
 
         void Init(const std::string& textureFileName);
@@ -125,9 +123,9 @@ namespace PirateSimulator
         void addTriangle(Triangle t);
         float getHeight(XMVECTOR pos);
 
-		void setTexture(PM3D::CTexture* texture);
+        void setTexture(PM3D::CTexture* texture);
 
-		void loadTexture(const std::string& filename);
+        void loadTexture(const std::string& filename);
 
     protected:
         // Constructeur par défaut
@@ -142,15 +140,15 @@ namespace PirateSimulator
         ID3D11Buffer* pVertexBuffer;
         ID3D11Buffer* pIndexBuffer;
 
-        ID3D11VertexShader*  pVertexShader;
+        ID3D11VertexShader* pVertexShader;
         ID3D11PixelShader*  pPixelShader;
-        ID3D11InputLayout* pVertexLayout;
+        ID3D11InputLayout*  pVertexLayout;
 
         // Définitions des valeurs d'animation
         ID3D11Buffer* pConstantBuffer;
         float rotation;
 
-		//Pour texture
+        //Pour texture
         Material m_material;
 
         Effect m_textureEffect;

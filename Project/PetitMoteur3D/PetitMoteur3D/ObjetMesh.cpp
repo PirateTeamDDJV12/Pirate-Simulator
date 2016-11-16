@@ -213,12 +213,10 @@ namespace PM3D
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-
         // Le sampler state
         ID3DX11EffectSamplerVariable* variableSampler;
         variableSampler = pEffet->GetVariableByName("SampleState")->AsSampler();
         variableSampler->SetSampler(0, pSampleState);
-
 
         // Dessiner les subsets non-transparents
         for(int i = 0; i < NombreSubset; ++i)
