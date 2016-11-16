@@ -113,6 +113,11 @@ void RendererManager::deepAddToStack(size_t x, size_t z) noexcept
     }
 }
 
+void RendererManager::setDispositif(PM3D::CDispositifD3D11* creation_dispositif_specific)
+{
+    m_pDispositif = creation_dispositif_specific;
+}
+
 void RendererManager::updateRenderedStack()
 {
     float xCameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0];
