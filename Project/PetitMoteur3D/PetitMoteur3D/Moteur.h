@@ -16,6 +16,7 @@
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
 #include "../../PirateSimulator/Skybox.h"
+#include "../../PirateSimulator/Plane.h"
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/RessourceManager.h"
 #include "../../PirateSimulator/LevelCameraBehaviour.h"
@@ -247,7 +248,7 @@ namespace PM3D
                 createCamera(PirateSimulator::cameraModule::BaseCamera::type::FREE_CAMERA, camProjParameters, camMovParameters, "mainCamera")
             );
 
-            // Skybox
+            // Skybox and water
             PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox(pDispositif);
             m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(m_camera->m_transform, "skybox")
@@ -259,7 +260,6 @@ namespace PM3D
             
 
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
-
             // Initialisation des objets 3D - création et/ou chargement
             if (!InitObjets()) return 1;
 
@@ -298,17 +298,15 @@ namespace PM3D
 
             vehicule->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif));
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::VehicleBehaviour());
-            
-            auto personnage = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(transform, "personnage")
-            );
 
-            auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
-            personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
-            personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
+			auto personnage = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+				new PirateSimulator::GameObject(transform, "personnage")
+			);
 
-
-
+			auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
+			personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
+			personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());
+			
             int terrainH = 257;
             int terrainW = 257;
             int terrainScale = 4;
@@ -321,6 +319,11 @@ namespace PM3D
 
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
 
+			auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+				new PirateSimulator::GameObject(transform, "water")
+			);
+			PirateSimulator::CPlane* waterMesh = new PirateSimulator::CPlane(pDispositif);
+			water->addComponent<PirateSimulator::IMesh>(waterMesh);
 
             PirateSimulator::cameraModule::BaseCamera* baseCam = m_camera->getComponent<PirateSimulator::cameraModule::BaseCamera>();
 
@@ -337,7 +340,9 @@ namespace PM3D
 
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
-            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
+			PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
+			///PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh2);
+			PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
 
 
             return true;
@@ -420,7 +425,7 @@ namespace PM3D
 
         PirateSimulator::GameObjectRef m_camera;
         PirateSimulator::GameObjectRef m_skybox;
-
+		//PirateSimulator::GameObjectRef m_water;
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;
 
