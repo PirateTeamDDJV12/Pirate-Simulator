@@ -7,10 +7,10 @@ namespace PM3D
 class CTexture
 {
 public:
-	CTexture(void);
-	virtual ~CTexture(void);
+	CTexture();
+	virtual ~CTexture();
 
-	CTexture(const wchar_t* filename_in, CDispositifD3D11* pDispositif);
+	CTexture(const wchar_t* filename_in);
 
 	const wchar_t* GetFilename() {return filename;}
 

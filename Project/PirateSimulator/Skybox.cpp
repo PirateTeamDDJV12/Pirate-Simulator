@@ -39,10 +39,10 @@ D3D11_INPUT_ELEMENT_DESC CSommetSky::layout[] =
 };
 UINT CSommetSky::numElements = ARRAYSIZE(CSommetSky::layout);
 
-CSkybox::CSkybox(CDispositifD3D11* pDispositif_) :
+CSkybox::CSkybox() :
     Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams())
 {
-    pDispositif = pDispositif_;
+    pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
     XMFLOAT3 point[8];
     point[0] = XMFLOAT3(1.0f, 1.0f, 1.0f);
