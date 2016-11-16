@@ -11,5 +11,7 @@ void TimeTask::init()
 
 void TimeTask::update()
 {
-    TimeManager::GetInstance().fastSave();
+    auto timeManager = &TimeManager::GetInstance();
+    timeManager->fastSave();
+    timeManager->update();
 }

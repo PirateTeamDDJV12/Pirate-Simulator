@@ -1,7 +1,7 @@
 #ifndef RENDERERMANAGER_H_INCLUDED
 #define RENDERERMANAGER_H_INCLUDED
 
-#include "dispositif.h" 
+//#include "dispositif.h" 
 #include "GameConfig.h"
 #include "Mesh.h"
 

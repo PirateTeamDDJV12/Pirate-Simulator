@@ -1,6 +1,7 @@
 #include "PlayerBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include <dinput.h>
+#include "InputManager.h"
 
 using namespace PirateSimulator;
 using namespace DirectX;
@@ -60,8 +61,7 @@ void PlayerBehaviour::rotate(Move::Rotation::Direction direction)
 void PlayerBehaviour::anime(float ellapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
-    PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
-    CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+    CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
     {

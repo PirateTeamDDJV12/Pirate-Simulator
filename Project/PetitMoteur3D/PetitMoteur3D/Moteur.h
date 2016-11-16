@@ -28,7 +28,6 @@
 #include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/CameraManager.h"
-#include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
 
 // Tasks
@@ -77,9 +76,9 @@ namespace PM3D
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
-
-                PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
-                taskManager->update();
+                
+                PirateSimulator::TaskManager::GetInstance().update();
+                m_camera->anime(0);
             }
         }
 
@@ -93,50 +92,13 @@ namespace PM3D
 
             // TODO - Deplacer cela dans le rendererManager pour le rendre dispo pour tous et faire l'init dans l'init du renderTask
             // * Initialisation du dispositif de rendu
-            PirateSimulator::RendererManager::singleton.setDispositif(CreationDispositifSpecific(CDS_FENETRE));
+            pDispositif = CreationDispositifSpecific(CDS_FENETRE);
+            PirateSimulator::RendererManager::singleton.setDispositif(pDispositif);
 
             // * Initialisation de la scène
             InitScene();
 
-            // TODO - Ne pas faire cela ici, le TimeManager va s'occuper de préparer le temps pour les animes et le premier rendu ne doit pas se faire tout de suite, il faut le faire dans le premier tour de boucle du jeu !!
-            // * Initialisation des paramètres de l'animation et 
-            //   préparation de la première image
-            InitAnimation();
-
             return 0;
-        }
-
-        virtual bool Animation()
-        {
-            __int64 TempsCourant;
-            float TempsEcoule;
-
-            // méthode pour lire l'heure et calculer le 
-            // temps écoulé
-            TempsCourant = GetTimeSpecific();
-
-            // Est-il temps de rendre l'image?
-            if (TempsCourant > TempsSuivant)
-            {
-                // Affichage optimisé 
-                PirateSimulator::RendererManager::singleton.getDispositif()->Present();
-
-                TempsEcoule = static_cast<float>(TempsCourant - TempsPrecedent)
-                    * static_cast<float>(EchelleTemps);
-
-                // On prépare la prochaine image
-                AnimeScene(TempsEcoule);
-
-                // On rend l'image sur la surface de travail 
-                // (tampon d'arrière plan)
-                RenderScene();
-
-                // Calcul du temps du prochain affichage
-                TempsPrecedent = TempsCourant;
-                TempsSuivant = TempsCourant + EcartTemps;
-            }
-
-            return true;
         }
 
         void CreateTasks()
@@ -166,10 +128,6 @@ namespace PM3D
         {
             return TexturesManager;
         }
-        CDIManipulateur& GetGestionnaireDeSaisie()
-        {
-            return GestionnaireDeSaisie;
-        }
 
         PirateSimulator::GameObjectRef getCamera()
         {
@@ -195,33 +153,6 @@ namespace PM3D
         virtual TClasseDispositif* CreationDispositifSpecific(const CDS_MODE cdsMode) = 0;
         virtual void BeginRenderSceneSpecific() = 0;
         virtual void EndRenderSceneSpecific() = 0;
-
-        // Autres fonctions
-        virtual int InitAnimation()
-        {
-            TempsSuivant = GetTimeSpecific();
-            EchelleTemps = 0.001;
-            EcartTemps = 1000 / IMAGESPARSECONDE;
-            TempsPrecedent = TempsSuivant;
-
-            // première Image
-            RenderScene();
-
-            return true;
-        }
-
-        // Fonctions de rendu et de présentation de la scène
-        virtual bool RenderScene()
-        {
-            BeginRenderSceneSpecific();
-
-            // Appeler les fonctions de dessin de chaque objet de la scène
-            PirateSimulator::RendererManager::singleton.draw();
-
-            EndRenderSceneSpecific();
-            return true;
-        }
-
 
         virtual void Cleanup()
         {
@@ -358,35 +289,6 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             //PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
 
-            return true;
-        }
-
-        bool AnimeScene(float tempsEcoule)
-        {
-
-            // Prendre en note le statut du clavier
-            GestionnaireDeSaisie.StatutClavier();
-
-            // Prendre en note l'état de la souris
-            GestionnaireDeSaisie.SaisirEtatSouris();
-
-
-            PirateSimulator::GameObjectManager::singleton.animAllGameObject(tempsEcoule);
-
-            PirateSimulator::RendererManager::singleton.update();
-            PirateSimulator::InputManager::singleton.update();
-
-#ifdef DEBUG_PIRATE_SIMULATOR
-            PirateSimulator::InputManager::singleton.setKey(PirateSimulator::InputManager::KEY1, DIK_W);
-            OutputDebugStringA(
-                LPCSTR(
-                    ((PirateSimulator::InputManager::singleton.getKey(PirateSimulator::InputManager::KEY1) ?
-                    "W is Pressed\n" : "W not pressed\n") + to_string(++PirateSimulator::debugCount)).c_str()
-                )
-            );
-#endif //DEBUG_PIRATE_SIMULATOR
-
-            m_camera->anime(0);
 
             return true;
         }
@@ -437,11 +339,9 @@ namespace PM3D
 
 
     protected:
-        // Variables pour le temps de l'animation
-        __int64 TempsSuivant;
-        __int64 TempsPrecedent;
-        unsigned long EcartTemps;
-        double EchelleTemps;
+        // Le dispositif de rendu
+        TClasseDispositif* pDispositif;
+
 
         PirateSimulator::GameObjectRef m_camera;
         PirateSimulator::GameObjectRef m_skybox;
@@ -454,9 +354,6 @@ namespace PM3D
         wstring str;
 
         Gdiplus::Font* pPolice;
-
-        CDIManipulateur GestionnaireDeSaisie;
-
     };
 
 

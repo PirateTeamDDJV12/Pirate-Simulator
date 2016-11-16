@@ -8,6 +8,13 @@ using namespace std::chrono;
 
 class TimeManager : public PM3D::CSingleton<TimeManager>
 {
+    float m_echelleTemps = 0.001f;
+    milliseconds m_ecartTemps = 1000ms / 60;
+
+    time_point<system_clock> m_timeNextFrame;
+    time_point<system_clock> m_timePreviousFrame;
+    time_point<system_clock> m_timeCurrent;
+
     time_point<system_clock> m_fastSave = system_clock::now();
     time_point<system_clock> m_startExecutionTime = system_clock::now();
     time_point<system_clock> m_startGameTime = system_clock::now();
@@ -55,6 +62,13 @@ public:
 
     // Get the remaining time between the fast save and now
     milliseconds getRemainingFastTime() const;
+
+    void update();
+
+    float getElapsedTimeFrame() const
+    {
+        return duration_cast<milliseconds>((m_timeCurrent - m_timePreviousFrame) * m_echelleTemps).count();
+    }
 };
 
 #endif //TIME_MANAGER_HEADER

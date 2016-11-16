@@ -112,8 +112,7 @@ namespace PirateSimulator
 
     public:
         // Get the configuration from the config file
-        Terrain() : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
-        {}
+        Terrain();
         // Override the configuration file
         Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
 

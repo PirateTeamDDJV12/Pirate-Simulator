@@ -31,6 +31,17 @@ milliseconds TimeManager::getRemainingFastTime() const
     return remaining <= 0ms ? 0ms : remaining;
 }
 
+void TimeManager::update()
+{
+    m_timeCurrent = system_clock::now();
+
+    if(m_timeCurrent > m_timeNextFrame)
+    {
+        m_timePreviousFrame = m_timeCurrent;
+        m_timeNextFrame = m_timeCurrent + m_ecartTemps;
+    }
+}
+
 time_point<system_clock> TimeManager::getPoint(std::string name)
 {
     if(m_saveTimePoints.find(name) == end(m_saveTimePoints))
