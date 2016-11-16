@@ -65,13 +65,23 @@ namespace PirateSimulator
 
         InputManager(const InputManager&) = delete;
         InputManager& operator=(const InputManager&) = delete;
-
+        CDIManipulateur m_manipulator;
 
     public:
         Key::State getKey(KeyMapperEnum keyToGet) const noexcept { return keys[keyToGet].currentState; }
         void setKey(KeyMapperEnum keyToSet, UINT newKeyValue) noexcept { keys[keyToSet].setKey(newKeyValue); }
 
-        void update() { for (size_t iter = KEY1; iter < NBKEYS; ++iter) { keys[iter].update(); } }
+        void update();
+
+        CDIManipulateur& getManipulator() noexcept
+        {
+            return m_manipulator;
+        }
+
+        void InitManipulator(HINSTANCE hAppInstance, HWND hMainWnd)
+        {
+            m_manipulator.Init(hAppInstance, hMainWnd);
+        }
     };
 }
 
