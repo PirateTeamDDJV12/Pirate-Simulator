@@ -78,8 +78,7 @@ namespace PM3D
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
 
-                PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
-                taskManager->update();
+                if (bBoucle) bBoucle = Animation();
             }
         }
 
@@ -119,7 +118,7 @@ namespace PM3D
             if (TempsCourant > TempsSuivant)
             {
                 // Affichage optimisé 
-                pDispositif->Present();
+                PirateSimulator::RendererManager::singleton.getDispositif()->Present();
 
                 TempsEcoule = static_cast<float>(TempsCourant - TempsPrecedent)
                     * static_cast<float>(EchelleTemps);
@@ -238,13 +237,6 @@ namespace PM3D
             }
 
             ListeScene.clear();*/
-
-            // Détruire le dispositif
-            if (pDispositif)
-            {
-                delete pDispositif;
-                pDispositif = NULL;
-            }
         }
 
         virtual int InitScene()
@@ -253,8 +245,8 @@ namespace PM3D
                 XM_PI / 4,
                 PirateSimulator::GameGlobals::CameraGlobals::NEAREST_PLANE,
                 PirateSimulator::GameGlobals::CameraGlobals::FARTHEST_PLANE,
-                pDispositif->GetLargeur(),
-                pDispositif->GetHauteur()
+                PirateSimulator::RendererManager::singleton.getDispositif()->GetLargeur(),
+                PirateSimulator::RendererManager::singleton.getDispositif()->GetHauteur()
             );
 
             auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(
@@ -270,14 +262,14 @@ namespace PM3D
             m_camera = createCamera(PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA, camProjParameters, camMovParameters, "mainCamera");
 
             // Skybox
-            PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox(pDispositif);
+            PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox();
             m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(m_camera->m_transform, "skybox")
             );
 
             m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
 
-            skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds", pDispositif));
+            skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
 
 
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
@@ -316,16 +308,16 @@ namespace PM3D
             param.NomFichier = "boat.obj";
             CChargeurOBJ chargeur;
             chargeur.Chargement(param);
-            vehicule->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), chargeur, pDispositif));*/
+            vehicule->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), chargeur));*/
 
-            auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
+            auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams());
             vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
 
             /*          auto personnage = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
             new PirateSimulator::GameObject(transform, "personnage")
             );
-            auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams(), pDispositif);
+            auto personageMesh = new CObjetMesh(".\\modeles\\jin\\jin.OMB", ShaderCObjectMesh::ShadersParams());
             personnage->addComponent<PirateSimulator::IMesh>(personageMesh);
             personnage->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::TestBehaviour());*/
 
@@ -339,10 +331,10 @@ namespace PM3D
             int terrainW = 257;
             int terrainScale = 4;
 
-            auto fieldMesh = new PirateSimulator::Terrain(pDispositif, terrainH, terrainW, terrainScale, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
+            auto fieldMesh = new PirateSimulator::Terrain(terrainH, terrainW, terrainScale, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
 #else
             // Get all the information from the config file
-            auto fieldMesh = new PirateSimulator::Terrain(pDispositif);
+            auto fieldMesh = new PirateSimulator::Terrain();
 #endif
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
 
