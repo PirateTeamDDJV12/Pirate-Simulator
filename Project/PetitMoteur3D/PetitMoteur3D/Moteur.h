@@ -322,7 +322,7 @@ namespace PM3D
 			auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
 				new PirateSimulator::GameObject(transform, "water")
 			);
-			PirateSimulator::CPlane* waterMesh = new PirateSimulator::CPlane(pDispositif);
+			PirateSimulator::Plane* waterMesh = new PirateSimulator::Plane(pDispositif, "PirateSimulator/water.dds");
 			water->addComponent<PirateSimulator::IMesh>(waterMesh);
 
             PirateSimulator::cameraModule::BaseCamera* baseCam = m_camera->getComponent<PirateSimulator::cameraModule::BaseCamera>();
