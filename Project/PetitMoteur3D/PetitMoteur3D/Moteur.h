@@ -29,6 +29,7 @@
 #include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/CameraManager.h"
+#include "../../PirateSimulator/InputManager.h"
 
 
 namespace PM3D
@@ -340,7 +341,6 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             //PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
 
-
             return true;
         }
 
@@ -357,6 +357,18 @@ namespace PM3D
             PirateSimulator::GameObjectManager::singleton.animAllGameObject(tempsEcoule);
 
             PirateSimulator::RendererManager::singleton.update();
+            PirateSimulator::InputManager::singleton.update();
+
+#ifdef DEBUG_PIRATE_SIMULATOR
+            PirateSimulator::InputManager::singleton.setKey(PirateSimulator::InputManager::KEY1, DIK_W);
+            OutputDebugStringA(
+                LPCSTR(
+                    ((PirateSimulator::InputManager::singleton.getKey(PirateSimulator::InputManager::KEY1) ?
+                    "W is Pressed\n" : "W not pressed\n") + to_string(++PirateSimulator::debugCount)).c_str()
+                )
+            );
+#endif //DEBUG_PIRATE_SIMULATOR
+
             m_camera->anime(0);
 
             return true;

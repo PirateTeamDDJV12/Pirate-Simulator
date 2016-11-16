@@ -7,7 +7,7 @@ public:
 
 	bool CDIManipulateur::Init(HINSTANCE hInstance, HWND hWnd);
 	void StatutClavier();
-	bool ToucheAppuyee(UINT touche);
+	bool ToucheAppuyee(UINT touche) const;
 	void SaisirEtatSouris();
 
 	const DIMOUSESTATE& EtatSouris() { return mouseState;}
