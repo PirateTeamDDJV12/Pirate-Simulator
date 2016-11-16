@@ -11,7 +11,8 @@ namespace PirateSimulator
         {}
         void cleanup() override
         {}
-        void update() override;
+        void update() override
+        {}
     };
 }
 
