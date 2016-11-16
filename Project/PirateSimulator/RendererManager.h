@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "../PetitMoteur3D/PetitMoteur3D/Moteur.h"
+#include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
 
 
 namespace PirateSimulator

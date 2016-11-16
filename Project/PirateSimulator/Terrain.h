@@ -112,12 +112,13 @@ namespace PirateSimulator
 
     public:
         // Get the configuration from the config file
-        Terrain(PM3D::CDispositifD3D11* pDispositif);
+        Terrain() : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
+        {}
         // Override the configuration file
-        Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
+        Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
 
         // Destructeur
-        virtual ~Terrain(void);
+        virtual ~Terrain();
 
         virtual void Anime(float tempsEcoule);
 
@@ -135,10 +136,6 @@ namespace PirateSimulator
 
     protected:
         // Constructeur par défaut
-        Terrain(void) :
-            Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
-        {}
-
         void InitShaders();
 
         PM3D::CDispositifD3D11* pDispositif;
