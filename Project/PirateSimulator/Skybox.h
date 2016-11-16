@@ -36,7 +36,10 @@ namespace PirateSimulator
     class CSkybox : public Mesh<ShaderCSkyBox::ShadersParams>
     {
     public:
-        CSkybox();
+        CSkybox() : Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams())
+        {
+
+        }
         virtual ~CSkybox(void);
         void Draw();
         void SetTexture(PM3D::CTexture* pTexture);
