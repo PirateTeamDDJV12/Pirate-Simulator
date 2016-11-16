@@ -78,7 +78,8 @@ namespace PM3D
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
 
-                if (bBoucle) bBoucle = Animation();
+                PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
+                taskManager->update();
             }
         }
 

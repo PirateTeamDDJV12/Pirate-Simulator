@@ -1,12 +1,13 @@
 #ifndef RENDERERMANAGER_H_INCLUDED
 #define RENDERERMANAGER_H_INCLUDED
 
+#include "dispositif.h" 
 #include "GameConfig.h"
 #include "Mesh.h"
 
 #include <vector>
 #include "../PetitMoteur3D/PetitMoteur3D/Moteur.h"
-#include "../PetitMoteur3D/PetitMoteur3D/dispositif.h" 
+#include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
 
 
 namespace PirateSimulator
