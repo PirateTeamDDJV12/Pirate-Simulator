@@ -31,6 +31,18 @@
     <Filter Include="Fichiers sources\PirateSimulator\Tasks">
       <UniqueIdentifier>{3a123f51-47f3-4585-80bf-16e8cd51f6b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\Manager">
+      <UniqueIdentifier>{950addea-863f-41e5-af88-c1ce3384b5b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\Behaviour">
+      <UniqueIdentifier>{b15cc42f-5630-4d04-9c0b-b06d0f048e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Behaviour">
+      <UniqueIdentifier>{baddefc6-ee1a-40f6-8be6-bbdc290ddb72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Manager">
+      <UniqueIdentifier>{264923d9-ce3d-431e-ad83-f10a87f6dde3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Moteur.cpp">
@@ -84,9 +96,6 @@
     <ClCompile Include="DIManipulateur.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
@@ -108,50 +117,14 @@
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\CameraManager.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\InputManager.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="Config\Config.cpp">
       <Filter>Fichiers sources\PirateSimulator\Config</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp">
       <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
@@ -167,6 +140,45 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp">
       <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\CameraManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\InputManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +248,6 @@
     <ClInclude Include="DIManipulateur.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\FilesManager.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\terrain.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
@@ -249,9 +258,6 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Vertex.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h">
@@ -293,9 +299,6 @@
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -305,44 +308,11 @@
     <ClInclude Include="..\..\PirateSimulator\Mesh.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\RendererManager.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\CameraManager.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\TimeManager.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\InputManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="Config\Config.hpp">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\TaskManager.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\IGameTask.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
@@ -361,6 +331,48 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PlayerTask.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\CameraManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\FilesManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\InputManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\RendererManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TaskManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TimeManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

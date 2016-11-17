@@ -221,7 +221,6 @@ namespace PM3D
             transform.m_up = {0,1,0,0};
             transform.m_forward = {0,0,-1,0};
 
-
             // Constructeur avec format binaire
             PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transform, "vehicule")
