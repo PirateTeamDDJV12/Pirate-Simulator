@@ -33,7 +33,7 @@ milliseconds TimeManager::getRemainingFastTime() const
 
 void TimeManager::update()
 {
-    m_timeCurrent = system_clock::now();
+    m_timeCurrent = msNow();
 
     if(m_timeCurrent > m_timeNextFrame)
     {

@@ -8,12 +8,12 @@ using namespace std::chrono;
 
 class TimeManager : public PM3D::CSingleton<TimeManager>
 {
-    float m_echelleTemps = 0.001f;
+    float m_echelleTemps = 0.00001f;
     milliseconds m_ecartTemps = 1000ms / 60;
 
-    time_point<system_clock> m_timeNextFrame;
-    time_point<system_clock> m_timePreviousFrame;
-    time_point<system_clock> m_timeCurrent;
+    milliseconds m_timeNextFrame;
+    milliseconds m_timePreviousFrame;
+    milliseconds m_timeCurrent;
 
     time_point<system_clock> m_fastSave = system_clock::now();
     time_point<system_clock> m_startExecutionTime = system_clock::now();
@@ -24,6 +24,12 @@ public:
     static time_point<system_clock> now()
     {
         return system_clock::now();
+    }
+
+    static milliseconds msNow()
+    {
+        auto duration = system_clock::now().time_since_epoch();
+        return duration_cast<milliseconds>(duration);
     }
 
     void startGameTime()
@@ -65,9 +71,16 @@ public:
 
     void update();
 
+    bool isTimeToUpdate() const
+    {
+        return msNow() > m_timeNextFrame;
+    }
+
     float getElapsedTimeFrame() const
     {
-        return duration_cast<milliseconds>((m_timeCurrent - m_timePreviousFrame) * m_echelleTemps).count();
+        auto now = msNow();
+        milliseconds elapsed = duration_cast<milliseconds>(now - m_timePreviousFrame);
+        return elapsed.count() * m_echelleTemps;// <= 0 ? 0.0001f : elapsed.count()
     }
 };
 

@@ -17,7 +17,8 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
 {
     using namespace std::chrono;
 
-    time_point<system_clock> nowTime = std::chrono::system_clock::now();
+    //time_point<system_clock> nowTime = std::chrono::system_clock::now();
+    auto elapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
 
     switch (direction)
     {
