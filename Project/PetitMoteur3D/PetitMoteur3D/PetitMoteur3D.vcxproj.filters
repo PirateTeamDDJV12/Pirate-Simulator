@@ -165,6 +165,9 @@
     <ClCompile Include="..\..\PirateSimulator\InputTask.cpp">
       <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -354,6 +357,9 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PlayerTask.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
     </ClInclude>
   </ItemGroup>

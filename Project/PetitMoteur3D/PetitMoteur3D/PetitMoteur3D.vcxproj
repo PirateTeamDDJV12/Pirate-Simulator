@@ -116,6 +116,7 @@
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PhysicsTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RenderTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\PlayerTask.h" />
     <ClInclude Include="..\..\PirateSimulator\RendererManager.h" />
     <ClInclude Include="..\..\PirateSimulator\RenderTask.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />

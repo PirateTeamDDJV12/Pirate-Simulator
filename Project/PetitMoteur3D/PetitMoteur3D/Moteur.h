@@ -35,6 +35,7 @@
 #include "../../PirateSimulator/InputTask.h"
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
+#include "../../PirateSimulator/PlayerTask.h"
 
 
 namespace PM3D
@@ -63,13 +64,13 @@ namespace PM3D
             TIMETASK,
             INPUTTASK,
             PHYSICSTASK,
+            PLAYERTASK,
             RENDERTASK,
         };
     public:
 
         virtual void Run()
         {
-            // TODO - Changer la boucle de jeu pour faire l'update du TaskManager (qui s'occupera de faire l'update des Tasks dans le bonne ordre)
             bool bBoucle = true;
 
             while (bBoucle)
@@ -109,6 +110,7 @@ namespace PM3D
             taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
             taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
+            taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
         }
 
         XMMATRIX GetMatView()
