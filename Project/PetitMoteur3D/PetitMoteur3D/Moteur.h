@@ -73,13 +73,12 @@ namespace PM3D
         {
             bool bBoucle = true;
 
-            while (bBoucle)
+            while(bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
-                
+
                 PirateSimulator::TaskManager::GetInstance().update();
-                m_camera->anime(0);
             }
         }
 
@@ -87,14 +86,13 @@ namespace PM3D
         {
             // Création des tasks
             CreateTasks();
-            
+
             // Propre à la plateforme
             InitialisationsSpecific();
 
             // TODO - Deplacer cela dans le rendererManager pour le rendre dispo pour tous et faire l'init dans l'init du renderTask
             // * Initialisation du dispositif de rendu
-            pDispositif = CreationDispositifSpecific(CDS_FENETRE);
-            PirateSimulator::RendererManager::singleton.setDispositif(pDispositif);
+            PirateSimulator::RendererManager::singleton.setDispositif(CreationDispositifSpecific(CDS_FENETRE));
 
             // * Initialisation de la scène
             InitScene();
@@ -129,11 +127,6 @@ namespace PM3D
         CGestionnaireDeTextures& GetTextureManager()
         {
             return TexturesManager;
-        }
-
-        PirateSimulator::GameObjectRef getCamera()
-        {
-            return m_camera;
         }
 
     protected:
@@ -223,10 +216,10 @@ namespace PM3D
 
             PirateSimulator::Transform transform;
 
-            transform.m_position = { 0,0,0,0 };
-            transform.m_right = { 1,0,0,0 };
-            transform.m_up = { 0,1,0,0 };
-            transform.m_forward = { 0,0,-1,0 };
+            transform.m_position = {0,0,0,0};
+            transform.m_right = {1,0,0,0};
+            transform.m_up = {0,1,0,0};
+            transform.m_forward = {0,0,-1,0};
 
 
             // Constructeur avec format binaire
@@ -258,7 +251,7 @@ namespace PM3D
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transform, "terrain")
             );
-            
+
 #ifdef DEBUG_TEST_TERRAIN        
             // If we want to test our own terrain and not the one int the config file
             int terrainH = 257;
@@ -275,11 +268,11 @@ namespace PM3D
 
             PirateSimulator::cameraModule::BaseCamera* baseCam = m_camera->getComponent<PirateSimulator::cameraModule::BaseCamera>();
 
-            if (baseCam->getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
+            if(baseCam->getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
             {
                 m_camera->getComponent<PirateSimulator::cameraModule::ObjectCameraBehaviour>()->setTarget(vehicule);
             }
-            else if (baseCam->getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+            else if(baseCam->getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
             {
                 m_camera->getComponent<PirateSimulator::cameraModule::LevelCameraBehaviour>()->setTerrain(terrain);
             }
@@ -296,9 +289,9 @@ namespace PM3D
         }
 
         PirateSimulator::GameObjectRef createCamera(PirateSimulator::cameraModule::BaseCamera::type cameraType,
-            const PirateSimulator::cameraModule::CameraProjectionParameters &camProjParameters,
-            const PirateSimulator::cameraModule::CameraMovingParameters &camMovParameters,
-            const std::string& name)
+                                                    const PirateSimulator::cameraModule::CameraProjectionParameters &camProjParameters,
+                                                    const PirateSimulator::cameraModule::CameraMovingParameters &camMovParameters,
+                                                    const std::string& name)
         {
             PirateSimulator::GameObjectRef camera;
             PirateSimulator::Transform cameraInitialPosition;
@@ -316,22 +309,22 @@ namespace PM3D
                 )
                 );
 
-            switch (cameraType)
+            switch(cameraType)
             {
-            case PirateSimulator::cameraModule::BaseCamera::FREE_CAMERA:
-                camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::FreeCameraBehaviour());
-                break;
+                case PirateSimulator::cameraModule::BaseCamera::FREE_CAMERA:
+                    camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::FreeCameraBehaviour());
+                    break;
 
-            case PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA:
-                camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::LevelCameraBehaviour());
-                break;
+                case PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA:
+                    camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::LevelCameraBehaviour());
+                    break;
 
-            case PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA:
-                camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::ObjectCameraBehaviour());
-                break;
+                case PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA:
+                    camera->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::cameraModule::ObjectCameraBehaviour());
+                    break;
 
-            default:
-                return PirateSimulator::GameObjectRef();
+                default:
+                    return PirateSimulator::GameObjectRef();
             }
 
             camera->getComponent<PirateSimulator::cameraModule::BaseCamera>()->setCameraType(cameraType);
@@ -341,12 +334,8 @@ namespace PM3D
 
 
     protected:
-        // Le dispositif de rendu
-        TClasseDispositif* pDispositif;
-
-
-        PirateSimulator::GameObjectRef m_camera;
         PirateSimulator::GameObjectRef m_skybox;
+        PirateSimulator::GameObjectRef m_camera;
 
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;
