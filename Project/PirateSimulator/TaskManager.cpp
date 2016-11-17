@@ -1,5 +1,6 @@
 #include "TaskManager.h"
 #include <algorithm>
+#include "TimeManager.h"
 
 using namespace std;
 using namespace PirateSimulator;
@@ -43,11 +44,14 @@ void TaskManager::init()
 
 void TaskManager::update()
 {
-    for(pair<const int, vector<unique_ptr<IGameTask>>> &taskGroup : _tasks)
+    if(TimeManager::GetInstance().isTimeToUpdate())
     {
-        for(unique_ptr<IGameTask> &task : taskGroup.second)
+        for(pair<const int, vector<unique_ptr<IGameTask>>> &taskGroup : _tasks)
         {
-            task->update();
+            for(unique_ptr<IGameTask> &task : taskGroup.second)
+            {
+                task->update();
+            }
         }
     }
 }
