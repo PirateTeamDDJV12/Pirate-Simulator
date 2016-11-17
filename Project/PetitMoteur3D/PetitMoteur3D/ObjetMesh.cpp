@@ -206,7 +206,7 @@ namespace PM3D
 
 
         // Initialiser et sélectionner les «constantes» de l'effet
-        XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
+        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);

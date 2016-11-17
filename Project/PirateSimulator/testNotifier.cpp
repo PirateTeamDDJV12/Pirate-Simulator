@@ -1,6 +1,3 @@
-#include "stdafx.h"
-
-
 #include "NotifierManager.h"
 
 #include "GameObject.h"
@@ -13,7 +10,7 @@
 using namespace PirateSimulator;
 using namespace PM3D;
 
-
+/*
 void testNotifier()
 {
     auto notifier = NotifierManager::singleton.addANotifier<GameObject>("GameObjectNotifier")->as<Notifier<GameObject>>();
@@ -34,4 +31,4 @@ void testNotifier()
     RendererManager::singleton.addAnObligatoryMeshToDrawAtEnd(testMesh);
 
     notifier->sendNotification(*TestGO);
-}
+}*/

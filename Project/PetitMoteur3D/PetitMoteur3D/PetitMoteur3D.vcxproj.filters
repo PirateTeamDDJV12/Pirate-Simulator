@@ -144,6 +144,12 @@
     <ClCompile Include="Config\Config.cpp">
       <Filter>Fichiers sources\PirateSimulator\Config</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\testNotifier.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -316,6 +322,15 @@
     </ClInclude>
     <ClInclude Include="Config\Config.hpp">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\NotifierManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\testNotifier.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Notifier.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

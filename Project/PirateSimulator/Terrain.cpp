@@ -112,7 +112,7 @@ namespace PirateSimulator
         pImmediateContext->IASetInputLayout(pVertexLayout);
 
         // Initialiser et sélectionner les «constantes» du VS
-        XMMATRIX viewProj = PM3D::CMoteurWindows::GetInstance().GetMatViewProj();
+        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
@@ -120,7 +120,7 @@ namespace PirateSimulator
         m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
         m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
 
-        m_shaderParameter.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->m_transform.m_position;
+        m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
 
         pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 

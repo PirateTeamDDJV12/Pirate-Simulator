@@ -113,12 +113,14 @@
     <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\testNotifier.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
@@ -162,6 +164,8 @@
     <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
+    <ClInclude Include="..\..\PirateSimulator\Notifier.h" />
+    <ClInclude Include="..\..\PirateSimulator\NotifierManager.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\RendererManager.h" />
@@ -172,6 +176,7 @@
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\testNotifier.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />

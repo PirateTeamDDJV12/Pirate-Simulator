@@ -306,7 +306,7 @@ namespace PM3D
         }
 
         // Position en coordonnées du monde
-        XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
+        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
         pPanneau->position = _position;
 
         pPanneau->matPosDim = XMMatrixScaling(pPanneau->dimension.x,
