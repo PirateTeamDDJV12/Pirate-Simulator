@@ -15,33 +15,34 @@
 #include <math.h>
 namespace PirateSimulator
 {
-	class SommetPlane
-	{
-	public:
-		SommetPlane() {}
-		SommetPlane(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 _normal, DirectX::XMFLOAT2 c = DirectX::XMFLOAT2(0.0f, 0.0f))
-		{
-			normale = _normal;
-			position = p;
-			coordTex = c;
-		}
-		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT3 normale;
-		DirectX::XMFLOAT2 coordTex;
+    class SommetPlane
+    {
+    public:
+        SommetPlane() {}
+        SommetPlane(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 _normal, DirectX::XMFLOAT2 c = DirectX::XMFLOAT2(0.0f, 0.0f))
+        {
+            normale = _normal;
+            position = p;
+            coordTex = c;
+        }
+        DirectX::XMFLOAT3 position;
+        DirectX::XMFLOAT3 normale;
+        DirectX::XMFLOAT2 coordTex;
 
-		static UINT numElements;
-		static D3D11_INPUT_ELEMENT_DESC layout[];
-	};
-	namespace ShaderPlane
-	{
+        static UINT numElements;
+        static D3D11_INPUT_ELEMENT_DESC layout[];
+    };
+    namespace ShaderPlane
+    {
         struct ShadersParams
         {
+        public:
             DirectX::XMMATRIX matWorldViewProj;	// la matrice totale 
             DirectX::XMMATRIX matWorld;			// matrice de transformation dans le monde 
-            
+
             DirectX::XMVECTOR vLumiere; 			// la position de la source d'éclairage (Point)
             DirectX::XMVECTOR vCamera; 			// la position de la caméra
-            
+
             DirectX::XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
             DirectX::XMVECTOR vAMat; 			// la valeur ambiante du matériau
             DirectX::XMVECTOR vDEcl; 			// la valeur diffuse de l'éclairage 
@@ -51,17 +52,22 @@ namespace PirateSimulator
 
             float puissance;
             int bTex;					// Texture ou materiau 
-            DirectX::XMFLOAT2 remplissage;
+            float tick;
+
+            float remplissage;
 
 
+        public:
             ShadersParams() :
-                bTex{ 1 }
+                bTex{ 1 },
+                tick{ 0.f }
             {
                 vLumiere = DirectX::XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
                 vAEcl = DirectX::XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
                 vAMat = DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
                 vDEcl = DirectX::XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
                 vDMat = DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
+
             }
 
             ShadersParams(
@@ -71,7 +77,8 @@ namespace PirateSimulator
                 const DirectX::XMVECTOR& DEcl,
                 const DirectX::XMVECTOR& DMat
             ) :
-                bTex{ 1 }
+                bTex{ 1 },
+                tick{ 0.f }
             {
                 vLumiere = lumiere;
                 vAEcl = AEcl;
@@ -89,7 +96,8 @@ namespace PirateSimulator
                 const DirectX::XMVECTOR& SEcl,
                 const DirectX::XMVECTOR& SMat
             ) :
-                bTex{ 1 }
+                bTex{ 1 },
+                tick{ 0.f }
             {
                 vLumiere = lumiere;
                 vAEcl = AEcl;
@@ -100,53 +108,45 @@ namespace PirateSimulator
                 vSMat = SMat;
             }
         };
-	}
+    }
 
-	class Plane : public Mesh<ShaderPlane::ShadersParams>
-	{
+    class Plane : public Mesh<ShaderPlane::ShadersParams>
+    {
+    public:
+        enum
+        {
+            X_MIN = 0,
+            X_MAX = 1024,
+            Z_MIN = 0,
+            Z_MAX = 1024,
+            
+            POINTS_X_COUNT = 257,
+            POINTS_Z_COUNT = 257,
 
-		
-	private:
+            LAST_X_POINT_INDEX = POINTS_X_COUNT - 1,
+            LAST_Z_POINT_INDEX = POINTS_Z_COUNT - 1,
+            NBPOINTS = POINTS_X_COUNT * POINTS_Z_COUNT,
+            TRIANGLE_COUNT = LAST_X_POINT_INDEX * LAST_Z_POINT_INDEX * 2,
+            INDEX_COUNT = TRIANGLE_COUNT * 3
+        };
 
-	public:
-		enum SIZEPLANE {
-			XMIN = 0,
-			XMAX = 1024,
-			ZMIN = 0,
-			ZMAX = 1024,
-			DZ = ZMAX - ZMIN,
-			DX = XMAX - XMIN,
-			NBPOINTSX = 257,
-			NBPOINTSZ= 257,
-			NBPOINTS = NBPOINTSX *NBPOINTSZ,
+        enum
+        {
+            SIN_ARRAY_ELEMENTS_COUNT = 360
+        };
 
-			TRIANGLE_COUNT = ((NBPOINTSX - 1) * (NBPOINTSZ - 1)) * 2,
-			INDEX_COUNT = TRIANGLE_COUNT * 3
-		};
+        static constexpr const float DEFAULT_Y_LEVEL_WATER_PLANE = 0.f;
+        static constexpr const float Z_DELTA = static_cast<float>(Z_MAX - Z_MIN);
+        static constexpr const float X_DELTA = static_cast<float>(X_MAX - X_MIN);
+        static constexpr const float TICK_INCREMENT = 0.01f;
 
-		static constexpr float DEFAULT_Y_LEVEL_WATER_PLANE = 0.f;
 
-		std::vector<unsigned int> index;
-		std::vector<SommetPlane> sommets;
-		Plane(PM3D::CDispositifD3D11* pDispositif, const std::string& textureFileName);
-		virtual ~Plane(void);
-		void Draw();
-		void SetTexture(PM3D::CTexture* pTexture);
+    private:
+        std::vector<unsigned int> index;
+        std::vector<SommetPlane> sommets;
 
-	
-		Plane(const std::string& textureFileName) :
-			Mesh<ShaderPlane::ShadersParams>(ShaderPlane::ShadersParams())
-		{ 
-            m_material.m_textureFileName = textureFileName;
-        }
 
-protected:
-		void InitEffet();
-
-        void InitShaders();
-        void setTexture(PM3D::CTexture* texture) { m_material.pTextureD3D = texture->GetD3DTexture(); }
-        void loadTexture(const std::string& filename);
-
+    protected:
         PM3D::CDispositifD3D11* pDispositif;
 
         ID3D11Buffer* pVertexBuffer;
@@ -162,6 +162,35 @@ protected:
         //Pour texture
         Material m_material;
         Effect m_textureEffect;
-	};
+
+        ID3D11Texture1D* pSinTex;
+
+
+    public:
+        Plane(const std::string& textureFileName) :
+            Mesh<ShaderPlane::ShadersParams>(ShaderPlane::ShadersParams())
+        {
+            m_material.m_textureFileName = textureFileName;
+        }
+
+        Plane(PM3D::CDispositifD3D11* pDispositif, const std::string& textureFileName);
+
+        virtual ~Plane(void);
+
+        
+    public:
+        void Draw();
+        void SetTexture(PM3D::CTexture* pTexture);
+
+
+    protected:
+        void InitEffet();
+
+        void InitShaders();
+        void setTexture(PM3D::CTexture* texture) { m_material.pTextureD3D = texture->GetD3DTexture(); }
+        void loadTexture(const std::string& filename);    
+
+        void InitSin();
+    };
 }
 #endif

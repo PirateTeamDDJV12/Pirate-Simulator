@@ -22,7 +22,7 @@ namespace PirateSimulator
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
     Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
-        : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
+        : m_terrainWidth{ w }, m_terrainHeight{ h }, m_terrainScale{ s },
         Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
     {
         pDispositif = pDispositif_; // Prendre en note le dispositif

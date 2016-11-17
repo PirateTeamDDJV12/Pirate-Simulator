@@ -10,6 +10,8 @@
 #include <winnt.h>
 #include <d3dcompiler.h>
 #include <algorithm>
+#include "TimeManager.h"
+#include <chrono>
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -22,7 +24,8 @@ D3D11_INPUT_ELEMENT_DESC SommetPlane::layout[] =
 {
     { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+    { "TEXCOORD0", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
+    { "TEXCOORD1", 0, DXGI_FORMAT_R32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
 UINT SommetPlane::numElements = ARRAYSIZE(SommetPlane::layout);
 
@@ -34,34 +37,54 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
 
     index.reserve(INDEX_COUNT);
 
-    const size_t size = (NBPOINTSX - 1) * NBPOINTSZ;
+    constexpr const size_t size = (POINTS_X_COUNT - 1) * POINTS_Z_COUNT;
 
     for (size_t iter = 0; iter < size; ++iter)
     {
-        if (iter%NBPOINTSX == NBPOINTSX - 1)
+        if (iter % POINTS_X_COUNT == LAST_X_POINT_INDEX)
         {
             continue;
         }
 
         index.push_back(iter);
-        index.push_back(iter + NBPOINTSX);
-        index.push_back(iter + NBPOINTSX + 1);
+        index.push_back(iter + POINTS_X_COUNT);
+        index.push_back(iter + POINTS_X_COUNT + 1);
 
         index.push_back(iter);
-        index.push_back(iter + NBPOINTSX + 1);
+        index.push_back(iter + POINTS_X_COUNT + 1);
         index.push_back(iter + 1);
     }
 
-    sommets.reserve(NBPOINTS);
-    for (int i = 0; i < NBPOINTSZ; ++i)
     {
-        for (int j = 0; j < NBPOINTSX; ++j)
+        sommets.reserve(NBPOINTS);
+
+        XMFLOAT3 intermediaryPosition{ 0.f, Plane::DEFAULT_Y_LEVEL_WATER_PLANE, 0.f };
+        XMFLOAT3 defaultNormals{ 0.f, 1.f, 0.f };
+
+        float columnValue;
+        float rowValue;
+        constexpr const float XCoefficientPosition = X_DELTA * static_cast<float>(LAST_X_POINT_INDEX);
+        constexpr const float ZCoefficientPosition = Z_DELTA * static_cast<float>(LAST_Z_POINT_INDEX);
+
+        for (int row = 0; row < POINTS_Z_COUNT; ++row)
         {
-            XMFLOAT3 pos{ j*(DX / static_cast<float>(NBPOINTSX - 1)),Plane::DEFAULT_Y_LEVEL_WATER_PLANE,(i*DZ / static_cast<float>(NBPOINTSZ - 1)) };
-            SommetPlane pt = SommetPlane(pos, XMFLOAT3{ 0.f,1.f,0.f }, XMFLOAT2{ static_cast<float>(j), static_cast<float>(i) });
-            sommets.push_back(pt);
+            for (int col = 0; col < POINTS_X_COUNT; ++col)
+            {
+                columnValue = static_cast<float>(col);
+                rowValue = static_cast<float>(row);
+
+                intermediaryPosition.x = columnValue * XCoefficientPosition;
+                intermediaryPosition.z = rowValue * ZCoefficientPosition;
+
+                sommets.emplace_back(
+                    intermediaryPosition, 
+                    defaultNormals, 
+                    XMFLOAT2{ columnValue, rowValue }
+                );
+            }
         }
     }
+    
 
 
     // Création du vertex buffer et copie des sommets
@@ -93,6 +116,10 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
 
     // Initialisation de l'effet
     InitEffet();
+
+    ID3DX11EffectShaderResourceVariable* sinTexture;
+    sinTexture = m_textureEffect.m_effect->GetVariableByName("sinValue")->AsShaderResource();
+    sinTexture->SetResource(pSinTex);
 
     m_matWorld = XMMatrixIdentity();
 
@@ -176,6 +203,8 @@ Plane::~Plane(void)
 
 void Plane::Draw()
 {
+    pDispositif->DesactiverCulling();
+
     // Obtenir le contexte
     ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
 
@@ -213,6 +242,9 @@ void Plane::Draw()
     m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
     m_shaderParameter.puissance = m_material.m_property.power;
 
+
+
+
     // Activation de la texture ou non
     if (m_material.pTextureD3D != nullptr)
     {
@@ -235,7 +267,7 @@ void Plane::Draw()
     // **** Rendu de l'objet	   
     pImmediateContext->DrawIndexed(index.size(), 0, 0);
 
-    
+    pDispositif->ActiverCulling();
 }
 
 void Plane::loadTexture(const std::string& filename)
@@ -253,6 +285,8 @@ void Plane::loadTexture(const std::string& filename)
     pResource->QueryInterface<ID3D11Texture2D>(&pTextureInterface);
     D3D11_TEXTURE2D_DESC desc;
     pTextureInterface->GetDesc(&desc);
+
+
 
     // Compilation et chargement du vertex shader
     ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -381,4 +415,39 @@ void Plane::InitShaders()
 
 
     pPSBlob->Release(); //  On n'a plus besoin du blob
+}
+
+void Plane::InitSin()
+{
+    // Création d'une texture de même dimension sur la carte graphique
+    D3D11_TEXTURE1D_DESC texDesc;
+    texDesc.Width = SIN_ARRAY_ELEMENTS_COUNT;
+    texDesc.MipLevels = 1;
+    texDesc.ArraySize = 1;
+    texDesc.Format = DXGI_FORMAT_R32_FLOAT;
+    texDesc.Usage = D3D11_USAGE_DEFAULT;
+    texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    texDesc.CPUAccessFlags = 0;
+    texDesc.MiscFlags = 0;
+
+
+    // Create the sinus Array;
+    const float angleCoefficient = XM_2PI / static_cast<float>(SIN_ARRAY_ELEMENTS_COUNT);
+
+    float sinArray[SIN_ARRAY_ELEMENTS_COUNT];
+    for (int iter = 0; iter < SIN_ARRAY_ELEMENTS_COUNT; ++iter)
+    {
+        sinArray[iter] = sinf(static_cast<float>(iter) * angleCoefficient);
+    }
+
+
+    //Put the sin array into the GPU Memory
+    D3D11_SUBRESOURCE_DATA data;
+    data.pSysMem = sinArray;
+    data.SysMemPitch = SIN_ARRAY_ELEMENTS_COUNT * sizeof(float);
+    data.SysMemSlicePitch = 0;
+
+
+    // Création de la texture à partir des données du bitmap
+    HRESULT hr = pDispositif->GetD3DDevice()->CreateTexture1D(&texDesc, &data, &pSinTex);
 }
