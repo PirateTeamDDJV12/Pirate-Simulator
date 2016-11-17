@@ -58,22 +58,6 @@ namespace PirateSimulator
 
     void Terrain::InitShaders()
     {
-        // Compilation et chargement du vertex shader
-        ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
-
-        Shader *shader = ShaderManager::GetInstance().getShader("MiniPhong");
-
-        pVertexShader = shader->getVertexShader();
-        pPixelShader = shader->getPixelShader();
-
-        // Créer l'organisation des sommets
-        pVertexLayout = NULL;
-        UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(Terrain::layout,
-            Terrain::numElements,
-            shader->getVSBlob()->GetBufferPointer(),
-            shader->getVSBlob()->GetBufferSize(),
-            &pVertexLayout),
-            DXE_CREATIONLAYOUT);
     }
 
     void Terrain::Init(const std::string& textureFileName)
@@ -111,9 +95,6 @@ namespace PirateSimulator
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreateBuffer(&bufferDescription, &indexBufferData, &pIndexBuffer),
             DXE_CREATIONINDEXBUFFER);
-
-        // Initialisation des shaders
-        InitShaders();
 
         m_matWorld = XMMatrixIdentity();
         rotation = 0.0f;
@@ -237,23 +218,26 @@ namespace PirateSimulator
         bd.CPUAccessFlags = 0;
         HRESULT hr = pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
 
-        // Pour l'effet
-        ID3DBlob* pFXBlob = NULL;
+        m_shader = PirateSimulator::ShaderManager::GetInstance().getEffect("Miniphong");
 
-        UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
-            "fx_5_0", 0, 0, &pFXBlob, 0),
-            DXE_ERREURCREATION_FX);
+        //// Pour l'effet
+        //ID3DBlob* pFXBlob = NULL;
 
-        D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_textureEffect.m_effect);
+        //// Creation du shader
+        //UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
+        //    "fx_5_0", 0, 0, &pFXBlob, 0),
+        //    DXE_ERREURCREATION_FX);
 
-        pFXBlob->Release();
+        //D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_shader.m_effect);
 
-        m_textureEffect.m_technique = m_textureEffect.m_effect->GetTechniqueByIndex(0);
-        m_textureEffect.m_pass = m_textureEffect.m_technique->GetPassByIndex(0);
+        //pFXBlob->Release();
+
+        m_shader->m_technique = m_shader->m_effect->GetTechniqueByIndex(0);
+        m_shader->m_pass = m_shader->m_technique->GetPassByIndex(0);
 
         // Créer l'organisation des sommets pour le VS de notre effet
         D3DX11_PASS_SHADER_DESC effectVSDesc;
-        m_textureEffect.m_pass->GetVertexShaderDesc(&effectVSDesc);
+        m_shader->m_pass->GetVertexShaderDesc(&effectVSDesc);
 
         D3DX11_EFFECT_SHADER_DESC effectVSDesc2;
         effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex, &effectVSDesc2);
@@ -270,25 +254,25 @@ namespace PirateSimulator
             &pVertexLayout),
             DXE_CREATIONLAYOUT);
 
-        // Initialisation des paramètres de sampling de la texture
-        D3D11_SAMPLER_DESC samplerDesc;
+        //// Initialisation des paramètres de sampling de la texture
+        //D3D11_SAMPLER_DESC samplerDesc;
 
-        samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-        samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-        samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-        samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-        samplerDesc.MipLODBias = 0.0f;
-        samplerDesc.MaxAnisotropy = 4;
-        samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-        samplerDesc.BorderColor[0] = 0;
-        samplerDesc.BorderColor[1] = 0;
-        samplerDesc.BorderColor[2] = 0;
-        samplerDesc.BorderColor[3] = 0;
-        samplerDesc.MinLOD = 0;
-        samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+        //samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+        //samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+        //samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+        //samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+        //samplerDesc.MipLODBias = 0.0f;
+        //samplerDesc.MaxAnisotropy = 4;
+        //samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+        //samplerDesc.BorderColor[0] = 0;
+        //samplerDesc.BorderColor[1] = 0;
+        //samplerDesc.BorderColor[2] = 0;
+        //samplerDesc.BorderColor[3] = 0;
+        //samplerDesc.MinLOD = 0;
+        //samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
-        // Création de l'état de sampling
-        pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
+        //// Création de l'état de sampling
+        //pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
     }
 
     void Terrain::Draw()
@@ -299,18 +283,15 @@ namespace PirateSimulator
         // Choisir la topologie des primitives
         pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-        // Source des sommets
+        // On bind les vertex avec le shader
         UINT stride = sizeof(CSommetBloc);
         UINT offset = 0;
         pImmediateContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
 
-        // Source des index
+        // On bind les index avec le shader
         pImmediateContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-        // Activer le VS
-        pImmediateContext->VSSetShader(pVertexShader, NULL, 0);
-
-        // input layout des sommets
+        // On set le layout de nos vertex
         pImmediateContext->IASetInputLayout(pVertexLayout);
 
         // Initialiser et sélectionner les «constantes» du VS
@@ -319,51 +300,40 @@ namespace PirateSimulator
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-        m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-        m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-
-        m_shaderParameter.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->m_transform.m_position;
-
-        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
-
-        pImmediateContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-
-        // Pas de Geometry Shader
-        pImmediateContext->GSSetShader(NULL, NULL, 0);
-
-        // Activer le PS
-        pImmediateContext->PSSetShader(pPixelShader, NULL, 0);
-        pImmediateContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
-
-        /**/
-        //Texture
-        ID3DX11EffectSamplerVariable* variableSampler;
-        variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
-        variableSampler->SetSampler(0, m_textureEffect.m_sampleState);
-
-        // Dessiner les subsets non-transparents    
-        //m_material = Material(MaterialProperties());
-
+        //m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
+        //m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
         m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
         m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
         m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
         m_shaderParameter.puissance = m_material.m_property.power;
 
+        m_shaderParameter.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->m_transform.m_position;
+
+        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
+
+        ID3DX11EffectConstantBuffer* pCB = m_shader->m_effect->GetConstantBufferByName("param");  // Nous n'avons qu'un seul CBuffer
+        pCB->SetConstantBuffer(pConstantBuffer);
+
         // Activation de la texture ou non
         if (m_material.pTextureD3D != nullptr)
         {
             ID3DX11EffectShaderResourceVariable* variableTexture;
-            variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
+            variableTexture = m_shader->m_effect->GetVariableByName("textureEntree")->AsShaderResource();
             variableTexture->SetResource(m_material.pTextureD3D);
         }
 
+        /**/
+        // Le sampler state
+        ID3DX11EffectSamplerVariable* variableSampler;
+        variableSampler = m_shader->m_effect->GetVariableByName("SampleState")->AsSampler();
+        variableSampler->SetSampler(0, m_shader->m_sampleState);
+
+        // Dessiner les subsets non-transparents    
+        //m_material = Material(MaterialProperties());
+
         // IMPORTANT pour ajuster les param.
-        m_textureEffect.m_pass->Apply(0, pImmediateContext);
-
-        ID3DX11EffectConstantBuffer* pCB = m_textureEffect.m_effect->GetConstantBufferByName("param");  // Nous n'avons qu'un seul CBuffer
-        pCB->SetConstantBuffer(pConstantBuffer);
-        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
-
+        m_shader->m_pass->Apply(0, pImmediateContext);
+    
         // **** Rendu de l'objet	   
         pImmediateContext->DrawIndexed(m_index_bloc.size(), 0, 0);
     }

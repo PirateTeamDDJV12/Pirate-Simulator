@@ -7,6 +7,7 @@
 
 #include "../PetitMoteur3D/PetitMoteur3D/Singleton.h"
 #include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
+#include "Effect.h"
 
 namespace PirateSimulator
 {
@@ -15,6 +16,7 @@ namespace PirateSimulator
     {
     private:
         std::map<std::string, Shader*> m_shaders;
+        std::map<std::string, Effect*> m_effects;
         PM3D::CDispositifD3D11 *m_dispositif;
 
         friend class PM3D::CSingleton<ShaderManager>;
@@ -23,10 +25,12 @@ namespace PirateSimulator
     public:
         void initialize(PM3D::CDispositifD3D11 *device);
 
+        void addEffect(const std::string &path);
         void addShader(const std::string &path);
         void addShader(Shader *shader);
 
         Shader *getShader(const std::string name) const;
+        Effect *getEffect(const std::string name) const;
     };
 }
 

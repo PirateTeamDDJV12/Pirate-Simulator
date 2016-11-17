@@ -1,3 +1,6 @@
+#ifndef _UTIL_H_
+#define _UTIL_H_
+
 #include <string>
 
 namespace UtilitairesDX
@@ -51,3 +54,6 @@ namespace UtilitairesDX
         return r;
     }
 }
+
+#endif // !_UTIL_H_
+

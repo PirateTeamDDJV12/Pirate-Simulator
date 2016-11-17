@@ -7,6 +7,7 @@
 
 namespace PirateSimulator
 {
+    // This class is for shaders with two distincts files, the vertex shader file and the pixel shader files
     class Shader
     {
     private:

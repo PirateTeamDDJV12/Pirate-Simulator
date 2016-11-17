@@ -10,6 +10,8 @@
 #include "../PetitMoteur3D/PetitMoteur3D/DispositifD3D11.h"
 #include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
+#include "Effect.h"
+
 #include <vector>
 #include <string>
 
@@ -140,8 +142,7 @@ namespace PirateSimulator
         ID3D11Buffer* pVertexBuffer;
         ID3D11Buffer* pIndexBuffer;
 
-        ID3D11VertexShader* pVertexShader;
-        ID3D11PixelShader*  pPixelShader;
+        ID3DX11Effect* pEffet;
         ID3D11InputLayout*  pVertexLayout;
 
         // Définitions des valeurs d'animation
@@ -151,7 +152,7 @@ namespace PirateSimulator
         //Pour texture
         Material m_material;
 
-        Effect m_textureEffect;
+        Effect *m_shader;
     };
 
 }
