@@ -361,25 +361,6 @@ namespace PM3D
 
             PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(cube->getComponent<PirateSimulator::IMesh>());
 
-            PirateSimulator::Transform transformCube{};
-            transformCube.m_position.vector4_f32[0] = 257.f;
-            transformCube.m_position.vector4_f32[1] = 8.f;
-            transformCube.m_position.vector4_f32[2] = 257.f;
-
-            auto cube = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(
-                    transformCube, "Cube"
-                )
-            );
-
-            cube->addComponent<PirateSimulator::IMesh>(
-                new PirateSimulator::BlocMesh<PirateSimulator::BlocStructure>(
-                    PirateSimulator::BlocStructure(transformCube, 2,2,2), pDispositif, PirateSimulator::ShaderBloc::ShadersParams()
-                )
-            );
-
-            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(cube->getComponent<PirateSimulator::IMesh>());
-
             return true;
         }
 
