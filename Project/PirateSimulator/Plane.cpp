@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "TimeManager.h"
 #include <chrono>
+#include <comdef.h>
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -24,8 +25,8 @@ D3D11_INPUT_ELEMENT_DESC SommetPlane::layout[] =
 {
     { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    { "TEXCOORD0", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
-    { "TEXCOORD1", 0, DXGI_FORMAT_R32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+    { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
+    { "TEXCOORD", 1, DXGI_FORMAT_R32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
 UINT SommetPlane::numElements = ARRAYSIZE(SommetPlane::layout);
 
@@ -63,8 +64,8 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
 
         float columnValue;
         float rowValue;
-        constexpr const float XCoefficientPosition = X_DELTA * static_cast<float>(LAST_X_POINT_INDEX);
-        constexpr const float ZCoefficientPosition = Z_DELTA * static_cast<float>(LAST_Z_POINT_INDEX);
+        constexpr const float XCoefficientPosition = X_DELTA / static_cast<float>(LAST_X_POINT_INDEX);
+        constexpr const float ZCoefficientPosition = Z_DELTA / static_cast<float>(LAST_Z_POINT_INDEX);
 
         for (int row = 0; row < POINTS_Z_COUNT; ++row)
         {
@@ -86,7 +87,7 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
     }
     
 
-
+    
     // Création du vertex buffer et copie des sommets
     ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
     D3D11_BUFFER_DESC bd;
@@ -116,14 +117,18 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
 
     // Initialisation de l'effet
     InitEffet();
-
-    ID3DX11EffectShaderResourceVariable* sinTexture;
-    sinTexture = m_textureEffect.m_effect->GetVariableByName("sinValue")->AsShaderResource();
-    sinTexture->SetResource(pSinTex);
-
+    
     m_matWorld = XMMatrixIdentity();
 
     this->loadTexture(textureFileName);
+
+
+    InitSin();
+
+    
+    ID3DX11EffectShaderResourceVariable* sinTexture;
+    sinTexture = m_textureEffect.m_effect->GetVariableByName("sinValue")->AsShaderResource();
+    sinTexture->SetResource(pSinTex);
 }
 
 void Plane::InitEffet()
@@ -140,14 +145,31 @@ void Plane::InitEffet()
     bd.CPUAccessFlags = 0;
     pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
 
+    HRESULT hr;
+
     // Pour l'effet
     ID3DBlob* pFXBlob = NULL;
-    DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
+    ID3DBlob* errorBlob = NULL;
+    hr = D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
         "fx_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
-        &pFXBlob, NULL),
-        DXE_ERREURCREATION_FX);
+        &pFXBlob, &errorBlob);
 
-    D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_textureEffect.m_effect);
+
+    // Error checking
+    if (FAILED(hr))
+    {
+        if (errorBlob)
+        {
+            OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+            errorBlob->Release();
+        }
+        _com_error err(hr);
+        LPCWSTR errMsg = err.ErrorMessage();
+        MessageBox(nullptr, errMsg,
+            TEXT("Vertex Shader Compilation"), MB_OK);
+    }
+
+    hr = D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_textureEffect.m_effect);
     pFXBlob->Release();
     m_textureEffect.m_technique = m_textureEffect.m_effect->GetTechniqueByIndex(0);
     m_textureEffect.m_pass = m_textureEffect.m_technique->GetPassByIndex(0);
@@ -161,12 +183,24 @@ void Plane::InitEffet()
     unsigned int vsCodeLen = effectVSDesc2.BytecodeLength;
     pVertexLayout = NULL;
 
-    DXEssayer(pD3DDevice->CreateInputLayout(SommetPlane::layout,
+    hr = pD3DDevice->CreateInputLayout(SommetPlane::layout,
         SommetPlane::numElements,
         vsCodePtr,
         vsCodeLen,
-        &pVertexLayout),
-        DXE_CREATIONLAYOUT);
+        &pVertexLayout);
+
+    if (FAILED(hr))
+    {
+        if (errorBlob)
+        {
+            OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+            errorBlob->Release();
+        }
+        _com_error err(hr);
+        LPCWSTR errMsg = err.ErrorMessage();
+        MessageBox(nullptr, errMsg,
+            TEXT("Vertex Shader Compilation"), MB_OK);
+    }
 
     // Initialisation des paramètres de sampling de la texture
     D3D11_SAMPLER_DESC samplerDesc;
@@ -227,6 +261,7 @@ void Plane::Draw()
     XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
 
     m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
+    
 
     ID3DX11EffectSamplerVariable* variableSampler;
     variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
@@ -241,7 +276,7 @@ void Plane::Draw()
     m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
     m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
     m_shaderParameter.puissance = m_material.m_property.power;
-
+    m_shaderParameter.tick += TICK_INCREMENT;
 
 
 
@@ -285,8 +320,6 @@ void Plane::loadTexture(const std::string& filename)
     pResource->QueryInterface<ID3D11Texture2D>(&pTextureInterface);
     D3D11_TEXTURE2D_DESC desc;
     pTextureInterface->GetDesc(&desc);
-
-
 
     // Compilation et chargement du vertex shader
     ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -429,7 +462,7 @@ void Plane::InitSin()
     texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
     texDesc.CPUAccessFlags = 0;
     texDesc.MiscFlags = 0;
-
+    
 
     // Create the sinus Array;
     const float angleCoefficient = XM_2PI / static_cast<float>(SIN_ARRAY_ELEMENTS_COUNT);
@@ -448,6 +481,38 @@ void Plane::InitSin()
     data.SysMemSlicePitch = 0;
 
 
-    // Création de la texture à partir des données du bitmap
-    HRESULT hr = pDispositif->GetD3DDevice()->CreateTexture1D(&texDesc, &data, &pSinTex);
+
+    /*pSinTex->QueryInterface<ID3D11Texture1D>(&pSinText1D);
+    pSinText1D->GetDesc(&texDesc);*/
+
+    //// Création de la texture à partir des données du bitmap
+    ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
+    HRESULT hr = pD3DDevice->CreateTexture1D(&texDesc, &data, &pSinText1D);
+
+    /*ID3D11Resource* pResource;
+    pSinTex->GetResource(&pResource);
+    pResource->QueryInterface<ID3D11Texture1D>(&pSinText1D);*/
+    pSinText1D->GetDesc(&texDesc);
+    pSinText1D->QueryInterface<ID3D11ShaderResourceView>(&pSinTex);
+
+
+    // Initialisation des paramètres de sampling de la texture
+    D3D11_SAMPLER_DESC samplerDesc;
+
+    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    samplerDesc.MipLODBias = 0.0f;
+    samplerDesc.MaxAnisotropy = 4;
+    samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+    samplerDesc.BorderColor[0] = 0;
+    samplerDesc.BorderColor[1] = 0;
+    samplerDesc.BorderColor[2] = 0;
+    samplerDesc.BorderColor[3] = 0;
+    samplerDesc.MinLOD = 0;
+    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+    // Création de l'état de sampling
+    pD3DDevice->CreateSamplerState(&samplerDesc, &pSinSampler);
 }

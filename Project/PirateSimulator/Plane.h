@@ -18,19 +18,23 @@ namespace PirateSimulator
     class SommetPlane
     {
     public:
+        DirectX::XMFLOAT3 position;
+        DirectX::XMFLOAT3 normale;
+        DirectX::XMFLOAT2 coordTex;
+        float originAngle;
+
+        static UINT numElements;
+        static D3D11_INPUT_ELEMENT_DESC layout[];
+
+    public:
         SommetPlane() {}
-        SommetPlane(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 _normal, DirectX::XMFLOAT2 c = DirectX::XMFLOAT2(0.0f, 0.0f))
+        SommetPlane(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 _normal, DirectX::XMFLOAT2 c = DirectX::XMFLOAT2(0.0f, 0.0f)) :
+            originAngle{ 0.f }
         {
             normale = _normal;
             position = p;
             coordTex = c;
         }
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT3 normale;
-        DirectX::XMFLOAT2 coordTex;
-
-        static UINT numElements;
-        static D3D11_INPUT_ELEMENT_DESC layout[];
     };
     namespace ShaderPlane
     {
@@ -163,7 +167,9 @@ namespace PirateSimulator
         Material m_material;
         Effect m_textureEffect;
 
-        ID3D11Texture1D* pSinTex;
+        ID3D11ShaderResourceView* pSinTex;
+        ID3D11Texture1D* pSinText1D;
+        ID3D11SamplerState* pSinSampler;
 
 
     public:

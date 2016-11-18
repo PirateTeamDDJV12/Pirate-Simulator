@@ -12,9 +12,9 @@ cbuffer param
 	float4 vSMat; 				// la valeur spéculaire du matériau 
 	float puissance;
 	int bTex;		    		// Booléen pour la présence de texture
-	// float tick;  // 0 a 359.9
+	float tick;  				// 0 a 359.9
 	
-	float2 remplissage;
+	float remplissage;
 }
 
 Texture1D sinValue;  // la texture
@@ -30,7 +30,7 @@ struct VS_Sortie
 	float2 coordTex : TEXCOORD3; 
 };
 
-VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coordTex: TEXCOORD0 , float AngleOri : TEXCOORD1)  
+VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coordTex : TEXCOORD0, float originAngle : TEXCOORD1)  
 {
 	VS_Sortie sortie = (VS_Sortie)0;
 	
@@ -42,9 +42,11 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	// sortie.Pos.y = sortie.Pos.y + sinValue.Sample(SampleState, coord);
 	
 	// Version sans tableau
-	// float a = (AngleOri + tick)%360;
-	// diff = sinValue.Sample(SampleState, a/360)
-	// sortie.Pos.y = sortie.Pos.y + diff;
+	float a = (originAngle + tick) % 360;
+	float differ = sinValue.SampleLevel(sinState, a/360.f, 0);
+	float b = sortie.Pos.y + differ;
+	//sortie.Pos.y = b;
+	//sortie.Pos = float4(sortie.Pos.x, b, sortie.Pos.z, sortie.Pos.w);
 	
 	sortie.Pos = mul(sortie.Pos, matWorldViewProj);
 
