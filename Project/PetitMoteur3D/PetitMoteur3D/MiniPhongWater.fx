@@ -20,6 +20,8 @@ cbuffer param
 Texture1D sinValue;  // la texture
 SamplerState sinState;  // l'état de sampling
 
+Texture2D textureEntree;  // la texture
+SamplerState SampleState;  // l'état de sampling
 
 struct VS_Sortie
 {
@@ -41,14 +43,13 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	// coord.y = sortie.Pos.z / 256;
 	// sortie.Pos.y = sortie.Pos.y + sinValue.Sample(SampleState, coord);
 	
+	sortie.Pos = mul(sortie.Pos, matWorldViewProj);
 	// Version sans tableau
 	float a = (originAngle + tick) % 360;
-	float differ = sinValue.SampleLevel(sinState, a/360.f, 0);
-	float b = sortie.Pos.y + differ;
-	//sortie.Pos.y = b;
+	float differ = sinValue.SampleLevel(SampleState, a/360, 0);
+	sortie.Pos.y = sortie.Pos.y + 100 * differ;
 	//sortie.Pos = float4(sortie.Pos.x, b, sortie.Pos.z, sortie.Pos.w);
 	
-	sortie.Pos = mul(sortie.Pos, matWorldViewProj);
 
 	sortie.Norm = mul(Normale, matWorld); 
 	
@@ -63,8 +64,6 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	return sortie;
 }
 
-Texture2D textureEntree;  // la texture
-SamplerState SampleState;  // l'état de sampling
 
 float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 {

@@ -18,24 +18,34 @@ namespace PirateSimulator
     class SommetPlane
     {
     public:
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT3 normale;
-        DirectX::XMFLOAT2 coordTex;
-        float originAngle;
-
         static UINT numElements;
         static D3D11_INPUT_ELEMENT_DESC layout[];
 
+
+    public:
+        DirectX::XMFLOAT3 m_position;
+        DirectX::XMFLOAT3 m_normale;
+        DirectX::XMFLOAT2 m_coordTex;
+        float m_originAngle;
+
+
     public:
         SommetPlane() {}
-        SommetPlane(DirectX::XMFLOAT3 p, DirectX::XMFLOAT3 _normal, DirectX::XMFLOAT2 c = DirectX::XMFLOAT2(0.0f, 0.0f)) :
-            originAngle{ 0.f }
+        SommetPlane(
+            const DirectX::XMFLOAT3& position, 
+            const DirectX::XMFLOAT3& normal, 
+            const DirectX::XMFLOAT2& coordinate = DirectX::XMFLOAT2(0.0f, 0.0f),
+            float originAngle = 0.f
+        ) :
+            m_originAngle{ originAngle }
         {
-            normale = _normal;
-            position = p;
-            coordTex = c;
+            m_normale = normal;
+            m_position = position;
+            m_coordTex = coordinate;
         }
     };
+
+
     namespace ShaderPlane
     {
         struct ShadersParams
@@ -142,7 +152,7 @@ namespace PirateSimulator
         static constexpr const float DEFAULT_Y_LEVEL_WATER_PLANE = 0.f;
         static constexpr const float Z_DELTA = static_cast<float>(Z_MAX - Z_MIN);
         static constexpr const float X_DELTA = static_cast<float>(X_MAX - X_MIN);
-        static constexpr const float TICK_INCREMENT = 0.01f;
+        static constexpr const float TICK_INCREMENT = 1.f;
 
 
     private:

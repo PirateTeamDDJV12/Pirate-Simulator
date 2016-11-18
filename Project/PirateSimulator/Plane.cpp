@@ -13,6 +13,7 @@
 #include "TimeManager.h"
 #include <chrono>
 #include <comdef.h>
+#include "CameraManager.h"
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -74,13 +75,14 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
                 columnValue = static_cast<float>(col);
                 rowValue = static_cast<float>(row);
 
-                intermediaryPosition.x = columnValue * XCoefficientPosition;
-                intermediaryPosition.z = rowValue * ZCoefficientPosition;
+                intermediaryPosition.x = X_MIN + columnValue * XCoefficientPosition;
+                intermediaryPosition.z = Z_MIN + rowValue * ZCoefficientPosition;
 
                 sommets.emplace_back(
                     intermediaryPosition, 
                     defaultNormals, 
-                    XMFLOAT2{ columnValue, rowValue }
+                    XMFLOAT2{ columnValue, rowValue },
+                    (columnValue + rowValue) / (XCoefficientPosition + ZCoefficientPosition)
                 );
             }
         }
@@ -261,7 +263,8 @@ void Plane::Draw()
     XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
 
     m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
-    
+    m_shaderParameter.matWorld = m_matWorld;
+    m_shaderParameter.vCamera = CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
 
     ID3DX11EffectSamplerVariable* variableSampler;
     variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
@@ -275,6 +278,7 @@ void Plane::Draw()
     m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
     m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
     m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
+    m_shaderParameter.vSEcl = { 0.5f, 0.5f, 0.5f, 0.5f };
     m_shaderParameter.puissance = m_material.m_property.power;
     m_shaderParameter.tick += TICK_INCREMENT;
 
@@ -294,7 +298,6 @@ void Plane::Draw()
     ID3DX11EffectConstantBuffer* pCB = m_textureEffect.m_effect->GetConstantBufferByName("param");  // Nous n'avons qu'un seul CBuffer
     pCB->SetConstantBuffer(pConstantBuffer);
     pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
-
 
 
 
