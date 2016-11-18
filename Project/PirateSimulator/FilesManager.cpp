@@ -30,11 +30,11 @@ std::vector<float> FilesManager::readFileHeightMap(std::string filePath)
     std::vector<float> v;
     std::ifstream is{filePath,std::ios::binary};
 
-    char *test = new char[4];
-    is.read(test, sizeof(unsigned));
+    char *binaryNbVertex = new char[4];
+    is.read(binaryNbVertex, sizeof(unsigned));
 
     BinaryFast bfTest;
-    bfTest.put<BinaryFast::Load>(test, 0);
+    bfTest.put<BinaryFast::Load>(binaryNbVertex, 0);
     int nbIndices = (Config::getInstance()->getWidth() - 1) * (Config::getInstance()->getHeight() - 1) * 2 * 3 * sizeof(unsigned);
     int sizeChar = bfTest.getUint32() * sizeof(Vertex);
     v.reserve(sizeChar / sizeof(float) + nbIndices / sizeof(unsigned));
@@ -45,7 +45,6 @@ std::vector<float> FilesManager::readFileHeightMap(std::string filePath)
     for(; i < sizeChar; i += 4)
     {
         bfTest.put<BinaryFast::Load>(allVertex, i);
-        //bfTest.put<BinaryFast::Save>(reinterpret_cast<char*>(v.data()), i);
         v.push_back(bfTest.getFloat());
     }
     char* allTriangle = new char[nbIndices];
@@ -57,9 +56,11 @@ std::vector<float> FilesManager::readFileHeightMap(std::string filePath)
         v.push_back(bfTest.getUint32());
     }
 
+    delete []binaryNbVertex;
+    delete []allVertex;
+    delete []allTriangle;
     // Close the file
     is.close();
-    auto ipoawdjaiow = v.back();
     return v;
 }
 
