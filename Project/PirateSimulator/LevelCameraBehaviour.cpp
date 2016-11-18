@@ -1,5 +1,6 @@
 #include "LevelCameraBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
+#include "InputManager.h"
 
 
 using namespace PirateSimulator;
@@ -100,8 +101,7 @@ void LevelCameraBehaviour::rotate(Move::Rotation::Direction direction)
 void LevelCameraBehaviour::anime(float ellapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
-    PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
-    CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+    CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
     /*
      * Translation

@@ -6,6 +6,8 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
 #include "../PetitMoteur3D/PetitMoteur3D/GestionnaireDeTextures.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
+#include "RessourceManager.h"
+#include "RendererManager.h"
 
 using namespace DirectX;
 
@@ -20,7 +22,7 @@ namespace PirateSimulator
 
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_)
+    Terrain::Terrain()
         : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
     {
         // Get the configuration from the config file
@@ -29,7 +31,7 @@ namespace PirateSimulator
         m_terrainHeight = terrainConfig->getHeight();
         m_terrainScale = terrainConfig->getMapScale();
 
-        pDispositif = pDispositif_; // Prendre en note le dispositif
+        pDispositif = RendererManager::singleton.getDispositif(); // Prendre en note le dispositif
 
         m_vertexArray.reserve(m_terrainWidth * m_terrainHeight);
         m_csommetsArray.reserve(m_terrainWidth * m_terrainHeight);
@@ -51,11 +53,11 @@ namespace PirateSimulator
         Init(terrainConfig->getTexturePath());
     }
 
-    Terrain::Terrain(PM3D::CDispositifD3D11* pDispositif_, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
+    Terrain::Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
         : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
         Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
     {
-        pDispositif = pDispositif_; // Prendre en note le dispositif
+        pDispositif = RendererManager::singleton.getDispositif(); // Prendre en note le dispositif
 
         m_vertexArray.reserve(m_terrainWidth * m_terrainHeight);
         m_csommetsArray.reserve(m_terrainWidth * m_terrainHeight);
@@ -120,7 +122,7 @@ namespace PirateSimulator
         m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
         m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
 
-        m_shaderParameter.vCamera = PM3D::CMoteurWindows::GetInstance().getCamera()->m_transform.m_position;
+        m_shaderParameter.vCamera = CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
 
         pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
@@ -343,7 +345,7 @@ namespace PirateSimulator
         wstring ws;
         ws.assign(filename.begin(), filename.end());
 
-        this->setTexture(TexturesManager.GetNewTexture(ws.c_str(), pDispositif));
+        this->setTexture(TexturesManager.GetNewTexture(ws.c_str()));
 
         ID3D11Resource* pResource;
         ID3D11Texture2D *pTextureInterface = 0;
@@ -353,9 +355,6 @@ namespace PirateSimulator
         pTextureInterface->GetDesc(&desc);
 
         // Compilation et chargement du vertex shader
-
-
-
 
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 

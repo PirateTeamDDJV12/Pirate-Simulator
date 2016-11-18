@@ -39,10 +39,10 @@ D3D11_INPUT_ELEMENT_DESC CSommetSky::layout[] =
 };
 UINT CSommetSky::numElements = ARRAYSIZE(CSommetSky::layout);
 
-CSkybox::CSkybox(CDispositifD3D11* pDispositif_) :
+CSkybox::CSkybox() :
     Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams())
 {
-    pDispositif = pDispositif_;
+    pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
     XMFLOAT3 point[8];
     point[0] = XMFLOAT3(1.0f, 1.0f, 1.0f);
@@ -218,7 +218,7 @@ void CSkybox::Draw()
 
 
     // Initialiser et sélectionner les «constantes» de l'effet
-    XMVECTOR cameraPos = CMoteurWindows::GetInstance().GetCameraPosition();
+    XMVECTOR cameraPos = CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
 
     m_matWorld = XMMatrixTranslation(cameraPos.vector4_f32[0], cameraPos.vector4_f32[1], cameraPos.vector4_f32[2]);
     XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();

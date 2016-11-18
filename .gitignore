@@ -6,7 +6,7 @@
 *.lnk
 *.jpg
 **/testOutput.txt
-**/heightmapOutput2.txt
+**/OldheightmapOutput.txt
 **/heightmapOutput.txt
 
 Project/*/*/Debug/*

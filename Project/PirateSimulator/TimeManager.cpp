@@ -1,7 +1,5 @@
 #include "TimeManager.h"
 
-TimeManager TimeManager::m_instance;
-
 time_point<system_clock> TimeManager::savePoint(std::string name)
 {
     m_saveTimePoints[name] = system_clock::now();
@@ -31,6 +29,17 @@ milliseconds TimeManager::getRemainingFastTime() const
     milliseconds currentDuration = duration_cast<milliseconds>(system_clock::now() - m_fastSave);
     milliseconds remaining = m_turnTimeLimit - currentDuration;
     return remaining <= 0ms ? 0ms : remaining;
+}
+
+void TimeManager::update()
+{
+    m_timeCurrent = msNow();
+
+    if(m_timeCurrent > m_timeNextFrame)
+    {
+        m_timePreviousFrame = m_timeCurrent;
+        m_timeNextFrame = m_timeCurrent + m_ecartTemps;
+    }
 }
 
 time_point<system_clock> TimeManager::getPoint(std::string name)
