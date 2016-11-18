@@ -66,9 +66,12 @@ namespace PirateSimulator
 
             float puissance;
             int bTex;					// Texture ou materiau 
-            float tick;
 
-            float remplissage;
+            float tick;
+            float waveAmplitude;
+            float waveFrequency;
+
+            DirectX::XMFLOAT3 uselessFill;
 
 
         public:
@@ -134,8 +137,8 @@ namespace PirateSimulator
             Z_MIN = 0,
             Z_MAX = 1024,
             
-            POINTS_X_COUNT = 257,
-            POINTS_Z_COUNT = 257,
+            POINTS_X_COUNT = 300,
+            POINTS_Z_COUNT = 300,
 
             LAST_X_POINT_INDEX = POINTS_X_COUNT - 1,
             LAST_Z_POINT_INDEX = POINTS_Z_COUNT - 1,
@@ -152,12 +155,16 @@ namespace PirateSimulator
         static constexpr const float DEFAULT_Y_LEVEL_WATER_PLANE = 0.f;
         static constexpr const float Z_DELTA = static_cast<float>(Z_MAX - Z_MIN);
         static constexpr const float X_DELTA = static_cast<float>(X_MAX - X_MIN);
-        static constexpr const float TICK_INCREMENT = 1.f;
+
+        static constexpr const float TICK_INCREMENT = 0.051f;
+        static constexpr const float WAVE_AMPLITUDE = 1.1f;
+        static constexpr const float WAVE_FREQUENCY = 0.70f;
 
 
     private:
-        std::vector<unsigned int> index;
-        std::vector<SommetPlane> sommets;
+        std::vector<unsigned int> m_index;
+        std::vector<SommetPlane> m_sommets;
+        //float m_sinArray[SIN_ARRAY_ELEMENTS_COUNT];
 
 
     protected:
@@ -177,9 +184,9 @@ namespace PirateSimulator
         Material m_material;
         Effect m_textureEffect;
 
-        ID3D11ShaderResourceView* pSinTex;
+        /*ID3D11ShaderResourceView* pSinTex;
         ID3D11Texture1D* pSinText1D;
-        ID3D11SamplerState* pSinSampler;
+        ID3D11SamplerState* pSinSampler;*/
 
 
     public:
@@ -200,13 +207,10 @@ namespace PirateSimulator
 
 
     protected:
-        void InitEffet();
-
-        void InitShaders();
         void setTexture(PM3D::CTexture* texture) { m_material.pTextureD3D = texture->GetD3DTexture(); }
         void loadTexture(const std::string& filename);    
 
-        void InitSin();
+        //void InitSin();
     };
 }
 #endif

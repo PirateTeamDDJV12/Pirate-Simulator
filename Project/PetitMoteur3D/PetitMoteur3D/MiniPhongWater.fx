@@ -12,13 +12,13 @@ cbuffer param
 	float4 vSMat; 				// la valeur spéculaire du matériau 
 	float puissance;
 	int bTex;		    		// Booléen pour la présence de texture
-	float tick;  				// 0 a 359.9
 	
-	float remplissage;
-}
+	float tick;  				// 0 a 359.9
+	float waveAmplitude;
+	float waveFrequency;
 
-Texture1D sinValue;  // la texture
-SamplerState sinState;  // l'état de sampling
+    float3 uselessFill;
+}
 
 Texture2D textureEntree;  // la texture
 SamplerState SampleState;  // l'état de sampling
@@ -43,13 +43,13 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	// coord.y = sortie.Pos.z / 256;
 	// sortie.Pos.y = sortie.Pos.y + sinValue.Sample(SampleState, coord);
 	
-	sortie.Pos = mul(sortie.Pos, matWorldViewProj);
-	// Version sans tableau
-	float a = (originAngle + tick) % 360;
-	float differ = sinValue.SampleLevel(SampleState, a/360, 0);
-	sortie.Pos.y = sortie.Pos.y + 100 * differ;
-	//sortie.Pos = float4(sortie.Pos.x, b, sortie.Pos.z, sortie.Pos.w);
 	
+	// Version sans tableau
+	float wiseComputationParam = (waveFrequency * (originAngle + tick));
+	
+	sortie.Pos.y = sortie.Pos.y + waveAmplitude * (sin(wiseComputationParam + sortie.Pos.x) + cos(wiseComputationParam + sortie.Pos.z / 6));
+	
+	sortie.Pos = mul(sortie.Pos, matWorldViewProj);
 
 	sortie.Norm = mul(Normale, matWorld); 
 	

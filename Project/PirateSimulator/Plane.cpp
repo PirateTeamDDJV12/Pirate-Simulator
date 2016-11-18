@@ -37,7 +37,7 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
 {
     pDispositif = pDispositif_;
 
-    index.reserve(INDEX_COUNT);
+    m_index.reserve(INDEX_COUNT);
 
     constexpr const size_t size = (POINTS_X_COUNT - 1) * POINTS_Z_COUNT;
 
@@ -48,17 +48,17 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
             continue;
         }
 
-        index.push_back(iter);
-        index.push_back(iter + POINTS_X_COUNT);
-        index.push_back(iter + POINTS_X_COUNT + 1);
-
-        index.push_back(iter);
-        index.push_back(iter + POINTS_X_COUNT + 1);
-        index.push_back(iter + 1);
+        m_index.push_back(iter);
+        m_index.push_back(iter + POINTS_X_COUNT);
+        m_index.push_back(iter + POINTS_X_COUNT + 1);
+        
+        m_index.push_back(iter);
+        m_index.push_back(iter + POINTS_X_COUNT + 1);
+        m_index.push_back(iter + 1);
     }
 
     {
-        sommets.reserve(NBPOINTS);
+        m_sommets.reserve(NBPOINTS);
 
         XMFLOAT3 intermediaryPosition{ 0.f, Plane::DEFAULT_Y_LEVEL_WATER_PLANE, 0.f };
         XMFLOAT3 defaultNormals{ 0.f, 1.f, 0.f };
@@ -78,7 +78,7 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
                 intermediaryPosition.x = X_MIN + columnValue * XCoefficientPosition;
                 intermediaryPosition.z = Z_MIN + rowValue * ZCoefficientPosition;
 
-                sommets.emplace_back(
+                m_sommets.emplace_back(
                     intermediaryPosition, 
                     defaultNormals, 
                     XMFLOAT2{ columnValue, rowValue },
@@ -95,134 +95,53 @@ Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFil
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(bd));
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(SommetPlane) * sommets.size();
+    bd.ByteWidth = sizeof(SommetPlane) * m_sommets.size();
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     bd.CPUAccessFlags = 0;
     D3D11_SUBRESOURCE_DATA InitData;
     ZeroMemory(&InitData, sizeof(InitData));
-    InitData.pSysMem = sommets.data();
+    InitData.pSysMem = m_sommets.data();
     pVertexBuffer = NULL;
     DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
 
     // Création de l'index buffer et copie des indices
     ZeroMemory(&bd, sizeof(bd));
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(unsigned int) * index.size();
+    bd.ByteWidth = sizeof(unsigned int) * m_index.size();
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     bd.CPUAccessFlags = 0;
     ZeroMemory(&InitData, sizeof(InitData));
-    InitData.pSysMem = index.data();
+    InitData.pSysMem = m_index.data();
     pIndexBuffer = NULL;
     DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer), DXE_CREATIONINDEXBUFFER);
 
-    InitShaders();
-
     // Initialisation de l'effet
-    InitEffet();
     
     m_matWorld = XMMatrixIdentity();
 
     this->loadTexture(textureFileName);
 
 
-    InitSin();
+    //InitSin();
 
     
-    ID3DX11EffectShaderResourceVariable* sinTexture;
+    /*ID3DX11EffectShaderResourceVariable* sinTexture;
     sinTexture = m_textureEffect.m_effect->GetVariableByName("sinValue")->AsShaderResource();
-    sinTexture->SetResource(pSinTex);
+    sinTexture->SetResource(pSinTex);*/
+
+
+    ID3DX11EffectSamplerVariable* variableSampler;
+    variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
+    variableSampler->SetSampler(0, m_textureEffect.m_sampleState);
+
+    /*ID3DX11EffectSamplerVariable* sinSampler;
+    sinSampler = m_textureEffect.m_effect->GetVariableByName("sinState")->AsSampler();
+    sinSampler->SetSampler(0, pSinSampler);*/
+
+    m_shaderParameter.waveAmplitude = Plane::WAVE_AMPLITUDE;
+    m_shaderParameter.waveFrequency = Plane::WAVE_FREQUENCY;
 }
 
-void Plane::InitEffet()
-{
-    // Compilation et chargement du vertex shader
-    ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
-
-    // Création d'un tampon pour les constantes du VS
-    D3D11_BUFFER_DESC bd;
-    ZeroMemory(&bd, sizeof(bd));
-    bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(ShaderPlane::ShadersParams);
-    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    bd.CPUAccessFlags = 0;
-    pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
-
-    HRESULT hr;
-
-    // Pour l'effet
-    ID3DBlob* pFXBlob = NULL;
-    ID3DBlob* errorBlob = NULL;
-    hr = D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
-        "fx_5_0", D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
-        &pFXBlob, &errorBlob);
-
-
-    // Error checking
-    if (FAILED(hr))
-    {
-        if (errorBlob)
-        {
-            OutputDebugStringA((char*)errorBlob->GetBufferPointer());
-            errorBlob->Release();
-        }
-        _com_error err(hr);
-        LPCWSTR errMsg = err.ErrorMessage();
-        MessageBox(nullptr, errMsg,
-            TEXT("Vertex Shader Compilation"), MB_OK);
-    }
-
-    hr = D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_textureEffect.m_effect);
-    pFXBlob->Release();
-    m_textureEffect.m_technique = m_textureEffect.m_effect->GetTechniqueByIndex(0);
-    m_textureEffect.m_pass = m_textureEffect.m_technique->GetPassByIndex(0);
-
-    // Créer l'organisation des sommets pour le VS de notre effet
-    D3DX11_PASS_SHADER_DESC effectVSDesc;
-    m_textureEffect.m_pass->GetVertexShaderDesc(&effectVSDesc);
-    D3DX11_EFFECT_SHADER_DESC effectVSDesc2;
-    effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex, &effectVSDesc2);
-    const void *vsCodePtr = effectVSDesc2.pBytecode;
-    unsigned int vsCodeLen = effectVSDesc2.BytecodeLength;
-    pVertexLayout = NULL;
-
-    hr = pD3DDevice->CreateInputLayout(SommetPlane::layout,
-        SommetPlane::numElements,
-        vsCodePtr,
-        vsCodeLen,
-        &pVertexLayout);
-
-    if (FAILED(hr))
-    {
-        if (errorBlob)
-        {
-            OutputDebugStringA((char*)errorBlob->GetBufferPointer());
-            errorBlob->Release();
-        }
-        _com_error err(hr);
-        LPCWSTR errMsg = err.ErrorMessage();
-        MessageBox(nullptr, errMsg,
-            TEXT("Vertex Shader Compilation"), MB_OK);
-    }
-
-    // Initialisation des paramètres de sampling de la texture
-    D3D11_SAMPLER_DESC samplerDesc;
-    samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.MipLODBias = 0.0f;
-    samplerDesc.MaxAnisotropy = 1;
-    samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-    samplerDesc.BorderColor[0] = 0;
-    samplerDesc.BorderColor[1] = 0;
-    samplerDesc.BorderColor[2] = 0;
-    samplerDesc.BorderColor[3] = 0;
-    samplerDesc.MinLOD = 0;
-    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-    // Création de l'état de sampling
-    pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
-}
 
 void Plane::SetTexture(CTexture* pTexture)
 {
@@ -266,11 +185,6 @@ void Plane::Draw()
     m_shaderParameter.matWorld = m_matWorld;
     m_shaderParameter.vCamera = CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
 
-    ID3DX11EffectSamplerVariable* variableSampler;
-    variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
-    variableSampler->SetSampler(0, m_textureEffect.m_sampleState);
-
-
 
     // Dessiner les subsets non-transparents    
     //m_material = Material(MaterialProperties());
@@ -295,15 +209,14 @@ void Plane::Draw()
     // IMPORTANT pour ajuster les param.
     m_textureEffect.m_pass->Apply(0, pImmediateContext);
 
+
     ID3DX11EffectConstantBuffer* pCB = m_textureEffect.m_effect->GetConstantBufferByName("param");  // Nous n'avons qu'un seul CBuffer
     pCB->SetConstantBuffer(pConstantBuffer);
     pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
 
-
-
     // **** Rendu de l'objet	   
-    pImmediateContext->DrawIndexed(index.size(), 0, 0);
+    pImmediateContext->DrawIndexed(m_index.size(), 0, 0);
 
     pDispositif->ActiverCulling();
 }
@@ -391,131 +304,68 @@ void Plane::loadTexture(const std::string& filename)
     pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
 }
 
-void Plane::InitShaders()
-{
-    // Compilation et chargement du vertex shader
-    ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 
-    ID3DBlob* pVSBlob = NULL;
-    UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.vhl",
-        NULL, NULL,
-        "MiniPhongVS",
-        "vs_4_0",
-        D3DCOMPILE_ENABLE_STRICTNESS,
-        0,
-        &pVSBlob, NULL), DXE_FICHIER_VS);
-
-    UtilitairesDX::DXEssayer(pD3DDevice->CreateVertexShader(pVSBlob->GetBufferPointer(),
-        pVSBlob->GetBufferSize(),
-        NULL,
-        &pVertexShader),
-        DXE_CREATION_VS);
-
-    // Créer l'organisation des sommets
-    pVertexLayout = NULL;
-    UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(Terrain::layout,
-        Terrain::numElements,
-        pVSBlob->GetBufferPointer(),
-        pVSBlob->GetBufferSize(),
-        &pVertexLayout),
-        DXE_CREATIONLAYOUT);
-
-    pVSBlob->Release(); //  On n'a plus besoin du blob
-
-                        // Création d'un tampon pour les constantes du VS
-    D3D11_BUFFER_DESC bd;
-    ZeroMemory(&bd, sizeof(bd));
-
-    bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(ShaderTerrain::ShadersParams);
-    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    bd.CPUAccessFlags = 0;
-    pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
-
-    // Compilation et chargement du pixel shader
-    ID3DBlob* pPSBlob = NULL;
-    UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.phl",
-        NULL, NULL,
-        "MiniPhongPS",
-        "ps_4_0",
-        D3DCOMPILE_ENABLE_STRICTNESS,
-        0,
-        &pPSBlob,
-        NULL), DXE_FICHIER_PS);
-
-    UtilitairesDX::DXEssayer(pD3DDevice->CreatePixelShader(pPSBlob->GetBufferPointer(),
-        pPSBlob->GetBufferSize(),
-        NULL,
-        &pPixelShader),
-        DXE_CREATION_PS);
-
-
-    pPSBlob->Release(); //  On n'a plus besoin du blob
-}
-
-void Plane::InitSin()
-{
-    // Création d'une texture de même dimension sur la carte graphique
-    D3D11_TEXTURE1D_DESC texDesc;
-    texDesc.Width = SIN_ARRAY_ELEMENTS_COUNT;
-    texDesc.MipLevels = 1;
-    texDesc.ArraySize = 1;
-    texDesc.Format = DXGI_FORMAT_R32_FLOAT;
-    texDesc.Usage = D3D11_USAGE_DEFAULT;
-    texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    texDesc.CPUAccessFlags = 0;
-    texDesc.MiscFlags = 0;
-    
-
-    // Create the sinus Array;
-    const float angleCoefficient = XM_2PI / static_cast<float>(SIN_ARRAY_ELEMENTS_COUNT);
-
-    float sinArray[SIN_ARRAY_ELEMENTS_COUNT];
-    for (int iter = 0; iter < SIN_ARRAY_ELEMENTS_COUNT; ++iter)
-    {
-        sinArray[iter] = sinf(static_cast<float>(iter) * angleCoefficient);
-    }
-
-
-    //Put the sin array into the GPU Memory
-    D3D11_SUBRESOURCE_DATA data;
-    data.pSysMem = sinArray;
-    data.SysMemPitch = SIN_ARRAY_ELEMENTS_COUNT * sizeof(float);
-    data.SysMemSlicePitch = 0;
-
-
-
-    /*pSinTex->QueryInterface<ID3D11Texture1D>(&pSinText1D);
-    pSinText1D->GetDesc(&texDesc);*/
-
-    //// Création de la texture à partir des données du bitmap
-    ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
-    HRESULT hr = pD3DDevice->CreateTexture1D(&texDesc, &data, &pSinText1D);
-
-    /*ID3D11Resource* pResource;
-    pSinTex->GetResource(&pResource);
-    pResource->QueryInterface<ID3D11Texture1D>(&pSinText1D);*/
-    pSinText1D->GetDesc(&texDesc);
-    pSinText1D->QueryInterface<ID3D11ShaderResourceView>(&pSinTex);
-
-
-    // Initialisation des paramètres de sampling de la texture
-    D3D11_SAMPLER_DESC samplerDesc;
-
-    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-    samplerDesc.MipLODBias = 0.0f;
-    samplerDesc.MaxAnisotropy = 4;
-    samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-    samplerDesc.BorderColor[0] = 0;
-    samplerDesc.BorderColor[1] = 0;
-    samplerDesc.BorderColor[2] = 0;
-    samplerDesc.BorderColor[3] = 0;
-    samplerDesc.MinLOD = 0;
-    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-    // Création de l'état de sampling
-    pD3DDevice->CreateSamplerState(&samplerDesc, &pSinSampler);
-}
+//void Plane::InitSin()
+//{
+//    // Création d'une texture de même dimension sur la carte graphique
+//    D3D11_TEXTURE1D_DESC texDesc;
+//    texDesc.Width = SIN_ARRAY_ELEMENTS_COUNT;
+//    texDesc.MipLevels = 1;
+//    texDesc.ArraySize = 1;
+//    texDesc.Format = DXGI_FORMAT_R32_FLOAT;
+//    texDesc.Usage = D3D11_USAGE_DEFAULT;
+//    texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+//    texDesc.CPUAccessFlags = 0;
+//    texDesc.MiscFlags = 0;
+//    
+//
+//    // Create the sinus Array;
+//    const float angleCoefficient = XM_2PI / static_cast<float>(SIN_ARRAY_ELEMENTS_COUNT);
+//
+//    for (int iter = 0; iter < SIN_ARRAY_ELEMENTS_COUNT; ++iter)
+//    {
+//        m_sinArray[iter] = sinf(static_cast<float>(iter) * angleCoefficient);
+//    }
+//
+//    //Put the sin array into the GPU Memory
+//    D3D11_SUBRESOURCE_DATA data;
+//    data.pSysMem = m_sinArray;
+//    data.SysMemPitch = SIN_ARRAY_ELEMENTS_COUNT * sizeof(float);
+//    data.SysMemSlicePitch = 0;
+//
+//
+//
+//    /*pSinTex->QueryInterface<ID3D11Texture1D>(&pSinText1D);
+//    pSinText1D->GetDesc(&texDesc);*/
+//
+//    //// Création de la texture à partir des données du bitmap
+//    ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
+//    HRESULT hr = pD3DDevice->CreateTexture1D(&texDesc, &data, &pSinText1D);
+//
+//    /*ID3D11Resource* pResource;
+//    pSinTex->GetResource(&pResource);
+//    pResource->QueryInterface<ID3D11Texture1D>(&pSinText1D);*/
+//    pSinText1D->GetDesc(&texDesc);
+//    pSinText1D->QueryInterface<ID3D11ShaderResourceView>(&pSinTex);
+//
+//
+//    // Initialisation des paramètres de sampling de la texture
+//    D3D11_SAMPLER_DESC samplerDesc;
+//
+//    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+//    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+//    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+//    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+//    samplerDesc.MipLODBias = 0.0f;
+//    samplerDesc.MaxAnisotropy = 4;
+//    samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+//    samplerDesc.BorderColor[0] = 0;
+//    samplerDesc.BorderColor[1] = 0;
+//    samplerDesc.BorderColor[2] = 0;
+//    samplerDesc.BorderColor[3] = 0;
+//    samplerDesc.MinLOD = 0;
+//    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+//
+//    // Création de l'état de sampling
+//    pD3DDevice->CreateSamplerState(&samplerDesc, &pSinSampler);
+//}
