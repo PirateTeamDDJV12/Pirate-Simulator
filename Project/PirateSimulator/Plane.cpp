@@ -30,10 +30,10 @@ D3D11_INPUT_ELEMENT_DESC SommetPlane::layout[] =
 UINT SommetPlane::numElements = ARRAYSIZE(SommetPlane::layout);
 
 
-Plane::Plane(PM3D::CDispositifD3D11* pDispositif_, const std::string& textureFileName) :
+Plane::Plane(const std::string& textureFileName) :
     Mesh<ShaderPlane::ShadersParams>(ShaderPlane::ShadersParams())
 {
-    pDispositif = pDispositif_;
+    pDispositif = RendererManager::singleton.getDispositif();
 
     m_index.reserve(INDEX_COUNT);
 

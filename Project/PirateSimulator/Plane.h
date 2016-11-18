@@ -190,13 +190,7 @@ namespace PirateSimulator
 
 
     public:
-        Plane(const std::string& textureFileName) :
-            Mesh<ShaderPlane::ShadersParams>(ShaderPlane::ShadersParams())
-        {
-            m_material.m_textureFileName = textureFileName;
-        }
-
-        Plane(PM3D::CDispositifD3D11* pDispositif, const std::string& textureFileName);
+        Plane(const std::string& textureFileName);
 
         virtual ~Plane(void);
 

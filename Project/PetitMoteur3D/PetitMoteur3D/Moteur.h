@@ -16,6 +16,7 @@
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
 #include "../../PirateSimulator/Skybox.h"
+#include "../../PirateSimulator/Plane.h"
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/LevelCameraBehaviour.h"
 #include "../../PirateSimulator/FreeCameraBehaviour.h"
@@ -178,6 +179,7 @@ namespace PM3D
 
             // Skybox
             PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox();
+
             m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform, "skybox")
             );
@@ -187,7 +189,6 @@ namespace PM3D
             skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
 
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
-
             // Initialisation des objets 3D - création et/ou chargement
             if(!InitObjets()) return 1;
 
@@ -240,6 +241,7 @@ namespace PM3D
 
 #ifdef DEBUG_TEST_TERRAIN        
             // If we want to test our own terrain and not the one int the config file
+
             int terrainH = 257;
             int terrainW = 257;
             int terrainScale = 4;
@@ -251,6 +253,11 @@ namespace PM3D
 #endif
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
 
+			auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+				new PirateSimulator::GameObject(transform, "water")
+			);
+			PirateSimulator::Plane* waterMesh = new PirateSimulator::Plane( "PirateSimulator/water.dds");
+			water->addComponent<PirateSimulator::IMesh>(waterMesh);
 
             if (PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
             {
@@ -264,6 +271,7 @@ namespace PM3D
             
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
+            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             //PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
 
@@ -292,7 +300,6 @@ namespace PM3D
         
     protected:
         PirateSimulator::GameObjectRef m_skybox;
-        PirateSimulator::GameObjectRef m_camera;
 
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;
