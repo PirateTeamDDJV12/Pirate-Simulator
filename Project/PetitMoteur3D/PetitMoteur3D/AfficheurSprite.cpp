@@ -227,7 +227,7 @@ namespace PM3D
 
         CSprite* pSprite = new CSprite;
         pSprite->pTextureD3D =
-            TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+            TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
 
         // Obtenir les dimensions de la texture si _dx et _dy sont à 0;
         if (_dx == 0 && _dy == 0)
@@ -280,7 +280,7 @@ namespace PM3D
 
         CPanneau* pPanneau = new CPanneau;
         pPanneau->pTextureD3D =
-            TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+            TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
 
         // Obtenir la dimension de la texture si _dx et _dy sont à 0;
         if (_dx == 0.0f && _dy == 0.0f)

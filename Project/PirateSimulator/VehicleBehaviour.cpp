@@ -1,13 +1,13 @@
 #include "VehicleBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
+#include "InputManager.h"
 
 using namespace PirateSimulator;
 using namespace DirectX;
 
 void VehicleBehaviour::anime(float ellapsedTime)
 {
-    PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
-    CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+    CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
     // ******** POUR LA SOURIS ************
 

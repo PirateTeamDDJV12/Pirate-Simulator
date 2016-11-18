@@ -13,7 +13,7 @@ CGestionnaireDeTextures::~CGestionnaireDeTextures(void)
 	Cleanup();
 }
 
-CTexture* const CGestionnaireDeTextures::GetNewTexture(const wchar_t* filename_in,CDispositifD3D11* pDispositif)
+CTexture* const CGestionnaireDeTextures::GetNewTexture(const wchar_t* filename_in)
 {	
 	CTexture* pTexture;
 
@@ -23,7 +23,7 @@ CTexture* const CGestionnaireDeTextures::GetNewTexture(const wchar_t* filename_i
 	// Si non, on la crée
 	if (!pTexture)
 	{
-		pTexture = new CTexture(filename_in, pDispositif);
+		pTexture = new CTexture(filename_in);
 
 		// Puis, il est ajouté à la scène
 		ListeTextures.push_back(pTexture);

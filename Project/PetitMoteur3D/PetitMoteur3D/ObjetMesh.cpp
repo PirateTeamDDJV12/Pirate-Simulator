@@ -7,6 +7,8 @@
 
 #include "../../PirateSimulator/Moves.h"
 
+#include "../../PirateSimulator/RendererManager.h"
+
 #include <fstream>
 #include <corecrt_io.h>
 
@@ -48,11 +50,11 @@ namespace PM3D
     
 
     // Ancien constructeur
-    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
         Mesh<ShaderCObjectMesh::ShadersParams>( shaderParameter )
     {
         // prendre en note le dispositif
-        pDispositif = _pDispositif;
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
         // Placer l'objet sur la carte graphique
         TransfertObjet(chargeur);
@@ -63,11 +65,11 @@ namespace PM3D
 
     // Constructeur de conversion
     // Constructeur pour test ou pour création d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
         PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
-        pDispositif = _pDispositif;
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
 
         //// Placer l'objet sur la carte graphique
@@ -82,11 +84,11 @@ namespace PM3D
     }
 
     // Constructeur pour lecture d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter) :
         PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
-        pDispositif = _pDispositif;
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
         // Placer l'objet sur la carte graphique
         LireFichierBinaire(nomFichier);
@@ -355,7 +357,7 @@ namespace PM3D
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
 
-                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
             }
 
         }
@@ -554,7 +556,7 @@ namespace PM3D
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
 
-                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
             }
 
         }

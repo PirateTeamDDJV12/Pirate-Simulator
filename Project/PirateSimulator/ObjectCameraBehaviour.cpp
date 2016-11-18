@@ -2,6 +2,7 @@
 #include "PlayerBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include <DirectXMath.h>
+#include "InputManager.h"
 
 using namespace PirateSimulator;
 using namespace cameraModule;
@@ -16,7 +17,8 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
 {
     using namespace std::chrono;
 
-    time_point<system_clock> nowTime = std::chrono::system_clock::now();
+    //time_point<system_clock> nowTime = std::chrono::system_clock::now();
+    auto elapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
 
     switch (direction)
     {
@@ -72,8 +74,7 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
 void ObjectCameraBehaviour::anime(float ellapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
-    PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
-    CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+    CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
     /*
     * Rotation

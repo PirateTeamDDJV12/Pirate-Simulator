@@ -45,7 +45,8 @@ namespace PirateSimulator
             ShadersParams() :
                 bTex{1}
             {
-                vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
+                vLumiere = XMVectorSet(-10.0f, 10.0f, -15.0f, 1.0f);
+                //vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
                 vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
                 vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
                 vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
@@ -111,12 +112,12 @@ namespace PirateSimulator
 
     public:
         // Get the configuration from the config file
-        Terrain(PM3D::CDispositifD3D11* pDispositif);
+        Terrain();
         // Override the configuration file
-        Terrain(PM3D::CDispositifD3D11* pDispositif, int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
+        Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
 
         // Destructeur
-        virtual ~Terrain(void);
+        virtual ~Terrain();
 
         virtual void Anime(float tempsEcoule);
 
@@ -134,10 +135,6 @@ namespace PirateSimulator
 
     protected:
         // Constructeur par défaut
-        Terrain(void) :
-            Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
-        {}
-
         void InitShaders();
 
         PM3D::CDispositifD3D11* pDispositif;
