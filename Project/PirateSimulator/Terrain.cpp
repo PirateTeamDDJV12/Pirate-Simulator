@@ -34,12 +34,11 @@ namespace PirateSimulator
         m_vertexArray.reserve(m_terrainWidth * m_terrainHeight);
         m_csommetsArray.reserve(m_terrainWidth * m_terrainHeight);
 
-        std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile(terrainConfig->getExportName());
-        const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
-        int nbPoint = vertexLineCount * m_terrainWidth * m_terrainHeight;
-        for(int i = 0; i < nbPoint; i += vertexLineCount)
+        std::vector<float> myFile = RessourcesManager::GetInstance().ReadHeightMapFile(terrainConfig->getExportName());
+        int nbPoint = Vertex::INFO_COUNT * m_terrainWidth * m_terrainHeight;
+        for(int i = 0; i < nbPoint; i += Vertex::INFO_COUNT)
         {
-            PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
+            PirateSimulator::Vertex p{myFile[i], myFile[i + 2], myFile[i + 1], myFile[i + 3], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7]};
             addSommet(p);
         }
         for(int i = nbPoint; i < myFile.size(); i += 3)
