@@ -28,6 +28,8 @@
 #include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/CameraManager.h"
+#include "../../PirateSimulator/InputManager.h"
+#include "../../PirateSimulator/BlocMesh.h"
 #include "../../PirateSimulator/TaskManager.h"
 
 // Tasks
@@ -36,7 +38,6 @@
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
-
 
 namespace PM3D
 {
@@ -283,10 +284,28 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             //PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(personageMesh);
 
+            PirateSimulator::Transform transformCube{};
+            transformCube.m_position.vector4_f32[0] = 257.f;
+            transformCube.m_position.vector4_f32[1] = 8.f;
+            transformCube.m_position.vector4_f32[2] = 257.f;
+
+            auto cube = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+                new PirateSimulator::GameObject(
+                    transformCube, "Cube"
+                )
+            );
+
+            cube->addComponent<PirateSimulator::IMesh>(
+                new PirateSimulator::BlocMesh<PirateSimulator::BlocStructure>(
+                    PirateSimulator::BlocStructure(transformCube, 2,2,2), pDispositif, PirateSimulator::ShaderBloc::ShadersParams()
+                )
+            );
+
+            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(cube->getComponent<PirateSimulator::IMesh>());
 
             return true;
         }
-
+		
         PirateSimulator::GameObjectRef createCamera(PirateSimulator::cameraModule::BaseCamera::type cameraType,
                                                     const PirateSimulator::cameraModule::CameraProjectionParameters &camProjParameters,
                                                     const PirateSimulator::cameraModule::CameraMovingParameters &camMovParameters,
