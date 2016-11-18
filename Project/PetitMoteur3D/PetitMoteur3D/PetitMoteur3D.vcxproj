@@ -69,6 +69,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedUsingFiles>#include "stdafx.h"</ForcedUsingFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,6 +105,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\BinaryFast.cpp" />
     <ClCompile Include="..\..\PirateSimulator\BlocMesh.cpp" />
     <ClCompile Include="..\..\PirateSimulator\BlocMeshStructure.cpp" />
     <ClCompile Include="..\..\PirateSimulator\CameraManager.cpp" />
@@ -115,6 +117,7 @@
     <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\InputTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PhysicsTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
@@ -125,6 +128,7 @@
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\testNotifier.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
@@ -157,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\PirateSimulator\Angle.h" />
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\BinaryFast.h" />
     <ClInclude Include="..\..\PirateSimulator\BlocMesh.h" />
     <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h" />
     <ClInclude Include="..\..\PirateSimulator\CameraManager.h" />
@@ -173,6 +178,8 @@
     <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
+    <ClInclude Include="..\..\PirateSimulator\Notifier.h" />
+    <ClInclude Include="..\..\PirateSimulator\NotifierManager.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
@@ -187,6 +194,7 @@
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\testNotifier.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />

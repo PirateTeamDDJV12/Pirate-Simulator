@@ -136,7 +136,7 @@ namespace PM3D
         pImmediateContext->IASetInputLayout(pVertexLayout);
 
         // Initialiser et sélectionner les «constantes» du VS
-        XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
+        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);

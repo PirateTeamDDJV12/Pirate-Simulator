@@ -9,6 +9,7 @@
 #include <directxmath.h>
 #include <wtypes.h>
 #include <d3d11.h>
+#include "RendererManager.h"
 
 namespace PirateSimulator
 {
@@ -91,13 +92,12 @@ namespace PirateSimulator
 
     public:
         BlocMesh(const BlocInternalData& internalBlocDatas,
-            PM3D::CDispositifD3D11* dispositif,
             const ShaderBloc::ShadersParams& shaderParams
         ) :
             Mesh<ShaderBloc::ShadersParams>(m_shaderParameter),
-            BlocInternalData(internalBlocDatas),
-            pDispositif{dispositif}
+            BlocInternalData(internalBlocDatas)
         {
+            pDispositif = RendererManager::singleton.getDispositif();
             // Création du vertex buffer et copie des sommets
             ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 
@@ -136,13 +136,12 @@ namespace PirateSimulator
         }
 
         BlocMesh(const float dx, const float dy, const float dz,
-            PM3D::CDispositifD3D11* dispositif,
             const ShaderBloc::ShadersParams& shaderParams
         ) :
             Mesh<ShaderBloc::ShadersParams>(m_shaderParameter),
-            BlocInternalData(dx, dy, dz),
-            pDispositif{ dispositif }
+            BlocInternalData(dx, dy, dz)
         {
+            pDispositif = RendererManager::singleton.getDispositif();
             // Création du vertex buffer et copie des sommets
             ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 
@@ -216,7 +215,7 @@ namespace PirateSimulator
             pImmediateContext->IASetInputLayout(pVertexLayout);
 
             // Initialiser et sélectionner les «constantes» du VS
-            XMMATRIX viewProj = PM3D::CMoteurWindows::GetInstance().GetMatViewProj();
+            XMMATRIX viewProj = CameraManager::singleton.getMatViewProj();
 
             m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
             m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
