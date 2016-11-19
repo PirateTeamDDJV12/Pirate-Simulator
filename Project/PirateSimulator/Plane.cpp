@@ -146,8 +146,8 @@ Plane::Plane(const std::string& textureFileName) :
 
     m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
     m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
-    m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
-    m_shaderParameter.vSEcl = { 0.5f, 0.5f, 0.5f, 0.5f };
+    m_shaderParameter.vSMat = { 0.12f, 0.12f, 0.12f, 1.f };
+    m_shaderParameter.vSEcl = { 0.8f, 0.8f, 0.8f, 0.8f };
 
     // Activation de la texture ou non
     if (m_material.pTextureD3D != nullptr)

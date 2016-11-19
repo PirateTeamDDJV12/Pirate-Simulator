@@ -17,7 +17,7 @@ cbuffer param
 	float waveAmplitude;
 	float waveFrequency;
 
-    float2 waterVelocity;
+    float2 undertow;
 	
     float  uselessFill;
 }
@@ -75,7 +75,7 @@ float4 couleur;
 	float3 N = normalize(vs.Norm);
  	float3 L = normalize(vs.vDirLum);
 	float3 V = normalize(vs.vDirCam);
-
+	
 	// Valeur de la composante diffuse
 	float4 diff = saturate(dot(N, L)); 
 
@@ -87,7 +87,7 @@ float4 couleur;
 
 	float4 couleurTexture;  
 
-	float2 glitch = vs.coordTex + waterVelocity;
+	float2 glitch = vs.coordTex + undertow;
 	// Échantillonner la couleur du pixel à partir de la texture  
 	couleurTexture = textureEntree.Sample(SampleState, glitch);   
 
@@ -95,6 +95,7 @@ float4 couleur;
 	couleur =  couleurTexture * vAEcl  + 
 			   couleurTexture * vDEcl * diff +
 			   vSEcl * vSMat * S;
+	
 	
 	return couleur;
 }
