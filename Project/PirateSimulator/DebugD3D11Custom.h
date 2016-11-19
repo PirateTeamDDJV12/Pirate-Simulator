@@ -26,10 +26,25 @@ namespace PirateSimulator
 
         void reportLiveObject()
         {
+#ifdef _DEBUG
             if (pDebug != nullptr)
             {
                 pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+                pDebug->Release();
                 pDebug = nullptr;
+            }
+#endif // _DEBUG
+        }
+
+        ~DebugD3D11Custom()
+        {
+            if (pD3DDevice)
+            {
+                pD3DDevice->Release();
+            }
+            if (pDebug)
+            {
+                pDebug->Release();
             }
         }
     };
