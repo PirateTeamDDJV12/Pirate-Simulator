@@ -36,7 +36,7 @@ CTexture::CTexture(const wchar_t* filename_in)
 										 &pTexture), 
                   DXE_FICHIERTEXTUREINTROUVABLE );
 
-
+    DXRelacher(pDevice);
 }
 
 }

@@ -198,6 +198,9 @@
     <ClCompile Include="..\..\PirateSimulator\Plane.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Mesh.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -240,9 +243,6 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="GestionnaireDeTextures.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshVertex.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="ChargeurOBJ.h">
@@ -411,6 +411,9 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Plane.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\DebugD3D11Custom.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

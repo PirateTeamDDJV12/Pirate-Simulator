@@ -23,7 +23,8 @@ namespace PirateSimulator
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
     Terrain::Terrain()
-        : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
+        : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
+        pPixelShader{ nullptr }, pVertexBuffer{ nullptr }, pVertexLayout{ nullptr }, pVertexShader{ nullptr }, pIndexBuffer{ nullptr }, pConstantBuffer{ nullptr }
     {
         // Get the configuration from the config file
         Config* terrainConfig = Config::getInstance();
@@ -52,8 +53,9 @@ namespace PirateSimulator
     }
 
     Terrain::Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
-        : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
-        Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams())
+        : m_terrainWidth{ w }, m_terrainHeight{ h }, m_terrainScale{ s },
+        Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
+        pPixelShader{ nullptr }, pVertexBuffer{ nullptr }, pVertexLayout{ nullptr }, pVertexShader{ nullptr }, pIndexBuffer{ nullptr }, pConstantBuffer{ nullptr }
     {
         pDispositif = RendererManager::singleton.getDispositif(); // Prendre en note le dispositif
 
@@ -78,7 +80,17 @@ namespace PirateSimulator
     }
 
     Terrain::~Terrain()
-    {}
+    {
+        using UtilitairesDX::DXRelacher;
+
+        DXRelacher(pVertexBuffer);
+        DXRelacher(pIndexBuffer);
+
+        DXRelacher(pVertexShader);
+        DXRelacher(pPixelShader);
+        DXRelacher(pVertexLayout);
+        DXRelacher(pConstantBuffer);
+    }
 
     void Terrain::Anime(float tempsEcoule)
     {
@@ -90,6 +102,7 @@ namespace PirateSimulator
 
     void Terrain::Draw()
     {
+        
         // Obtenir le contexte
         ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
 
@@ -132,12 +145,6 @@ namespace PirateSimulator
         pImmediateContext->PSSetShader(pPixelShader, NULL, 0);
         pImmediateContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 
-        /**/
-        //Texture
-        ID3DX11EffectSamplerVariable* variableSampler;
-        variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
-        variableSampler->SetSampler(0, m_textureEffect.m_sampleState);
-
 
 
         // Dessiner les subsets non-transparents    
@@ -148,14 +155,6 @@ namespace PirateSimulator
         m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
         m_shaderParameter.puissance = m_material.m_property.power;
 
-        // Activation de la texture ou non
-        if(m_material.pTextureD3D != nullptr)
-        {
-            ID3DX11EffectShaderResourceVariable* variableTexture;
-            variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
-            variableTexture->SetResource(m_material.pTextureD3D);
-        }
-
         // IMPORTANT pour ajuster les param.
         m_textureEffect.m_pass->Apply(0, pImmediateContext);
 
@@ -163,10 +162,8 @@ namespace PirateSimulator
         pCB->SetConstantBuffer(pConstantBuffer);
         pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
-
-
-
-
+        UtilitairesDX::DXRelacher(pCB);
+        
         // **** Rendu de l'objet	   
         pImmediateContext->DrawIndexed(m_index_bloc.size(), 0, 0);
     }
@@ -187,8 +184,8 @@ namespace PirateSimulator
         D3D11_SUBRESOURCE_DATA InitData;
         ZeroMemory(&InitData, sizeof(InitData));
         InitData.pSysMem = m_csommetsArray.data();
-        pVertexBuffer = NULL;
 
+        UtilitairesDX::DXRelacher(pVertexBuffer);
         UtilitairesDX::DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
 
         // Création de l'index buffer et copie des indices
@@ -201,8 +198,8 @@ namespace PirateSimulator
 
         ZeroMemory(&InitData, sizeof(InitData));
         InitData.pSysMem = m_index_bloc.data();
-        pIndexBuffer = NULL;
 
+        UtilitairesDX::DXRelacher(pIndexBuffer);
         UtilitairesDX::DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer),
                                  DXE_CREATIONINDEXBUFFER);
 
@@ -213,10 +210,9 @@ namespace PirateSimulator
 
         rotation = 0.0f;
 
-
-
         // Chargement des textures
         this->loadTexture(textureFileName);
+        UtilitairesDX::DXRelacher(pD3DDevice);
     }
 
     void Terrain::addSommet(PirateSimulator::Vertex v)
@@ -281,6 +277,7 @@ namespace PirateSimulator
                                                     0,
                                                     &pVSBlob, NULL), DXE_FICHIER_VS);
 
+        UtilitairesDX::DXRelacher(pVertexShader);
         UtilitairesDX::DXEssayer(pD3DDevice->CreateVertexShader(pVSBlob->GetBufferPointer(),
                                                                 pVSBlob->GetBufferSize(),
                                                                 NULL,
@@ -288,7 +285,7 @@ namespace PirateSimulator
                                  DXE_CREATION_VS);
 
         // Créer l'organisation des sommets
-        pVertexLayout = NULL;
+        UtilitairesDX::DXRelacher(pVertexLayout);
         UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(Terrain::layout,
                                                                Terrain::numElements,
                                                                pVSBlob->GetBufferPointer(),
@@ -319,19 +316,22 @@ namespace PirateSimulator
                                                     &pPSBlob,
                                                     NULL), DXE_FICHIER_PS);
 
+        UtilitairesDX::DXRelacher(pPixelShader);
+
         UtilitairesDX::DXEssayer(pD3DDevice->CreatePixelShader(pPSBlob->GetBufferPointer(),
                                                                pPSBlob->GetBufferSize(),
                                                                NULL,
                                                                &pPixelShader),
                                  DXE_CREATION_PS);
 
-
+        UtilitairesDX::DXRelacher(pD3DDevice);
         pPSBlob->Release(); //  On n'a plus besoin du blob
     }
 
 
     void Terrain::setTexture(PM3D::CTexture* texture)
     {
+        UtilitairesDX::DXRelacher(m_material.pTextureD3D);
         m_material.pTextureD3D = texture->GetD3DTexture();
     }
 
@@ -363,6 +363,8 @@ namespace PirateSimulator
         bd.ByteWidth = sizeof(ShaderTerrain::ShadersParams);
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         bd.CPUAccessFlags = 0;
+
+        UtilitairesDX::DXRelacher(pConstantBuffer);
         HRESULT hr = pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
 
         // Pour l'effet
@@ -372,11 +374,15 @@ namespace PirateSimulator
                                                     "fx_5_0", 0, 0, &pFXBlob, 0),
                                  DXE_ERREURCREATION_FX);
 
+        UtilitairesDX::DXRelacher(m_textureEffect.m_effect);
         D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_textureEffect.m_effect);
 
         pFXBlob->Release();
 
+        UtilitairesDX::DXRelacher(m_textureEffect.m_technique);
         m_textureEffect.m_technique = m_textureEffect.m_effect->GetTechniqueByIndex(0);
+
+        UtilitairesDX::DXRelacher(m_textureEffect.m_pass);
         m_textureEffect.m_pass = m_textureEffect.m_technique->GetPassByIndex(0);
 
         // Créer l'organisation des sommets pour le VS de notre effet
@@ -389,7 +395,7 @@ namespace PirateSimulator
         const void *vsCodePtr = effectVSDesc2.pBytecode;
         unsigned vsCodeLen = effectVSDesc2.BytecodeLength;
 
-        pVertexLayout = NULL;
+        UtilitairesDX::DXRelacher(pVertexLayout);
 
         UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(Terrain::layout,
                                                                Terrain::numElements,
@@ -415,7 +421,30 @@ namespace PirateSimulator
         samplerDesc.MinLOD = 0;
         samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
+        // Activation de la texture ou non
+        if (m_material.pTextureD3D != nullptr)
+        {
+            ID3DX11EffectShaderResourceVariable* variableTexture;
+            variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
+            variableTexture->SetResource(m_material.pTextureD3D);
+
+            UtilitairesDX::DXRelacher(variableTexture);
+        }
+
         // Création de l'état de sampling
+        UtilitairesDX::DXRelacher(m_textureEffect.m_sampleState);
         pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
+
+
+        //Texture
+        ID3DX11EffectSamplerVariable* variableSampler;
+        variableSampler = m_textureEffect.m_effect->GetVariableByName("SampleState")->AsSampler();
+        variableSampler->SetSampler(0, m_textureEffect.m_sampleState);
+        UtilitairesDX::DXRelacher(variableSampler);
+
+
+        UtilitairesDX::DXRelacher(pTextureInterface);
+        UtilitairesDX::DXRelacher(pResource);
+        UtilitairesDX::DXRelacher(pD3DDevice);
     }
 }

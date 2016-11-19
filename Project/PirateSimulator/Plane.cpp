@@ -12,6 +12,7 @@
 #include <chrono>
 #include <comdef.h>
 #include "CameraManager.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -31,9 +32,13 @@ UINT SommetPlane::numElements = ARRAYSIZE(SommetPlane::layout);
 
 
 Plane::Plane(const std::string& textureFileName) :
-    Mesh<ShaderPlane::ShadersParams>(ShaderPlane::ShadersParams())
+    Mesh<ShaderPlane::ShadersParams>(ShaderPlane::ShadersParams()),
+    pPixelShader{ nullptr }, pVertexBuffer{ nullptr }, pVertexLayout{ nullptr }, pVertexShader{ nullptr }, pIndexBuffer{ nullptr }, pConstantBuffer{ nullptr }
 {
     pDispositif = RendererManager::singleton.getDispositif();
+
+    float xWidth = Config::getInstance()->getWidth() * Config::getInstance()->getMapScale();
+    float zHeight = Config::getInstance()->getHeight() * Config::getInstance()->getMapScale();
 
     m_index.reserve(INDEX_COUNT);
 
@@ -63,8 +68,8 @@ Plane::Plane(const std::string& textureFileName) :
 
         float columnValue;
         float rowValue;
-        constexpr const float XCoefficientPosition = X_DELTA / static_cast<float>(LAST_X_POINT_INDEX);
-        constexpr const float ZCoefficientPosition = Z_DELTA / static_cast<float>(LAST_Z_POINT_INDEX);
+        const float XCoefficientPosition = xWidth / static_cast<float>(LAST_X_POINT_INDEX);
+        const float ZCoefficientPosition = zHeight / static_cast<float>(LAST_Z_POINT_INDEX);
 
         for (int row = 0; row < POINTS_Z_COUNT; ++row)
         {
@@ -99,7 +104,7 @@ Plane::Plane(const std::string& textureFileName) :
     D3D11_SUBRESOURCE_DATA InitData;
     ZeroMemory(&InitData, sizeof(InitData));
     InitData.pSysMem = m_sommets.data();
-    pVertexBuffer = NULL;
+    DXRelacher(pVertexBuffer);
     DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
 
     // Création de l'index buffer et copie des indices
@@ -110,7 +115,7 @@ Plane::Plane(const std::string& textureFileName) :
     bd.CPUAccessFlags = 0;
     ZeroMemory(&InitData, sizeof(InitData));
     InitData.pSysMem = m_index.data();
-    pIndexBuffer = NULL;
+    DXRelacher(pIndexBuffer);
     DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer), DXE_CREATIONINDEXBUFFER);
 
     // Initialisation de l'effet
@@ -138,20 +143,48 @@ Plane::Plane(const std::string& textureFileName) :
 
     m_shaderParameter.waveAmplitude = Plane::WAVE_AMPLITUDE;
     m_shaderParameter.waveFrequency = Plane::WAVE_FREQUENCY;
+
+    m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
+    m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
+    m_shaderParameter.vSMat = { 0.12f, 0.12f, 0.12f, 1.f };
+    m_shaderParameter.vSEcl = { 0.8f, 0.8f, 0.8f, 0.8f };
+
+    // Activation de la texture ou non
+    if (m_material.pTextureD3D != nullptr)
+    {
+        ID3DX11EffectShaderResourceVariable* variableTexture;
+        variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
+        variableTexture->SetResource(m_material.pTextureD3D);
+
+        UtilitairesDX::DXRelacher(variableTexture);
+    }
+
+    UtilitairesDX::DXRelacher(variableSampler);
+    UtilitairesDX::DXRelacher(pD3DDevice);
 }
 
 
 void Plane::SetTexture(CTexture* pTexture)
 {
+    DXRelacher(m_material.pTextureD3D);
     m_material.pTextureD3D = pTexture->GetD3DTexture();
 }
 
 Plane::~Plane(void)
 {
     DXRelacher(m_textureEffect.m_effect);
+    DXRelacher(m_textureEffect.m_constantBuffer);
+    DXRelacher(m_textureEffect.m_pass);
+    DXRelacher(m_textureEffect.m_sampleState);
+    DXRelacher(m_textureEffect.m_sampleState);
     DXRelacher(pVertexLayout);
     DXRelacher(pIndexBuffer);
     DXRelacher(pVertexBuffer);
+
+    DXRelacher(pVertexShader);
+    DXRelacher(pPixelShader);
+
+    DXRelacher(pConstantBuffer);
 }
 
 void Plane::Draw()
@@ -187,22 +220,12 @@ void Plane::Draw()
     // Dessiner les subsets non-transparents    
     //m_material = Material(MaterialProperties());
 
-    m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
-    m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
-    m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
-    m_shaderParameter.vSEcl = { 0.5f, 0.5f, 0.5f, 0.5f };
     m_shaderParameter.puissance = m_material.m_property.power;
     m_shaderParameter.tick += TICK_INCREMENT;
 
+    float waterVelocity = DirectX::XMScalarCos(m_shaderParameter.tick) * Plane::WAVE_SPEED_COEFFICIENT;
+    m_shaderParameter.undertow = { waterVelocity , waterVelocity };
 
-
-    // Activation de la texture ou non
-    if (m_material.pTextureD3D != nullptr)
-    {
-        ID3DX11EffectShaderResourceVariable* variableTexture;
-        variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
-        variableTexture->SetResource(m_material.pTextureD3D);
-    }
 
     // IMPORTANT pour ajuster les param.
     m_textureEffect.m_pass->Apply(0, pImmediateContext);
@@ -217,6 +240,7 @@ void Plane::Draw()
     pImmediateContext->DrawIndexed(m_index.size(), 0, 0);
 
     pDispositif->ActiverCulling();
+    DXRelacher(pCB);
 }
 
 void Plane::loadTexture(const std::string& filename)
@@ -255,11 +279,14 @@ void Plane::loadTexture(const std::string& filename)
         "fx_5_0", 0, 0, &pFXBlob, 0),
         DXE_ERREURCREATION_FX);
 
+    UtilitairesDX::DXRelacher(m_textureEffect.m_effect);
     D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_textureEffect.m_effect);
 
     pFXBlob->Release();
 
+    UtilitairesDX::DXRelacher(m_textureEffect.m_technique);
     m_textureEffect.m_technique = m_textureEffect.m_effect->GetTechniqueByIndex(0);
+    UtilitairesDX::DXRelacher(m_textureEffect.m_pass);
     m_textureEffect.m_pass = m_textureEffect.m_technique->GetPassByIndex(0);
 
     // Créer l'organisation des sommets pour le VS de notre effet
@@ -272,8 +299,7 @@ void Plane::loadTexture(const std::string& filename)
     const void *vsCodePtr = effectVSDesc2.pBytecode;
     unsigned vsCodeLen = effectVSDesc2.BytecodeLength;
 
-    pVertexLayout = NULL;
-
+    UtilitairesDX::DXRelacher(pVertexLayout);
     UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(SommetPlane::layout,
         SommetPlane::numElements,
         vsCodePtr,
@@ -300,6 +326,10 @@ void Plane::loadTexture(const std::string& filename)
 
     // Création de l'état de sampling
     pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
+
+    UtilitairesDX::DXRelacher(pResource);
+    UtilitairesDX::DXRelacher(pTextureInterface);
+    UtilitairesDX::DXRelacher(pD3DDevice);
 }
 
 

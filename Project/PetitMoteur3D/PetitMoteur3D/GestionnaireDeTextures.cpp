@@ -57,7 +57,7 @@ void CGestionnaireDeTextures::Cleanup()
 // détruire les objets
 std::vector<CTexture*>::iterator It;
 
-	for (It = ListeTextures.begin(); It != ListeTextures.end();It++)
+	for (It = ListeTextures.begin(); It != ListeTextures.end();++It)
 	{
 		delete (*It);
 	}

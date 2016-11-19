@@ -218,7 +218,7 @@ namespace PM3D
         ID3DX11EffectSamplerVariable* variableSampler;
         variableSampler = pEffet->GetVariableByName("SampleState")->AsSampler();
         variableSampler->SetSampler(0, pSampleState);
-
+        DXRelacher(variableSampler);
 
         // Dessiner les subsets non-transparents
         for(int i = 0; i < NombreSubset; ++i)
@@ -238,6 +238,7 @@ namespace PM3D
                     ID3DX11EffectShaderResourceVariable* variableTexture;
                     variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
                     variableTexture->SetResource(m_materials[SubsetMaterialIndex[i]].pTextureD3D);
+                    DXRelacher(variableTexture);
                 }
 
                 // IMPORTANT pour ajuster les param.
@@ -248,6 +249,7 @@ namespace PM3D
                 pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
                 pImmediateContext->DrawIndexed(indexDrawAmount, indexStart, 0);
+                DXRelacher(pCB);
             }
         }
     }

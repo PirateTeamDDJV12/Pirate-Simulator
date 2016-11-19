@@ -16,7 +16,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
     // Change the boat forward to match camera forward 
     GameObjectRef camera = CameraManager::singleton.getMainCameraGO();
     m_gameObject->m_transform.m_forward.vector4_f32[0] = camera->m_transform.m_forward.vector4_f32[0];
-    m_gameObject->m_transform.m_forward.vector4_f32[1] = 0.0f;
+    m_gameObject->m_transform.m_forward.vector4_f32[1] = 0.f;
     m_gameObject->m_transform.m_forward.vector4_f32[2] = camera->m_transform.m_forward.vector4_f32[2];
 
     m_gameObject->m_transform.m_forward = XMVector3Normalize(m_gameObject->m_transform.m_forward);
