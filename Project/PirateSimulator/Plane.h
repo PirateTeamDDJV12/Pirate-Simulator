@@ -133,10 +133,8 @@ namespace PirateSimulator
         enum
         {
             X_MIN = 0,
-            X_MAX = 1024,
             Z_MIN = 0,
-            Z_MAX = 1024,
-            
+
             POINTS_X_COUNT = 300,
             POINTS_Z_COUNT = 300,
 
@@ -147,14 +145,12 @@ namespace PirateSimulator
             INDEX_COUNT = TRIANGLE_COUNT * 3
         };
 
-        enum
+        /*enum
         {
             SIN_ARRAY_ELEMENTS_COUNT = 360
-        };
+        };*/
 
         static constexpr const float DEFAULT_Y_LEVEL_WATER_PLANE = 0.f;
-        static constexpr const float Z_DELTA = static_cast<float>(Z_MAX - Z_MIN);
-        static constexpr const float X_DELTA = static_cast<float>(X_MAX - X_MIN);
 
         static constexpr const float TICK_INCREMENT = 0.051f;
         static constexpr const float WAVE_AMPLITUDE = 1.1f;
@@ -164,6 +160,9 @@ namespace PirateSimulator
     private:
         std::vector<unsigned int> m_index;
         std::vector<SommetPlane> m_sommets;
+
+        float xWidth;
+        float zHeight;
         //float m_sinArray[SIN_ARRAY_ELEMENTS_COUNT];
 
 

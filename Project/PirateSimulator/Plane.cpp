@@ -12,6 +12,7 @@
 #include <chrono>
 #include <comdef.h>
 #include "CameraManager.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -34,6 +35,9 @@ Plane::Plane(const std::string& textureFileName) :
     Mesh<ShaderPlane::ShadersParams>(ShaderPlane::ShadersParams())
 {
     pDispositif = RendererManager::singleton.getDispositif();
+
+    float xWidth = Config::getInstance()->getWidth() * Config::getInstance()->getMapScale();
+    float zHeight = Config::getInstance()->getHeight() * Config::getInstance()->getMapScale();
 
     m_index.reserve(INDEX_COUNT);
 
@@ -63,8 +67,8 @@ Plane::Plane(const std::string& textureFileName) :
 
         float columnValue;
         float rowValue;
-        constexpr const float XCoefficientPosition = X_DELTA / static_cast<float>(LAST_X_POINT_INDEX);
-        constexpr const float ZCoefficientPosition = Z_DELTA / static_cast<float>(LAST_Z_POINT_INDEX);
+        const float XCoefficientPosition = xWidth / static_cast<float>(LAST_X_POINT_INDEX);
+        const float ZCoefficientPosition = zHeight / static_cast<float>(LAST_Z_POINT_INDEX);
 
         for (int row = 0; row < POINTS_Z_COUNT; ++row)
         {
