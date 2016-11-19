@@ -17,7 +17,7 @@ namespace PM3D
 
 		DXRelacher (mSolidCullBackRS);
 		DXRelacher (pDepthTexture);
-		DXRelacher (pDepthStencilView );
+		DXRelacher (pDepthStencilView);
 
 		if (pImmediateContext) pImmediateContext->ClearState();
 		DXRelacher(pRenderTargetView);		

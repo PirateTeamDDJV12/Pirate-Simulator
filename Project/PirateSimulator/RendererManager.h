@@ -106,6 +106,8 @@ namespace PirateSimulator
             }
         }
 
+        ~RendererManager();
+
 
     private:
         RendererManager(const RendererManager&) = delete;

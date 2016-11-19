@@ -42,7 +42,7 @@ namespace PirateSimulator
 
     public:
         // Destructeur
-        virtual ~Mesh(void) {}
+        virtual ~Mesh() {}
 
 
     public:

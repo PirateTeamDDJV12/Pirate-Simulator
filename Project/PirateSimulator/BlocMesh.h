@@ -133,6 +133,7 @@ namespace PirateSimulator
 
             // Initialisation des shaders
             InitShaders();
+            DXRelacher(pD3DDevice);
         }
 
         BlocMesh(const float dx, const float dy, const float dz,
@@ -177,6 +178,7 @@ namespace PirateSimulator
 
             // Initialisation des shaders
             InitShaders();
+            DXRelacher(pD3DDevice);
         }
 
         // Destructeur
@@ -292,6 +294,7 @@ namespace PirateSimulator
                 &pPixelShader);
 
             pPSBlob->Release(); //  On n'a plus besoin du blob
+            DXRelacher(pD3DDevice);
         }
 
 
