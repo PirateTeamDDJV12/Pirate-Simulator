@@ -184,7 +184,7 @@ namespace PM3D
             skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
 
-            // Initialisation des objets 3D - création et/ou chargement
+            // Initialisation des objets 3D - création et/ou chargement 
             if(!InitObjets()) return 1;
 
             return 0;
@@ -196,8 +196,8 @@ namespace PM3D
 
             PirateSimulator::Transform transformBoat;
 
-            transformBoat.m_position = {300,0,300,0};
-            //transformBoat.m_position = {950,0,900,0};
+            //transformBoat.m_position = {300,0,300,0};
+            transformBoat.m_position = {950,0,900,0};
             transformBoat.m_right = {1,0,0,0};
             transformBoat.m_up = {0,1,0,0};
             transformBoat.m_forward = {0,0,-1,0};

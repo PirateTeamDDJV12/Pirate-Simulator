@@ -77,7 +77,7 @@ float4 couleur;
 	float3 V = normalize(vs.vDirCam);
 	
 	// Valeur de la composante diffuse
-	float4 diff = saturate(dot(N, L)); 
+	float4 diff = 0.5; 
 
 	// R = 2 * (N.L) * N – L
 	float3 R = normalize(2 * diff * N - L);
