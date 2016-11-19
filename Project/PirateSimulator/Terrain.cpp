@@ -24,7 +24,7 @@ namespace PirateSimulator
 
     Terrain::Terrain()
         : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
-        pPixelShader{ nullptr }, pVertexBuffer{ nullptr }, pVertexLayout{ nullptr }, pVertexShader{ nullptr }, pIndexBuffer{ nullptr }, pConstantBuffer{ nullptr }
+        pPixelShader{nullptr}, pVertexBuffer{nullptr}, pVertexLayout{nullptr}, pVertexShader{nullptr}, pIndexBuffer{nullptr}, pConstantBuffer{nullptr}
     {
         // Get the configuration from the config file
         Config* terrainConfig = Config::getInstance();
@@ -53,9 +53,9 @@ namespace PirateSimulator
     }
 
     Terrain::Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
-        : m_terrainWidth{ w }, m_terrainHeight{ h }, m_terrainScale{ s },
+        : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
         Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
-        pPixelShader{ nullptr }, pVertexBuffer{ nullptr }, pVertexLayout{ nullptr }, pVertexShader{ nullptr }, pIndexBuffer{ nullptr }, pConstantBuffer{ nullptr }
+        pPixelShader{nullptr}, pVertexBuffer{nullptr}, pVertexLayout{nullptr}, pVertexShader{nullptr}, pIndexBuffer{nullptr}, pConstantBuffer{nullptr}
     {
         pDispositif = RendererManager::singleton.getDispositif(); // Prendre en note le dispositif
 
@@ -93,16 +93,11 @@ namespace PirateSimulator
     }
 
     void Terrain::Anime(float tempsEcoule)
-    {
-        //rotation =  rotation + ( (XM_PI * 2.0f) / 20.0f * tempsEcoule );
-        //
-        //// modifier la matrice de l'objet bloc
-        //matWorld = XMMatrixRotationZ( rotation );
-    }
+    {}
 
     void Terrain::Draw()
     {
-        
+
         // Obtenir le contexte
         ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
 
@@ -145,8 +140,6 @@ namespace PirateSimulator
         pImmediateContext->PSSetShader(pPixelShader, NULL, 0);
         pImmediateContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 
-
-
         // Dessiner les subsets non-transparents    
         //m_material = Material(MaterialProperties());
 
@@ -163,7 +156,7 @@ namespace PirateSimulator
         pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
         UtilitairesDX::DXRelacher(pCB);
-        
+
         // **** Rendu de l'objet	   
         pImmediateContext->DrawIndexed(m_index_bloc.size(), 0, 0);
     }
@@ -207,8 +200,6 @@ namespace PirateSimulator
         InitShaders();
 
         m_matWorld = XMMatrixIdentity();
-
-        rotation = 0.0f;
 
         // Chargement des textures
         this->loadTexture(textureFileName);
@@ -422,7 +413,7 @@ namespace PirateSimulator
         samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
         // Activation de la texture ou non
-        if (m_material.pTextureD3D != nullptr)
+        if(m_material.pTextureD3D != nullptr)
         {
             ID3DX11EffectShaderResourceVariable* variableTexture;
             variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();

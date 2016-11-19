@@ -148,7 +148,6 @@ namespace PirateSimulator
 
         // Définitions des valeurs d'animation
         ID3D11Buffer* pConstantBuffer;
-        float rotation;
 
 		//Pour texture
         Material m_material;

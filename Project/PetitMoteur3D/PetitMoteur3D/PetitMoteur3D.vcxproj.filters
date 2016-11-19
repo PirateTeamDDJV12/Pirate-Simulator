@@ -43,6 +43,24 @@
     <Filter Include="Fichiers d%27en-tête\PirateSimulator\Manager">
       <UniqueIdentifier>{264923d9-ce3d-431e-ad83-f10a87f6dde3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Notifier">
+      <UniqueIdentifier>{d2eb27eb-fecd-44ec-804e-f5737ee953d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Maths">
+      <UniqueIdentifier>{374ad445-7e66-47b3-8bdc-7418a26eb161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Meshs">
+      <UniqueIdentifier>{d44e076e-b2c6-42ef-aed0-6d44d09c3b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\Meshs">
+      <UniqueIdentifier>{c1e4bbc4-ada4-49ac-89aa-ab1edf58fdf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\Maths">
+      <UniqueIdentifier>{d9e7bad4-f728-474f-92dc-c3e30d744282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\Notifier">
+      <UniqueIdentifier>{26ad8a2f-d7d0-410f-abed-75b12f319c51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Moteur.cpp">
@@ -57,14 +75,8 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="dispositifD3D11.cpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClCompile>
     <ClCompile Include="Bloc.cpp">
       <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="sommetbloc.cpp">
-      <Filter>Fichiers d%27en-tête</Filter>
     </ClCompile>
     <ClCompile Include="InfoDispositif.cpp">
       <Filter>Fichiers sources</Filter>
@@ -96,28 +108,10 @@
     <ClCompile Include="DIManipulateur.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Terrain.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Triangle.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Vertex.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Transform.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\Skybox.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp">
@@ -180,26 +174,47 @@
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\BlocMesh.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\BlocMeshStructure.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\testNotifier.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\BinaryFast.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Terrain.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Skybox.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Plane.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Mesh.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\BlocMeshStructure.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\BlocMesh.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Vertex.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Triangle.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Transform.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Notifier</Filter>
+    </ClCompile>
+    <ClCompile Include="sommetbloc.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="dispositifD3D11.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,34 +281,10 @@
     <ClInclude Include="DIManipulateur.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\terrain.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Triangle.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Vect3f.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Vertex.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Component.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Moves.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Angle.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\RessourcesManager.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Vect2f.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Material.h">
@@ -305,35 +296,17 @@
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Transform.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameObject.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\IBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Skybox.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Mesh.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="Config\Config.hpp">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\IGameTask.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
@@ -392,29 +365,65 @@
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\BlocMesh.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\NotifierManager.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\testNotifier.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Notifier.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BinaryFast.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\Plane.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\DebugD3D11Custom.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Notifier.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Notifier</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\NotifierManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Notifier</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Vertex.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Vect3f.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Vect2f.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Triangle.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Transform.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Angle.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\IBehaviour.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\IGameTask.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Terrain.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Skybox.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Plane.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Mesh.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\BlocMesh.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Moves.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -433,10 +442,5 @@
     <ResourceCompile Include="PetitMoteur3D.rc">
       <Filter>Fichiers de ressources</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\PirateSimulator\test.txt">
-      <Filter>Fichiers sources</Filter>
-    </Text>
   </ItemGroup>
 </Project>
