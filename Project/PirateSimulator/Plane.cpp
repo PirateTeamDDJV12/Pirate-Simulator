@@ -144,6 +144,11 @@ Plane::Plane(const std::string& textureFileName) :
     m_shaderParameter.waveAmplitude = Plane::WAVE_AMPLITUDE;
     m_shaderParameter.waveFrequency = Plane::WAVE_FREQUENCY;
 
+    m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
+    m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
+    m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
+    m_shaderParameter.vSEcl = { 0.5f, 0.5f, 0.5f, 0.5f };
+
     // Activation de la texture ou non
     if (m_material.pTextureD3D != nullptr)
     {
@@ -215,13 +220,11 @@ void Plane::Draw()
     // Dessiner les subsets non-transparents    
     //m_material = Material(MaterialProperties());
 
-    m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
-    m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
-    m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
-    m_shaderParameter.vSEcl = { 0.5f, 0.5f, 0.5f, 0.5f };
     m_shaderParameter.puissance = m_material.m_property.power;
     m_shaderParameter.tick += TICK_INCREMENT;
 
+    float waterVelocity = DirectX::XMScalarCos(m_shaderParameter.tick) * Plane::WAVE_SPEED_COEFFICIENT;
+    m_shaderParameter.undertow = { waterVelocity , waterVelocity };
 
 
     // IMPORTANT pour ajuster les param.

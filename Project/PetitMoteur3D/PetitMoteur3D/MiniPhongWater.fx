@@ -17,7 +17,9 @@ cbuffer param
 	float waveAmplitude;
 	float waveFrequency;
 
-    float3 uselessFill;
+    float2 waterVelocity;
+	
+    float  uselessFill;
 }
 
 Texture2D textureEntree;  // la texture
@@ -60,7 +62,7 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 
     // Coordonnées d'application de texture
     sortie.coordTex = coordTex;
-
+	
 	return sortie;
 }
 
@@ -85,21 +87,15 @@ float4 couleur;
 
 	float4 couleurTexture;  
 
-	if (bTex>0)
-	{
-		// Échantillonner la couleur du pixel à partir de la texture  
-		couleurTexture = textureEntree.Sample(SampleState, vs.coordTex);   
+	float2 glitch = vs.coordTex + waterVelocity;
+	// Échantillonner la couleur du pixel à partir de la texture  
+	couleurTexture = textureEntree.Sample(SampleState, glitch);   
 
-		// I = A + D * N.L + (R.V)n
-		couleur =  couleurTexture * vAEcl  + 
-				   couleurTexture * vDEcl * diff +
-				   vSEcl * vSMat * S;
-	}
-	else
-	{
-		couleur =  vAEcl * vAMat + vDEcl * vDMat * diff  + 
-					vSEcl * vSMat * S;
-    }
+	// I = A + D * N.L + (R.V)n
+	couleur =  couleurTexture * vAEcl  + 
+			   couleurTexture * vDEcl * diff +
+			   vSEcl * vSMat * S;
+	
 	return couleur;
 }
 
