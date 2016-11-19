@@ -168,6 +168,7 @@
     <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h" />
     <ClInclude Include="..\..\PirateSimulator\CameraManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Component.h" />
+    <ClInclude Include="..\..\PirateSimulator\DebugD3D11Custom.h" />
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
@@ -219,7 +220,6 @@
     <ClInclude Include="dispositifD3D11.h" />
     <ClInclude Include="GestionnaireDeTextures.h" />
     <ClInclude Include="InfoDispositif.h" />
-    <ClInclude Include="MeshVertex.h" />
     <ClInclude Include="Moteur.h" />
     <ClInclude Include="MoteurWindows.h" />
     <ClInclude Include="ObjetMesh.h" />
