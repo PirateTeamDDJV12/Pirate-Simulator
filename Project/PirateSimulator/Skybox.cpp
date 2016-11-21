@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include "Skybox.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Resource.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Singleton.h"
@@ -41,10 +39,11 @@ D3D11_INPUT_ELEMENT_DESC CSommetSky::layout[] =
 };
 UINT CSommetSky::numElements = ARRAYSIZE(CSommetSky::layout);
 
-CSkybox::CSkybox(CDispositifD3D11* pDispositif_) :
-    Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams())
+CSkybox::CSkybox() :
+    Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams()),
+    pTextureD3D{ nullptr }, pEffet{ nullptr }, pVertexLayout{ nullptr }, pIndexBuffer{ nullptr }, pVertexBuffer{ nullptr }, pConstantBuffer{ nullptr }, pTechnique{ nullptr }, pPasse{ nullptr }, pSampleState{ nullptr }
 {
-    pDispositif = pDispositif_;
+    pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
     XMFLOAT3 point[8];
     point[0] = XMFLOAT3(1.0f, 1.0f, 1.0f);
@@ -122,6 +121,8 @@ CSkybox::CSkybox(CDispositifD3D11* pDispositif_) :
     // Initialisation de l'effet
     InitEffet();
     matWorld = XMMatrixIdentity();
+
+    DXRelacher(pD3DDevice);
 }
 
 void CSkybox::InitEffet()
@@ -136,6 +137,8 @@ void CSkybox::InitEffet()
     bd.ByteWidth = sizeof(ShaderCSkyBox::ShadersParams);
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bd.CPUAccessFlags = 0;
+
+    DXRelacher(pConstantBuffer);
     pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
 
     // Pour l'effet
@@ -145,9 +148,14 @@ void CSkybox::InitEffet()
         &pFXBlob, NULL),
         DXE_ERREURCREATION_FX);
 
+    DXRelacher(pEffet);
     D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &pEffet);
     pFXBlob->Release();
+
+    DXRelacher(pTechnique);
     pTechnique = pEffet->GetTechniqueByIndex(0);
+
+    DXRelacher(pPasse);
     pPasse = pTechnique->GetPassByIndex(0);
 
     // Créer l'organisation des sommets pour le VS de notre effet
@@ -157,8 +165,8 @@ void CSkybox::InitEffet()
     effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex, &effectVSDesc2);
     const void *vsCodePtr = effectVSDesc2.pBytecode;
     unsigned int vsCodeLen = effectVSDesc2.BytecodeLength;
-    pVertexLayout = NULL;
     
+    DXRelacher(pVertexLayout);
     DXEssayer(pD3DDevice->CreateInputLayout(CSommetSky::layout,
         CSommetSky::numElements,
         vsCodePtr,
@@ -183,20 +191,29 @@ void CSkybox::InitEffet()
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
     // Création de l'état de sampling
+    DXRelacher(pSampleState);
     pD3DDevice->CreateSamplerState(&samplerDesc, &pSampleState);
+
+    DXRelacher(pD3DDevice);
 }
 
 void CSkybox::SetTexture(CTexture* pTexture)
 {
+    DXRelacher(pTextureD3D);
     pTextureD3D = pTexture->GetD3DTexture();
 }
 
 CSkybox::~CSkybox(void)
 {
+    DXRelacher(pTextureD3D);
     DXRelacher(pEffet);
     DXRelacher(pVertexLayout);
     DXRelacher(pIndexBuffer);
     DXRelacher(pVertexBuffer);
+    DXRelacher(pConstantBuffer);
+    DXRelacher(pTechnique);
+    DXRelacher(pPasse);
+    DXRelacher(pSampleState);
 }
 
 void CSkybox::Draw()
@@ -220,10 +237,10 @@ void CSkybox::Draw()
 
 
     // Initialiser et sélectionner les «constantes» de l'effet
-    XMVECTOR cameraPos = CMoteurWindows::GetInstance().GetCameraPosition();
+    XMVECTOR cameraPos = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
 
     m_matWorld = XMMatrixTranslation(cameraPos.vector4_f32[0], cameraPos.vector4_f32[1], cameraPos.vector4_f32[2]);
-    XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
+    XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
     m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
     pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
@@ -235,13 +252,13 @@ void CSkybox::Draw()
     ID3DX11EffectShaderResourceVariable* variableTexture;
     variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
     variableTexture->SetResource(pTextureD3D);
-
+    DXRelacher(variableTexture);
 
     // Le sampler state
     ID3DX11EffectSamplerVariable* variableSampler;
     variableSampler = pEffet->GetVariableByName("SampleState")->AsSampler();
     variableSampler->SetSampler(0, pSampleState);
-
+    DXRelacher(variableSampler);
 
     // Désactiver Culling et ZBuffer
     pDispositif->DesactiverCulling();

@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "strsafe.h"
 #include "dispositifD3D11.h"
 #include "Texture.h"
@@ -6,25 +5,27 @@
 #include "util.h"
 #include "DDSTextureLoader.h"
 
+#include "../../PirateSimulator/RendererManager.h"
+
 using namespace UtilitairesDX;
 using namespace DirectX;
 
 namespace PM3D
 {
 
-CTexture::CTexture(void)
+CTexture::CTexture()
 {
 }
 
-CTexture::~CTexture(void)
+CTexture::~CTexture()
 {
 	DXRelacher(pTexture);
 }
 
-CTexture::CTexture(const wchar_t* filename_in,CDispositifD3D11* pDispositif)
+CTexture::CTexture(const wchar_t* filename_in)
 {
 	pTexture = 0;
-	ID3D11Device* pDevice = pDispositif->GetD3DDevice();
+	ID3D11Device* pDevice = PirateSimulator::RendererManager::singleton.getDispositif()->GetD3DDevice();
 
 	StringCchCopy( filename, sizeof(filename), filename_in);  
  
@@ -35,7 +36,7 @@ CTexture::CTexture(const wchar_t* filename_in,CDispositifD3D11* pDispositif)
 										 &pTexture), 
                   DXE_FICHIERTEXTUREINTROUVABLE );
 
-
+    DXRelacher(pDevice);
 }
 
 }

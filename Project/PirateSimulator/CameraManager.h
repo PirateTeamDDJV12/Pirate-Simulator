@@ -41,6 +41,7 @@ namespace PirateSimulator
         GameObjectRef getMainCameraGO() const noexcept { return m_cameraInfo.m_mainCamera; }
         cameraModule::BaseCamera* getMainCameraComponent() const noexcept { return m_cameraInfo.m_cameraComponent; }
         IBehaviour* getMainCameraBehaviour() const noexcept { return m_cameraInfo.m_cameraBehavior; }
+        cameraModule::BaseCamera::type getCameraType() const noexcept { return m_cameraInfo.m_cameraType; }
 
 
     private:
@@ -49,44 +50,35 @@ namespace PirateSimulator
 
 
     public:
-        void setMainCamera(GameObjectRef camera) noexcept
+        void setMainCamera(GameObjectRef camera) noexcept;
+
+        void setPairedTarget(GameObjectRef pairedTarget);
+
+        GameObjectRef createCamera(cameraModule::BaseCamera::type cameraType,
+            const Transform& transform,
+            const cameraModule::CameraProjectionParameters &camProjParameters,
+            const cameraModule::CameraMovingParameters &camMovParameters,
+            const std::string& name);
+
+
+        void animMainCamera()
         {
-            if (camera)
-            {
-                cameraModule::BaseCamera* cameraComponent = camera->getComponent<cameraModule::BaseCamera>();
+            m_cameraInfo.m_mainCamera->anime(0);
+        }
 
-                if (cameraComponent)
-                {
-                    m_cameraInfo.m_mainCamera      = camera;
-                    m_cameraInfo.m_cameraComponent = cameraComponent;
+        DirectX::XMMATRIX getMatView() const
+        {
+            return m_cameraInfo.m_cameraComponent->getViewMatrix();
+        }
 
-                    m_cameraInfo.m_cameraType   = cameraComponent->getCameraType();
-                    m_cameraInfo.m_cameraTarget = cameraComponent->getTarget();
+        DirectX::XMMATRIX getMatProj() const
+        {
+            return m_cameraInfo.m_cameraComponent->getProjMatrix();
+        }
 
-                    switch (m_cameraInfo.m_cameraType)
-                    {
-                    case cameraModule::BaseCamera::OBJECT_CAMERA:
-                        m_cameraInfo.m_cameraBehavior = m_cameraInfo.m_cameraTarget->getComponent<cameraModule::ObjectCameraBehaviour>();
-
-                        if (!m_cameraInfo.m_cameraBehavior)
-                        {
-                            m_cameraInfo.m_cameraBehavior = camera->getComponent<cameraModule::ObjectCameraBehaviour>();
-                        }
-                        break;
-
-                    case cameraModule::BaseCamera::LEVEL_CAMERA:
-                        m_cameraInfo.m_cameraBehavior = m_cameraInfo.m_mainCamera->getComponent<cameraModule::LevelCameraBehaviour>();
-                        break;
-
-                    case cameraModule::BaseCamera::FREE_CAMERA:
-                        m_cameraInfo.m_cameraBehavior = m_cameraInfo.m_mainCamera->getComponent<cameraModule::FreeCameraBehaviour>();
-
-                    default:
-                        m_cameraInfo.m_cameraBehavior = nullptr;
-                        break;
-                    }
-                }
-            }
+        DirectX::XMMATRIX getMatViewProj() const
+        {
+            return m_cameraInfo.m_cameraComponent->getViewProjMatrix();
         }
     };
 }

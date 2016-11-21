@@ -115,7 +115,14 @@ namespace PirateSimulator
 
             GameObjectRef getTarget() noexcept { return m_target; }
 
-            void updateViewMatrix() { (this->*m_pUpdateViewMatrix)(); }
+            void updateViewMatrix() {
+                setMatrixView(XMMatrixLookToLH(
+                    m_gameObject->m_transform.m_position,
+                    m_gameObject->m_transform.m_forward,
+                    m_gameObject->m_transform.m_up)
+                );
+                //this->*m_pUpdateViewMatrix)();
+            }
 
             type getCameraType() const noexcept
             {

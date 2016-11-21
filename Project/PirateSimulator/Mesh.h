@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MESH_H_INCLUDED
+#define MESH_H_INCLUDED
+
 #include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
 
 #include "Component.h"
@@ -7,6 +9,8 @@
 
 namespace PirateSimulator
 {
+    class GameObject;
+
     class IMesh : public Component 
     {
     protected:
@@ -20,6 +24,8 @@ namespace PirateSimulator
 
         static std::string typeId() noexcept { return "MeshComponent"; }
         virtual std::string getTypeId() const noexcept { return IMesh::typeId(); }
+
+        virtual void setGameObject(GameObject* parent);
     };
 
     //  Classe : Mesh
@@ -36,7 +42,7 @@ namespace PirateSimulator
 
     public:
         // Destructeur
-        virtual ~Mesh(void) {}
+        virtual ~Mesh() {}
 
 
     public:
@@ -53,3 +59,5 @@ namespace PirateSimulator
     };
 
 }
+
+#endif //!MESH_H_INCLUDED

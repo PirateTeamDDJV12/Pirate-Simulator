@@ -1,10 +1,9 @@
-#include "StdAfx.h"
-
 #include <iostream>
 #include <sstream>
 
 #include "FreeCameraBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
+#include "InputManager.h"
 
 using namespace  PirateSimulator;
 using namespace  cameraModule;
@@ -104,8 +103,7 @@ void FreeCameraBehaviour::rotate(Move::Rotation::Direction direction)
 void FreeCameraBehaviour::anime(float ellapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
-    PM3D::CMoteurWindows& rMoteur = PM3D::CMoteurWindows::GetInstance();
-    CDIManipulateur& rGestionnaireDeSaisie = rMoteur.GetGestionnaireDeSaisie();
+    CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
     
 
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))

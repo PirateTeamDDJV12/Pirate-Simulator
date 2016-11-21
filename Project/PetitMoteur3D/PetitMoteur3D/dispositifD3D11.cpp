@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "resource.h"
 #include "DispositifD3D11.h"
 #include "Util.h"
@@ -18,7 +17,7 @@ namespace PM3D
 
 		DXRelacher (mSolidCullBackRS);
 		DXRelacher (pDepthTexture);
-		DXRelacher (pDepthStencilView );
+		DXRelacher (pDepthStencilView);
 
 		if (pImmediateContext) pImmediateContext->ClearState();
 		DXRelacher(pRenderTargetView);		

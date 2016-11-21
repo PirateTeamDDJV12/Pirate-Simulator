@@ -1,5 +1,3 @@
-#include "StdAfx.h"
-
 #include <string>
 
 #include "ObjetMesh.h"
@@ -8,6 +6,8 @@
 #include "resource.h"
 
 #include "../../PirateSimulator/Moves.h"
+
+#include "../../PirateSimulator/RendererManager.h"
 
 #include <fstream>
 #include <corecrt_io.h>
@@ -50,11 +50,11 @@ namespace PM3D
     
 
     // Ancien constructeur
-    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
         Mesh<ShaderCObjectMesh::ShadersParams>( shaderParameter )
     {
         // prendre en note le dispositif
-        pDispositif = _pDispositif;
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
         // Placer l'objet sur la carte graphique
         TransfertObjet(chargeur);
@@ -65,11 +65,11 @@ namespace PM3D
 
     // Constructeur de conversion
     // Constructeur pour test ou pour création d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
         PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
-        pDispositif = _pDispositif;
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
 
         //// Placer l'objet sur la carte graphique
@@ -84,11 +84,11 @@ namespace PM3D
     }
 
     // Constructeur pour lecture d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, CDispositifD3D11* _pDispositif) :
+    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter) :
         PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
-        pDispositif = _pDispositif;
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
         // Placer l'objet sur la carte graphique
         LireFichierBinaire(nomFichier);
@@ -185,7 +185,7 @@ namespace PM3D
     void CObjetMesh::Draw()
     {
 #ifdef DEBUG_PIRATE_SIMULATOR
-        OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
+        //OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
 #endif
         
 
@@ -208,7 +208,7 @@ namespace PM3D
 
 
         // Initialiser et sélectionner les «constantes» de l'effet
-        XMMATRIX viewProj = CMoteurWindows::GetInstance().GetMatViewProj();
+        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
@@ -218,7 +218,7 @@ namespace PM3D
         ID3DX11EffectSamplerVariable* variableSampler;
         variableSampler = pEffet->GetVariableByName("SampleState")->AsSampler();
         variableSampler->SetSampler(0, pSampleState);
-
+        DXRelacher(variableSampler);
 
         // Dessiner les subsets non-transparents
         for(int i = 0; i < NombreSubset; ++i)
@@ -238,6 +238,7 @@ namespace PM3D
                     ID3DX11EffectShaderResourceVariable* variableTexture;
                     variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
                     variableTexture->SetResource(m_materials[SubsetMaterialIndex[i]].pTextureD3D);
+                    DXRelacher(variableTexture);
                 }
 
                 // IMPORTANT pour ajuster les param.
@@ -248,6 +249,7 @@ namespace PM3D
                 pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
 
                 pImmediateContext->DrawIndexed(indexDrawAmount, indexStart, 0);
+                DXRelacher(pCB);
             }
         }
     }
@@ -357,7 +359,7 @@ namespace PM3D
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
 
-                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
             }
 
         }
@@ -556,7 +558,7 @@ namespace PM3D
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
 
-                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str(), pDispositif)->GetD3DTexture();
+                m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
             }
 
         }

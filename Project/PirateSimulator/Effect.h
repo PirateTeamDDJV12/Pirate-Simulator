@@ -30,6 +30,16 @@ namespace PirateSimulator
             m_pass{ nullptr },
             m_vertexLayout{ nullptr }
         {}
+
+        ~Effect()
+        {
+            m_sampleState->Release();
+            m_constantBuffer->Release();
+            m_effect->Release();
+            m_technique->Release();
+            m_pass->Release();
+            m_vertexLayout->Release();
+        }
     };
 }
 

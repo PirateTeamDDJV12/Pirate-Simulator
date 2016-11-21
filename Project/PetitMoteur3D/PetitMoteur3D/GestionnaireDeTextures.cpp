@@ -1,5 +1,3 @@
-
-#include "StdAfx.h"
 #include "dispositifD3D11.h"
 #include "GestionnaireDeTextures.h"
 
@@ -15,7 +13,7 @@ CGestionnaireDeTextures::~CGestionnaireDeTextures(void)
 	Cleanup();
 }
 
-CTexture* const CGestionnaireDeTextures::GetNewTexture(const wchar_t* filename_in,CDispositifD3D11* pDispositif)
+CTexture* const CGestionnaireDeTextures::GetNewTexture(const wchar_t* filename_in)
 {	
 	CTexture* pTexture;
 
@@ -25,7 +23,7 @@ CTexture* const CGestionnaireDeTextures::GetNewTexture(const wchar_t* filename_i
 	// Si non, on la crée
 	if (!pTexture)
 	{
-		pTexture = new CTexture(filename_in, pDispositif);
+		pTexture = new CTexture(filename_in);
 
 		// Puis, il est ajouté à la scène
 		ListeTextures.push_back(pTexture);
@@ -59,7 +57,7 @@ void CGestionnaireDeTextures::Cleanup()
 // détruire les objets
 std::vector<CTexture*>::iterator It;
 
-	for (It = ListeTextures.begin(); It != ListeTextures.end();It++)
+	for (It = ListeTextures.begin(); It != ListeTextures.end();++It)
 	{
 		delete (*It);
 	}

@@ -43,6 +43,7 @@ namespace PirateSimulator
         GameObject(const Transform& transform, const std::string& name) :
             m_name{ name },
             m_transform{ transform },
+            m_mesh{nullptr},
             m_pSetMatrix{ &GameObject::setWorldMatrixWhenNotHavingAMesh },
             m_pAnim{ &GameObject::animNothing }
         {
@@ -119,6 +120,7 @@ namespace PirateSimulator
         void draw() { m_mesh->Draw(); }
 
         void translate(float x, float y, float z);
+        void translate(const DirectX::XMVECTOR &dir);
         void rotate(float angleX, float angleY);
 
         void setWorldMatrix(const DirectX::XMMATRIX& world)

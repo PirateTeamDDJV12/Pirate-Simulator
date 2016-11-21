@@ -90,6 +90,14 @@ namespace PirateSimulator
             m_materialName{ "" },
             m_property{ properties }
         {}
+
+        ~Material()
+        {
+            if (pTextureD3D)
+            {
+                pTextureD3D->Release();
+            }
+        }
     };
 }
 

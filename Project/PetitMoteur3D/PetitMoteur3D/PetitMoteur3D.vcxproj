@@ -68,6 +68,8 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedUsingFiles>#include "stdafx.h"</ForcedUsingFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -87,6 +89,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -102,19 +105,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\BinaryFast.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\BlocMesh.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\BlocMeshStructure.cpp" />
     <ClCompile Include="..\..\PirateSimulator\CameraManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\InputTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Mesh.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PhysicsTask.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Plane.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\RenderTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
@@ -125,6 +142,7 @@
     <ClCompile Include="Bloc.cpp" />
     <ClCompile Include="BlocEffet1.cpp" />
     <ClCompile Include="ChargeurOBJ.cpp" />
+    <ClCompile Include="Config\Config.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DIManipulateur.cpp" />
     <ClCompile Include="dispositifD3D11.cpp" />
@@ -144,27 +162,42 @@
   <ItemGroup>
     <ClInclude Include="..\..\PirateSimulator\Angle.h" />
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\BinaryFast.h" />
+    <ClInclude Include="..\..\PirateSimulator\BlocMesh.h" />
+    <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h" />
     <ClInclude Include="..\..\PirateSimulator\CameraManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Component.h" />
+    <ClInclude Include="..\..\PirateSimulator\DebugD3D11Custom.h" />
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\InputManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\IGameTask.h" />
+    <ClInclude Include="..\..\PirateSimulator\InputTask.h" />
     <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
+    <ClInclude Include="..\..\PirateSimulator\Notifier.h" />
+    <ClInclude Include="..\..\PirateSimulator\NotifierManager.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h" />
+    <ClInclude Include="..\..\PirateSimulator\Plane.h" />
+    <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\PlayerTask.h" />
     <ClInclude Include="..\..\PirateSimulator\RendererManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\RenderTask.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
-    <ClInclude Include="..\..\PirateSimulator\RessourcesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Material.h" />
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
+    <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
@@ -177,13 +210,13 @@
     <ClInclude Include="BlocEffet1.h" />
     <ClInclude Include="chargeur.h" />
     <ClInclude Include="ChargeurOBJ.h" />
+    <ClInclude Include="Config\Config.hpp" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DIManipulateur.h" />
     <ClInclude Include="dispositif.h" />
     <ClInclude Include="dispositifD3D11.h" />
     <ClInclude Include="GestionnaireDeTextures.h" />
     <ClInclude Include="InfoDispositif.h" />
-    <ClInclude Include="MeshVertex.h" />
     <ClInclude Include="Moteur.h" />
     <ClInclude Include="MoteurWindows.h" />
     <ClInclude Include="ObjetMesh.h" />
@@ -195,15 +228,13 @@
     <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Config\Ressources\heightmap.conf" />
     <None Include="PetitMoteur3D.ico" />
     <None Include="small.ico" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PetitMoteur3D.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\PirateSimulator\test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

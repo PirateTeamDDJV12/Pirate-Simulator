@@ -138,11 +138,11 @@ namespace PM3D
 
 
     public:
-        CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* pDispositif);
-        CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur, CDispositifD3D11* _pDispositif);
-        CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, CDispositifD3D11* _pDispositif);
+        CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur);
+        CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur);
+        CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter);
 
-        virtual ~CObjetMesh(void);
+        virtual ~CObjetMesh();
 
         void Draw();
         void ConvertToOMB(string totalFileNameIn, const string& totalFileNameOut);

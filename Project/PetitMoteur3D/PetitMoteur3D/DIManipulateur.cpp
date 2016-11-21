@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "DIManipulateur.h"
 #include "util.h"
 #include "resource.h"
@@ -99,7 +98,7 @@ void CDIManipulateur::StatutClavier()
 	pClavier->GetDeviceState(sizeof(tamponClavier), (void*)& tamponClavier);
 }
 
-bool CDIManipulateur::ToucheAppuyee(UINT touche)
+bool CDIManipulateur::ToucheAppuyee(UINT touche) const
 {
 	return (tamponClavier[touche] & 0x80);
 }
