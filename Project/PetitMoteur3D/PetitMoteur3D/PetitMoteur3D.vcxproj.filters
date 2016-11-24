@@ -225,6 +225,9 @@
     <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp">
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PhysicsManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -436,6 +439,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\ShapeComponent.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PhysicsManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

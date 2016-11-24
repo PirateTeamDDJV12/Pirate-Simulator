@@ -44,13 +44,14 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
-
+ 
 #include <dinput.h>
 
 //Fichier PhysX
 #include "targetver.h"
 #include <cassert>
 #include "PhysX/Include/PxPhysicsAPI.h"
+#include "PhysX/Include/PxPhysicsAPI.forward.h"
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 

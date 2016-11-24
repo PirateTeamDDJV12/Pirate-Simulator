@@ -1,40 +1,43 @@
-#include "Component.h"
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
-#include "SimulationComponent.h"
+
 #ifndef SHAPE_COMPONENT_H
 #define SHAPE_COMPONENT_H
+
+#include "Component.h"
+#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
+//#include "SimulationComponent.h"
+
+#include "PhysicsManager.h"
 namespace PirateSimulator
 {
 	class GameObject;
-	class IShapeComponent : public Component
+	class ShapeComponent : public Component
 	{
-	protected:
-		physx::PxActorShape m_actShape;
 	public:
+
+	protected:
+		//physx::PxActorShape m_actShape;
+		//std::unique_ptr<physx::PxMaterial> m_material;
+		physx::PxMaterial* m_material;
+		physx::PxShape* m_shape;
+	public:
+		ShapeComponent() {};
+
 		static std::string typeId() noexcept { return "ShapeComponent"; }
 		std::string getTypeId() const noexcept override
 		{
-			return IShapeComponent::typeId();
+			return ShapeComponent::typeId();
 		}
-		virtual void setGameObject(GameObject* parent)
+		void setGameObject(GameObject* parent)
 		{
+			PhysicsManager  PhysicsManager::singleton;
 			m_gameObject = parent;
-			std::shared_ptr<DynamicSimulationComponent> simulationComponent = createComponent<DynamicSimulationComponent>();
-			PxRigidDynamic &pxActor = simulationComponent->pxActor();
-			//TODO Récupérer Data pour créer  HB
-			//auto meshData = (m_gameObject->getComponent<IMesh>());
-			//meshData->getWorldMatrix()
+			m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
+			//m_material = PhysicsManager::singleton.physics().createMaterial(0.2f,0.3f,0.5f);
+			//m_shape = PhysicsManager::singleton.physics().createShape(physx::PxSphereGeometry(0.5f),m_material);
+		
 		}
 	};
 
-	class ShapeComponent : public IShapeComponent
-	{
-	protected:
-		
-	public:
-		~ShapeComponent() = default;
-
-	};
 
 
 }

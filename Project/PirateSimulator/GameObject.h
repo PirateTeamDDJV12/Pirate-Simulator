@@ -14,10 +14,12 @@ Created by Sun-lay Gagneux
 #include <string>
 #include <memory>
 
-
+//class PirateSimulator::ShapeComponent;
 
 namespace PirateSimulator
 {
+
+
     using ComponentRef = std::shared_ptr<Component>;
     using GameObjectRef = std::shared_ptr<GameObject>;
 
@@ -38,7 +40,7 @@ namespace PirateSimulator
 
         IBehaviour* m_behaviour;
         IMesh* m_mesh;
-		IShapeComponent* m_shape;
+		//ShapeComponent* m_shape;
 
     public:
         GameObject(const Transform& transform, const std::string& name) :
@@ -88,13 +90,13 @@ namespace PirateSimulator
                 m_pSetMatrix = &GameObject::setWorldMatrixWhenHaving;
             }
         }
-		template <>
-		void addComponent<IShapeComponent>(IShapeComponent* component)
-		{
-			m_attachedComponent.push_back(ComponentRef(component));
-			m_shape = component;
-			m_shape->setGameObject(this);
-		}
+		//template <>
+		//void addComponent<ShapeComponent>(ShapeComponent* component)
+		//{
+		//	m_attachedComponent.push_back(ComponentRef(component));
+		//	//m_shape = component;
+		//	//m_shape->setGameObject(this);
+		//}
 
         template<class ComponentAttribute>
         ComponentAttribute* getComponent()

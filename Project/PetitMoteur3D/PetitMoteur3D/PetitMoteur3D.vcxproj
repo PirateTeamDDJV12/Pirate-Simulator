@@ -120,6 +120,7 @@
     <ClCompile Include="..\..\PirateSimulator\Mesh.cpp" />
     <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PhysicsManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PhysicsTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Plane.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="..\..\PirateSimulator\Notifier.h" />
     <ClInclude Include="..\..\PirateSimulator\NotifierManager.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\PhysicsManager.h" />
     <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Plane.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
