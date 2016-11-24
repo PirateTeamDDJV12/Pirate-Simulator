@@ -8,11 +8,12 @@ Created by Sun-lay Gagneux
 #include "Transform.h"
 #include "IBehaviour.h"
 #include "Mesh.h"
-
+#include "ShapeComponent.h"
 
 #include <vector>
 #include <string>
 #include <memory>
+
 
 
 namespace PirateSimulator
@@ -30,14 +31,14 @@ namespace PirateSimulator
     public:
         Transform m_transform;
         std::string m_name;
-
+		
 
     protected:
         std::vector<ComponentRef> m_attachedComponent;
 
         IBehaviour* m_behaviour;
         IMesh* m_mesh;
-        
+		IShapeComponent* m_shape;
 
     public:
         GameObject(const Transform& transform, const std::string& name) :
@@ -87,6 +88,13 @@ namespace PirateSimulator
                 m_pSetMatrix = &GameObject::setWorldMatrixWhenHaving;
             }
         }
+		template <>
+		void addComponent<IShapeComponent>(IShapeComponent* component)
+		{
+			m_attachedComponent.push_back(ComponentRef(component));
+			m_shape = component;
+			m_shape->setGameObject(this);
+		}
 
         template<class ComponentAttribute>
         ComponentAttribute* getComponent()

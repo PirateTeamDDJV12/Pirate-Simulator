@@ -127,6 +127,7 @@
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RenderTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Material.h" />
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
+    <ClInclude Include="..\..\PirateSimulator\ShapeComponent.h" />
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
