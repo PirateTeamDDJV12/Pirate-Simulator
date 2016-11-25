@@ -3,12 +3,19 @@
 #define SHAPE_COMPONENT_H
 
 #include "Component.h"
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 //#include "SimulationComponent.h"
 
-#include "PhysicsManager.h"
+
+namespace physx
+{
+	class PxMaterial;
+	class PxShape;
+}
+
+
 namespace PirateSimulator
 {
+
 	class GameObject;
 	class ShapeComponent : public Component
 	{
@@ -23,19 +30,13 @@ namespace PirateSimulator
 		ShapeComponent() {};
 
 		static std::string typeId() noexcept { return "ShapeComponent"; }
+
 		std::string getTypeId() const noexcept override
 		{
 			return ShapeComponent::typeId();
 		}
-		void setGameObject(GameObject* parent)
-		{
-			PhysicsManager  PhysicsManager::singleton;
-			m_gameObject = parent;
-			m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
-			//m_material = PhysicsManager::singleton.physics().createMaterial(0.2f,0.3f,0.5f);
-			//m_shape = PhysicsManager::singleton.physics().createShape(physx::PxSphereGeometry(0.5f),m_material);
-		
-		}
+
+		virtual void setGameObject(PirateSimulator::GameObject* parent) override;
 	};
 
 
