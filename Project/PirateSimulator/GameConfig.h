@@ -9,8 +9,8 @@ namespace PirateSimulator
         {
             enum
             {
-                MAX_X = 400,
-                MAX_Z = 400,
+                MAX_X = 4100,
+                MAX_Z = 4100,
 
                 MIN_X = -100,
                 MIN_Z = -100
