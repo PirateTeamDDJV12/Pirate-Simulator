@@ -14,12 +14,13 @@ namespace PirateSimulator
 
         GameObjectRef m_pieceInstance;
 
+        long long m_unspawnedTime;
+
+        void (Piece::* m_pieceAnimation)(float elapsedTime);
+
 
     public:
-        Piece(const Transform& spawnPosition, size_t pieceID) :
-            m_transform{ spawnPosition },
-            m_pieceID{ pieceID }
-        {}
+        Piece(const Transform& spawnPosition, size_t pieceID);
 
 
     public:
@@ -30,10 +31,19 @@ namespace PirateSimulator
         bool isEmpty() const noexcept { return m_pieceInstance == GameObjectRef(); }
         bool isInstanciated() const noexcept { return !isEmpty(); }
 
+        long long getUnspawnedTime() const noexcept;
+
+        void anim(float elapsedTime);
+
 
     public:
         GameObjectRef createPiece();
         void destroyPiece();
+
+
+    private:
+        void noAnimation(float elapsedTime) {}
+        void doAnimation(float elapsedTime);
     };
 }
 

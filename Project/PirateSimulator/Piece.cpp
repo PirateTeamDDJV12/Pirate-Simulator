@@ -5,6 +5,7 @@
 #include "BlocMesh.h"
 
 #include <algorithm>
+#include "TimeManager.h"
 
 using namespace PirateSimulator;
 
@@ -12,7 +13,7 @@ using namespace PirateSimulator;
 class PieceBehaviour : public IBehaviour
 {
 public:
-    static constexpr const float PIECE_ANGULAR_SPEED = 2.f;
+    static constexpr const float PIECE_ANGULAR_SPEED = 50.f;
 
 public:
     float m_xAngle;
@@ -22,14 +23,22 @@ private:
     static std::string typeId() noexcept { return "PieceBehaviour"; }
     virtual std::string getTypeId() const noexcept { return IBehaviour::typeId(); }
 
-    virtual void anime(float ellapsedTime) 
+    virtual void anime(float elapsedTime) 
     {
-        m_xAngle = m_xAngle + (DirectX::XM_PI * ellapsedTime);
+        m_xAngle = m_xAngle + (DirectX::XM_PI * elapsedTime * PIECE_ANGULAR_SPEED);
 
         // modifier la matrice de l'objet X
         m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
     };
 };
+
+
+Piece::Piece(const Transform& spawnPosition, size_t pieceID) :
+    m_transform{ spawnPosition },
+    m_pieceID{ pieceID },
+    m_unspawnedTime{ TimeManager::msNow().count() },
+    m_pieceAnimation{ &Piece::noAnimation }
+{}
 
 
 GameObjectRef Piece::createPiece()
@@ -42,8 +51,14 @@ GameObjectRef Piece::createPiece()
 
         GameObjectManager::singleton.setSubscribingStrategy(GameObjectManager::NONE);
 
+        auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
+
         m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
-        m_pieceInstance->addComponent<IMesh>(new BlocMesh<BlocStructure>(1.f, 1.f, 0.1f, ShaderBloc::ShadersParams()));
+        m_pieceInstance->addComponent<IMesh>(pieceMesh);
+
+        RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
+
+        m_pieceAnimation = &Piece::doAnimation;
     }
 
     return m_pieceInstance;
@@ -53,7 +68,30 @@ void Piece::destroyPiece()
 {
     if (isInstanciated())
     {
+        RendererManager::singleton.removeAStaticSortableMesh(m_pieceInstance->getComponent<IMesh>());
         GameObjectManager::singleton.unspawnGameObject(m_pieceInstance->m_name);
         m_pieceInstance = GameObjectRef();
+        m_pieceAnimation = &Piece::noAnimation;
+        m_unspawnedTime = TimeManager::msNow().count();
     }
+}
+
+long long Piece::getUnspawnedTime() const noexcept
+{
+    if (isInstanciated())
+    {
+        return 0;
+    }
+
+    return TimeManager::msNow().count() - m_unspawnedTime;
+}
+
+void Piece::anim(float elapsedTime)
+{
+    (this->*m_pieceAnimation)(elapsedTime);
+}
+
+void Piece::doAnimation(float elapsedTime)
+{
+    m_pieceInstance->getComponent<IBehaviour>()->anime(elapsedTime);
 }
