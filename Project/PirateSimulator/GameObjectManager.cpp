@@ -18,6 +18,8 @@ void GameObjectManager::animAllGameObject(float elapsedTime)
             GObject->anime(elapsedTime);
         }
     );
+
+    m_pieceAdministrator.update(elapsedTime);
 }
 
 void GameObjectManager::setSubscribingStrategy(SubsribingStrategy strategy) noexcept
@@ -31,4 +33,9 @@ void GameObjectManager::setSubscribingStrategy(SubsribingStrategy strategy) noex
     default:
         m_subscribeStrategy = &GameObjectManager::minimalSubscribingGameObject;
     }
+}
+
+void GameObjectManager::init()
+{
+    m_pieceAdministrator.init();
 }

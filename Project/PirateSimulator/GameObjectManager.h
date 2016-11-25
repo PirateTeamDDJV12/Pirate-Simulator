@@ -3,6 +3,7 @@
 
 #include "GameConfig.h"
 #include "GameObject.h"
+#include "PieceAdministrator.h"
 
 #include <vector>
 #include <string>
@@ -26,6 +27,8 @@ namespace PirateSimulator
     private:
         std::vector<GameObjectRef> m_gameObjectArray;
 
+        PieceAdministrator m_pieceAdministrator;
+
         GameObjectRef(GameObjectManager::* m_subscribeStrategy)(GameObject* newGameObject);
 
 
@@ -46,7 +49,7 @@ namespace PirateSimulator
 
         GameObjectRef subscribeAGameObject(GameObject* newGameObject)
         {
-            (this->*m_subscribeStrategy)(newGameObject);
+            return (this->*m_subscribeStrategy)(newGameObject);
         }
 
         GameObjectRef getGameObjectByName(const std::string& name) const
@@ -75,6 +78,9 @@ namespace PirateSimulator
 
         void animAllGameObject(float elapsedTime);
 
+        void init();
+
+
     private:
         GameObjectRef minimalSubscribingGameObject(GameObject* newGameObject)
         {
@@ -86,8 +92,6 @@ namespace PirateSimulator
         GameObjectRef subscribingAPiece(GameObject* newGameObject)
         {
             m_gameObjectArray.push_back(GameObjectRef(newGameObject));
-
-            //TODO
 
             return m_gameObjectArray[m_gameObjectArray.size() - 1];
         }
