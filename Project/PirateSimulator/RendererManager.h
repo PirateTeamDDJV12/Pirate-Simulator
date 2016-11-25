@@ -20,8 +20,8 @@ namespace PirateSimulator
         std::vector<IMesh*> meshArray;
 
         RenderArea(size_t x, size_t z) :
-            x{x},
-            z{z}
+            x{ x },
+            z{ z }
         {}
     };
 
@@ -65,6 +65,8 @@ namespace PirateSimulator
 
 
     private:
+        PM3D::CDispositifD3D11* m_pDispositif;
+
         std::vector<IMesh*> m_obligatoryBeforeMesh;
         std::vector<RenderArea> m_staticMeshArray;
         std::vector<IMesh*> m_movingMeshArray;
@@ -84,9 +86,9 @@ namespace PirateSimulator
 
     private:
         RendererManager() :
-            m_pMeshDraw{&RendererManager::drawAll},
-            m_pUpdate{&RendererManager::updateWithoutStack},
-            m_pStackAddingMethod{&RendererManager::lightAddToStack},
+            m_pMeshDraw{ &RendererManager::drawAll },
+            m_pUpdate{ &RendererManager::updateWithoutStack },
+            m_pStackAddingMethod{ &RendererManager::lightAddToStack },
             m_staticMeshArray{},
             m_obligatoryBeforeMesh{},
             m_obligatoryEndMesh{},
@@ -97,9 +99,9 @@ namespace PirateSimulator
         {
             m_stack.reserve(MAX_VISIBLE_AREA + m_movingMeshArray.size());
             m_staticMeshArray.reserve(AREA_TOTAL_COUNT);
-            for(size_t z = 0; z < AREA_EDGE_COUNT; ++z)
+            for (size_t z = 0; z < AREA_EDGE_COUNT; ++z)
             {
-                for(size_t x = 0; x < AREA_EDGE_COUNT; ++x)
+                for (size_t x = 0; x < AREA_EDGE_COUNT; ++x)
                 {
                     m_staticMeshArray.push_back(RenderArea(x, z));
                 }
@@ -152,7 +154,7 @@ namespace PirateSimulator
 
         void setSortingMesh(bool mustSortMesh) noexcept
         {
-            if(mustSortMesh)
+            if (mustSortMesh)
             {
                 m_pMeshDraw = &RendererManager::drawSorting;
                 m_pUpdate = &RendererManager::updateRenderedStack;
@@ -164,24 +166,30 @@ namespace PirateSimulator
             }
         }
 
+        void setDispositif(PM3D::CDispositifD3D11* creation_dispositif_specific);
+        PM3D::CDispositifD3D11* getDispositif() const
+        {
+            return m_pDispositif;
+        }
+
         void setDetailLevel(DetailLevel level) noexcept
         {
-            switch(level)
+            switch (level)
             {
-                case DEEP_ARRANGEMENT:
-                    m_pStackAddingMethod = &RendererManager::deepAddToStack;
-                    break;
+            case DEEP_ARRANGEMENT:
+                m_pStackAddingMethod = &RendererManager::deepAddToStack;
+                break;
 
-                case LIGHT_ARRANGEMENT:
-                default:
-                    m_pStackAddingMethod = &RendererManager::lightAddToStack;
+            case LIGHT_ARRANGEMENT:
+            default:
+                m_pStackAddingMethod = &RendererManager::lightAddToStack;
             }
         }
 
         std::vector<IMesh*>* findStaticMeshInArea(size_t x, size_t z) noexcept
         {
             size_t index = z * AREA_EDGE_COUNT + x;
-            if(index < AREA_TOTAL_COUNT)
+            if (index < AREA_TOTAL_COUNT)
             {
                 return &m_staticMeshArray[index].meshArray;
             }
@@ -211,16 +219,6 @@ namespace PirateSimulator
 
         void deepAddToStack(size_t x, size_t z) noexcept;
 
-    private:
-        PM3D::CDispositifD3D11* m_pDispositif;
-
-    public:
-
-        void setDispositif(PM3D::CDispositifD3D11* creation_dispositif_specific);
-        PM3D::CDispositifD3D11* getDispositif() const
-        {
-            return m_pDispositif;
-        }
     };
 }
 

@@ -41,7 +41,7 @@ UINT CSommetSky::numElements = ARRAYSIZE(CSommetSky::layout);
 
 CSkybox::CSkybox() :
     Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams()),
-    pTextureD3D{ nullptr }, pEffet{ nullptr }, pVertexLayout{ nullptr }, pIndexBuffer{ nullptr }, pVertexBuffer{ nullptr }, pConstantBuffer{ nullptr }, pTechnique{ nullptr }, pPasse{ nullptr }, pSampleState{ nullptr }
+    pTextureD3D{ nullptr }, pIndexBuffer{ nullptr }, pVertexBuffer{ nullptr }, m_effect{}
 {
     pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
@@ -138,8 +138,8 @@ void CSkybox::InitEffet()
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bd.CPUAccessFlags = 0;
 
-    DXRelacher(pConstantBuffer);
-    pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
+    DXRelacher(m_effect.m_constantBuffer);
+    pD3DDevice->CreateBuffer(&bd, NULL, &m_effect.m_constantBuffer);
 
     // Pour l'effet
     ID3DBlob* pFXBlob = NULL;
@@ -148,30 +148,30 @@ void CSkybox::InitEffet()
         &pFXBlob, NULL),
         DXE_ERREURCREATION_FX);
 
-    DXRelacher(pEffet);
-    D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &pEffet);
+    DXRelacher(m_effect.m_effect);
+    D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &m_effect.m_effect);
     pFXBlob->Release();
 
-    DXRelacher(pTechnique);
-    pTechnique = pEffet->GetTechniqueByIndex(0);
+    DXRelacher(m_effect.m_technique);
+    m_effect.m_technique = m_effect.m_effect->GetTechniqueByIndex(0);
 
-    DXRelacher(pPasse);
-    pPasse = pTechnique->GetPassByIndex(0);
+    DXRelacher(m_effect.m_pass);
+    m_effect.m_pass = m_effect.m_technique->GetPassByIndex(0);
 
     // Créer l'organisation des sommets pour le VS de notre effet
     D3DX11_PASS_SHADER_DESC effectVSDesc;
-    pPasse->GetVertexShaderDesc(&effectVSDesc);
+    m_effect.m_pass->GetVertexShaderDesc(&effectVSDesc);
     D3DX11_EFFECT_SHADER_DESC effectVSDesc2;
     effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex, &effectVSDesc2);
     const void *vsCodePtr = effectVSDesc2.pBytecode;
     unsigned int vsCodeLen = effectVSDesc2.BytecodeLength;
     
-    DXRelacher(pVertexLayout);
+    DXRelacher(m_effect.m_vertexLayout);
     DXEssayer(pD3DDevice->CreateInputLayout(CSommetSky::layout,
         CSommetSky::numElements,
         vsCodePtr,
         vsCodeLen,
-        &pVertexLayout),
+        &m_effect.m_vertexLayout),
         DXE_CREATIONLAYOUT);
 
     // Initialisation des paramètres de sampling de la texture
@@ -191,8 +191,8 @@ void CSkybox::InitEffet()
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
     // Création de l'état de sampling
-    DXRelacher(pSampleState);
-    pD3DDevice->CreateSamplerState(&samplerDesc, &pSampleState);
+    DXRelacher(m_effect.m_sampleState);
+    pD3DDevice->CreateSamplerState(&samplerDesc, &m_effect.m_sampleState);
 
     DXRelacher(pD3DDevice);
 }
@@ -206,14 +206,8 @@ void CSkybox::SetTexture(CTexture* pTexture)
 CSkybox::~CSkybox(void)
 {
     DXRelacher(pTextureD3D);
-    DXRelacher(pEffet);
-    DXRelacher(pVertexLayout);
     DXRelacher(pIndexBuffer);
     DXRelacher(pVertexBuffer);
-    DXRelacher(pConstantBuffer);
-    DXRelacher(pTechnique);
-    DXRelacher(pPasse);
-    DXRelacher(pSampleState);
 }
 
 void CSkybox::Draw()
@@ -233,7 +227,7 @@ void CSkybox::Draw()
     pImmediateContext->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
     // input layout des sommets
-    pImmediateContext->IASetInputLayout(pVertexLayout);
+    pImmediateContext->IASetInputLayout(m_effect.m_vertexLayout);
 
 
     // Initialiser et sélectionner les «constantes» de l'effet
@@ -243,21 +237,21 @@ void CSkybox::Draw()
     XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
     m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
-    pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
-    ID3DX11EffectConstantBuffer* pCB = pEffet->GetConstantBufferByName("param"); // Nous n'avons qu'un seul CBuffer
-        pCB->SetConstantBuffer(pConstantBuffer);
+    pImmediateContext->UpdateSubresource(m_effect.m_constantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
+    ID3DX11EffectConstantBuffer* pCB = m_effect.m_effect->GetConstantBufferByName("param"); // Nous n'avons qu'un seul CBuffer
+        pCB->SetConstantBuffer(m_effect.m_constantBuffer);
 
 
     // Activation de la texture
     ID3DX11EffectShaderResourceVariable* variableTexture;
-    variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
+    variableTexture = m_effect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
     variableTexture->SetResource(pTextureD3D);
     DXRelacher(variableTexture);
 
     // Le sampler state
     ID3DX11EffectSamplerVariable* variableSampler;
-    variableSampler = pEffet->GetVariableByName("SampleState")->AsSampler();
-    variableSampler->SetSampler(0, pSampleState);
+    variableSampler = m_effect.m_effect->GetVariableByName("SampleState")->AsSampler();
+    variableSampler->SetSampler(0, m_effect.m_sampleState);
     DXRelacher(variableSampler);
 
     // Désactiver Culling et ZBuffer
@@ -266,7 +260,7 @@ void CSkybox::Draw()
 
 
     // **** Rendu de l'objet
-    pPasse->Apply(0, pImmediateContext);
+    m_effect.m_pass->Apply(0, pImmediateContext);
     pImmediateContext->DrawIndexed(36, 0, 0);
 
 

@@ -12,7 +12,7 @@ namespace PirateSimulator
     private:
         ID3D11Debug* pDebug;
         ID3D11Device* pD3DDevice;
-        
+
 
     public:
         DebugD3D11Custom() :
