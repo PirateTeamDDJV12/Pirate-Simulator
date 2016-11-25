@@ -36,8 +36,7 @@ private:
 Piece::Piece(const Transform& spawnPosition, size_t pieceID) :
     m_transform{ spawnPosition },
     m_pieceID{ pieceID },
-    m_unspawnedTime{ TimeManager::msNow().count() },
-    m_pieceAnimation{ &Piece::noAnimation }
+    m_unspawnedTime{ TimeManager::msNow().count() }
 {}
 
 
@@ -57,8 +56,6 @@ GameObjectRef Piece::createPiece()
         m_pieceInstance->addComponent<IMesh>(pieceMesh);
 
         RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
-
-        m_pieceAnimation = &Piece::doAnimation;
     }
 
     return m_pieceInstance;
@@ -71,7 +68,6 @@ void Piece::destroyPiece()
         RendererManager::singleton.removeAStaticSortableMesh(m_pieceInstance->getComponent<IMesh>());
         GameObjectManager::singleton.unspawnGameObject(m_pieceInstance->m_name);
         m_pieceInstance = GameObjectRef();
-        m_pieceAnimation = &Piece::noAnimation;
         m_unspawnedTime = TimeManager::msNow().count();
     }
 }
@@ -87,11 +83,6 @@ long long Piece::getUnspawnedTime() const noexcept
 }
 
 void Piece::anim(float elapsedTime)
-{
-    (this->*m_pieceAnimation)(elapsedTime);
-}
-
-void Piece::doAnimation(float elapsedTime)
 {
     m_pieceInstance->getComponent<IBehaviour>()->anime(elapsedTime);
 }

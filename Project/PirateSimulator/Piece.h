@@ -16,8 +16,6 @@ namespace PirateSimulator
 
         long long m_unspawnedTime;
 
-        void (Piece::* m_pieceAnimation)(float elapsedTime);
-
 
     public:
         Piece(const Transform& spawnPosition, size_t pieceID);
@@ -39,11 +37,6 @@ namespace PirateSimulator
     public:
         GameObjectRef createPiece();
         void destroyPiece();
-
-
-    private:
-        void noAnimation(float elapsedTime) {}
-        void doAnimation(float elapsedTime);
     };
 }
 
