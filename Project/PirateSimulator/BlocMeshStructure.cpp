@@ -10,7 +10,7 @@ namespace PirateSimulator
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
     };
 
-    UINT BlocPoint::numElements;
+    UINT BlocPoint::numElements = ARRAYSIZE(BlocPoint::layout);
 
 
     BlocStructure::BlocStructure(const DirectX::XMFLOAT3& centralPoint, float xLength, float yLength, float zLength)
@@ -25,7 +25,7 @@ namespace PirateSimulator
 
     BlocStructure::BlocStructure(float xLength, float yLength, float zLength)
     {
-        mapPoints(DirectX::XMFLOAT3(), xLength, yLength, zLength);
+        mapPoints({ 0.f,0.f,0.f }, xLength, yLength, zLength);
     }
 
 
