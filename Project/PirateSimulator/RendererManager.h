@@ -65,6 +65,8 @@ namespace PirateSimulator
 
 
     private:
+        PM3D::CDispositifD3D11* m_pDispositif;
+
         std::vector<IMesh*> m_obligatoryBeforeMesh;
         std::vector<RenderArea> m_staticMeshArray;
         std::vector<IMesh*> m_movingMeshArray;
@@ -210,9 +212,6 @@ namespace PirateSimulator
         void lightAddToStack(size_t x, size_t z) noexcept;
 
         void deepAddToStack(size_t x, size_t z) noexcept;
-
-    private:
-        PM3D::CDispositifD3D11* m_pDispositif;
 
     public:
 

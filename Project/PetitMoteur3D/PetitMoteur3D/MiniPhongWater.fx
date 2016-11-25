@@ -80,7 +80,7 @@ float4 couleur;
 	float4 diff = 0.5; 
 
 	// R = 2 * (N.L) * N – L
-	float3 R = normalize(2 * diff * N - L);
+	float3 R = normalize(2 * diff * N - L) ;
     
 	// Calcul de la spécularité 
 	float4 S = pow(saturate(dot(R, V)), puissance); 

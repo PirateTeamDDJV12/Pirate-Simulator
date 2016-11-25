@@ -7,7 +7,6 @@
 #include <DirectXMath.h>
 #include "..\PetitMoteur3D\PetitMoteur3D\util.h"
 #include "DebugD3D11Custom.h"
-
 using namespace PirateSimulator;
 using namespace DirectX;
 
@@ -19,8 +18,9 @@ RendererManager RendererManager::singleton;
 RendererManager::~RendererManager()
 {
     DebugD3D11Custom debug;
-
     debug.reportLiveObject();
+
+    delete m_pDispositif;
 }
 
 void RendererManager::drawSorting()
