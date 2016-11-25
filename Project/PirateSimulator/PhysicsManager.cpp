@@ -129,7 +129,6 @@ namespace PirateSimulator {
 	{
 		return *_scene;
 	}
-
 }
 
 

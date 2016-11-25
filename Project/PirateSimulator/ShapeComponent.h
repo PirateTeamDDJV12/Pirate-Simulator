@@ -1,7 +1,6 @@
 
 #ifndef SHAPE_COMPONENT_H
 #define SHAPE_COMPONENT_H
-
 #include "Component.h"
 
 
@@ -36,7 +35,12 @@ namespace PirateSimulator
 
         virtual physx::PxTransform pose();
         void setPose(const physx::PxTransform &iPose);
-
+        void cleanUp()
+        {
+            m_actor=nullptr;
+            m_material = nullptr;
+            m_shape = nullptr;
+        }
 
     };
 

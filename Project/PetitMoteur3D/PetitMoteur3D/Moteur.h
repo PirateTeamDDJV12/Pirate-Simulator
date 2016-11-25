@@ -84,7 +84,9 @@ namespace PM3D
                 bBoucle = RunSpecific();
 
                 PirateSimulator::TaskManager::GetInstance().update();
+               
             }
+            
         }
 
         virtual int Initialisations()
@@ -144,6 +146,8 @@ namespace PM3D
         {
             // Vider les textures
             TexturesManager.Cleanup();
+            //Vider les objets physiques
+            PirateSimulator::PhysicsManager::singleton.reset();
         }
 
         virtual int InitScene()
