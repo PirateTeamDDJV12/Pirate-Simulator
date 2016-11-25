@@ -91,9 +91,7 @@ namespace PirateSimulator
 
         GameObjectRef subscribingAPiece(GameObject* newGameObject)
         {
-            m_gameObjectArray.push_back(GameObjectRef(newGameObject));
-
-            return m_gameObjectArray[m_gameObjectArray.size() - 1];
+            return GameObjectRef(newGameObject);
         }
     };
 }

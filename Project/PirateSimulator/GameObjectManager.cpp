@@ -28,6 +28,7 @@ void GameObjectManager::setSubscribingStrategy(SubsribingStrategy strategy) noex
     {
     case GameObjectManager::PIECE:
         m_subscribeStrategy = &GameObjectManager::subscribingAPiece;
+        break;
 
     case GameObjectManager::NONE:
     default:
