@@ -21,6 +21,9 @@ namespace PirateSimulator
 		physx::unique_ptr<physx::PxProfileZoneManager> _profileZoneManager = nullptr;
 		physx::unique_ptr<physx::PxPhysics> _physics = nullptr;
 		physx::unique_ptr<physx::PxScene> _scene = nullptr;
+		physx::unique_ptr<physx::PxDefaultCpuDispatcher> _cpuDispatcher;
+		physx::unique_ptr<physx::PxCudaContextManager> _cudaContextManager;
+		physx::unique_ptr<physx::debugger::comm::PvdConnection> _visualDebuggerConnection;
 		
 	private:
 		PhysicsManager()
@@ -29,6 +32,11 @@ namespace PirateSimulator
 			_profileZoneManager = nullptr;
 			_physics = nullptr;
 			_scene = nullptr;
+			 _cpuDispatcher = nullptr;
+			 _cudaContextManager = nullptr;
+			 _visualDebuggerConnection = nullptr;
+
+			
 		}
 		PhysicsManager(const PhysicsManager&) = delete;
 		PhysicsManager& operator=(const PhysicsManager&) = delete;

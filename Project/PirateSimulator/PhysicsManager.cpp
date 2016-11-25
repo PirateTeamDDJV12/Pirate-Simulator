@@ -74,8 +74,8 @@ namespace PirateSimulator {
 		}
 
 	};
-	static PxDefaultErrorCallback gDefaultErrorCallback;
-	static PxDefaultAllocator gDefaultAllocatorCallback;
+	static physx::PxDefaultErrorCallback gDefaultErrorCallback;
+	static physx::PxDefaultAllocator gDefaultAllocatorCallback;
 	static SimulationEventCallback gDefaultSimulationCallback;
 
 	///////////////////////////////////////END/////////////////////////////

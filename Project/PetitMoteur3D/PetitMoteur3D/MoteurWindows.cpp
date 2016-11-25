@@ -2,6 +2,7 @@
 
 #include "MoteurWindows.h"
 #include "../../PirateSimulator/InputManager.h"
+#include "../../PirateSimulator/PhysicsManager.h"
 
 
 namespace PM3D
@@ -203,7 +204,7 @@ namespace PM3D
         // Initialisations  de l'application;
         InitAppInstance();
         Show();
-
+		PirateSimulator::PhysicsManager::singleton.initialize();
         // Initialisation de DirectInput
         PirateSimulator::InputManager::singleton.InitManipulator(hAppInstance, hMainWnd);
 
