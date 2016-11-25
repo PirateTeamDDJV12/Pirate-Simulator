@@ -6,7 +6,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
 #include <DirectXMath.h>
 #include <d3d11.h>
-#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
+#include "Effect.h"
 
 namespace PirateSimulator
 {
@@ -53,16 +53,11 @@ namespace PirateSimulator
         ID3D11Buffer* pIndexBuffer;
 
         // Définitions des valeurs d'animation
-        ID3D11Buffer* pConstantBuffer;
         DirectX::XMMATRIX matWorld;
 
         // Pour les effets
-        ID3DX11Effect* pEffet;
-        ID3DX11EffectTechnique* pTechnique;
-        ID3DX11EffectPass* pPasse;
-        ID3D11InputLayout* pVertexLayout;
         ID3D11ShaderResourceView* pTextureD3D;
-        ID3D11SamplerState* pSampleState;
+        Effect m_effect;
     };
 }
 
