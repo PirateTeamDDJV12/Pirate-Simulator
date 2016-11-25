@@ -19,3 +19,16 @@ void GameObjectManager::animAllGameObject(float elapsedTime)
         }
     );
 }
+
+void GameObjectManager::setSubscribingStrategy(SubsribingStrategy strategy) noexcept
+{
+    switch (strategy)
+    {
+    case GameObjectManager::PIECE:
+        m_subscribeStrategy = &GameObjectManager::subscribingAPiece;
+
+    case GameObjectManager::NONE:
+    default:
+        m_subscribeStrategy = &GameObjectManager::minimalSubscribingGameObject;
+    }
+}

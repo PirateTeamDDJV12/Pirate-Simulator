@@ -13,15 +13,26 @@ namespace PirateSimulator
     class GameObjectManager
     {
     public:
+        enum SubsribingStrategy
+        {
+            NONE,
+            PIECE
+        };
+
+    public:
         static GameObjectManager singleton;
 
 
     private:
         std::vector<GameObjectRef> m_gameObjectArray;
 
+        GameObjectRef(GameObjectManager::* m_subscribeStrategy)(GameObject* newGameObject);
+
 
     private:
-        GameObjectManager() {}
+        GameObjectManager() :
+            m_subscribeStrategy{ &GameObjectManager::minimalSubscribingGameObject }
+        {}
 
 
     private:
@@ -30,11 +41,12 @@ namespace PirateSimulator
 
 
     public:
+        void setSubscribingStrategy(SubsribingStrategy strategy) noexcept;
+
+
         GameObjectRef subscribeAGameObject(GameObject* newGameObject)
         {
-            m_gameObjectArray.push_back(GameObjectRef(newGameObject));
-
-            return m_gameObjectArray[m_gameObjectArray.size() - 1];
+            (this->*m_subscribeStrategy)(newGameObject);
         }
 
         GameObjectRef getGameObjectByName(const std::string& name) const
@@ -49,7 +61,36 @@ namespace PirateSimulator
             return GameObjectRef();
         }
 
+        void unspawnGameObject(const std::string& name)
+        {
+            for (auto iter = m_gameObjectArray.begin(); iter != m_gameObjectArray.end(); ++iter)
+            {
+                if ((*iter)->compareName(name))
+                {
+                    m_gameObjectArray.erase(iter);
+                    return;
+                }
+            }
+        }
+
         void animAllGameObject(float elapsedTime);
+
+    private:
+        GameObjectRef minimalSubscribingGameObject(GameObject* newGameObject)
+        {
+            m_gameObjectArray.push_back(GameObjectRef(newGameObject));
+
+            return m_gameObjectArray[m_gameObjectArray.size() - 1];
+        }
+
+        GameObjectRef subscribingAPiece(GameObject* newGameObject)
+        {
+            m_gameObjectArray.push_back(GameObjectRef(newGameObject));
+
+            //TODO
+
+            return m_gameObjectArray[m_gameObjectArray.size() - 1];
+        }
     };
 }
 
