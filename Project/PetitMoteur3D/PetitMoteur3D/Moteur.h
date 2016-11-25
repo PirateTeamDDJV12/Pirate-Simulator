@@ -39,6 +39,8 @@
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
+#include "../../PirateSimulator/SpawnTask.h"
+#include "../../PirateSimulator/Piece.h"
 
 namespace PM3D
 {
@@ -68,6 +70,7 @@ namespace PM3D
             PHYSICSTASK,
             PLAYERTASK,
             RENDERTASK,
+            SPAWNTASK,
         };
     public:
 
@@ -86,14 +89,14 @@ namespace PM3D
 
         virtual int Initialisations()
         {
+            // Propre à la plateforme
+            InitialisationsSpecific();
+            
             // Création des tasks
             CreateTasks();
 
-            // Propre à la plateforme
-            InitialisationsSpecific();
-
             // * Initialisation du dispositif de rendu
-            PirateSimulator::RendererManager::singleton.setDispositif(CreationDispositifSpecific(CDS_FENETRE));
+            //PirateSimulator::RendererManager::singleton.setDispositif(CreationDispositifSpecific(CDS_FENETRE));
 
             // * Initialisation de la scène
             InitScene();
@@ -110,6 +113,7 @@ namespace PM3D
             taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
             taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
+            taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
         }
 
         CGestionnaireDeTextures& GetTextureManager()
@@ -133,7 +137,7 @@ namespace PM3D
         virtual bool RunSpecific() = 0;
         virtual int InitialisationsSpecific() = 0;
         virtual __int64 GetTimeSpecific() = 0;
-        virtual TClasseDispositif* CreationDispositifSpecific(const CDS_MODE cdsMode) = 0;
+        //virtual TClasseDispositif* CreationDispositifSpecific(const CDS_MODE cdsMode) = 0;
         virtual void BeginRenderSceneSpecific() = 0;
         virtual void EndRenderSceneSpecific() = 0;
 
