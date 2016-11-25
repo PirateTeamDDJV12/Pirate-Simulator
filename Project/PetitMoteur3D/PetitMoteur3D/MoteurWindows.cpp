@@ -3,6 +3,7 @@
 #include "MoteurWindows.h"
 #include "../../PirateSimulator/InputManager.h"
 
+using namespace PirateSimulator;
 
 namespace PM3D
 {
@@ -12,7 +13,10 @@ namespace PM3D
     {}
 
     CMoteurWindows::~CMoteurWindows(void)
-    {}
+    {
+        
+
+    }
 
     //   FONCTION : SetWindowsAppInstance(HANDLE, int)
     //
