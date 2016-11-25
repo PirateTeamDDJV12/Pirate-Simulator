@@ -23,6 +23,7 @@
 #include "../../PirateSimulator/ObjectCameraBehaviour.h"
 #include "../../PirateSimulator/GameObject.h"
 #include "../../PirateSimulator/PlayerBehaviour.h"
+#include "../../PirateSimulator/ShapeComponent.h"
 
 // Manager
 #include "../../PirateSimulator/TimeManager.h"
@@ -39,6 +40,7 @@
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
+
 
 namespace PM3D
 {
@@ -220,7 +222,7 @@ namespace PM3D
             auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams());
             vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
-
+			vehicule->addComponent<PirateSimulator::ShapeComponent>(new PirateSimulator::ShapeComponent());
             PirateSimulator::Transform TransformTerrain;
 
             TransformTerrain.m_position = {0,0,0,0};
