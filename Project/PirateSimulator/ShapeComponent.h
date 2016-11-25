@@ -3,8 +3,6 @@
 #define SHAPE_COMPONENT_H
 
 #include "Component.h"
-#include "PhysicsManager.h"
-//#include "SimulationComponent.h"
 
 
 namespace physx
@@ -20,31 +18,25 @@ namespace PirateSimulator
 	class GameObject;
 	class ShapeComponent : public Component
 	{
-	private:
+	protected:
 		physx::PxMaterial* m_material;
 		physx::PxShape* m_shape;
 		physx::PxRigidDynamic* m_actor;
 
 	public:
-		ShapeComponent() {};
-
-		static std::string typeId() noexcept { return "ShapeComponent"; }
-
-		std::string getTypeId() const noexcept override
+		ShapeComponent() : m_material(nullptr), m_actor(nullptr), m_shape(nullptr)
 		{
-			return ShapeComponent::typeId();
 		}
 
-		 void setGameObject(PirateSimulator::GameObject* parent) override;
+
 	public:
 		static physx::unique_ptr<physx::PxRigidDynamic> createPxActor();
-		
+
 		physx::PxRigidDynamic& pxActor();
-		
+
 		virtual physx::PxTransform pose();
-		
 		void setPose(const physx::PxTransform &iPose);
-		
+
 
 	};
 
