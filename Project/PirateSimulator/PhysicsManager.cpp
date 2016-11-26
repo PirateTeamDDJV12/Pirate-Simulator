@@ -129,7 +129,24 @@ namespace PirateSimulator {
 	{
 		return *_scene;
 	}
+
+    void PhysicsManager::reset()
+    {
+        for (auto shape : m_components)
+        {
+            shape->cleanUp();
+            //shape->~ShapeComponent();
+            //m_components.pop_back();
+        }
+        m_components.clear();
+        /*specificRelease(_foundation);
+
+        specificRelease(_physics);
+        specificRelease(_scene);
+        specificRelease(_cpuDispatcher);
+        specificRelease(_cudaContextManager);
+        specificRelease(_visualDebuggerConnection);
+        _profileZoneManager->release();*/
+    }
 }
-
-
 

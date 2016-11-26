@@ -37,9 +37,9 @@ namespace PirateSimulator
         void setPose(const physx::PxTransform &iPose);
         void cleanUp()
         {
-            m_actor=nullptr;
-            m_material = nullptr;
-            m_shape = nullptr;
+            /*m_actor->release();
+            m_material->release();
+            m_shape->release();*/
         }
 
     };
