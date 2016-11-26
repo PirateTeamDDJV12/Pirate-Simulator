@@ -7,8 +7,7 @@ namespace PirateSimulator
     class PhysicsTask : public IGameTask
     {
     public:
-        void init() override
-        {}
+        void init() override;
         void cleanup() override
         {}
         void update() override;

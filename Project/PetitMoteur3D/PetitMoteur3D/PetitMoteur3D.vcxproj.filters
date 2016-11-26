@@ -222,9 +222,6 @@
     <ClCompile Include="..\..\PirateSimulator\Piece.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\SpawnTask.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -439,9 +436,6 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Piece.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\SpawnTask.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

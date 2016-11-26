@@ -39,7 +39,6 @@
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
-#include "../../PirateSimulator/SpawnTask.h"
 #include "../../PirateSimulator/Piece.h"
 
 namespace PM3D
@@ -67,10 +66,9 @@ namespace PM3D
         {
             TIMETASK,
             INPUTTASK,
-            PHYSICSTASK,
             PLAYERTASK,
             RENDERTASK,
-            SPAWNTASK,
+            PHYSICSTASK,
         };
     public:
 
@@ -110,10 +108,9 @@ namespace PM3D
 
             taskManager->addTask<PirateSimulator::TimeTask>(TIMETASK);
             taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
-            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
+            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
-            taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
         }
 
         CGestionnaireDeTextures& GetTextureManager()
