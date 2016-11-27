@@ -34,55 +34,25 @@ private:
 
 
 Piece::Piece(const Transform& spawnPosition, size_t pieceID) :
-    m_transform{ spawnPosition },
+    GameObject(spawnPosition, "Piece" + to_string(pieceID)),
     m_pieceID{ pieceID },
     m_unspawnedTime{ TimeManager::msNow().count() }
 {}
 
 
-GameObjectRef Piece::createPiece()
+void PieceFabrik::createPiece(const Transform& pos, size_t pieceID)
 {
-    if (this->isEmpty())
-    {
-        GameObjectManager::singleton.setSubscribingStrategy(GameObjectManager::PIECE);
+    auto pieceInstance = GameObjectManager::singleton.subscribeAGameObject(new Piece(pos, pieceID));
 
-        m_pieceInstance = GameObjectManager::singleton.subscribeAGameObject(new GameObject(m_transform, "Piece" + std::to_string(m_pieceID)));
+    auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
 
-        GameObjectManager::singleton.setSubscribingStrategy(GameObjectManager::NONE);
+    pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
+    pieceInstance->addComponent<IMesh>(pieceMesh);
 
-        auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
-
-        m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
-        m_pieceInstance->addComponent<IMesh>(pieceMesh);
-
-        RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
-    }
-
-    return m_pieceInstance;
-}
-
-void Piece::destroyPiece()
-{
-    if (isInstanciated())
-    {
-        RendererManager::singleton.removeAStaticSortableMesh(m_pieceInstance->getComponent<IMesh>());
-        GameObjectManager::singleton.unspawnGameObject(m_pieceInstance->m_name);
-        m_pieceInstance = GameObjectRef();
-        m_unspawnedTime = TimeManager::msNow().count();
-    }
+    RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
 }
 
 long long Piece::getUnspawnedTime() const noexcept
 {
-    if (isInstanciated())
-    {
-        return 0;
-    }
-
     return TimeManager::msNow().count() - m_unspawnedTime;
-}
-
-void Piece::anim(float elapsedTime)
-{
-    m_pieceInstance->getComponent<IBehaviour>()->anime(elapsedTime);
 }
