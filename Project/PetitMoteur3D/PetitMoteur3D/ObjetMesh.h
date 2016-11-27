@@ -9,24 +9,27 @@
 
 using namespace std;
 
+static const int SHADOWMAP_DIM = 512;
+
 namespace PM3D
 {
     namespace ShaderCObjectMesh
     {
         struct ShadersParams // toujours un multiple de 16 pour les constantes
         {
-            XMMATRIX matWorldViewProj;	// la matrice totale 
-            XMMATRIX matWorld;			// matrice de transformation dans le monde 
-            XMVECTOR vLumiere; 			// la position de la source d'éclairage (Point)
-            XMVECTOR vCamera; 			// la position de la caméra
-            XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
-            XMVECTOR vAMat; 			// la valeur ambiante du matériau
-            XMVECTOR vDEcl; 			// la valeur diffuse de l'éclairage 
-            XMVECTOR vDMat; 			// la valeur diffuse du matériau 
-            XMVECTOR vSEcl; 			// la valeur spéculaire de l'éclairage 
-            XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
+            XMMATRIX matWorldViewProj;	    // la matrice totale 
+            XMMATRIX matWorldViewProjLight;	// la matrice totale vu par la lumiere
+            XMMATRIX matWorld;			    // matrice de transformation dans le monde 
+            XMVECTOR vLumiere; 			    // la position de la source d'éclairage (Point)
+            XMVECTOR vCamera; 			    // la position de la caméra
+            XMVECTOR vAEcl; 			    // la valeur ambiante de l'éclairage
+            XMVECTOR vAMat; 			    // la valeur ambiante du matériau
+            XMVECTOR vDEcl; 			    // la valeur diffuse de l'éclairage 
+            XMVECTOR vDMat; 			    // la valeur diffuse du matériau 
+            XMVECTOR vSEcl; 			    // la valeur spéculaire de l'éclairage 
+            XMVECTOR vSMat; 			    // la valeur spéculaire du matériau 
             float puissance;
-            int bTex;					// Texture ou materiau 
+            int bTex;					    // Texture ou materiau 
             XMFLOAT2 remplissage;
 
 
@@ -152,6 +155,11 @@ namespace PM3D
         // **** Fonctions
         void TransfertObjet(IChargeur& chargeur);
         void InitEffet();
+        // Shadow Map
+        void initShadowMap();
+        void initDepthBuffer();
+        void initShadowMapMatrices();
+
         void EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier);
         void LireFichierBinaire(string nomFichier);
 
@@ -179,6 +187,18 @@ namespace PM3D
         ID3DX11EffectTechnique* pTechnique;
         ID3DX11EffectPass* pPasse;
         ID3D11InputLayout* pVertexLayout;
+
+        // For the shadow map
+        XMMATRIX mVLight;
+        XMMATRIX mPLight;
+        XMMATRIX mVPLight;
+        
+        ID3D11Texture2D* pTextureShadowMap; // Texture pour le shadow map
+        ID3D11RenderTargetView* pRenderTargetView; // Vue cible de rendu
+        ID3D11ShaderResourceView* pShadowMapView; // Vue ressource de shader
+        ID3D11Texture2D* pDepthTexture; // texture de profondeur
+        ID3D11DepthStencilView* pDepthStencilView; // Vue tampon de profondeur
+        ID3D11InputLayout* pVertexLayoutShadow; // VertexLayout de l'ombre
     };
 
 }

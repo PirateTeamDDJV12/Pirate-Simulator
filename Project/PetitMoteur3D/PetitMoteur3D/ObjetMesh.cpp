@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <corecrt_io.h>
+#include <comdef.h>
 
 using namespace UtilitairesDX;
 
@@ -47,11 +48,11 @@ namespace PM3D
     //        }
     //    }        
     //}
-    
+
 
     // Ancien constructeur
     CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
-        Mesh<ShaderCObjectMesh::ShadersParams>( shaderParameter )
+        Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
     {
         // prendre en note le dispositif
         pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
@@ -95,6 +96,11 @@ namespace PM3D
 
         // Initialisation de l'effet
         InitEffet();
+
+        // Shadow Map Initializations
+        initShadowMap();
+        initDepthBuffer();
+        initShadowMapMatrices();
     }
 
     CObjetMesh::~CObjetMesh(void)
@@ -110,11 +116,19 @@ namespace PM3D
         DXRelacher(pVertexLayout);
         DXRelacher(pIndexBuffer);
         DXRelacher(pVertexBuffer);
+        DXRelacher(pShadowMapView);
+
+        // Shadow Map Variables
+        DXRelacher(pRenderTargetView);
+        DXRelacher(pTextureShadowMap);
+        DXRelacher(pDepthStencilView);
+        DXRelacher(pDepthTexture);
+        DXRelacher(pVertexLayoutShadow);
     }
 
     void CObjetMesh::InitEffet()
     {
-        // Compilation et chargement du vertex shader
+        // Get the d3d11 device
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 
         // Création d'un tampon pour les constantes du VS
@@ -127,13 +141,33 @@ namespace PM3D
         bd.CPUAccessFlags = 0;
         HRESULT hr = pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
 
-        // Pour l'effet
+        // Effect shader compilation
         ID3DBlob* pFXBlob = NULL;
+        ID3DBlob* errorBlob = NULL;
 
-        DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
-                                     "fx_5_0", 0, 0, &pFXBlob, 0),
-                  DXE_ERREURCREATION_FX);
 
+        hr = D3DCompileFromFile(L"MiniPhongSM.fx", 0, 0, 0,
+            "fx_5_0", 0, 0, &pFXBlob, &errorBlob);
+
+
+
+        // Error checking
+        if (FAILED(hr))
+        {
+            if (errorBlob)
+            {
+                OutputDebugStringA("ERROR :\n");
+                OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+                errorBlob->Release();
+            }
+
+            _com_error err(hr);
+            LPCWSTR errMsg = err.ErrorMessage();
+            MessageBox(nullptr, errMsg,
+                TEXT("Vertex Shader Compilation"), MB_OK);
+        }
+
+        // Effect Shader Creation
         D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &pEffet);
 
         pFXBlob->Release();
@@ -141,25 +175,65 @@ namespace PM3D
         pTechnique = pEffet->GetTechniqueByIndex(0);
         pPasse = pTechnique->GetPassByIndex(0);
 
-        // Créer l'organisation des sommets pour le VS de notre effet
+        //// Get the vertex shader description
+        //D3DX11_PASS_SHADER_DESC effectVSDesc;
+        //pPasse->GetVertexShaderDesc(&effectVSDesc);
+
+        //D3DX11_EFFECT_SHADER_DESC effectVSDesc2;
+        //effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex, &effectVSDesc2);
+
+        //const void *vsCodePtr = effectVSDesc2.pBytecode;
+        //unsigned vsCodeLen = effectVSDesc2.BytecodeLength;
+
+        //pVertexLayout = NULL;
+
+        //// Informe le vertex shader du layout de nos points 
+        //CSommetMesh::numElements = ARRAYSIZE(CSommetMesh::layout);
+        //DXEssayer(pD3DDevice->CreateInputLayout(CSommetMesh::layout,
+        //    CSommetMesh::numElements,
+        //    vsCodePtr,
+        //    vsCodeLen,
+        //    &pVertexLayout),
+        //    DXE_CREATIONLAYOUT);
+
+        // Créer l'organisation des sommets pour les VS de notre effet
         D3DX11_PASS_SHADER_DESC effectVSDesc;
-        pPasse->GetVertexShaderDesc(&effectVSDesc);
-
         D3DX11_EFFECT_SHADER_DESC effectVSDesc2;
-        effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex, &effectVSDesc2);
-
-        const void *vsCodePtr = effectVSDesc2.pBytecode;
-        unsigned vsCodeLen = effectVSDesc2.BytecodeLength;
-
-        pVertexLayout = NULL;
-
+        const void *vsCodePtr;
+        unsigned vsCodeLen;
         CSommetMesh::numElements = ARRAYSIZE(CSommetMesh::layout);
+        // 1 pour le shadowmap
+        pTechnique = pEffet->GetTechniqueByName("ShadowMap");
+        pPasse = pTechnique->GetPassByIndex(0);
+        pPasse->GetVertexShaderDesc(&effectVSDesc);
+        effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex,
+            &effectVSDesc2);
+        vsCodePtr = effectVSDesc2.pBytecode;
+        vsCodeLen = effectVSDesc2.BytecodeLength;
+        pVertexLayout = NULL;
+        // Informe le vertex shader de la shadow map du layout de nos points 
         DXEssayer(pD3DDevice->CreateInputLayout(CSommetMesh::layout,
-                                                CSommetMesh::numElements,
-                                                vsCodePtr,
-                                                vsCodeLen,
-                                                &pVertexLayout),
-                  DXE_CREATIONLAYOUT);
+            CSommetMesh::numElements,
+            vsCodePtr,
+            vsCodeLen,
+            &pVertexLayoutShadow),
+            DXE_CREATIONLAYOUT);
+        // 2 pour miniphong
+        pTechnique = pEffet->GetTechniqueByName("MiniPhong");
+        pPasse = pTechnique->GetPassByIndex(0);
+        pPasse->GetVertexShaderDesc(&effectVSDesc);
+        effectVSDesc.pShaderVariable->GetShaderDesc(effectVSDesc.ShaderIndex,
+            &effectVSDesc2);
+        vsCodePtr = effectVSDesc2.pBytecode;
+        vsCodeLen = effectVSDesc2.BytecodeLength;
+        pVertexLayout = NULL;
+        // Informe le vertex shader du layout de nos points 
+        DXEssayer(pD3DDevice->CreateInputLayout(CSommetMesh::layout,
+            CSommetMesh::numElements,
+            vsCodePtr,
+            vsCodeLen,
+            &pVertexLayout),
+            DXE_CREATIONLAYOUT);
 
         // Initialisation des paramètres de sampling de la texture
         D3D11_SAMPLER_DESC samplerDesc;
@@ -181,13 +255,105 @@ namespace PM3D
         // Création de l'état de sampling
         pD3DDevice->CreateSamplerState(&samplerDesc, &pSampleState);
     }
-    
+
+    void CObjetMesh::initShadowMap()
+    {
+        ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
+        D3D11_TEXTURE2D_DESC textureDesc;
+        D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+        D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+        // Description de la texture
+        ZeroMemory(&textureDesc, sizeof(textureDesc));
+        // Cette texture sera utilisée comme cible de rendu et
+        // comme ressource de shader
+        textureDesc.Width = SHADOWMAP_DIM;
+        textureDesc.Height = SHADOWMAP_DIM;
+        textureDesc.MipLevels = 1;
+        textureDesc.ArraySize = 1;
+        textureDesc.Format = DXGI_FORMAT_R32_FLOAT;
+        textureDesc.SampleDesc.Count = 1;
+        textureDesc.Usage = D3D11_USAGE_DEFAULT;
+        textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+        textureDesc.CPUAccessFlags = 0;
+        textureDesc.MiscFlags = 0;
+        // Création de la texture
+        pD3DDevice->CreateTexture2D(&textureDesc, NULL, &pTextureShadowMap);
+        // VUE - Cible de rendu
+        renderTargetViewDesc.Format = textureDesc.Format;
+        renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+        renderTargetViewDesc.Texture2D.MipSlice = 0;
+        // Création de la vue.
+        pD3DDevice->CreateRenderTargetView(pTextureShadowMap,
+            &renderTargetViewDesc,
+            &pRenderTargetView);
+        // VUE – Ressource de shader
+        shaderResourceViewDesc.Format = textureDesc.Format;
+        shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+        shaderResourceViewDesc.Texture2D.MipLevels = 1;
+        // Création de la vue.
+        pD3DDevice->CreateShaderResourceView(pTextureShadowMap,
+            &shaderResourceViewDesc,
+            &pShadowMapView);
+    }
+
+    void CObjetMesh::initDepthBuffer()
+    {
+        ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
+        D3D11_TEXTURE2D_DESC depthTextureDesc;
+        ZeroMemory(&depthTextureDesc, sizeof(depthTextureDesc));
+        depthTextureDesc.Width = 512;
+        depthTextureDesc.Height = 512;
+        depthTextureDesc.MipLevels = 1;
+        depthTextureDesc.ArraySize = 1;
+        depthTextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        depthTextureDesc.SampleDesc.Count = 1;
+        depthTextureDesc.SampleDesc.Quality = 0;
+        depthTextureDesc.Usage = D3D11_USAGE_DEFAULT;
+        depthTextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+        depthTextureDesc.CPUAccessFlags = 0;
+        depthTextureDesc.MiscFlags = 0;
+        DXEssayer(
+            pD3DDevice->CreateTexture2D(&depthTextureDesc, NULL, &pDepthTexture),
+            DXE_ERREURCREATIONTEXTURE);
+        // Création de la vue du tampon de profondeur (ou de stencil)
+        D3D11_DEPTH_STENCIL_VIEW_DESC descDSView;
+        ZeroMemory(&descDSView, sizeof(descDSView));
+        descDSView.Format = depthTextureDesc.Format;
+        descDSView.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+        descDSView.Texture2D.MipSlice = 0;
+        DXEssayer(
+            pD3DDevice->CreateDepthStencilView(pDepthTexture, &descDSView, &pDepthStencilView),
+            DXE_ERREURCREATIONDEPTHSTENCILTARGET);
+    }
+
+    void CObjetMesh::initShadowMapMatrices()
+    {
+        // Matrice de la vision vu par la lumière - Le point TO est encore 0,0,0
+        mVLight = XMMatrixLookAtLH(XMVectorSet(-5.0f, 5.0f, -5.0f, 1.0f),
+            XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f),
+            XMVectorSet(0.0f, 1.0f, 0.0f, 1.0f));
+        float champDeVision;
+        float ratioDAspect;
+        float planRapproche;
+        float planEloigne;
+        champDeVision = XM_PI / 4; // 45 degrés
+        ratioDAspect = 1.0f; // 512/512
+        planRapproche = 2.0; // Pas besoin d'être trop près
+        planEloigne = 100.0; // Suffisemment pour avoir tous les objets
+        mPLight = XMMatrixPerspectiveFovLH(champDeVision,
+            ratioDAspect,
+            planRapproche,
+            planEloigne);
+        mVPLight = mVLight * mPLight;
+    }
+
     void CObjetMesh::Draw()
     {
 #ifdef DEBUG_PIRATE_SIMULATOR
         //OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
 #endif
-        
+
 
         // Obtenir le contexte
         ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
@@ -206,13 +372,64 @@ namespace PM3D
         UINT offset = 0;
         pImmediateContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
 
+        // ***** OMBRES ---- Premier Rendu - Création du Shadow Map
+        // Utiliser la surface de la texture comme surface de rendu
+        pImmediateContext->OMSetRenderTargets(1, &pRenderTargetView,
+            pDepthStencilView);
+        // Effacer le shadow map
+        float Couleur[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+        pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
+        pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+        // Modifier les dimension du viewport
+        pDispositif->SetViewPortDimension(512, 512);
+        // Choix de la technique
+        pTechnique = pEffet->GetTechniqueByName("ShadowMap");
+        pPasse = pTechnique->GetPassByIndex(0);
+        // input layout des sommets
+        pImmediateContext->IASetInputLayout(pVertexLayoutShadow);
+        // Initialiser et sélectionner les «constantes» de l'effet
+        ShaderCObjectMesh::ShadersParams sp;
+        sp.matWorldViewProjLight = XMMatrixTranspose(m_matWorld * mVPLight);
+        // Nous n'avons qu'un seul CBuffer
+        ID3DX11EffectConstantBuffer* pCB = pEffet->GetConstantBufferByName("param");
+        pCB->SetConstantBuffer(pConstantBuffer);
+        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &sp, 0, 0);
+        // Dessiner les subsets non-transparents
+        for (int i = 0; i < NombreSubset; ++i)
+        {
+            int indexStart = SubsetIndex[i];
+            int indexDrawAmount = SubsetIndex[i + 1] - SubsetIndex[i];
+            if (indexDrawAmount)
+            {
+                // IMPORTANT pour ajuster les param.
+                pPasse->Apply(0, pImmediateContext);
+                pImmediateContext->DrawIndexed(indexDrawAmount, indexStart, 0);
+            }
+        }
+
+        // ***** OMBRES ---- Deuxième Rendu - Affichage de l'objet avec ombres
+        // Ramener la surface de rendu
+        ID3D11RenderTargetView* tabRTV[1];
+        tabRTV[0] = pDispositif->GetRenderTargetView();
+        pImmediateContext->OMSetRenderTargets(1,
+            tabRTV,
+            pDispositif->GetDepthStencilView());
+        // Dimension du viewport - défaut
+        pDispositif->ResetViewPortDimension();
+        // Choix de la technique
+        pTechnique = pEffet->GetTechniqueByName("MiniPhong");
+        pPasse = pTechnique->GetPassByIndex(0);
 
         // Initialiser et sélectionner les «constantes» de l'effet
         XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
-
+        m_shaderParameter.vLumiere = XMVectorSet(-10.0f, 10.0f, -15.0f, 1.0f);
+        m_shaderParameter.vCamera = XMVectorSet(0.0f, 3.0f, -5.0f, 1.0f);
+        m_shaderParameter.vAEcl = XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
+        m_shaderParameter.vDEcl = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);
+        m_shaderParameter.vSEcl = XMVectorSet(0.6f, 0.6f, 0.6f, 1.0f);
 
         // Le sampler state
         ID3DX11EffectSamplerVariable* variableSampler;
@@ -220,12 +437,19 @@ namespace PM3D
         variableSampler->SetSampler(0, pSampleState);
         DXRelacher(variableSampler);
 
+        // input layout des sommets
+        pImmediateContext->IASetInputLayout(pVertexLayout);
+        ID3DX11EffectShaderResourceVariable* pShadowMap;
+        pShadowMap = pEffet->GetVariableByName("ShadowTexture")->AsShaderResource();
+        pShadowMap->SetResource(pShadowMapView);
+        pDispositif->SetNormalRSState();
+
         // Dessiner les subsets non-transparents
-        for(int i = 0; i < NombreSubset; ++i)
+        for (int i = 0; i < NombreSubset; ++i)
         {
             int indexStart = SubsetIndex[i];
             int indexDrawAmount = SubsetIndex[i + 1] - indexStart;
-            if(indexDrawAmount)
+            if (indexDrawAmount)
             {
                 m_shaderParameter.vAMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Ambient);
                 m_shaderParameter.vDMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Diffuse);
@@ -233,12 +457,17 @@ namespace PM3D
                 m_shaderParameter.puissance = m_materials[SubsetMaterialIndex[i]].Puissance;
 
                 // Activation de la texture ou non
-                if(m_materials[SubsetMaterialIndex[i]].pTextureD3D != NULL)
+                if (m_materials[SubsetMaterialIndex[i]].pTextureD3D != NULL)
                 {
                     ID3DX11EffectShaderResourceVariable* variableTexture;
                     variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
                     variableTexture->SetResource(m_materials[SubsetMaterialIndex[i]].pTextureD3D);
+                    m_shaderParameter.bTex = 1;
                     DXRelacher(variableTexture);
+                }
+                else
+                {
+                    m_shaderParameter.bTex = 1;
                 }
 
                 // IMPORTANT pour ajuster les param.
@@ -260,7 +489,7 @@ namespace PM3D
         unsigned int nombreSommets = chargeur.GetNombreSommets();
         CSommetMesh* ts = new CSommetMesh[nombreSommets];
 
-        for(unsigned int i = 0; i < nombreSommets; ++i)
+        for (unsigned int i = 0; i < nombreSommets; ++i)
         {
             ts[i].position = chargeur.GetPosition(i);
             ts[i].normal = chargeur.GetNormale(i);
@@ -304,7 +533,7 @@ namespace PM3D
         pIndexBuffer = NULL;
 
         DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer),
-                  DXE_CREATIONINDEXBUFFER);
+            DXE_CREATIONINDEXBUFFER);
 
         // 3. Les sous-objets
         NombreSubset = chargeur.GetNombreSubset();
@@ -320,30 +549,30 @@ namespace PM3D
         m_materials.push_back(m);
 
         // 4b) Copie des matériaux dans la version locale
-        for(int i = 0; i < chargeur.GetNombreMaterial(); ++i)
+        for (int i = 0; i < chargeur.GetNombreMaterial(); ++i)
         {
             CMaterial mat;
 
             chargeur.GetMaterial(i, mat.NomFichierTexture,
-                                 mat.NomMateriau,
-                                 mat.Ambient,
-                                 mat.Diffuse,
-                                 mat.Specular,
-                                 mat.Puissance);
+                mat.NomMateriau,
+                mat.Ambient,
+                mat.Diffuse,
+                mat.Specular,
+                mat.Puissance);
 
             m_materials.push_back(mat);
         }
 
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble
-        for(int i = 0; i < chargeur.GetNombreSubset(); ++i)
+        for (int i = 0; i < chargeur.GetNombreSubset(); ++i)
         {
             int index;
-            for(index = 0; index < m_materials.size(); ++index)
+            for (index = 0; index < m_materials.size(); ++index)
             {
-                if(m_materials[index].NomMateriau == chargeur.GetMaterialName(i)) break;
+                if (m_materials[index].NomMateriau == chargeur.GetMaterialName(i)) break;
             }
 
-            if(index >= m_materials.size()) index = 0;  // valeur de défaut
+            if (index >= m_materials.size()) index = 0;  // valeur de défaut
 
             SubsetMaterialIndex.push_back(index);
         }
@@ -352,9 +581,9 @@ namespace PM3D
         // 4d) Chargement des textures
         CGestionnaireDeTextures& TexturesManager = CMoteurWindows::GetInstance().GetTextureManager();
 
-        for(unsigned int i = 0; i < m_materials.size(); ++i)
+        for (unsigned int i = 0; i < m_materials.size(); ++i)
         {
-            if(m_materials[i].NomFichierTexture != "")
+            if (m_materials[i].NomFichierTexture != "")
             {
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
@@ -371,7 +600,7 @@ namespace PM3D
         unsigned int nombreSommets = chargeur.GetNombreSommets();
         CSommetMesh* ts = new CSommetMesh[nombreSommets];
 
-        for(unsigned int i = 0; i < nombreSommets; ++i)
+        for (unsigned int i = 0; i < nombreSommets; ++i)
         {
             ts[i].position = chargeur.GetPosition(i);
             ts[i].normal = chargeur.GetNormale(i);
@@ -413,14 +642,14 @@ namespace PM3D
         MatLoad.push_back(mat);
         int NbMaterial = chargeur.GetNombreMaterial();
         // 4b) Copie des matériaux dans la version locale
-        for(int i = 0; i < NbMaterial; ++i)
+        for (int i = 0; i < NbMaterial; ++i)
         {
             chargeur.GetMaterial(i, mat.NomFichierTexture,
-                                 mat.NomMateriau,
-                                 mat.Ambient,
-                                 mat.Diffuse,
-                                 mat.Specular,
-                                 mat.Puissance);
+                mat.NomMateriau,
+                mat.Ambient,
+                mat.Diffuse,
+                mat.Specular,
+                mat.Puissance);
 
             MatLoad.push_back(mat);
         }
@@ -429,7 +658,7 @@ namespace PM3D
         fichier.write((char*)&NbMaterial, sizeof(int));
 
         MaterialBlock mb;
-        for(size_t i = 0; i < NbMaterial; ++i)
+        for (size_t i = 0; i < NbMaterial; ++i)
         {
             MatLoad[i].MatToBlock(mb);
             fichier.write((char*)&mb, sizeof(MaterialBlock));
@@ -437,15 +666,15 @@ namespace PM3D
 
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble
         vector<int> SubsetMI;
-        for(int i = 0; i < NombreSubset; ++i)
+        for (int i = 0; i < NombreSubset; ++i)
         {
             int index;
-            for(index = 0; index < MatLoad.size(); ++index)
+            for (index = 0; index < MatLoad.size(); ++index)
             {
-                if(MatLoad[index].NomMateriau == chargeur.GetMaterialName(i)) break;
+                if (MatLoad[index].NomMateriau == chargeur.GetMaterialName(i)) break;
             }
 
-            if(index >= MatLoad.size()) index = 0;  // valeur de défaut
+            if (index >= MatLoad.size()) index = 0;  // valeur de défaut
 
             SubsetMI.push_back(index);
         }
@@ -510,7 +739,7 @@ namespace PM3D
         pIndexBuffer = NULL;
 
         DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer),
-                  DXE_CREATIONINDEXBUFFER);
+            DXE_CREATIONINDEXBUFFER);
 
         // Détruire index, devenu inutile
         delete[] index;
@@ -536,7 +765,7 @@ namespace PM3D
         m_materials.resize(NbMaterial);
 
         MaterialBlock mb;
-        for(int i = 0; i < NbMaterial; ++i)
+        for (int i = 0; i < NbMaterial; ++i)
         {
             fichier.read((char*)&mb, sizeof(MaterialBlock));
             m_materials[i].BlockToMat(mb);
@@ -551,9 +780,9 @@ namespace PM3D
         // 4d) Chargement des textures
         CGestionnaireDeTextures& TexturesManager = CMoteurWindows::GetInstance().GetTextureManager();
 
-        for(unsigned int i = 0; i < m_materials.size(); ++i)
+        for (unsigned int i = 0; i < m_materials.size(); ++i)
         {
-            if(m_materials[i].NomFichierTexture != "")
+            if (m_materials[i].NomFichierTexture != "")
             {
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());

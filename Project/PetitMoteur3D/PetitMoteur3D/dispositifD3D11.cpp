@@ -294,5 +294,33 @@ D3D11_BLEND_DESC blendDesc;
     {
         pImmediateContext->RSSetState(mSolidCullNoneRS);
     }
+
+    void CDispositifD3D11::SetViewPortDimension(float largeur_in, float
+        hauteur_in)
+    {
+        D3D11_VIEWPORT vp;
+        vp.Width = largeur_in;
+        vp.Height = hauteur_in;
+        vp.MinDepth = 0.0f;
+        vp.MaxDepth = 1.0f;
+        vp.TopLeftX = 0;
+        vp.TopLeftY = 0;
+        pImmediateContext->RSSetViewports(1, &vp);
+    }
+    void CDispositifD3D11::ResetViewPortDimension()
+    {
+        D3D11_VIEWPORT vp;
+        vp.Width = largeurEcran;
+        vp.Height = hauteurEcran;
+        vp.MinDepth = 0.0f;
+        vp.MaxDepth = 1.0f;
+        vp.TopLeftX = 0;
+        vp.TopLeftY = 0;
+        pImmediateContext->RSSetViewports(1, &vp);
+    }
+    void CDispositifD3D11::SetNormalRSState()
+    {
+        pImmediateContext->RSSetState(mSolidCullBackRS);
+    }
 }
 
