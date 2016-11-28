@@ -78,8 +78,11 @@ public:
 
     float getElapsedTimeFrame() const
     {
-        auto now = msNow();
-        milliseconds elapsed = duration_cast<milliseconds>(now - m_timePreviousFrame);
+        milliseconds elapsed = duration_cast<milliseconds>(m_timeCurrent - m_timePreviousFrame);
+        if(elapsed > m_ecartTemps)
+        {
+            return m_ecartTemps.count() * m_echelleTemps;
+        }
         return elapsed.count() * m_echelleTemps;// <= 0 ? 0.0001f : elapsed.count()
     }
 };

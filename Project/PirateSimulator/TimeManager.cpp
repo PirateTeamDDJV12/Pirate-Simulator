@@ -33,12 +33,13 @@ milliseconds TimeManager::getRemainingFastTime() const
 
 void TimeManager::update()
 {
-    m_timeCurrent = msNow();
+    auto tempCurrent = msNow();
 
-    if(m_timeCurrent > m_timeNextFrame)
+    if(tempCurrent > m_timeNextFrame)
     {
         m_timePreviousFrame = m_timeCurrent;
-        m_timeNextFrame = m_timeCurrent + m_ecartTemps;
+        m_timeCurrent = tempCurrent;
+        m_timeNextFrame = tempCurrent + m_ecartTemps;
     }
 }
 
