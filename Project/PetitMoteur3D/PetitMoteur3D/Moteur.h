@@ -66,9 +66,9 @@ namespace PM3D
         {
             TIMETASK,
             INPUTTASK,
+            PHYSICSTASK,
             PLAYERTASK,
             RENDERTASK,
-            PHYSICSTASK,
         };
     public:
 

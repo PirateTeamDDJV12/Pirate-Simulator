@@ -20,12 +20,18 @@ public:
 
 
 private:
-    static std::string typeId() noexcept { return "PieceBehaviour"; }
-    virtual std::string getTypeId() const noexcept { return IBehaviour::typeId(); }
-
-    virtual void anime(float elapsedTime) 
+    static std::string typeId() noexcept
     {
-        m_xAngle = m_xAngle + (DirectX::XM_PI * elapsedTime * PIECE_ANGULAR_SPEED);
+        return "PieceBehaviour";
+    }
+    virtual std::string getTypeId() const noexcept
+    {
+        return IBehaviour::typeId();
+    }
+
+    virtual void anime(float elapsedTime)
+    {
+        m_xAngle = m_xAngle + (elapsedTime * PIECE_ANGULAR_SPEED);
 
         // modifier la matrice de l'objet X
         m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
@@ -35,8 +41,8 @@ private:
 
 Piece::Piece(const Transform& spawnPosition, size_t pieceID) :
     GameObject(spawnPosition, "Piece" + to_string(pieceID)),
-    m_pieceID{ pieceID },
-    m_unspawnedTime{ TimeManager::msNow().count() }
+    m_pieceID{pieceID},
+    m_unspawnedTime{TimeManager::msNow().count()}
 {}
 
 
