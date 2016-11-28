@@ -25,24 +25,7 @@ namespace PirateSimulator
 
 
     private:
-        struct PieceSpawnPosition
-        {
-        public:
-            Transform m_spawnPos[PieceAdministrator::PIECE_COUNT];
-
-
-        public:
-            PieceSpawnPosition() {}
-
-
-        public:
-            void mapSpawn(unsigned int sceneWidth, unsigned int sceneHeight, float mapScale);
-        };
-
-
-
-    private:
-        PieceSpawnPosition m_pieceSpawnPos;
+        std::vector<Piece> m_pieceArray;
 
 
     public:
@@ -51,7 +34,7 @@ namespace PirateSimulator
 
     public:
         void init();
-        void update(GameObjectRef pieceObj, float elapsedTime);
+        void update(float elapsedTime);
     };
 }
 

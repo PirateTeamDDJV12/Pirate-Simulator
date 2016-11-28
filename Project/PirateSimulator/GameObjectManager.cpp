@@ -14,19 +14,26 @@ void GameObjectManager::animAllGameObject(float elapsedTime)
     std::for_each(
         m_gameObjectArray.begin(),
         m_gameObjectArray.end(),
-        [&](GameObjectRef GObject){
-            auto maybeAPieceObj = std::dynamic_pointer_cast<Piece>(GObject);
+        [&elapsedTime](GameObjectRef GObject){
+             GObject->anime(elapsedTime);
+          }
+      );
+ 
+     m_pieceAdministrator.update(elapsedTime);
+ }
+ 
+void GameObjectManager::setSubscribingStrategy(SubsribingStrategy strategy) noexcept
+{
+    switch (strategy)
+    {
+    case GameObjectManager::PIECE:
+        m_subscribeStrategy = &GameObjectManager::subscribingAPiece;
+        break;
 
-            if (maybeAPieceObj == std::shared_ptr<Piece>())
-            {
-                GObject->anime(elapsedTime);
-            }
-            else
-            {
-                m_pieceAdministrator.update(maybeAPieceObj, elapsedTime);
-            }
-        }
-    );
+    case GameObjectManager::NONE:
+    default:
+        m_subscribeStrategy = &GameObjectManager::minimalSubscribingGameObject;
+    }
 }
 
 void GameObjectManager::init()

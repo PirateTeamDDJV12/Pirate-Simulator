@@ -6,10 +6,13 @@
 
 namespace PirateSimulator
 {
-    class Piece : public GameObject
+    class Piece
     {
     private:
+        Transform m_transform;
         size_t m_pieceID;
+
+        GameObjectRef m_pieceInstance;
 
         long long m_unspawnedTime;
 
@@ -23,13 +26,18 @@ namespace PirateSimulator
         const Transform& getSpawnTransform() const noexcept { return m_transform; }
         void setSpawnPosition(const Transform& spawnPosition) noexcept { m_transform = spawnPosition; }
 
-        long long getUnspawnedTime() const noexcept;
-    };
+        bool isEmpty() const noexcept { return m_pieceInstance == GameObjectRef(); }
+        bool isInstanciated() const noexcept { return !isEmpty(); }
 
-    struct PieceFabrik
-    {
+        long long getUnspawnedTime() const noexcept;
+
+
+        void anim(float elapsedTime);
+
+
     public:
-        static void createPiece(const Transform& pos, size_t pieceID);
+        GameObjectRef createPiece();
+        void destroyPiece();
     };
 }
 
