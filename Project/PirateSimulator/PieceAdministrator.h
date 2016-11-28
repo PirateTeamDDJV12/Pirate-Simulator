@@ -1,7 +1,6 @@
 #ifndef PIECEADMINISTRATOR_H_INCLUDED
 #define PIECEADMINISTRATOR_H_INCLUDED
 
-#include "GameConfig.h"
 #include "Piece.h"
 
 #include <vector>
@@ -26,7 +25,24 @@ namespace PirateSimulator
 
 
     private:
-        std::vector<Piece> m_pieceArray;
+        struct PieceSpawnPosition
+        {
+        public:
+            Transform m_spawnPos[PieceAdministrator::PIECE_COUNT];
+
+
+        public:
+            PieceSpawnPosition() {}
+
+
+        public:
+            void mapSpawn(unsigned int sceneWidth, unsigned int sceneHeight, float mapScale);
+        };
+
+
+
+    private:
+        PieceSpawnPosition m_pieceSpawnPos;
 
 
     public:
@@ -35,7 +51,7 @@ namespace PirateSimulator
 
     public:
         void init();
-        void update(float elapsedTime);
+        void update(GameObjectRef pieceObj, float elapsedTime);
     };
 }
 
