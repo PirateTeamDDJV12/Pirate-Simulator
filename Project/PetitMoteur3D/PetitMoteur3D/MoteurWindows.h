@@ -28,9 +28,13 @@ namespace PM3D
         virtual int InitialisationsSpecific();
         virtual bool RunSpecific();
         __int64 CMoteurWindows::GetTimeSpecific();
-        virtual CDispositifD3D11* CreationDispositifSpecific(const CDS_MODE cdsMode);
+        //virtual CDispositifD3D11* CreationDispositifSpecific(const CDS_MODE cdsMode);
         virtual void BeginRenderSceneSpecific();
         virtual void EndRenderSceneSpecific();
+
+    public:
+        virtual HWND getMainWindowHandle() const noexcept { return hMainWnd; }
+        HINSTANCE getApplicationInstance() const noexcept { return hAppInstance; }
 
 
     protected:

@@ -216,6 +216,12 @@
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp">
       <Filter>Fichiers sources\PirateSimulator\Config</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Piece.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -424,6 +430,12 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PieceAdministrator.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Piece.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -131,6 +131,8 @@ namespace PirateSimulator
         }
         void addAStaticSortableMesh(IMesh* mesh);
 
+        void removeAStaticSortableMesh(IMesh* meshToRemove);
+
         size_t getObligatoryMeshBeforeCount() const noexcept
         {
             return m_obligatoryBeforeMesh.size();
@@ -166,7 +168,6 @@ namespace PirateSimulator
             }
         }
 
-        void setDispositif(PM3D::CDispositifD3D11* creation_dispositif_specific);
         PM3D::CDispositifD3D11* getDispositif() const
         {
             return m_pDispositif;
@@ -195,6 +196,11 @@ namespace PirateSimulator
             }
 
             return nullptr;
+        }
+
+        void init(const PM3D::CDS_MODE cdsMode, HWND hMainWnd)
+        {
+            m_pDispositif = new PM3D::CDispositifD3D11(cdsMode, hMainWnd);
         }
 
         void draw()

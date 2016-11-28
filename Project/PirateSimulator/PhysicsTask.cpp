@@ -4,6 +4,11 @@
 
 using namespace PirateSimulator;
 
+void PhysicsTask::init()
+{
+    GameObjectManager::singleton.init();
+}
+
 void PhysicsTask::update()
 {
     // Affichage optimisé 

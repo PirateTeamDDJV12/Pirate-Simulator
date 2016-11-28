@@ -1,12 +1,12 @@
 #include "RendererManager.h"
 #include "GameObject.h"
 #include "CameraManager.h"
+#include "..\PetitMoteur3D\PetitMoteur3D\util.h"
+#include "DebugD3D11Custom.h"
 
 #include <algorithm>
 
 #include <DirectXMath.h>
-#include "..\PetitMoteur3D\PetitMoteur3D\util.h"
-#include "DebugD3D11Custom.h"
 using namespace PirateSimulator;
 using namespace DirectX;
 
@@ -21,6 +21,25 @@ RendererManager::~RendererManager()
     debug.reportLiveObject();
 
     delete m_pDispositif;
+}
+
+void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)
+{
+    if (meshToRemove)
+    {
+        std::vector<IMesh*>* areaToConsider = findStaticMeshInArea(
+            meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[0], 
+            meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[2]
+        );
+
+        for (auto iter = areaToConsider->begin(); iter != areaToConsider->end(); ++iter)
+        {
+            if (*iter == meshToRemove)
+            {
+                areaToConsider->erase(iter);
+            }
+        }
+    }
 }
 
 void RendererManager::drawSorting()
@@ -122,10 +141,6 @@ void RendererManager::deepAddToStack(size_t x, size_t z) noexcept
     }
 }
 
-void RendererManager::setDispositif(PM3D::CDispositifD3D11* creation_dispositif_specific)
-{
-    m_pDispositif = creation_dispositif_specific;
-}
 
 void RendererManager::updateRenderedStack()
 {

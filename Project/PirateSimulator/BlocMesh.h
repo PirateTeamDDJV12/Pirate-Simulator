@@ -2,14 +2,14 @@
 #define BLOCMESH_H_INCLUDED
 
 #include "Mesh.h"
-#include "BlocMeshStructure.h"
 
 #include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
+#include "RendererManager.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Resource.h"
 
 #include <directxmath.h>
 #include <wtypes.h>
 #include <d3d11.h>
-#include "RendererManager.h"
 
 namespace PirateSimulator
 {
@@ -73,8 +73,17 @@ namespace PirateSimulator
             }
         }
 
+        // Plus pratique, essayer en envoyant un code spécifique 
+        // comme résultat
+        template <class Type1, class Type2>
+        inline void DXEssayer(const Type1& Resultat, const Type2& unCode)
+        {
+            if (Resultat != S_OK)
+                throw unCode;
+        }
+
     public:
-        static constexpr unsigned int index_bloc[36] = {
+        static constexpr const unsigned int index_bloc[36] = {
             0,1,2,			// devant
             0,2,3,			// devant
             5,6,7,			// arrière
@@ -90,9 +99,24 @@ namespace PirateSimulator
         };
 
 
+    protected:
+        PM3D::CDispositifD3D11* pDispositif;
+
+        ID3D11Buffer* pVertexBuffer;
+        ID3D11Buffer* pIndexBuffer;
+
+        ID3D11VertexShader*  pVertexShader;
+        ID3D11PixelShader*  pPixelShader;
+        ID3D11InputLayout* pVertexLayout;
+
+        // Définitions des valeurs d'animation
+        ID3D11Buffer* pConstantBuffer;
+
+
     public:
         BlocMesh(const BlocInternalData& internalBlocDatas,
-            const ShaderBloc::ShadersParams& shaderParams
+            const ShaderBloc::ShadersParams& shaderParams,
+            const std::wstring& VSShaderFileName, const std::wstring& PSShaderFileName
         ) :
             Mesh<ShaderBloc::ShadersParams>(m_shaderParameter),
             BlocInternalData(internalBlocDatas)
@@ -132,14 +156,15 @@ namespace PirateSimulator
 
 
             // Initialisation des shaders
-            InitShaders();
+            InitShaders(VSShaderFileName, PSShaderFileName);
             DXRelacher(pD3DDevice);
         }
 
         BlocMesh(const float dx, const float dy, const float dz,
-            const ShaderBloc::ShadersParams& shaderParams
+            const ShaderBloc::ShadersParams& shaderParams, 
+            const std::wstring& VSShaderFileName, const std::wstring& PSShaderFileName
         ) :
-            Mesh<ShaderBloc::ShadersParams>(m_shaderParameter),
+            Mesh<ShaderBloc::ShadersParams>(shaderParams),
             BlocInternalData(dx, dy, dz)
         {
             pDispositif = RendererManager::singleton.getDispositif();
@@ -159,7 +184,7 @@ namespace PirateSimulator
             InitData.pSysMem = m_apex;
             pVertexBuffer = NULL;
 
-            pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer);
+            DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
 
             // Création de l'index buffer et copie des indices
             ZeroMemory(&bd, sizeof(bd));
@@ -173,11 +198,12 @@ namespace PirateSimulator
             InitData.pSysMem = index_bloc;
             pIndexBuffer = NULL;
 
-            pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer);
+            DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer),
+                DXE_CREATIONINDEXBUFFER);
 
 
             // Initialisation des shaders
-            InitShaders();
+            InitShaders(VSShaderFileName, PSShaderFileName);
             DXRelacher(pD3DDevice);
         }
 
@@ -239,32 +265,41 @@ namespace PirateSimulator
 
 
     protected:
-        void InitShaders()
+        void InitShaders(const std::wstring& VSShaderFileName, const std::wstring& PSShaderFileName)
         {
             // Compilation et chargement du vertex shader
             ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 
             ID3DBlob* pVSBlob = NULL;
-            D3DCompileFromFile(L"MiniPhong.vhl",
+            /*D3DCompileFromFile(L"MiniPhong.vhl",
                 NULL, NULL,
                 "MiniPhongVS",
                 "vs_4_0",
                 D3DCOMPILE_ENABLE_STRICTNESS,
                 0,
-                &pVSBlob, nullptr);
+                &pVSBlob, nullptr);*/
+            DXEssayer(D3DCompileFromFile(VSShaderFileName.c_str(),
+                NULL, NULL,
+                "MiniPhongVS",
+                "vs_4_0",
+                D3DCOMPILE_ENABLE_STRICTNESS,
+                0,
+                &pVSBlob, nullptr), DXE_FICHIER_VS);
 
-            pD3DDevice->CreateVertexShader(pVSBlob->GetBufferPointer(),
+            DXEssayer(pD3DDevice->CreateVertexShader(pVSBlob->GetBufferPointer(),
                 pVSBlob->GetBufferSize(),
                 NULL,
-                &pVertexShader);
+                &pVertexShader),
+                DXE_CREATION_VS);
 
             // Créer l'organisation des sommets
             pVertexLayout = NULL;
-            pD3DDevice->CreateInputLayout(BlocPoint::layout,
+            DXEssayer(pD3DDevice->CreateInputLayout(BlocPoint::layout,
                 BlocPoint::numElements,
                 pVSBlob->GetBufferPointer(),
                 pVSBlob->GetBufferSize(),
-                &pVertexLayout);
+                &pVertexLayout),
+                DXE_CREATIONLAYOUT);
 
             pVSBlob->Release(); //  On n'a plus besoin du blob
 
@@ -280,36 +315,31 @@ namespace PirateSimulator
 
             // Compilation et chargement du pixel shader
             ID3DBlob* pPSBlob = NULL;
-            D3DCompileFromFile(L"MiniPhong.phl",
+            /*DXEssayer(D3DCompileFromFile(L"MiniPhong.phl",
                 NULL, NULL,
                 "MiniPhongPS",
                 "ps_4_0",
                 D3DCOMPILE_ENABLE_STRICTNESS,
                 0,
-                &pPSBlob, NULL);
+                &pPSBlob, NULL), 
+                DXE_FICHIER_PS);*/
+            DXEssayer(D3DCompileFromFile(PSShaderFileName.c_str(),
+                NULL, NULL,
+                "MiniPhongPS",
+                "ps_4_0",
+                D3DCOMPILE_ENABLE_STRICTNESS,
+                0,
+                &pPSBlob, NULL),
+                DXE_FICHIER_PS);
 
-            pD3DDevice->CreatePixelShader(pPSBlob->GetBufferPointer(),
+            DXEssayer(pD3DDevice->CreatePixelShader(pPSBlob->GetBufferPointer(),
                 pPSBlob->GetBufferSize(),
                 NULL,
-                &pPixelShader);
+                &pPixelShader),
+                DXE_CREATION_PS);
 
             pPSBlob->Release(); //  On n'a plus besoin du blob
-            DXRelacher(pD3DDevice);
         }
-
-
-    protected:
-        PM3D::CDispositifD3D11* pDispositif;
-
-        ID3D11Buffer* pVertexBuffer;
-        ID3D11Buffer* pIndexBuffer;
-
-        ID3D11VertexShader*  pVertexShader;
-        ID3D11PixelShader*  pPixelShader;
-        ID3D11InputLayout* pVertexLayout;
-
-        // Définitions des valeurs d'animation
-        ID3D11Buffer* pConstantBuffer;
     };
 }
 
