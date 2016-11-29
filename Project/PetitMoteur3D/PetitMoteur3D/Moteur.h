@@ -24,6 +24,8 @@
 #include "../../PirateSimulator/GameObject.h"
 #include "../../PirateSimulator/PlayerBehaviour.h"
 #include "../../PirateSimulator/ShapeComponent.h"
+#include "../../PirateSimulator/VehicleShape.h"
+#include "../../PirateSimulator/TerrainShape.h"
 
 // Manager
 #include "../../PirateSimulator/TimeManager.h"
@@ -40,7 +42,7 @@
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
-#include "../../PirateSimulator/VehicleShape.h"
+
 
 
 namespace PM3D
@@ -229,8 +231,8 @@ namespace PM3D
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
             auto vehicleShape = new PirateSimulator::VehicleShape();
             vehicule->addComponent<PirateSimulator::ShapeComponent>(vehicleShape);
+            
             PirateSimulator::Transform TransformTerrain;
-
             TransformTerrain.m_position = { 0,0,0,0 };
             TransformTerrain.m_right = { 1,0,0,0 };
             TransformTerrain.m_up = { 0,1,0,0 };
@@ -253,7 +255,10 @@ namespace PM3D
             auto fieldMesh = new PirateSimulator::Terrain();
 #endif
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
-
+            // Add the shape for Terrain
+            auto terrainShape = new PirateSimulator::TerrainShape();
+            terrain->addComponent<PirateSimulator::ShapeComponent>(terrainShape);
+            
             // Add our water plane
             auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(TransformTerrain, "water")

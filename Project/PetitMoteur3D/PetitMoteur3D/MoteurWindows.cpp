@@ -204,8 +204,7 @@ namespace PM3D
         // Initialisations  de l'application;
         InitAppInstance();
         Show();
-        //Initialisation de PhysicsManager
-        PirateSimulator::PhysicsManager::singleton.initialize();
+       
         // Initialisation de DirectInput
         PirateSimulator::InputManager::singleton.InitManipulator(hAppInstance, hMainWnd);
 

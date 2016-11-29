@@ -2,6 +2,7 @@
 #ifndef SHAPE_COMPONENT_H
 #define SHAPE_COMPONENT_H
 #include "Component.h"
+#include "PhysicsManager.h"
 
 
 namespace physx
@@ -18,18 +19,18 @@ namespace PirateSimulator
     class ShapeComponent : public Component
     {
     protected:
-        physx::PxMaterial* m_material;
+        const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
         physx::PxShape* m_shape;
         physx::PxRigidDynamic* m_actor;
 
     public:
-        ShapeComponent() : m_material(nullptr), m_actor(nullptr), m_shape(nullptr)
+        ShapeComponent() : m_actor(nullptr), m_shape(nullptr)
         {
         }
 
 
     public:
-        static physx::unique_ptr<physx::PxRigidDynamic> createPxActor();
+        //static physx::unique_ptr<physx::PxRigidDynamic> createPxActor();
 
         physx::PxRigidDynamic& pxActor();
 

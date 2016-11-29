@@ -39,7 +39,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="Config\lib.props" />
+    <Import Project="PhysX\lib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -134,6 +134,7 @@
     <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
+    <ClInclude Include="..\..\PirateSimulator\TerrainShape.h" />
     <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
