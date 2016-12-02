@@ -1,5 +1,7 @@
 #include "LightManager.h"
 
+#include "GameConfig.h"
+
 #include <algorithm>
 #include <directxmath.h>
 
@@ -60,7 +62,14 @@ LightManager LightManager::singleton;
 
 LightManager::LightManager() 
 {
-    m_lightArray[Light::type::DIRECTIONAL][Light::modality::BRIGHT] = { LightGenerator::generateSun(10.f,-10.f,10.f) };
+    m_lightArray[Light::type::DIRECTIONAL][Light::modality::BRIGHT] = { 
+        LightGenerator::generateSun(
+            GameGlobals::SunGlobals::X_DIRECTION,
+            GameGlobals::SunGlobals::Y_DIRECTION,
+            GameGlobals::SunGlobals::Z_DIRECTION, 
+            GameGlobals::SunGlobals::POWER
+        ) 
+    };
 
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::DARKNESS] = {};
 
@@ -108,4 +117,24 @@ const std::vector<LightRef>& LightManager::getLights(Light::type type, Light::mo
 void LightManager::addLight(LightRef newLight) noexcept
 {
     m_lightArray[newLight->m_type][newLight->m_modality].push_back(newLight);
+}
+
+LightRef LightManager::getBrightSun() const noexcept
+{
+    return getLights(Light::type::DIRECTIONAL, Light::modality::BRIGHT)[0];
+}
+
+LightRef LightManager::getDarkSun()   const noexcept
+{
+    return getLights(Light::type::DIRECTIONAL, Light::modality::BRIGHT)[0];
+}
+
+const std::vector<LightRef>& LightManager::getBrightPointsLights()  const noexcept
+{
+    return getLights(Light::type::POINT, Light::modality::BRIGHT);
+}
+
+const std::vector<LightRef>& LightManager::getDarkPointsLights()    const noexcept
+{
+    return getLights(Light::type::POINT, Light::modality::BRIGHT);
 }

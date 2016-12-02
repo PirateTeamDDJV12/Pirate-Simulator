@@ -26,6 +26,13 @@ namespace PirateSimulator
     public:
         const std::vector<LightRef>& getLights(Light::type type, Light::modality modality) const noexcept;
         void addLight(LightRef newLight) noexcept;
+
+
+    public:
+        LightRef getBrightSun() const noexcept;
+        LightRef getDarkSun()   const noexcept;
+        const std::vector<LightRef>& getBrightPointsLights()  const noexcept;
+        const std::vector<LightRef>& getDarkPointsLights()    const noexcept;
     };
 }
 
