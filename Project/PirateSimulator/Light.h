@@ -2,8 +2,6 @@
 #define LIGHT_H_INCLUDED
 
 
-#include "Transform.h"
-
 #include <memory>
 
 
@@ -30,7 +28,7 @@ namespace PirateSimulator
 
 
     public:
-        Transform m_transform;
+        DirectX::XMFLOAT3 m_vector;
 
         float m_power;
         float m_scope;
@@ -40,18 +38,18 @@ namespace PirateSimulator
 
 
     public:
-        Light(const Transform& transform, type lightType, modality lightModality, float scope) :
+        Light(const DirectX::XMFLOAT3& relatedVector, type lightType, modality lightModality, float scope) :
             m_type{ lightType },
             m_modality{ lightModality },
-            m_transform{ transform },
+            m_vector{ relatedVector },
             m_scope{ scope },
             m_power{ 1.f }
         {}
 
-        Light(const Transform& transform, type lightType, modality lightModality, float scope, float power) :
+        Light(const DirectX::XMFLOAT3& relatedVector, type lightType, modality lightModality, float scope, float power) :
             m_type{ lightType },
             m_modality{ lightModality },
-            m_transform{ transform },
+            m_vector{ relatedVector },
             m_scope{ scope },
             m_power{ power }
         {}
