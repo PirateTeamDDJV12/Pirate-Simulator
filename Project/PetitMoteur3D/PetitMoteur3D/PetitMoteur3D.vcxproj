@@ -177,6 +177,7 @@
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\InputManager.h" />
     <ClInclude Include="..\..\PirateSimulator\IGameTask.h" />

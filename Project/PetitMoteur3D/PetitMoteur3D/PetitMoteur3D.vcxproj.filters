@@ -449,6 +449,9 @@
     <ClInclude Include="..\..\PirateSimulator\LightManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\GameUtils.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PetitMoteur3D.ico">
