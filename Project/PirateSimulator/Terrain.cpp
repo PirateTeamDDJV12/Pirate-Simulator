@@ -8,6 +8,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 #include "RessourceManager.h"
 #include "RendererManager.h"
+#include "LightManager.h"
 
 using namespace DirectX;
 
@@ -52,7 +53,7 @@ namespace PirateSimulator
         Init(terrainConfig->getTexturePath());
     }
 
-    Terrain::Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
+    Terrain::Terrain(int h, int w, float s, const std::string& fieldFileName, const std::string& textureFileName)
         : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
         Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
         pPixelShader{nullptr}, pVertexBuffer{nullptr}, pVertexLayout{nullptr}, pVertexShader{nullptr}, pIndexBuffer{nullptr}, pConstantBuffer{nullptr}
@@ -203,6 +204,14 @@ namespace PirateSimulator
 
         // Chargement des textures
         this->loadTexture(textureFileName);
+
+
+
+        LightRef sun = LightManager::singleton.getBrightSun();
+
+        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&sun->m_vector);
+        m_shaderParameter.sunPower = sun->m_power;
+
         UtilitairesDX::DXRelacher(pD3DDevice);
     }
 
@@ -361,7 +370,7 @@ namespace PirateSimulator
         // Pour l'effet
         ID3DBlob* pFXBlob = NULL;
 
-        UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
+        UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhongField.fx", 0, 0, 0,
                                                     "fx_5_0", 0, 0, &pFXBlob, 0),
                                  DXE_ERREURCREATION_FX);
 

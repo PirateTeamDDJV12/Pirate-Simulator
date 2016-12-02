@@ -38,12 +38,11 @@ namespace PirateSimulator
             XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
 
             float puissance;
-            int bTex;					// Texture ou materiau 
+            float sunPower;
             XMFLOAT2 remplissage;
 
 
-            ShadersParams() :
-                bTex{1}
+            ShadersParams()
             {
                 vLumiere = XMVectorSet(-10.0f, 10.0f, -15.0f, 1.0f);
                 //vLumiere = XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
@@ -59,8 +58,7 @@ namespace PirateSimulator
                     const XMVECTOR& AMat,
                     const XMVECTOR& DEcl,
                     const XMVECTOR& DMat
-                ) :
-                bTex{ 1 }
+                )
             {
                 vLumiere = lumiere;
                 vAEcl = AEcl;
@@ -77,8 +75,7 @@ namespace PirateSimulator
                 const XMVECTOR& DMat,
                 const XMVECTOR& SEcl,
                 const XMVECTOR& SMat
-            ) :
-                bTex{ 1 }
+            )
             {
                 vLumiere = lumiere;
                 vAEcl = AEcl;
@@ -105,7 +102,7 @@ namespace PirateSimulator
     private:
         int m_terrainWidth;
         int m_terrainHeight;
-        int m_terrainScale;
+        float m_terrainScale;
         std::vector<Vertex> m_vertexArray;
         std::vector<CSommetBloc> m_csommetsArray;
         std::vector<unsigned int> m_index_bloc;
@@ -114,7 +111,7 @@ namespace PirateSimulator
         // Get the configuration from the config file
         Terrain();
         // Override the configuration file
-        Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName);
+        Terrain(int h, int w, float s, const std::string& fieldFileName, const std::string& textureFileName);
 
         // Destructeur
         virtual ~Terrain();
