@@ -28,8 +28,8 @@ void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)
     if (meshToRemove)
     {
         std::vector<IMesh*>* areaToConsider = findStaticMeshInArea(
-            meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[0], 
-            meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[2]
+            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[0]), 
+            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[2])
         );
 
         for (auto iter = areaToConsider->begin(); iter != areaToConsider->end(); ++iter)
@@ -92,8 +92,8 @@ void RendererManager::drawAll()
 
 void RendererManager::addAStaticSortableMesh(PirateSimulator::IMesh* mesh)
 {
-    size_t x = mesh->getGameObject()->m_transform.m_position.vector4_f32[0] / AREA_WIDTH;
-    size_t z = mesh->getGameObject()->m_transform.m_position.vector4_f32[2] / AREA_WIDTH;
+    size_t x = static_cast<size_t>(mesh->getGameObject()->m_transform.m_position.vector4_f32[0] / AREA_WIDTH);
+    size_t z = static_cast<size_t>(mesh->getGameObject()->m_transform.m_position.vector4_f32[2] / AREA_WIDTH);
 
     auto meshArray = findStaticMeshInArea(x, z);
     if(meshArray)
@@ -147,8 +147,8 @@ void RendererManager::updateRenderedStack()
     float xCameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0];
     float zCameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[2];
 
-    size_t xCameraArea = (xCameraPosition < 0.f ? 0 : xCameraPosition / AREA_WIDTH);
-    size_t zCameraArea = (zCameraPosition < 0.f ? 0 : zCameraPosition / AREA_WIDTH);
+    size_t xCameraArea = static_cast<size_t>(xCameraPosition < 0.f ? 0 : xCameraPosition / AREA_WIDTH);
+    size_t zCameraArea = static_cast<size_t>(zCameraPosition < 0.f ? 0 : zCameraPosition / AREA_WIDTH);
 
 
     if(xCameraArea != m_currentX ||
@@ -469,8 +469,8 @@ void RendererManager::updateRenderedStack()
 
         m_currentX = xCameraArea;
         m_currentZ = zCameraArea;
-        m_forwardForward = zCameraPosition;
-        m_rightRight = xCameraPosition;
+        m_forwardForward = static_cast<size_t>(zCameraPosition);
+        m_rightRight = static_cast<size_t>(xCameraPosition);
 
         // Add the moving objects in the stack
         for(auto iter = m_movingMeshArray.begin(); iter != m_movingMeshArray.end(); ++iter)

@@ -44,7 +44,7 @@ namespace PirateSimulator
             PirateSimulator::Vertex p{myFile[i], myFile[i + 2], myFile[i + 1], myFile[i + 3], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7]};
             addSommet(p);
         }
-        for(int i = nbPoint; i < myFile.size(); i += 3)
+        for(size_t i = nbPoint; i < myFile.size(); i += 3)
         {
             PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
             addTriangle(t);
@@ -71,7 +71,7 @@ namespace PirateSimulator
             PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
             addSommet(p);
         }
-        for(int i = nbPoint; i < myFile.size(); i += 3)
+        for(size_t i = nbPoint; i < myFile.size(); i += 3)
         {
             PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
             addTriangle(t);
@@ -246,12 +246,12 @@ namespace PirateSimulator
             return 0.0f;
         }
 
-        float myFirstX = UtilitairesDX::roundNum(x, m_terrainScale, false) / m_terrainScale;
-        float myFirstZ = UtilitairesDX::roundNum(z, m_terrainScale, false) / m_terrainScale;
-        float mySecondZ = UtilitairesDX::roundNum(z, m_terrainScale, true) / m_terrainScale;
+        float myFirstX = static_cast<float>(UtilitairesDX::roundNum(static_cast<int>(x), static_cast<int>(m_terrainScale), false)) / m_terrainScale;
+        float myFirstZ = static_cast<float>(UtilitairesDX::roundNum(static_cast<int>(z), static_cast<int>(m_terrainScale), false)) / m_terrainScale;
+        float mySecondZ = static_cast<float>(UtilitairesDX::roundNum(static_cast<int>(z), static_cast<int>(m_terrainScale), true)) / m_terrainScale;
 
-        Vertex bottomLeft = m_vertexArray[myFirstX + myFirstZ * m_terrainWidth];
-        Vertex topLeft = m_vertexArray[myFirstX + mySecondZ * m_terrainWidth];
+        Vertex bottomLeft = m_vertexArray[static_cast<size_t>(myFirstX + myFirstZ * m_terrainWidth)];
+        Vertex topLeft = m_vertexArray[static_cast<size_t>(myFirstX + mySecondZ * m_terrainWidth)];
 
         float diffLeft = topLeft.position().z() - bottomLeft.position().z();
 
