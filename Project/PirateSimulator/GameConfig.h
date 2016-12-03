@@ -37,9 +37,8 @@ namespace PirateSimulator
         public:
             static constexpr float POWER = MathUtils::static_clamp(SUN_POWER, 0.f, 1.0f);
 
-            static constexpr float X_DIRECTION = 0.f;
-            static constexpr float Y_DIRECTION = 0.f;
-            static constexpr float Z_DIRECTION = 10.f;
+            static constexpr float X_SUN = 10000.f;
+            static constexpr float Y_SUN = 0.f;
         };
     }
 

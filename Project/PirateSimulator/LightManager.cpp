@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <directxmath.h>
+#include "..\PetitMoteur3D\PetitMoteur3D\Config\Config.hpp"
 
 using namespace PirateSimulator;
 
@@ -54,7 +55,97 @@ public:
     }
 };
 
+namespace PirateSimulator
+{
+    //Sun will move along the Z axis
+    class Sun
+    {
+    private:
+        float m_x;
+        float m_y;
+        DirectX::XMFLOAT3 m_center;
 
+        DirectX::XMFLOAT3 m_vectorToCenter;
+
+        float m_distanceToCenter;
+
+        float m_angularVelocity;
+        float m_angle;
+
+        LightRef m_sunLight;
+
+
+    public:
+        Sun(float x, float y, const DirectX::XMFLOAT3& center, float angularVelocity) :
+            m_x{ x },
+            m_y{ y },
+            m_center{ center },
+            m_angularVelocity{ angularVelocity }
+        {
+            m_vectorToCenter.x = m_center.x - m_x;
+            m_vectorToCenter.y = m_center.y - m_y;
+            m_vectorToCenter.z = 0.f;
+
+            m_distanceToCenter = sqrtf(m_vectorToCenter.x * m_vectorToCenter.x + m_vectorToCenter.y * m_vectorToCenter.y);
+
+            m_angle = acosf(m_vectorToCenter.x / m_distanceToCenter);
+        }
+
+
+    public:
+        float getAngularVelocity() const noexcept
+        {
+            return m_angularVelocity;
+        }
+
+        const DirectX::XMFLOAT3& getCenter() const noexcept
+        {
+            return m_center;
+        }
+
+        //get a non normalized vector to the center of rotation of the sun
+        const DirectX::XMFLOAT3& getLightDirection() const noexcept
+        {
+            return m_vectorToCenter;
+        }
+
+        float getSunDistanceToSun() const noexcept
+        {
+            return m_distanceToCenter;
+        }
+
+        void setSunLight(LightRef light)
+        {
+            m_sunLight = light;
+        }
+
+
+    public:
+        void update(float elapsedTime)
+        {
+            float stepAngle = m_angularVelocity * elapsedTime;
+
+            m_angle += stepAngle;
+
+            if (m_angle > DirectX::XM_2PI) // step angle will be positive thus m_angle will increase so it is useless to check the m_angle < DirectX::XM_2PI
+            {
+                m_angle -= DirectX::XM_2PI;
+            }
+
+            float cosinus   = cosf(m_angle);
+            float sinus     = sinf(m_angle);
+
+            m_vectorToCenter.x = m_distanceToCenter * cosinus;
+            m_vectorToCenter.y = m_distanceToCenter * sinus;
+
+            m_x = m_center.x - m_vectorToCenter.x;
+            m_y = m_center.y - m_vectorToCenter.y;
+
+            m_sunLight->m_vector.x = cosinus;
+            m_sunLight->m_vector.z = sinus; // the GPU is Right-Hand convention -> y = z
+        }
+    };
+}
 
 
 LightManager LightManager::singleton;
@@ -62,14 +153,25 @@ LightManager LightManager::singleton;
 
 LightManager::LightManager() 
 {
+    Config* conf = Config::getInstance();
+
+    float centerMapX = conf->getWidth() * conf->getMapScale() / 2.f;
+    float centerMapZ = conf->getHeight() * conf->getMapScale() / 2.f;
+
+    DirectX::XMFLOAT3 centerMap(centerMapX, conf->getOffset(), centerMapZ);
+
+    m_sun = std::make_unique<Sun>(GameGlobals::SunGlobals::X_SUN, GameGlobals::SunGlobals::Y_SUN, centerMap, 10.f);
+
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::BRIGHT] = { 
         LightGenerator::generateSun(
-            GameGlobals::SunGlobals::X_DIRECTION,
-            GameGlobals::SunGlobals::Y_DIRECTION,
-            GameGlobals::SunGlobals::Z_DIRECTION, 
+            m_sun->getLightDirection().x,
+            m_sun->getLightDirection().y,
+            m_sun->getLightDirection().z,
             GameGlobals::SunGlobals::POWER
         ) 
     };
+
+    m_sun->setSunLight(this->getBrightSun());
 
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::DARKNESS] = {};
 
@@ -137,4 +239,9 @@ const std::vector<LightRef>& LightManager::getBrightPointsLights()  const noexce
 const std::vector<LightRef>& LightManager::getDarkPointsLights()    const noexcept
 {
     return getLights(Light::type::POINT, Light::modality::BRIGHT);
+}
+
+void LightManager::update(float elapsedTime)
+{
+    m_sun->update(elapsedTime);
 }

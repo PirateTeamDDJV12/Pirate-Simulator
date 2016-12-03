@@ -149,6 +149,8 @@ namespace PirateSimulator
         m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
         m_shaderParameter.puissance = m_material.m_property.power;
 
+        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&LightManager::singleton.getBrightSun()->m_vector);
+
         // IMPORTANT pour ajuster les param.
         m_textureEffect.m_pass->Apply(0, pImmediateContext);
 

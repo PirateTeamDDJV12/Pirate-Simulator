@@ -5,10 +5,12 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 
 
 namespace PirateSimulator
 {
+    class Sun;
     class LightManager
     {
     public:
@@ -17,7 +19,8 @@ namespace PirateSimulator
 
     private:
         std::map< Light::type, std::map< Light::modality, std::vector<LightRef> > > m_lightArray;
-        
+        std::unique_ptr<Sun> m_sun;
+
 
     public:
         LightManager();
@@ -33,6 +36,10 @@ namespace PirateSimulator
         LightRef getDarkSun()   const noexcept;
         const std::vector<LightRef>& getBrightPointsLights()  const noexcept;
         const std::vector<LightRef>& getDarkPointsLights()    const noexcept;
+
+
+    public:
+        void update(float elapsedTime);
     };
 }
 
