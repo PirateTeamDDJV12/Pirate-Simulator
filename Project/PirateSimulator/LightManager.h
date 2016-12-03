@@ -37,6 +37,14 @@ namespace PirateSimulator
         const std::vector<LightRef>& getBrightPointsLights()  const noexcept;
         const std::vector<LightRef>& getDarkPointsLights()    const noexcept;
 
+        float getSunAngle() const noexcept;
+
+        // get the ambient light. Store it before use. Algorithm used inside
+        float getAmbientLightCoefficient() const noexcept;
+
+        // get the diffuse light. Store it before use. Algorithm used inside
+        float getDiffuseLightCoefficient() const noexcept;
+
 
     public:
         void update(float elapsedTime);

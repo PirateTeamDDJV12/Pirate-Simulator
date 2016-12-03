@@ -2,16 +2,15 @@ cbuffer param
 { 
 	float4x4 matWorldViewProj;  // la matrice totale 
 	float4x4 matWorld;			// matrice de transformation dans le monde 
-	float4 vLumiere; 			// la position de la source d'éclairage (Point)
+	float4 vSunLight; 			// la position de la source d'éclairage (Point)
 	float4 vCamera; 			// la position de la caméra
 	float4 vAEcl; 				// la valeur ambiante de l'éclairage
 	float4 vAMat; 				// la valeur ambiante du matériau
 	float4 vDEcl; 				// la valeur diffuse de l'éclairage 
 	float4 vDMat; 				// la valeur diffuse du matériau 
-	float4 vSEcl; 				// la valeur spéculaire de l'éclairage 
 	float4 vSMat; 				// la valeur spéculaire du matériau 
 	float puissance;
-	int bTex;		    		// Booléen pour la présence de texture
+	float sunPower;
 	
 	float tick;  				// 0 a 359.9
 	float waveAmplitude;
@@ -49,7 +48,10 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	// Version sans tableau
 	float wiseComputationParam = (waveFrequency * (originAngle + tick));
 	
-	sortie.Pos.y = sortie.Pos.y + waveAmplitude * (sin(wiseComputationParam + sortie.Pos.x) + cos(wiseComputationParam + sortie.Pos.z / 6));
+	float sinusCoeff = sin(wiseComputationParam + sortie.Pos.x);
+	float cosinusCoeff = cos(wiseComputationParam + sortie.Pos.z / 6);
+	
+	sortie.Pos.y = sortie.Pos.y + waveAmplitude * (sinusCoeff + cosinusCoeff);
 	
 	sortie.Pos = mul(sortie.Pos, matWorldViewProj);
 
@@ -57,7 +59,7 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	
  	float3 PosWorld = mul(Pos, matWorld);
 
-	sortie.vDirLum = vLumiere - PosWorld; 
+	sortie.vDirLum = vSunLight; 
 	sortie.vDirCam = vCamera - PosWorld; 
 
     // Coordonnées d'application de texture
@@ -77,13 +79,13 @@ float4 couleur;
 	float3 V = normalize(vs.vDirCam);
 	
 	// Valeur de la composante diffuse
-	float4 diff = 0.5; 
+	float4 diff = saturate(dot(N, -L)) + vAEcl; 
 
 	// R = 2 * (N.L) * N – L
 	float3 R = normalize(2 * diff * N - L) ;
     
 	// Calcul de la spécularité 
-	float4 S = pow(saturate(dot(R, V)), puissance); 
+	float4 S = pow(saturate(dot(R, V)), puissance) * vAEcl; 
 
 	float4 couleurTexture;  
 
@@ -92,9 +94,9 @@ float4 couleur;
 	couleurTexture = textureEntree.Sample(SampleState, glitch);   
 
 	// I = A + D * N.L + (R.V)n
-	couleur =  couleurTexture * vAEcl  + 
+	couleur =  couleurTexture * vAEcl * sunPower + 
 			   couleurTexture * vDEcl * diff +
-			   vSEcl * vSMat * S;
+			   vSMat * S;
 	
 	
 	return couleur;

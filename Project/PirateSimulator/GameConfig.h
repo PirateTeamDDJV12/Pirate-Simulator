@@ -31,11 +31,14 @@ namespace PirateSimulator
         struct SunGlobals
         {
         private:
-            static constexpr float SUN_POWER = 1.f;
+            static constexpr float SUN_POWER = 1.0f;
 
-
+            
         public:
             static constexpr float POWER = MathUtils::static_clamp(SUN_POWER, 0.f, 1.0f);
+
+            static constexpr const float MIN_AMBIENT_LIGHT = 0.10f;
+            static constexpr const float AMBIENT_LIGHT_COEFF = 0.15f;
 
             static constexpr float X_SUN = 10000.f;
             static constexpr float Y_SUN = 0.f;

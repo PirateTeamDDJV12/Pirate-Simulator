@@ -13,6 +13,7 @@
 #include <comdef.h>
 #include "CameraManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
+#include "LightManager.h"
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -147,7 +148,9 @@ Plane::Plane(const std::string& textureFileName) :
     m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
     m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
     m_shaderParameter.vSMat = { 0.12f, 0.12f, 0.12f, 1.f };
-    m_shaderParameter.vSEcl = { 0.8f, 0.8f, 0.8f, 0.8f };
+
+    m_shaderParameter.puissance = m_material.m_property.power;
+    m_shaderParameter.sunPower = LightManager::singleton.getBrightSun()->m_power;
 
     // Activation de la texture ou non
     if (m_material.pTextureD3D != nullptr)
@@ -219,8 +222,18 @@ void Plane::Draw()
 
     // Dessiner les subsets non-transparents    
     //m_material = Material(MaterialProperties());
+    LightManager& lightManager = LightManager::singleton;
+    LightRef sun = lightManager.getBrightSun();
 
-    m_shaderParameter.puissance = m_material.m_property.power;
+    m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&sun->m_vector);
+
+    float ambientLightVal = lightManager.getAmbientLightCoefficient();
+
+    m_shaderParameter.vAEcl.vector4_f32[0] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[1] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[2] = ambientLightVal;
+
+
     m_shaderParameter.tick += TICK_INCREMENT;
 
     float waterVelocity = DirectX::XMScalarCos(m_shaderParameter.tick) * Plane::WAVE_SPEED_COEFFICIENT;

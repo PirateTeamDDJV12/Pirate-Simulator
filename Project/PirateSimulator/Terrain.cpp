@@ -125,31 +125,22 @@ namespace PirateSimulator
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-        m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-        m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-
         m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
-
-        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
-
-        pImmediateContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-
-        // Pas de Geometry Shader
-        pImmediateContext->GSSetShader(NULL, NULL, 0);
 
         // Activer le PS
         pImmediateContext->PSSetShader(pPixelShader, NULL, 0);
-        pImmediateContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 
         // Dessiner les subsets non-transparents    
         //m_material = Material(MaterialProperties());
 
-        m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
-        m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
-        m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
-        m_shaderParameter.puissance = m_material.m_property.power;
+        LightManager& lightManager = LightManager::singleton;
+        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&lightManager.getBrightSun()->m_vector);
 
-        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&LightManager::singleton.getBrightSun()->m_vector);
+        float ambientLightVal  = lightManager.getAmbientLightCoefficient();
+
+        m_shaderParameter.vAEcl.vector4_f32[0] = ambientLightVal;
+        m_shaderParameter.vAEcl.vector4_f32[1] = ambientLightVal;
+        m_shaderParameter.vAEcl.vector4_f32[2] = ambientLightVal;
 
         // IMPORTANT pour ajuster les param.
         m_textureEffect.m_pass->Apply(0, pImmediateContext);
@@ -213,6 +204,11 @@ namespace PirateSimulator
 
         m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&sun->m_vector);
         m_shaderParameter.sunPower = sun->m_power;
+
+        m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
+        m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
+        m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
+        m_shaderParameter.puissance = m_material.m_property.power;
 
         UtilitairesDX::DXRelacher(pD3DDevice);
     }

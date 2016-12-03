@@ -61,11 +61,10 @@ namespace PirateSimulator
             DirectX::XMVECTOR vAMat; 			// la valeur ambiante du matériau
             DirectX::XMVECTOR vDEcl; 			// la valeur diffuse de l'éclairage 
             DirectX::XMVECTOR vDMat; 			// la valeur diffuse du matériau 
-            DirectX::XMVECTOR vSEcl; 			// la valeur spéculaire de l'éclairage 
             DirectX::XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
 
             float puissance;
-            int bTex;					// Texture ou materiau 
+            float sunPower;
 
             float tick;
             float waveAmplitude;
@@ -78,7 +77,6 @@ namespace PirateSimulator
 
         public:
             ShadersParams() :
-                bTex{ 1 },
                 tick{ 0.f }
             {
                 vLumiere = DirectX::XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
@@ -96,7 +94,6 @@ namespace PirateSimulator
                 const DirectX::XMVECTOR& DEcl,
                 const DirectX::XMVECTOR& DMat
             ) :
-                bTex{ 1 },
                 tick{ 0.f }
             {
                 vLumiere = lumiere;
@@ -116,7 +113,6 @@ namespace PirateSimulator
                 const DirectX::XMVECTOR& SEcl,
                 const DirectX::XMVECTOR& SMat
             ) :
-                bTex{ 1 },
                 tick{ 0.f }
             {
                 vLumiere = lumiere;
@@ -124,7 +120,6 @@ namespace PirateSimulator
                 vAMat = AMat;
                 vDEcl = DEcl;
                 vDMat = DMat;
-                vSEcl = SEcl;
                 vSMat = SMat;
                 undertow = { 0.f, 0.f };
             }

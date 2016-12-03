@@ -114,9 +114,35 @@ namespace PirateSimulator
             return m_distanceToCenter;
         }
 
+        float getCurrentAngle() const noexcept
+        {
+            return m_angle;
+        }
+
+        LightRef ref() const noexcept
+        {
+            return m_sunLight;
+        }
+
         void setSunLight(LightRef light)
         {
             m_sunLight = light;
+        }
+
+        float getAmbientLightApproximation() const noexcept
+        {
+            if (m_angle < DirectX::XM_PI) // the sun is below the field.
+            {
+                return GameGlobals::SunGlobals::MIN_AMBIENT_LIGHT;
+            }
+
+            // the max value must be when the angle is at 3 * Pi / 4 (Sun at its peak)
+            return GameGlobals::SunGlobals::MIN_AMBIENT_LIGHT - sinf(m_angle) * GameGlobals::SunGlobals::AMBIENT_LIGHT_COEFF + abs(cosf(m_angle)) / 10000.f; 
+        }
+
+        float getDiffuseLightApproximation() const noexcept
+        {
+            return 1.0f; //TODO
         }
 
 
@@ -160,7 +186,7 @@ LightManager::LightManager()
 
     DirectX::XMFLOAT3 centerMap(centerMapX, conf->getOffset(), centerMapZ);
 
-    m_sun = std::make_unique<Sun>(GameGlobals::SunGlobals::X_SUN, GameGlobals::SunGlobals::Y_SUN, centerMap, 10.f);
+    m_sun = std::make_unique<Sun>(GameGlobals::SunGlobals::X_SUN, GameGlobals::SunGlobals::Y_SUN, centerMap, 30.f);
 
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::BRIGHT] = { 
         LightGenerator::generateSun(
@@ -171,7 +197,7 @@ LightManager::LightManager()
         ) 
     };
 
-    m_sun->setSunLight(this->getBrightSun());
+    m_sun->setSunLight(m_lightArray[Light::type::DIRECTIONAL][Light::modality::BRIGHT][0]);
 
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::DARKNESS] = {};
 
@@ -223,7 +249,7 @@ void LightManager::addLight(LightRef newLight) noexcept
 
 LightRef LightManager::getBrightSun() const noexcept
 {
-    return getLights(Light::type::DIRECTIONAL, Light::modality::BRIGHT)[0];
+    return m_sun->ref();
 }
 
 LightRef LightManager::getDarkSun()   const noexcept
@@ -244,4 +270,19 @@ const std::vector<LightRef>& LightManager::getDarkPointsLights()    const noexce
 void LightManager::update(float elapsedTime)
 {
     m_sun->update(elapsedTime);
+}
+
+float LightManager::getSunAngle() const noexcept
+{
+    return m_sun->getCurrentAngle();
+}
+
+float LightManager::getAmbientLightCoefficient() const noexcept
+{
+    return m_sun->getAmbientLightApproximation();
+}
+
+float LightManager::getDiffuseLightCoefficient() const noexcept
+{
+    return m_sun->getDiffuseLightApproximation();
 }
