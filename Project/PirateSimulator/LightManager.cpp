@@ -186,7 +186,7 @@ LightManager::LightManager()
 
     DirectX::XMFLOAT3 centerMap(centerMapX, conf->getOffset(), centerMapZ);
 
-    m_sun = std::make_unique<Sun>(GameGlobals::SunGlobals::X_SUN, GameGlobals::SunGlobals::Y_SUN, centerMap, 30.f);
+    m_sun = std::make_unique<Sun>(GameGlobals::SunGlobals::X_SUN, GameGlobals::SunGlobals::Y_SUN, centerMap, 8.f);
 
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::BRIGHT] = { 
         LightGenerator::generateSun(
@@ -202,16 +202,16 @@ LightManager::LightManager()
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::DARKNESS] = {};
 
 
-    DirectX::XMFLOAT3 pointLightStart   { 400.f, 400.f, 400.f };
-    DirectX::XMFLOAT3 pointLightEnd     { 600.f, 600.f, 600.f };
+    DirectX::XMFLOAT3 pointLightStart   { 800.f, -10.f, 950.f };
+    DirectX::XMFLOAT3 pointLightEnd     { 1100.f, -10.f, 950.f };
 
 
     m_lightArray[Light::type::POINT][Light::modality::BRIGHT] = 
         std::move(LightGenerator::generate<Light::type::POINT, Light::modality::BRIGHT>(
-                10, 
+                4, 
                 pointLightStart, 
                 pointLightEnd, 
-                15.f, 
+                8.f, 
                 1.f
             )
         );

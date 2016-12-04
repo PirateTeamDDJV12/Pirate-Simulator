@@ -149,8 +149,25 @@ Plane::Plane(const std::string& textureFileName) :
     m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
     m_shaderParameter.vSMat = { 0.12f, 0.12f, 0.12f, 1.f };
 
+    LightManager& lightManager = LightManager::singleton;
+
     m_shaderParameter.puissance = m_material.m_property.power;
-    m_shaderParameter.sunPower = LightManager::singleton.getBrightSun()->m_power;
+    m_shaderParameter.sunPower = lightManager.getBrightSun()->m_power;
+
+    auto& lightArray = lightManager.getBrightPointsLights();
+
+    if (lightArray.size() > 3)
+    {
+        m_shaderParameter.vLightPoint1 = XMLoadFloat3(&lightArray[0]->m_vector);
+        m_shaderParameter.vLightPoint2 = XMLoadFloat3(&lightArray[1]->m_vector);
+        m_shaderParameter.vLightPoint3 = XMLoadFloat3(&lightArray[2]->m_vector);
+        m_shaderParameter.vLightPoint4 = XMLoadFloat3(&lightArray[3]->m_vector);
+
+        m_shaderParameter.mappedLightPointScope.vector4_f32[0] = lightArray[0]->m_scope;
+        m_shaderParameter.mappedLightPointScope.vector4_f32[1] = lightArray[1]->m_scope;
+        m_shaderParameter.mappedLightPointScope.vector4_f32[2] = lightArray[2]->m_scope;
+        m_shaderParameter.mappedLightPointScope.vector4_f32[3] = lightArray[3]->m_scope;
+    }
 
     // Activation de la texture ou non
     if (m_material.pTextureD3D != nullptr)
