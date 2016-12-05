@@ -519,7 +519,7 @@ void CChargeurOBJ::TraiterLigneMAT(const string& str)
 
 int CChargeurOBJ::TrouverVertex(const OBJVertexInfo& vertex)
 {
-	int index = 0;  // Pas trouvé
+	size_t index = 0;  // Pas trouvé
 	bool trouve = false;
 
 	while (index < tabVertexInfo.size() && !trouve )
