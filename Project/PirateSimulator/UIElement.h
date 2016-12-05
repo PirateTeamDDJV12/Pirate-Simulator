@@ -28,9 +28,9 @@ namespace PirateSimulator
         constexpr UIObject* as()
         {
             static_assert(
-                std::is_base_of<IUISelector, UIObject>::value ||
-                std::is_same<IUISelector, UIObject>::value ||
-                std::is_convertible<UIObject, IUISelector>::value,
+                std::is_base_of<UIElementBase, UIObject>::value ||
+                std::is_same<UIElementBase, UIObject>::value ||
+                std::is_convertible<UIObject, UIElementBase>::value,
                 "Not an UI Object"
             );
 
