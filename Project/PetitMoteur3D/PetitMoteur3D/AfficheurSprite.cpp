@@ -187,7 +187,7 @@ namespace PM3D
         pDispositif->ActiverMelangeAlpha();
 
         // Faire le rendu de tous nos sprites
-        for (int i = 0; i < tabSprites.size(); ++i)
+        for (size_t i = 0; i < tabSprites.size(); ++i)
         {
             // Initialiser et sélectionner les «constantes» de l'effet
             m_shaderParameter.matWVP = XMMatrixTranspose(tabSprites[i]->matPosDim);

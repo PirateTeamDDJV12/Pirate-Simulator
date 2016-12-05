@@ -117,6 +117,8 @@
     <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\InputTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Light.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\LightManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Mesh.cpp" />
     <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
@@ -177,11 +179,14 @@
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\InputManager.h" />
     <ClInclude Include="..\..\PirateSimulator\IGameTask.h" />
     <ClInclude Include="..\..\PirateSimulator\InputTask.h" />
     <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\Light.h" />
+    <ClInclude Include="..\..\PirateSimulator\LightManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
     <ClInclude Include="..\..\PirateSimulator\Notifier.h" />

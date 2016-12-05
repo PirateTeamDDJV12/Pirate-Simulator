@@ -100,7 +100,7 @@ void CDIManipulateur::StatutClavier()
 
 bool CDIManipulateur::ToucheAppuyee(UINT touche) const
 {
-	return (tamponClavier[touche] & 0x80);
+	return static_cast<bool>(tamponClavier[touche] & 0x80);
 }
 
 void CDIManipulateur::SaisirEtatSouris()

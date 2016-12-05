@@ -228,6 +228,12 @@
     <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Light.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\LightManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -447,6 +453,15 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
+		<Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+	</ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Light.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\LightManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\GameUtils.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

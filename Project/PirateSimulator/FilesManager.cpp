@@ -53,7 +53,7 @@ std::vector<float> FilesManager::readFileHeightMap(std::string filePath)
     for(i = 0; i < nbIndices; i += 4)
     {
         bfTest.put<BinaryFast::Load>(allTriangle, i);
-        v.push_back(bfTest.getUint32());
+        v.push_back(static_cast<float>(bfTest.getUint32()));
     }
 
     delete []binaryNbVertex;

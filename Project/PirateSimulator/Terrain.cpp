@@ -8,6 +8,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 #include "RessourceManager.h"
 #include "RendererManager.h"
+#include "LightManager.h"
 
 using namespace DirectX;
 
@@ -43,7 +44,7 @@ namespace PirateSimulator
             PirateSimulator::Vertex p{myFile[i], myFile[i + 2], myFile[i + 1], myFile[i + 3], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7]};
             addSommet(p);
         }
-        for(int i = nbPoint; i < myFile.size(); i += 3)
+        for(size_t i = nbPoint; i < myFile.size(); i += 3)
         {
             PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
             addTriangle(t);
@@ -52,7 +53,7 @@ namespace PirateSimulator
         Init(terrainConfig->getTexturePath());
     }
 
-    Terrain::Terrain(int h, int w, int s, const std::string& fieldFileName, const std::string& textureFileName)
+    Terrain::Terrain(int h, int w, float s, const std::string& fieldFileName, const std::string& textureFileName)
         : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
         Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
         pPixelShader{nullptr}, pVertexBuffer{nullptr}, pVertexLayout{nullptr}, pVertexShader{nullptr}, pIndexBuffer{nullptr}, pConstantBuffer{nullptr}
@@ -70,7 +71,7 @@ namespace PirateSimulator
             PirateSimulator::Vertex p{myFile[i + 1], myFile[i + 3], myFile[i + 2], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7], myFile[i + 8]};
             addSommet(p);
         }
-        for(int i = nbPoint; i < myFile.size(); i += 3)
+        for(size_t i = nbPoint; i < myFile.size(); i += 3)
         {
             PirateSimulator::Triangle t{static_cast<unsigned int>(myFile[i]), static_cast<unsigned int>(myFile[i + 1]), static_cast<unsigned int>(myFile[i + 2])};
             addTriangle(t);
@@ -124,29 +125,22 @@ namespace PirateSimulator
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-        m_shaderParameter.vAMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-        m_shaderParameter.vDMat = XMVectorSet(1.0f, 0.0f, 0.0f, 1.0f);
-
         m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
-
-        pImmediateContext->UpdateSubresource(pConstantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
-
-        pImmediateContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-
-        // Pas de Geometry Shader
-        pImmediateContext->GSSetShader(NULL, NULL, 0);
 
         // Activer le PS
         pImmediateContext->PSSetShader(pPixelShader, NULL, 0);
-        pImmediateContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 
         // Dessiner les subsets non-transparents    
         //m_material = Material(MaterialProperties());
 
-        m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
-        m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
-        m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
-        m_shaderParameter.puissance = m_material.m_property.power;
+        LightManager& lightManager = LightManager::singleton;
+        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&lightManager.getBrightSun()->m_vector);
+
+        float ambientLightVal  = lightManager.getAmbientLightCoefficient();
+
+        m_shaderParameter.vAEcl.vector4_f32[0] = ambientLightVal;
+        m_shaderParameter.vAEcl.vector4_f32[1] = ambientLightVal;
+        m_shaderParameter.vAEcl.vector4_f32[2] = ambientLightVal;
 
         // IMPORTANT pour ajuster les param.
         m_textureEffect.m_pass->Apply(0, pImmediateContext);
@@ -203,6 +197,19 @@ namespace PirateSimulator
 
         // Chargement des textures
         this->loadTexture(textureFileName);
+
+
+
+        LightRef sun = LightManager::singleton.getBrightSun();
+
+        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&sun->m_vector);
+        m_shaderParameter.sunPower = sun->m_power;
+
+        m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
+        m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
+        m_shaderParameter.vSMat = XMLoadFloat4(&m_material.m_property.specularValue);
+        m_shaderParameter.puissance = m_material.m_property.power;
+
         UtilitairesDX::DXRelacher(pD3DDevice);
     }
 
@@ -235,12 +242,12 @@ namespace PirateSimulator
             return 0.0f;
         }
 
-        float myFirstX = UtilitairesDX::roundNum(x, m_terrainScale, false) / m_terrainScale;
-        float myFirstZ = UtilitairesDX::roundNum(z, m_terrainScale, false) / m_terrainScale;
-        float mySecondZ = UtilitairesDX::roundNum(z, m_terrainScale, true) / m_terrainScale;
+        float myFirstX = static_cast<float>(UtilitairesDX::roundNum(static_cast<int>(x), static_cast<int>(m_terrainScale), false)) / m_terrainScale;
+        float myFirstZ = static_cast<float>(UtilitairesDX::roundNum(static_cast<int>(z), static_cast<int>(m_terrainScale), false)) / m_terrainScale;
+        float mySecondZ = static_cast<float>(UtilitairesDX::roundNum(static_cast<int>(z), static_cast<int>(m_terrainScale), true)) / m_terrainScale;
 
-        Vertex bottomLeft = m_vertexArray[myFirstX + myFirstZ * m_terrainWidth];
-        Vertex topLeft = m_vertexArray[myFirstX + mySecondZ * m_terrainWidth];
+        Vertex bottomLeft = m_vertexArray[static_cast<size_t>(myFirstX + myFirstZ * m_terrainWidth)];
+        Vertex topLeft = m_vertexArray[static_cast<size_t>(myFirstX + mySecondZ * m_terrainWidth)];
 
         float diffLeft = topLeft.position().z() - bottomLeft.position().z();
 
@@ -361,7 +368,7 @@ namespace PirateSimulator
         // Pour l'effet
         ID3DBlob* pFXBlob = NULL;
 
-        UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
+        UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhongField.fx", 0, 0, 0,
                                                     "fx_5_0", 0, 0, &pFXBlob, 0),
                                  DXE_ERREURCREATION_FX);
 
