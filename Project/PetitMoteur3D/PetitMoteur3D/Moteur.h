@@ -108,7 +108,7 @@ namespace PM3D
 
             beginThread.emplace_back([&resultUI]() {
                 PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
-                unsigned long long count = 0;
+
                 while (true)
                 {
                     if (titleScreen())
