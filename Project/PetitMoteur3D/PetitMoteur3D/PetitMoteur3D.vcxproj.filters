@@ -222,6 +222,12 @@
     <ClCompile Include="..\..\PirateSimulator\Piece.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIElement.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Light.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
@@ -443,6 +449,12 @@
     <ClInclude Include="..\..\PirateSimulator\Piece.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIElement.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
+		<Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+	</ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Light.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
