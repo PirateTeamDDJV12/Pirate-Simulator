@@ -25,7 +25,7 @@ namespace PirateSimulator
 
     public:
         template<class UIObject>
-        constexpr UIObject* as()
+        constexpr UIObject* as() const
         {
             static_assert(
                 std::is_base_of<UIElementBase, UIObject>::value ||
