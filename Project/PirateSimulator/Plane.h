@@ -4,15 +4,12 @@
 #include "Material.h"
 #include "Effect.h"
 #include "Mesh.h"
-#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
-#include <DirectXMath.h>
-#include <d3d11.h>
-#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
 #include <vector>
 #include <DirectXMath.h>
-#include <math.h>
+#include <d3d11.h>
+
 namespace PirateSimulator
 {
     class SommetPlane
