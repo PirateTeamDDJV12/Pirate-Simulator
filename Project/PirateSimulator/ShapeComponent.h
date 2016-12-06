@@ -37,18 +37,13 @@ namespace PirateSimulator
 
 
     public:
-        //static physx::unique_ptr<physx::PxRigidDynamic> createPxActor();
+        physx::unique_ptr<physx::PxRigidDynamic> createPxActor();
 
         physx::PxRigidDynamic& pxActor();
 
         virtual physx::PxTransform pose();
         void setPose(const physx::PxTransform &iPose);
-        void cleanUp()
-        {
-            /*m_actor->release();
-            m_material->release();
-            m_shape->release();*/
-        }
+        void cleanUp();
 
     };
 

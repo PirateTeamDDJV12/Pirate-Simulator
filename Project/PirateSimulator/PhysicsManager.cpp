@@ -4,6 +4,7 @@
 
 //#include  "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 #include "GameObject.h"
+#include "TimeManager.h"
 using namespace physx;
 
 
@@ -57,19 +58,19 @@ namespace PirateSimulator {
 				else
 					continue;
 
-				GameObject *trigger = nullptr;
+				ShapeComponent *trigger = nullptr;
 				if (!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_TRIGGER))
-					trigger = static_cast<GameObject*>(pairs[i].triggerShape->getActor()->userData);
+					trigger = static_cast<ShapeComponent*>(pairs[i].triggerShape->getActor()->userData);
 
-				GameObject *other = nullptr;
+				ShapeComponent *other = nullptr;
 				if (!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_OTHER))
-					other = static_cast<GameObject*>(pairs[i].otherShape->getActor()->userData);
+					other = static_cast<ShapeComponent*>(pairs[i].otherShape->getActor()->userData);
 
-				/*if (trigger)
-					trigger->as<IColliderInterface>()->onTrigger(triggerEnter, pairs[i].triggerShape, other ? pairs[i].otherShape : nullptr);
+				if (trigger)
+					trigger->onTrigger(triggerEnter, pairs[i].triggerShape, other ? pairs[i].otherShape : nullptr);
 
 				if (other)
-					other->as<IColliderInterface>()->onTrigger(triggerEnter, pairs[i].otherShape, trigger ? pairs[i].triggerShape : nullptr);*/
+					other->onTrigger(triggerEnter, pairs[i].otherShape, trigger ? pairs[i].triggerShape : nullptr);
 			}
 		}
 
@@ -83,6 +84,15 @@ namespace PirateSimulator {
 
 	void PhysicsManager::update()
 	{
+        auto &timeManager = TimeManager::GetInstance();
+        
+
+        auto durationStep = 10ms;
+        while (timeManager.isTimeToUpdate())
+        {
+            _scene->simulate(duration_cast<duration<PxReal>>(durationStep).count());
+            _scene->fetchResults(true);
+        }
 
 	}
 	void PhysicsManager::initialize()
