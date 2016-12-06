@@ -66,6 +66,14 @@ namespace PirateSimulator
         }
         void reset();
     };
+
+
+    enum ACTOR
+    {
+        EACTORTERRAIN = 1 << 0,
+        EACTORVEHICLE = 1 << 1,
+        EACTORPIECE = 1 << 2
+    };
 }
 
 #endif

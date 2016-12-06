@@ -256,8 +256,8 @@ namespace PM3D
 #endif
             terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
             // Add the shape for Terrain
-            auto terrainShape = new PirateSimulator::TerrainShape();
-            terrain->addComponent<PirateSimulator::ShapeComponent>(terrainShape);
+         /*   auto terrainShape = new PirateSimulator::TerrainShape();
+            terrain->addComponent<PirateSimulator::ShapeComponent>(terrainShape);*/
             
             // Add our water plane
             auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(

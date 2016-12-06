@@ -1,7 +1,8 @@
 #include "ShapeComponent.h"
-
+#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "PhysicsManager.h"
 #include "GameObject.h"
+
 
 
 using namespace physx;
@@ -21,11 +22,9 @@ namespace PirateSimulator
         pxActor().setGlobalPose(iPose);
     }
 
-   /* physx::unique_ptr<physx::PxRigidStatic> ShapeComponent::createPxActor()
+    /*physx::unique_ptr<physx::PxRigidStatic> ShapeComponent::createPxActor()
     {
-        return physx::unique_ptr<physx::PxRigidStatic>(
-            PhysicsManager::singleton.physics().createRigidStatic(physx::PxTransform::createIdentity())
-            );
+        
     }*/
 
     void ShapeComponent::cleanUp()

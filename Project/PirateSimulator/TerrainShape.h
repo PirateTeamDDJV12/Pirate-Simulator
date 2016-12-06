@@ -35,7 +35,7 @@ namespace PirateSimulator
         }
 
         void setGameObject(GameObject* parent) override;
-
+        
     };
     
 }

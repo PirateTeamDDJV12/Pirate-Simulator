@@ -18,6 +18,7 @@ namespace PirateSimulator
     class GameObject;
     class ShapeComponent : public Component
     {
+        
     protected:
         const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
         physx::PxShape* m_shape;
@@ -29,7 +30,12 @@ namespace PirateSimulator
         }
         virtual std::string getTypeId() const noexcept override = 0;
         virtual void onContact(const physx::PxContactPair &aContactPair) =0;
-
+        enum ACTOR
+        {
+            EACTORTERRAIN = 1<<0,
+            EACTORVEHICLE = 1<<1,
+            EACTORPIECE = 1<<2
+        };
 
 
 
@@ -37,13 +43,18 @@ namespace PirateSimulator
 
 
     public:
-        physx::unique_ptr<physx::PxRigidDynamic> createPxActor();
-
+        physx::unique_ptr<physx::PxRigidStatic> ShapeComponent::createPxActor()
+        {
+        return physx::unique_ptr<physx::PxRigidStatic>(
+            PhysicsManager::singleton.physics().createRigidStatic(physx::PxTransform::createIdentity())
+            );
+        }
         physx::PxRigidDynamic& pxActor();
 
         virtual physx::PxTransform pose();
         void setPose(const physx::PxTransform &iPose);
         void cleanUp();
+
 
     };
 
