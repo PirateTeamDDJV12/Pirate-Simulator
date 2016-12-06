@@ -26,17 +26,30 @@ namespace PirateSimulator
 
 
     public:
+        /*get the beginning point of the bezier curve*/
         const DirectX::XMFLOAT3& getStartingPoint() const noexcept;
+
+        /*get the ending point of the bezier curve*/
         const DirectX::XMFLOAT3& getEndingPoint() const noexcept;
+
+        /*get the first control point of the bezier curve*/
         const DirectX::XMFLOAT3& getFirstControlPoint() const noexcept;
+
+        /*get the second control point of the bezier curve*/
         const DirectX::XMFLOAT3& getSecondingPoint() const noexcept;
         
+        /*get the number of points in the curve composing the trajectory*/
         size_t getPointCount() const noexcept;
+
+        /*get the delta t between each points*/
         float getPointStep() const noexcept;
+
+        /*return the trajectory*/
         const std::vector<DirectX::XMFLOAT3>& getTrajectory() const noexcept;
 
 
     private:
+        /*compute the point at t (0.f <= t <= 1.f) (see wikipedia for the formula of cubic Bezier curve)*/
         void computePoint(float t, const DirectX::XMFLOAT3 end);
     };
 }

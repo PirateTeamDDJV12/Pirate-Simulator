@@ -28,7 +28,7 @@ CubicBezierCurve::CubicBezierCurve(
     m_bezierTrajectory.push_back(end);
 }
 
-void CubicBezierCurve::computePoint(float t, const DirectX::XMFLOAT3 end)
+void CubicBezierCurve::computePoint(float t, const DirectX::XMFLOAT3& end)
 {
     const float placementPointInvert = 1.f - t;
 
