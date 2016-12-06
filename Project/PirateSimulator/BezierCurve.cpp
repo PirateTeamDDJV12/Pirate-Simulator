@@ -17,8 +17,8 @@ CubicBezierCurve::CubicBezierCurve(
 
     m_bezierTrajectory.push_back(start);
 
-    const float step = 1.f / static_cast<float>(pointCount);
     size_t computeCount = pointCount - 1;
+    const float step = 1.f / static_cast<float>(computeCount);
 
     for (size_t point = 1; point < computeCount; ++point)
     {
@@ -28,32 +28,35 @@ CubicBezierCurve::CubicBezierCurve(
     m_bezierTrajectory.push_back(end);
 }
 
-void CubicBezierCurve::computePoint(float placementPoint, const DirectX::XMFLOAT3 end)
+void CubicBezierCurve::computePoint(float t, const DirectX::XMFLOAT3 end)
 {
-    const float placementPointInvert = 1.f - placementPoint;
+    const float placementPointInvert = 1.f - t;
 
     const float squareInvert = placementPointInvert * placementPointInvert;
     const float cubeInvert = squareInvert * placementPointInvert;
     
-    const float squareT = placementPoint * placementPoint;
-    const float cubeT = squareT * placementPoint;
+    const float squareT = t * t;
+    const float cubeT = squareT * t;
+
+    const float secondCoeff = 3.f * t * squareInvert;
+    const float thirdCoeff = 3.f * squareT * placementPointInvert;
 
     const float x =
         m_bezierTrajectory.front().x * cubeInvert +
-        3.f * (m_firstControlPoint.x * placementPoint * squareInvert +
-            m_secondControlPoint.x * squareT * placementPointInvert) +
+        m_firstControlPoint.x * secondCoeff +
+        m_secondControlPoint.x * thirdCoeff +
         end.x * cubeT;
 
     const float y =
         m_bezierTrajectory.front().y * cubeInvert +
-        3.f * (m_firstControlPoint.y * placementPoint * squareInvert +
-            m_secondControlPoint.y * squareT * placementPointInvert) +
+        m_firstControlPoint.y * secondCoeff +
+        m_secondControlPoint.y * thirdCoeff +
         end.y * cubeT;
 
     const float z =
         m_bezierTrajectory.front().z * cubeInvert +
-        3.f * (m_firstControlPoint.z * placementPoint * squareInvert +
-            m_secondControlPoint.z * squareT * placementPointInvert) +
+        m_firstControlPoint.z * secondCoeff +
+        m_secondControlPoint.z * thirdCoeff +
         end.z * cubeT;
 
     m_bezierTrajectory.emplace_back(x, y, z);

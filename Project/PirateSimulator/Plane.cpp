@@ -156,17 +156,27 @@ Plane::Plane(const std::string& textureFileName) :
 
     auto& lightArray = lightManager.getBrightPointsLights();
 
-    if (lightArray.size() > 3)
+    if (lightArray.size() > 7)
     {
         m_shaderParameter.vLightPoint1 = XMLoadFloat3(&lightArray[0]->m_vector);
         m_shaderParameter.vLightPoint2 = XMLoadFloat3(&lightArray[1]->m_vector);
         m_shaderParameter.vLightPoint3 = XMLoadFloat3(&lightArray[2]->m_vector);
         m_shaderParameter.vLightPoint4 = XMLoadFloat3(&lightArray[3]->m_vector);
 
-        m_shaderParameter.mappedLightPointScope.vector4_f32[0] = lightArray[0]->m_scope;
-        m_shaderParameter.mappedLightPointScope.vector4_f32[1] = lightArray[1]->m_scope;
-        m_shaderParameter.mappedLightPointScope.vector4_f32[2] = lightArray[2]->m_scope;
-        m_shaderParameter.mappedLightPointScope.vector4_f32[3] = lightArray[3]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[0] = lightArray[0]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[1] = lightArray[1]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[2] = lightArray[2]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[3] = lightArray[3]->m_scope;
+
+        m_shaderParameter.vLightPoint5 = XMLoadFloat3(&lightArray[4]->m_vector);
+        m_shaderParameter.vLightPoint6 = XMLoadFloat3(&lightArray[5]->m_vector);
+        m_shaderParameter.vLightPoint7 = XMLoadFloat3(&lightArray[6]->m_vector);
+        m_shaderParameter.vLightPoint8 = XMLoadFloat3(&lightArray[7]->m_vector);
+
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[0] = lightArray[4]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[1] = lightArray[5]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[2] = lightArray[6]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[3] = lightArray[7]->m_scope;
     }
 
     // Activation de la texture ou non

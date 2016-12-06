@@ -61,7 +61,13 @@ namespace PirateSimulator
             DirectX::XMVECTOR vLightPoint2;
             DirectX::XMVECTOR vLightPoint3;
             DirectX::XMVECTOR vLightPoint4;
-            DirectX::XMVECTOR mappedLightPointScope;
+            DirectX::XMVECTOR mappedLightPointPower1;
+
+            DirectX::XMVECTOR vLightPoint5;
+            DirectX::XMVECTOR vLightPoint6;
+            DirectX::XMVECTOR vLightPoint7;
+            DirectX::XMVECTOR vLightPoint8;
+            DirectX::XMVECTOR mappedLightPointPower2;
 
             DirectX::XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
             DirectX::XMVECTOR vAMat; 			// la valeur ambiante du matériau

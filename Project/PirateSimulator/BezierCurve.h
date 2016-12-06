@@ -37,7 +37,7 @@ namespace PirateSimulator
 
 
     private:
-        void computePoint(float placementPoint, const DirectX::XMFLOAT3 end);
+        void computePoint(float t, const DirectX::XMFLOAT3 end);
     };
 }
 

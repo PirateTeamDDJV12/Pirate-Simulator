@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <directxmath.h>
 #include "..\PetitMoteur3D\PetitMoteur3D\Config\Config.hpp"
+#include "BezierCurve.h"
 
 using namespace PirateSimulator;
 
@@ -33,6 +34,37 @@ public:
             position.z += stepZ;
         }
         
+        return std::move(intermediary);
+    }
+
+    template<Light::type type, Light::modality modality>
+    static std::vector<LightRef> generateAsCubicBezierCurve(
+        size_t lightCount, 
+        const DirectX::XMFLOAT3& start, 
+        const DirectX::XMFLOAT3& pointControl1, 
+        const DirectX::XMFLOAT3& pointControl2, 
+        const DirectX::XMFLOAT3& end, 
+        float scope, 
+        float power = 1.f)
+    {
+        std::vector<LightRef> intermediary;
+        intermediary.reserve(lightCount);
+
+        CubicBezierCurve bezierGenerator(
+            start,
+            pointControl1,
+            pointControl2,
+            end,
+            lightCount
+        );
+
+        std::vector<DirectX::XMFLOAT3> bezierPosition = bezierGenerator.getTrajectory();
+
+        for (size_t count = 0; count != lightCount; ++count)
+        {
+            intermediary.push_back(LightRef(new Light(bezierPosition[count], type, modality, scope, power)));
+        }
+
         return std::move(intermediary);
     }
 
@@ -202,20 +234,23 @@ LightManager::LightManager()
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::DARKNESS] = {};
 
 
-    DirectX::XMFLOAT3 pointLightStart   { 800.f, -10.f, 950.f };
-    DirectX::XMFLOAT3 pointLightEnd     { 1100.f, -10.f, 950.f };
+    DirectX::XMFLOAT3 pointLightStart   { 800.f, -20.f, 950.f };
+    DirectX::XMFLOAT3 pointLightEnd     { 1100.f, -20.f, 950.f };
+    DirectX::XMFLOAT3 firstControlPoint { 900, -20.f, 1200.f };
+    DirectX::XMFLOAT3 secondControlPoint{ 1000.f, -20.f, 700.f };
 
 
-    m_lightArray[Light::type::POINT][Light::modality::BRIGHT] = 
-        std::move(LightGenerator::generate<Light::type::POINT, Light::modality::BRIGHT>(
-                4, 
-                pointLightStart, 
-                pointLightEnd, 
-                8.f, 
+    m_lightArray[Light::type::POINT][Light::modality::BRIGHT] =
+        std::move(LightGenerator::generateAsCubicBezierCurve<Light::type::POINT, Light::modality::BRIGHT>(
+                8,
+                pointLightStart,
+                firstControlPoint,
+                secondControlPoint,
+                pointLightEnd,
+                16.f,
                 1.f
             )
         );
-
 
     pointLightStart.x = 450.f;
     pointLightStart.y = 450.f;
