@@ -15,6 +15,19 @@ namespace PirateSimulator
         {
             return "TerrainShape";
         }
+        void onContact(const physx::PxContactPair &aContactPair) override
+        {
+            auto actor0 = static_cast<ShapeComponent*>(aContactPair.shapes[0]->getActor()->userData);
+            auto actor1 = static_cast<ShapeComponent*>(aContactPair.shapes[1]->getActor()->userData);
+            //Todo Set Behaviour
+        }
+
+        void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
+        {
+            auto actor0 = static_cast<ShapeComponent*>(contactShape->getActor()->userData);
+            auto actor1 = static_cast<ShapeComponent*>(actorShape->getActor()->userData);
+            
+        }
 
         std::string getTypeId() const noexcept override
         {

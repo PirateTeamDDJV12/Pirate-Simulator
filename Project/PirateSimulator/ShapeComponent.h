@@ -27,6 +27,13 @@ namespace PirateSimulator
         ShapeComponent() : m_actor(nullptr), m_shape(nullptr)
         {
         }
+        virtual std::string getTypeId() const noexcept override = 0;
+        virtual void onContact(const physx::PxContactPair &aContactPair) =0;
+
+
+
+
+        virtual void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) =0;
 
 
     public:

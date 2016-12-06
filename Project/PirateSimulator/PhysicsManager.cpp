@@ -26,23 +26,23 @@ namespace PirateSimulator {
 
 		virtual void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override
 		{
-			GameObject *actor0 = nullptr;
+			ShapeComponent *actor0 = nullptr;
 			if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_0))
-				actor0 = static_cast<GameObject*>(pairHeader.actors[0]->userData);
+				actor0 = static_cast<ShapeComponent*>(pairHeader.actors[0]->userData);
 
-			GameObject *actor1 = nullptr;
+			ShapeComponent *actor1 = nullptr;
 			if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_1))
-				actor1 = static_cast<GameObject*>(pairHeader.actors[1]->userData);
+				actor1 = static_cast<ShapeComponent*>(pairHeader.actors[1]->userData);
 
 
-			/*for (int i = 0; i < (int)nbPairs; ++i)
+			for (int i = 0; i < (int)nbPairs; ++i)
 			{
 				if (actor0)
-					actor0->as<IColliderInterface>()->onContact(pairs[i]);
+					actor0->onContact(pairs[i]);
 
 				if (actor1)
-					actor1->as<IColliderInterface>()->onContact(pairs[i]);
-			}*/
+					actor1->onContact(pairs[i]);
+			}
 		}
 
 		virtual void onTrigger(PxTriggerPair* pairs, PxU32 count) override
