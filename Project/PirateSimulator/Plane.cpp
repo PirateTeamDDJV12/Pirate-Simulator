@@ -13,6 +13,7 @@
 #include <comdef.h>
 #include "CameraManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
+#include "LightManager.h"
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -147,7 +148,26 @@ Plane::Plane(const std::string& textureFileName) :
     m_shaderParameter.vAMat = XMLoadFloat4(&m_material.m_property.ambientValue);
     m_shaderParameter.vDMat = XMLoadFloat4(&m_material.m_property.diffuseValue);
     m_shaderParameter.vSMat = { 0.12f, 0.12f, 0.12f, 1.f };
-    m_shaderParameter.vSEcl = { 0.8f, 0.8f, 0.8f, 0.8f };
+
+    LightManager& lightManager = LightManager::singleton;
+
+    m_shaderParameter.puissance = m_material.m_property.power;
+    m_shaderParameter.sunPower = lightManager.getBrightSun()->m_power;
+
+    auto& lightArray = lightManager.getBrightPointsLights();
+
+    if (lightArray.size() > 3)
+    {
+        m_shaderParameter.vLightPoint1 = XMLoadFloat3(&lightArray[0]->m_vector);
+        m_shaderParameter.vLightPoint2 = XMLoadFloat3(&lightArray[1]->m_vector);
+        m_shaderParameter.vLightPoint3 = XMLoadFloat3(&lightArray[2]->m_vector);
+        m_shaderParameter.vLightPoint4 = XMLoadFloat3(&lightArray[3]->m_vector);
+
+        m_shaderParameter.mappedLightPointScope.vector4_f32[0] = lightArray[0]->m_scope;
+        m_shaderParameter.mappedLightPointScope.vector4_f32[1] = lightArray[1]->m_scope;
+        m_shaderParameter.mappedLightPointScope.vector4_f32[2] = lightArray[2]->m_scope;
+        m_shaderParameter.mappedLightPointScope.vector4_f32[3] = lightArray[3]->m_scope;
+    }
 
     // Activation de la texture ou non
     if (m_material.pTextureD3D != nullptr)
@@ -219,8 +239,18 @@ void Plane::Draw()
 
     // Dessiner les subsets non-transparents    
     //m_material = Material(MaterialProperties());
+    LightManager& lightManager = LightManager::singleton;
+    LightRef sun = lightManager.getBrightSun();
 
-    m_shaderParameter.puissance = m_material.m_property.power;
+    m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&sun->m_vector);
+
+    float ambientLightVal = lightManager.getAmbientLightCoefficient();
+
+    m_shaderParameter.vAEcl.vector4_f32[0] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[1] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[2] = ambientLightVal;
+
+
     m_shaderParameter.tick += TICK_INCREMENT;
 
     float waterVelocity = DirectX::XMScalarCos(m_shaderParameter.tick) * Plane::WAVE_SPEED_COEFFICIENT;

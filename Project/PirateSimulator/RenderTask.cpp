@@ -1,8 +1,16 @@
 #include "RenderTask.h"
+
 #include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
 #include "RendererManager.h"
+#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 
 using namespace PirateSimulator;
+
+
+void RenderTask::init()
+{
+    RendererManager::singleton.init(PM3D::CDS_FENETRE, PM3D::CMoteurWindows::GetInstance().getMainWindowHandle());
+}
 
 void RenderTask::update()
 {

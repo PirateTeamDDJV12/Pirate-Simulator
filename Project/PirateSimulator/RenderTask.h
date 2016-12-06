@@ -7,8 +7,8 @@ namespace PirateSimulator
     class RenderTask : public IGameTask
     {
     public:
-        void init() override
-        {}
+        void init() override;
+        
         void cleanup() override
         {}
         void update() override;

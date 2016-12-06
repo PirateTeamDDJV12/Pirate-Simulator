@@ -2,8 +2,6 @@
 #include "Singleton.h"
 #include "dispositif.h" 
 
-#include <vector>
-
 #include "Bloc.h"
 #include "BlocEffet1.h"
 #include "ObjetMesh.h"
@@ -39,6 +37,15 @@
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
+#include "../../PirateSimulator/Piece.h"
+
+//UI
+#include "../../PirateSimulator/UIElement.h"
+#include "../../PirateSimulator/UIMenu.h"
+
+#include <thread>
+#include <vector>
+
 
 namespace PM3D
 {
@@ -69,6 +76,8 @@ namespace PM3D
             PLAYERTASK,
             RENDERTASK,
         };
+
+
     public:
 
         virtual void Run()
@@ -86,17 +95,45 @@ namespace PM3D
 
         virtual int Initialisations()
         {
+            // Propre à la plateforme
+            InitialisationsSpecific();
+            
             // Création des tasks
             CreateTasks();
 
-            // Propre à la plateforme
-            InitialisationsSpecific();
+            bool resultUI = false;
+            bool resultInit = false;
 
-            // * Initialisation du dispositif de rendu
-            PirateSimulator::RendererManager::singleton.setDispositif(CreationDispositifSpecific(CDS_FENETRE));
+            std::vector<std::thread> beginThread;
 
-            // * Initialisation de la scène
-            InitScene();
+            beginThread.emplace_back([&resultUI]() {
+                PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+
+                while (true)
+                {
+                    if (titleScreen())
+                    {
+                        resultUI = true;
+                        break;
+                    }
+                }
+            });
+
+            beginThread.emplace_back([this, &resultInit]() {
+                // * Initialisation de la scène
+                InitScene();
+                resultInit = true;
+            });
+
+            for (size_t iter = 0; iter < beginThread.size(); ++iter)
+            {
+                beginThread[iter].join();
+            }
+
+            while (!(resultUI && resultInit))
+            {
+                std::this_thread::sleep_for(35ms);
+            }
 
             return 0;
         }
@@ -107,8 +144,8 @@ namespace PM3D
 
             taskManager->addTask<PirateSimulator::TimeTask>(TIMETASK);
             taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
-            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
+            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
         }
 
@@ -133,7 +170,7 @@ namespace PM3D
         virtual bool RunSpecific() = 0;
         virtual int InitialisationsSpecific() = 0;
         virtual __int64 GetTimeSpecific() = 0;
-        virtual TClasseDispositif* CreationDispositifSpecific(const CDS_MODE cdsMode) = 0;
+        //virtual TClasseDispositif* CreationDispositifSpecific(const CDS_MODE cdsMode) = 0;
         virtual void BeginRenderSceneSpecific() = 0;
         virtual void EndRenderSceneSpecific() = 0;
 

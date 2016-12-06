@@ -33,12 +33,12 @@ namespace PirateSimulator
 
         ~Effect()
         {
-            m_sampleState->Release();
-            m_constantBuffer->Release();
-            m_effect->Release();
-            m_technique->Release();
-            m_pass->Release();
-            m_vertexLayout->Release();
+            if (m_sampleState)    m_sampleState->Release();
+            if (m_constantBuffer) m_constantBuffer->Release();
+            if (m_effect)         m_effect->Release();
+            if (m_technique)      m_technique->Release();
+            if (m_pass)           m_pass->Release();
+            if (m_vertexLayout)   m_vertexLayout->Release();
         }
     };
 }
