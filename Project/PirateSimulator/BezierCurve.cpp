@@ -30,16 +30,19 @@ CubicBezierCurve::CubicBezierCurve(
 
 void CubicBezierCurve::computePoint(float t, const DirectX::XMFLOAT3& end)
 {
-    const float placementPointInvert = 1.f - t;
+    const float placementPointInvert = 1.f - t; //(1 - t)
 
-    const float squareInvert = placementPointInvert * placementPointInvert;
-    const float cubeInvert = squareInvert * placementPointInvert;
+    const float squareInvert = placementPointInvert * placementPointInvert; // (1 - t)^2
+    const float cubeInvert = squareInvert * placementPointInvert;           // (1 - t)^3
     
-    const float squareT = t * t;
-    const float cubeT = squareT * t;
+    const float squareT = t * t;        //t^2
+    const float cubeT = squareT * t;    //t^3
 
-    const float secondCoeff = 3.f * t * squareInvert;
-    const float thirdCoeff = 3.f * squareT * placementPointInvert;
+    const float secondCoeff = 3.f * t * squareInvert;  //3 * t * (1-t)^2 = A
+    const float thirdCoeff = 3.f * squareT * placementPointInvert; //3 * t^2 * (1-t) = B
+
+    //   B(t) = P0 * (1-t)^3 + 3 * P1 * t * (1-t)^2 + 3 * P2 * t^2 * (1-t) + P3 * t^3    with t included in [0,1].
+    //=> B(t) = P0 * (1-t)^3 + A * P1 + B * P2 + P3 * t^3
 
     const float x =
         m_bezierTrajectory.front().x * cubeInvert +
@@ -89,7 +92,7 @@ size_t CubicBezierCurve::getPointCount() const noexcept
 
 float CubicBezierCurve::getPointStep() const noexcept
 {
-    return 1 / static_cast<float>(m_bezierTrajectory.size());
+    return 1.f / static_cast<float>(m_bezierTrajectory.size() - 1);
 }
 
 const std::vector<DirectX::XMFLOAT3>& CubicBezierCurve::getTrajectory() const noexcept

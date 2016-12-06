@@ -50,7 +50,7 @@ namespace PirateSimulator
 
     private:
         /*compute the point at t (0.f <= t <= 1.f) (see wikipedia for the formula of cubic Bezier curve)*/
-        void computePoint(float t, const DirectX::XMFLOAT3 end);
+        void computePoint(float t, const DirectX::XMFLOAT3& end);
     };
 }
 
