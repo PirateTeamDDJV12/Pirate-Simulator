@@ -78,8 +78,8 @@ namespace PirateSimulator
         heightMapDesc.samples.data = _heightMap.get();
         heightMapDesc.samples.stride = sizeof(PxHeightFieldSample);
         PxHeightField * heightField = PhysicsManager::singleton.physics().createHeightField(heightMapDesc);
-        _heightField = physx::unique_ptr<physx::PxHeightField>(
-            PhysicsManager::singleton.physics().createHeightField(heightMapDesc));
+        //_heightField = physx::unique_ptr<physx::PxHeightField>(
+          //  PhysicsManager::singleton.physics().createHeightField(heightMapDesc));
         //Création Shape
 
         //m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
