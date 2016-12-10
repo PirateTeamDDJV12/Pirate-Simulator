@@ -29,12 +29,12 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 VS_Sortie sortie = (VS_Sortie)0;
 	
 	sortie.Pos = mul(Pos, matWorldViewProj); 
-	sortie.Norm = mul(Normale, matWorld); 
+	sortie.Norm = normalize(mul(Normale, matWorld)); 
 	
  	float3 PosWorld = mul(Pos, matWorld);
 
-	sortie.vDirLum = vLumiere; 
-	sortie.vDirCam = vCamera - PosWorld; 
+	sortie.vDirLum = normalize(vLumiere); 
+	sortie.vDirCam = normalize(vCamera - PosWorld); 
 
     // Coordonnées d'application de texture
     sortie.coordTex = coordTex;
@@ -49,19 +49,14 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 {
 float4 couleur; 
 
-	// Normaliser les paramètres
-	float3 N = normalize(vs.Norm);
- 	float3 L = normalize(vs.vDirLum);
-	float3 V = normalize(vs.vDirCam);
-
 	// Valeur de la composante diffuse
-	float4 diff = saturate(dot(N, L)); 
+	float4 diff = saturate(dot(vs.Norm, vs.vDirLum)); 
 
 	// R = 2 * (N.L) * N – L
-	float3 R = normalize(2 * diff * N - L);
+	float3 R = normalize(2 * diff * vs.Norm - vs.vDirLum);
     
 	// Calcul de la spécularité 
-	float4 S = pow(saturate(dot(R, V)), puissance); 
+	float4 S = pow(saturate(dot(R, vs.vDirCam)), puissance); 
 
 	float4 couleurTexture;  
 
