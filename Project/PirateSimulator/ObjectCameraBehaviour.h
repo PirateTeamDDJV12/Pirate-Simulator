@@ -26,8 +26,10 @@ namespace PirateSimulator
             };
 
         private:
-            cameraModule::BaseCamera* m_cameraComponent;
+            cameraModule::Camera* m_cameraComponent;
 
+            const float m_maxAngleX = 0.0f;
+            const float m_minAngleX = -85.0f;
             float m_offset;
             float m_rotationAroundY;
             float m_rotationAroundX;
@@ -43,7 +45,7 @@ namespace PirateSimulator
             void setGameObject(GameObject* parent)
             {
                 m_gameObject = parent;
-                m_cameraComponent = m_gameObject->getComponent<BaseCamera>();
+                m_cameraComponent = m_gameObject->getComponent<Camera>();
             }
 
             void setTarget(GameObjectRef target)

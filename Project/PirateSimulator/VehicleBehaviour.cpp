@@ -12,7 +12,7 @@ void VehicleBehaviour::anime(float ellapsedTime)
     // ******** POUR LA SOURIS ************
 
     // Vérifier si déplacement vers la gauche
-    if ((rGestionnaireDeSaisie.EtatSouris().rgbButtons[0] & 0x80) &&
+    if ((rGestionnaireDeSaisie.m_mouseInfo.rgbButtons[0] & 0x80) &&
         (rGestionnaireDeSaisie.EtatSouris().lX < 0))
     {
         rotation = rotation + ((XM_PI * 2.0f) / 2.0f * ellapsedTime);

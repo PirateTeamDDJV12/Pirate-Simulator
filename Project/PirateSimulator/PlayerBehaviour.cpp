@@ -1,12 +1,14 @@
+#include <dinput.h>
+
 #include "PlayerBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
-#include <dinput.h>
 #include "InputManager.h"
+#include "TimeManager.h"
 
 using namespace PirateSimulator;
 using namespace DirectX;
 
-PlayerBehaviour::PlayerBehaviour() : m_speed{1.0f}, m_cameraRef{CameraManager::singleton.getMainCameraGO()}
+PlayerBehaviour::PlayerBehaviour() : m_speed{5000.0f}, m_cameraRef{CameraManager::singleton.getMainCameraGO()}
 {}
 
 void PlayerBehaviour::move(Move::Translation::Direction direction)
@@ -25,26 +27,27 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
     {
         case Move::Translation::FORWARD:
         {
-            m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed);
+            float ellapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
+            m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed * ellapsedTime);
         }
         break;
 
         case Move::Translation::BACKWARD:
         {
-            m_gameObject->translate(-m_gameObject->m_transform.m_forward * m_speed);
+            m_gameObject->translate(-m_gameObject->m_transform.m_forward * m_speed * TimeManager::GetInstance().getElapsedTimeFrame());
         }
         break;
 
         case Move::Translation::LEFT:
         {
-            m_gameObject->translate(-transform.m_right * m_speed);
+            m_gameObject->translate(-transform.m_right * m_speed * TimeManager::GetInstance().getElapsedTimeFrame());
 
         }
         break;
 
         case Move::Translation::RIGHT:
         {
-            m_gameObject->translate(transform.m_right * m_speed);
+            m_gameObject->translate(transform.m_right * m_speed * TimeManager::GetInstance().getElapsedTimeFrame());
         }
         break;
 
@@ -63,14 +66,18 @@ void PlayerBehaviour::anime(float ellapsedTime)
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
-    {
-        m_speed = 5.0f;
-    }
 
     /*
     * Rotation
     */
+    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LSHIFT))
+    {
+        m_speed = 10000.0f;
+    }
+    else
+    {
+        m_speed = 5000.0f;
+    }
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
     {
         rotate(Move::Rotation::Y_CLOCKWISE);

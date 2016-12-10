@@ -1,7 +1,8 @@
+#include <DirectXMath.h>
+
 #include "ObjectCameraBehaviour.h"
 #include "PlayerBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
-#include <DirectXMath.h>
 #include "InputManager.h"
 
 using namespace PirateSimulator;
@@ -11,36 +12,30 @@ using namespace DirectX;
 
 void ObjectCameraBehaviour::move(Move::Translation::Direction direction)
 {
+    // Move the camera to the target position
+    m_gameObject->m_transform.m_position = m_target->m_transform.m_position;
+
+    // Translate the camera back by the offset
+    XMVECTOR dir = -m_gameObject->m_transform.m_forward * m_offset;
+    m_gameObject->translate(dir);
 }
 
 void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
 {
     using namespace std::chrono;
 
+    const MouseState& mouseState = InputManager::singleton.getManipulator().EtatSouris();
     //time_point<system_clock> nowTime = std::chrono::system_clock::now();
     auto elapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
 
-    switch (direction)
-    {
-    case Move::Rotation::X_CLOCKWISE:
-        m_rotationAroundX -= 1.0f;
-        break;
-
-    case Move::Rotation::X_INVERT_CLOCKWISE:
-        m_rotationAroundX += 1.0f;
-        break;
-
-    case Move::Rotation::Y_CLOCKWISE:
-        m_rotationAroundY -= 1.0f;
-        break;
-
-    case Move::Rotation::Y_INVERT_CLOCKWISE:
-        m_rotationAroundY += 1.0f;
-        break;
-
-    default:
-        return;
-    }
+    m_rotationAroundX += mouseState.m_offsetMouseY * mouseState.m_sensibility;
+    m_rotationAroundY += mouseState.m_offsetMouseX * mouseState.m_sensibility;
+    // Prevent camera from flipping
+    // You can change the values to block the camera before 90
+    if (m_rotationAroundX < m_minAngleX)
+        m_rotationAroundX = m_minAngleX;
+    else if (m_rotationAroundX > m_maxAngleX)
+        m_rotationAroundX = m_maxAngleX;
 
     float angleY;
     float angleX;
@@ -50,12 +45,6 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
     angleX = DirectX::XMConvertToRadians(m_rotationAroundX);
 
 
-    // Prevent camera from flipping
-    // You can change the values to block the camera before 90
-    if (m_rotationAroundX < -85.0f)
-        m_rotationAroundX = -85.0f;
-    else if (m_rotationAroundX > -10.0f)
-        m_rotationAroundX = -10.0f;
 
     // Look in the new direction
     m_gameObject->m_transform.m_forward.vector4_f32[0] = sin(angleY) * cos(angleX);
@@ -76,40 +65,8 @@ void ObjectCameraBehaviour::anime(float ellapsedTime)
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
-    /*
-    * Rotation
-    */
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
-    {
-        rotate(Move::Rotation::Y_CLOCKWISE);
-    }
-
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
-    {
-        rotate(Move::Rotation::Y_INVERT_CLOCKWISE);
-    }
-
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
-    {
-        rotate(Move::Rotation::X_INVERT_CLOCKWISE);
-    }
-
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
-    {
-        rotate(Move::Rotation::X_CLOCKWISE);
-    }
-
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
-    {
-        m_cameraComponent->changeVelocity();
-    }
-
-    // Move the camera to the target position
-    m_gameObject->m_transform.m_position = m_target->m_transform.m_position;
-
-    // Translate the camera back by the offset
-    XMVECTOR dir = -m_gameObject->m_transform.m_forward * m_offset;
-    m_gameObject->translate(dir);
+    rotate(Move::Rotation::Y_CLOCKWISE);
+    move(Move::Translation::FORWARD);
 
     // Update the view matrix
     m_cameraComponent->updateViewMatrix();

@@ -13,8 +13,9 @@ namespace PirateSimulator
     class PlayerBehaviour : public IBehaviour
     {
     private:
-        float m_speed;
-        GameObjectRef m_cameraRef;
+        bool            m_sprinting;
+        float           m_speed;
+        GameObjectRef   m_cameraRef;
 
     public:
         PlayerBehaviour();

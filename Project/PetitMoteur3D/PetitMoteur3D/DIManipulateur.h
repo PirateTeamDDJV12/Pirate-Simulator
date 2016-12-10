@@ -1,4 +1,14 @@
 #pragma once
+
+struct MouseState
+{
+    MouseState();
+
+    float       m_offsetMouseX;
+    float       m_offsetMouseY;
+    float       m_sensibility;
+};
+
 class CDIManipulateur
 {
 public:
@@ -10,7 +20,7 @@ public:
 	bool ToucheAppuyee(UINT touche) const;
 	void SaisirEtatSouris();
 
-	const DIMOUSESTATE& EtatSouris() { return mouseState;}
+	const MouseState& EtatSouris() { return m_mouseState;}
 
 protected:
 	IDirectInput8* pDirectInput;
@@ -21,6 +31,7 @@ protected:
 	static bool bDejaInit;
 
 	char tamponClavier[256];
-	DIMOUSESTATE mouseState;
+	DIMOUSESTATE mouseInfo;
+    MouseState  m_mouseState;
 };
 
