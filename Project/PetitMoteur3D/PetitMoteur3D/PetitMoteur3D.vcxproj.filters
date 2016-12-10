@@ -237,6 +237,9 @@
     <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp">
       <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\SoundManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -469,6 +472,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BezierCurve.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SoundManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
