@@ -203,8 +203,8 @@ namespace PM3D
 	{
 		D3D11_TEXTURE2D_DESC depthTextureDesc;
 		ZeroMemory( &depthTextureDesc, sizeof( depthTextureDesc ) );
-		depthTextureDesc.Width = largeurEcran;
-		depthTextureDesc.Height = hauteurEcran;
+		depthTextureDesc.Width = static_cast<UINT>(largeurEcran);
+		depthTextureDesc.Height = static_cast<UINT>(hauteurEcran);
 		depthTextureDesc.MipLevels = 1;
 		depthTextureDesc.ArraySize = 1;
 		depthTextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;

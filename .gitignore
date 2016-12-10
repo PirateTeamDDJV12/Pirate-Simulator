@@ -5,6 +5,7 @@
 *.ipch
 *.lnk
 *.jpg
+*.lib
 **/testOutput.txt
 **/OldheightmapOutput.txt
 **/heightmapOutput.txt
@@ -21,4 +22,8 @@ Project/*/*/ipch/*
 Project/*/Debug/*
 Project/*/Release/*
 Project/*/x64/*
+
 Project/PetitMoteur3D/PetitMoteur3D/PhysX/*
+Project/PetitMoteur3D/PetitMoteur3D/PhysX/Lib/*
+Project/PetitMoteur3D/PetitMoteur3D/PhysX/*/*/*
+Project/PetitMoteur3D/PetitMoteur3D/PhysX/*/*/*/*

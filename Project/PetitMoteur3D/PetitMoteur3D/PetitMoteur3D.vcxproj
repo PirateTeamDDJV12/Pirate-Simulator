@@ -108,6 +108,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\PirateSimulator\BaseCamera.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp" />
     <ClCompile Include="..\..\PirateSimulator\BinaryFast.cpp" />
     <ClCompile Include="..\..\PirateSimulator\BlocMesh.cpp" />
     <ClCompile Include="..\..\PirateSimulator\BlocMeshStructure.cpp" />
@@ -120,11 +121,15 @@
     <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\InputTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Light.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\LightManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Mesh.cpp" />
     <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PhysicsManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PhysicsTask.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Piece.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Plane.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp" />
@@ -140,6 +145,8 @@
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIElement.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp" />
@@ -169,6 +176,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\PirateSimulator\Angle.h" />
     <ClInclude Include="..\..\PirateSimulator\BaseCamera.h" />
+    <ClInclude Include="..\..\PirateSimulator\BezierCurve.h" />
     <ClInclude Include="..\..\PirateSimulator\BinaryFast.h" />
     <ClInclude Include="..\..\PirateSimulator\BlocMesh.h" />
     <ClInclude Include="..\..\PirateSimulator\BlocMeshStructure.h" />
@@ -180,11 +188,14 @@
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\InputManager.h" />
     <ClInclude Include="..\..\PirateSimulator\IGameTask.h" />
     <ClInclude Include="..\..\PirateSimulator\InputTask.h" />
     <ClInclude Include="..\..\PirateSimulator\LevelCameraBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\Light.h" />
+    <ClInclude Include="..\..\PirateSimulator\LightManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Mesh.h" />
     <ClInclude Include="..\..\PirateSimulator\Moves.h" />
     <ClInclude Include="..\..\PirateSimulator\Notifier.h" />
@@ -192,6 +203,8 @@
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\PhysicsManager.h" />
     <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h" />
+    <ClInclude Include="..\..\PirateSimulator\Piece.h" />
+    <ClInclude Include="..\..\PirateSimulator\PieceAdministrator.h" />
     <ClInclude Include="..\..\PirateSimulator\Plane.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerTask.h" />
@@ -210,6 +223,8 @@
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIMenu.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h" />

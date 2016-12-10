@@ -32,8 +32,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 		// Boucle d'application
 		rMoteur.Run();
-
-		return (int)1;
+        
+        return (int)1;
     }
 
 	catch (const std::exception& E)

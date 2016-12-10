@@ -69,7 +69,7 @@ bool CDIManipulateur::Init(HINSTANCE hInstance, HWND hWnd)
         ERREUR_CREATION_FORMATCLAVIER);
 		
 		pClavier->SetCooperativeLevel( hWnd, 
-										 DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+										 DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
 		
 		pClavier->Acquire();
 
@@ -81,7 +81,7 @@ bool CDIManipulateur::Init(HINSTANCE hInstance, HWND hWnd)
 
 		DXEssayer( pSouris->SetDataFormat( &c_dfDIMouse),ERREUR_CREATION_FORMATSOURIS);
 		
-		pSouris->SetCooperativeLevel( hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+		pSouris->SetCooperativeLevel( hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
 		
 		pSouris->Acquire();
 
@@ -100,7 +100,7 @@ void CDIManipulateur::StatutClavier()
 
 bool CDIManipulateur::ToucheAppuyee(UINT touche) const
 {
-	return (tamponClavier[touche] & 0x80);
+	return static_cast<bool>(tamponClavier[touche] & 0x80);
 }
 
 void CDIManipulateur::SaisirEtatSouris()

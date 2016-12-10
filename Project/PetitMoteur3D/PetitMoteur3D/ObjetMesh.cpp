@@ -337,7 +337,7 @@ namespace PM3D
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble
         for(int i = 0; i < chargeur.GetNombreSubset(); ++i)
         {
-            int index;
+            size_t index;
             for(index = 0; index < m_materials.size(); ++index)
             {
                 if(m_materials[index].NomMateriau == chargeur.GetMaterialName(i)) break;
@@ -429,7 +429,7 @@ namespace PM3D
         fichier.write((char*)&NbMaterial, sizeof(int));
 
         MaterialBlock mb;
-        for(size_t i = 0; i < NbMaterial; ++i)
+        for(int i = 0; i < NbMaterial; ++i)
         {
             MatLoad[i].MatToBlock(mb);
             fichier.write((char*)&mb, sizeof(MaterialBlock));
@@ -439,7 +439,7 @@ namespace PM3D
         vector<int> SubsetMI;
         for(int i = 0; i < NombreSubset; ++i)
         {
-            int index;
+            size_t index;
             for(index = 0; index < MatLoad.size(); ++index)
             {
                 if(MatLoad[index].NomMateriau == chargeur.GetMaterialName(i)) break;
