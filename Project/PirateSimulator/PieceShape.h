@@ -19,11 +19,12 @@ namespace PirateSimulator
             ShapeComponent* actor1 = static_cast<ShapeComponent*>(aContactPair.shapes[1]->getActor()->userData);
             if (actor1->getTypeId()=="PieceShape")
             {
-               // actor1->
+                //unspawn the piece
+                static_cast<PieceShape*>(actor1)->getPiece()->destroyPiece();
             }
-            else
+            else //La piece correspond à l'autre acteur
             {
-
+               static_cast<PieceShape*>(actor0)->getPiece()->destroyPiece();
             }
         }
 

@@ -3,6 +3,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.forward.h"
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 namespace physx
 {
@@ -65,7 +66,13 @@ namespace PirateSimulator
             m_components.push_back(component);
         }
         void reset();
+
+
+        ShapeComponent* getShape();
+
     };
+
+
 
 
     enum ACTOR

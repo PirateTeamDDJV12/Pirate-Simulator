@@ -1,4 +1,5 @@
 #include "PlayerBehaviour.h"
+#include "PhysicsManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include <dinput.h>
 #include "InputManager.h"
@@ -21,11 +22,15 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
     m_gameObject->m_transform.m_forward = XMVector3Normalize(m_gameObject->m_transform.m_forward);
 
+    //Get Actor shape to move it
+    //VehicleShape boatShape = PhysicsManager::singleton.
+
     switch(direction)
     {
         case Move::Translation::FORWARD:
         {
             m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed);
+            
         }
         break;
 

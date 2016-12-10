@@ -1,6 +1,6 @@
 #include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "PhysicsManager.h"
-
+#include "ShapeComponent.h"
 
 #include  "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 #include "GameObject.h"
@@ -235,6 +235,18 @@ namespace PirateSimulator {
         specificRelease(_cudaContextManager);
         specificRelease(_visualDebuggerConnection);
         _profileZoneManager->release();*/
+    }
+
+
+    ShapeComponent* PhysicsManager::getShape()
+    {
+        ShapeComponent* vehicle = nullptr;
+        std::for_each(m_components.begin(), m_components.end(), [vehicle](ShapeComponent* shape) mutable
+
+        {if (shape->getTypeId() == "VehicleShape")
+            vehicle = shape;
+        });
+        return vehicle;
     }
 }
 
