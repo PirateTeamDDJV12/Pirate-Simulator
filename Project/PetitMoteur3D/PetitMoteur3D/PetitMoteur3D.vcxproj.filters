@@ -232,9 +232,9 @@
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp">
-      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>  
-    </ClCompile>  
-	<ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Piece.cpp">
@@ -254,6 +254,9 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp">
       <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -499,6 +502,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BezierCurve.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PieceShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,8 @@
 
 #include <algorithm>
 #include "TimeManager.h"
+#include "GameObjectManager.h"
+#include "PieceShape.h"
 
 using namespace PirateSimulator;
 
@@ -58,9 +60,12 @@ GameObjectRef Piece::createPiece()
         GameObjectManager::singleton.setSubscribingStrategy(GameObjectManager::NONE);
 
         auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
+        auto pieceShape = new PirateSimulator::PieceShape();
+        
 
         m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
         m_pieceInstance->addComponent<IMesh>(pieceMesh);
+        m_pieceInstance->addComponent<PirateSimulator::ShapeComponent>(pieceShape);
 
         RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
     }

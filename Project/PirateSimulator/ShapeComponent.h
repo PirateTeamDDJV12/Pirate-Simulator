@@ -14,8 +14,9 @@ namespace physx
 
 namespace PirateSimulator
 {
+    class Piece;
 
-    class GameObject;
+    //class GameObject;
     class ShapeComponent : public Component
     {
         
@@ -23,6 +24,7 @@ namespace PirateSimulator
         const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
         physx::PxShape* m_shape;
         physx::PxRigidDynamic* m_actor;
+        
 
     public:
         ShapeComponent() : m_actor(nullptr), m_shape(nullptr)

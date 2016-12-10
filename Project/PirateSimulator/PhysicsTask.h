@@ -8,10 +8,7 @@ namespace PirateSimulator
     class PhysicsTask : public IGameTask
     {
     public:
-        void init() override
-        {
-            PhysicsManager::singleton.initialize();
-        }
+        void init() override;
         void cleanup() override
         {
             PhysicsManager::singleton.reset();
