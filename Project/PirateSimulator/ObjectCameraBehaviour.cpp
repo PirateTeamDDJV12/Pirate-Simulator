@@ -54,8 +54,8 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
     // You can change the values to block the camera before 90
     if (m_rotationAroundX < -85.0f)
         m_rotationAroundX = -85.0f;
-    else if (m_rotationAroundX > 85.0f)
-        m_rotationAroundX = 85.0f;
+    else if (m_rotationAroundX > -10.0f)
+        m_rotationAroundX = -10.0f;
 
     // Look in the new direction
     m_gameObject->m_transform.m_forward.vector4_f32[0] = sin(angleY) * cos(angleX);
