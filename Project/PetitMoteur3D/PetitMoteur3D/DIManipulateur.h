@@ -1,4 +1,5 @@
 #pragma once
+#include <dinput.h>
 
 struct MouseState
 {

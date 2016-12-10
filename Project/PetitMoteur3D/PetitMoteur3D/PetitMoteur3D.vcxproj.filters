@@ -165,12 +165,6 @@
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\BinaryFast.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
@@ -375,12 +369,6 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BinaryFast.h">

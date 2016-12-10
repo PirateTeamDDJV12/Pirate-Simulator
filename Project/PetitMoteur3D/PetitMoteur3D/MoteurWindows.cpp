@@ -142,6 +142,7 @@ namespace PM3D
 
     int CMoteurWindows::Show()
     {
+        ShowCursor(FALSE);
         ShowWindow(hMainWnd, SW_SHOWNORMAL);
         UpdateWindow(hMainWnd);
 

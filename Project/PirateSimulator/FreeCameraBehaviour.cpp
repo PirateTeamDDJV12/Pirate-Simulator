@@ -5,8 +5,8 @@
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "InputManager.h"
 
-using namespace  PirateSimulator;
-using namespace  cameraModule;
+using namespace PirateSimulator;
+using namespace cameraModule;
 using namespace DirectX;
 
 
@@ -15,27 +15,27 @@ void FreeCameraBehaviour::move(Move::Translation::Direction direction)
     switch (direction)
     {
     case Move::Translation::FORWARD:
-        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_forward * m_cameraComponent->getTranslationVelocity();
+        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_forward * m_speed;
         break;
 
     case Move::Translation::BACKWARD:
-        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_forward * m_cameraComponent->getTranslationVelocity();
+        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_forward * m_speed;
         break;
 
     case Move::Translation::LEFT:
-        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_right * m_cameraComponent->getTranslationVelocity();
+        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_right * m_speed;
         break;
 
     case Move::Translation::RIGHT:
-        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_right * m_cameraComponent->getTranslationVelocity();
+        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_right * m_speed;
         break;
 
     case Move::Translation::UP:
-        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_up * m_cameraComponent->getTranslationVelocity();
+        m_gameObject->m_transform.m_position += m_gameObject->m_transform.m_up * m_speed;
         break;
 
     case Move::Translation::DOWN:
-        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_up * m_cameraComponent->getTranslationVelocity();
+        m_gameObject->m_transform.m_position -= m_gameObject->m_transform.m_up * m_speed;
         break;
 
     case Move::Translation::NONE:
@@ -57,19 +57,19 @@ void FreeCameraBehaviour::rotate(Move::Rotation::Direction direction)
     switch (direction)
     {
     case Move::Rotation::X_CLOCKWISE:
-        m_rotationAroundX -= m_cameraComponent->getRotationVelocity();
+        m_rotationAroundX -= m_rotationSpeed;
         break;
 
     case Move::Rotation::X_INVERT_CLOCKWISE:
-        m_rotationAroundX += m_cameraComponent->getRotationVelocity();
+        m_rotationAroundX += m_rotationSpeed;
         break;
 
     case Move::Rotation::Y_CLOCKWISE:
-        m_rotationAroundY -= m_cameraComponent->getRotationVelocity();
+        m_rotationAroundY -= m_rotationSpeed;
         break;
 
     case Move::Rotation::Y_INVERT_CLOCKWISE:
-        m_rotationAroundY += m_cameraComponent->getRotationVelocity();
+        m_rotationAroundY += m_rotationSpeed;
         break;
 
     case Move::Rotation::Z_CLOCKWISE:
@@ -155,10 +155,5 @@ void FreeCameraBehaviour::anime(float ellapsedTime)
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
     {
         rotate(Move::Rotation::X_CLOCKWISE);
-    }
-
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
-    {
-        m_cameraComponent->changeVelocity();
     }
 }

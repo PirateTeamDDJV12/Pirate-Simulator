@@ -36,10 +36,11 @@ namespace PirateSimulator
             GameObjectRef m_target;
 
         public:
-            ObjectCameraBehaviour(float offset = DEFAULT_OFFSET) :
+            ObjectCameraBehaviour(GameObjectRef target, float offset = DEFAULT_OFFSET) :
                 m_offset{ offset },
                 m_rotationAroundY{ 0.0f },
-                m_rotationAroundX{ 0.0f }
+                m_rotationAroundX{ 0.0f },
+                m_target {target}
             {}
 
             void setGameObject(GameObject* parent)

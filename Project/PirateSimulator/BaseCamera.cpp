@@ -6,18 +6,15 @@ using namespace PirateSimulator::cameraModule;
 
 
 
-BaseCamera::BaseCamera(const CameraProjectionParameters& defaultParameters,
-    const CameraMovingParameters& moveParams
-) :
-    m_Parameters{ defaultParameters },
-    m_moveParams{ moveParams },
-    m_pUpdateViewMatrix { &BaseCamera::updateViewMatrixAsForwardCamera }
+Camera::Camera(const CameraProjectionParameters& defaultParameters)
+ :
+    m_Parameters{ defaultParameters }
 {
     this->initProjMatrix();
 }
 
 
-void BaseCamera::initProjMatrix()
+void Camera::initProjMatrix()
 {
     m_proj = XMMatrixPerspectiveFovLH(
         m_Parameters.angle,
@@ -27,14 +24,14 @@ void BaseCamera::initProjMatrix()
 }
 
 
-void BaseCamera::onResize(float width, float height)
+void Camera::onResize(float width, float height)
 {
     m_Parameters.clientWidth = width;
     m_Parameters.clientHeight = height;
     this->initProjMatrix();
 }
 
-void BaseCamera::setGameObject(GameObject* parent)
+void Camera::setGameObject(GameObject* parent)
 {
     m_gameObject = parent;
 

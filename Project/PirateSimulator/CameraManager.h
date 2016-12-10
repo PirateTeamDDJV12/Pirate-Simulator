@@ -16,10 +16,9 @@ namespace PirateSimulator
     struct CameraInfo
     {
         GameObjectRef m_mainCamera;
-        cameraModule::BaseCamera* m_cameraComponent;
+        cameraModule::Camera* m_cameraComponent;
         IBehaviour* m_cameraBehavior;
 
-        cameraModule::BaseCamera::type m_cameraType;
         GameObjectRef m_cameraTarget;
     };
 
@@ -39,9 +38,8 @@ namespace PirateSimulator
 
     public:
         GameObjectRef getMainCameraGO() const noexcept { return m_cameraInfo.m_mainCamera; }
-        cameraModule::BaseCamera* getMainCameraComponent() const noexcept { return m_cameraInfo.m_cameraComponent; }
+        cameraModule::Camera* getMainCameraComponent() const noexcept { return m_cameraInfo.m_cameraComponent; }
         IBehaviour* getMainCameraBehaviour() const noexcept { return m_cameraInfo.m_cameraBehavior; }
-        cameraModule::BaseCamera::type getCameraType() const noexcept { return m_cameraInfo.m_cameraType; }
 
 
     private:
@@ -52,12 +50,15 @@ namespace PirateSimulator
     public:
         void setMainCamera(GameObjectRef camera) noexcept;
 
-        void setPairedTarget(GameObjectRef pairedTarget);
-
-        GameObjectRef createCamera(cameraModule::BaseCamera::type cameraType,
+        GameObjectRef createFreeCamera(
             const Transform& transform,
             const cameraModule::CameraProjectionParameters &camProjParameters,
-            const cameraModule::CameraMovingParameters &camMovParameters,
+            const std::string& name);
+
+        GameObjectRef createObjectCamera(
+            const PirateSimulator::GameObjectRef& target,
+            const Transform& transform,
+            const cameraModule::CameraProjectionParameters &camProjParameters,
             const std::string& name);
 
 
