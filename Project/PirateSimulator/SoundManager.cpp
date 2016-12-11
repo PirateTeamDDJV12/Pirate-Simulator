@@ -170,8 +170,9 @@ public:
 SoundManager::SoundManager() :
     m_systemBloc{ new FMODSystemBloc }
 {
-    FMODTry(FMOD::System_Create(&m_systemBloc->m_lowLevelSystem));
+    m_musicBank.reserve(SoundManager::CHANNEL_MAX_COUNT);
 
+    FMODTry(FMOD::System_Create(&m_systemBloc->m_lowLevelSystem));
     FMODTry(m_systemBloc->m_lowLevelSystem->init(SoundManager::CHANNEL_MAX_COUNT, FMOD_INIT_NORMAL, m_systemBloc->m_extraDriverData));
 }
 
