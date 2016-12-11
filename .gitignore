@@ -5,6 +5,9 @@
 *.ipch
 *.lnk
 *.jpg
+*.dds
+*.png
+*.mp3
 **/testOutput.txt
 **/OldheightmapOutput.txt
 **/heightmapOutput.txt
