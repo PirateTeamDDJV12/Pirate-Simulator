@@ -9,7 +9,7 @@ void SoundTask::init()
     SoundManager::singleton.init();
 
     SoundManager::singleton.loadMusicFromFile("PirateSimulator/UISoundtrack.mp3");
-    SoundManager::singleton.playMusic(0);
+    SoundManager::singleton.playMusic(static_cast<size_t>(0));
 
     SoundManager::singleton.setVolume(1.0f);
 }
