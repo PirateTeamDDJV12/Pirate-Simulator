@@ -61,6 +61,12 @@
     <Filter Include="Fichiers sources\PirateSimulator\Notifier">
       <UniqueIdentifier>{26ad8a2f-d7d0-410f-abed-75b12f319c51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\UI">
+      <UniqueIdentifier>{30138664-d97a-473f-b788-4bd4bba33954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\UI">
+      <UniqueIdentifier>{4b96c0cb-74e1-4cf2-b2a3-70e066cb6b89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Moteur.cpp">
@@ -222,12 +228,6 @@
     <ClCompile Include="..\..\PirateSimulator\Piece.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIElement.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Light.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
@@ -236,6 +236,12 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp">
       <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIElement.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -452,12 +458,6 @@
     <ClInclude Include="..\..\PirateSimulator\Piece.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\UIElement.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Light.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
@@ -469,6 +469,12 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BezierCurve.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIElement.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
