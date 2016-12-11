@@ -50,7 +50,7 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 float4 couleur; 
 
 	// Valeur de la composante diffuse
-	float4 diff = saturate(dot(vs.Norm, vs.vDirLum)); 
+	float4 diff = saturate(dot(vs.Norm, -vs.vDirLum)); 
 
 	// R = 2 * (N.L) * N – L
 	float3 R = normalize(2 * diff * vs.Norm - vs.vDirLum);
