@@ -55,7 +55,7 @@ public:
         m_musicChannel{ nullptr }
     {}
 
-    FMODBank(FMOD::System* system, std::string& fileName) :
+    FMODBank(FMOD::System* system, const std::string& fileName) :
         m_musicSound{ nullptr },
         m_musicChannel{ nullptr }
     {
@@ -74,7 +74,7 @@ public:
         return m_name;
     }
 
-    void load(FMOD::System* system, std::string& fileName)
+    void load(FMOD::System* system, const std::string& fileName)
     {
         FMODTry(system->createSound(fileName.c_str(), FMOD_DEFAULT, 0, &m_musicSound));
 
@@ -179,4 +179,30 @@ void SoundManager::playMusic(size_t id)
 void SoundManager::stopMusic(size_t id)
 {
     m_musicBank[id].stop();
+}
+
+void SoundManager::playMusic(const char* fileName)
+{
+    std::string name{ fileName };
+    for (auto iter = m_musicBank.begin(); iter != m_musicBank.end(); ++iter)
+    {
+        if (iter->getName().size() == name.size() && iter->getName() == name)
+        {
+            iter->play(m_systemBloc->m_lowLevelSystem);
+            break;
+        }
+    }
+}
+
+void SoundManager::stopMusic(const char* fileName)
+{
+    std::string name{ fileName };
+    for (auto iter = m_musicBank.begin(); iter != m_musicBank.end(); ++iter)
+    {
+        if (iter->getName().size() == name.size() && iter->getName() == name)
+        {
+            iter->stop();
+            break;
+        }
+    }
 }

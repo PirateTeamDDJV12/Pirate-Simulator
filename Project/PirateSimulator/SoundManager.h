@@ -51,6 +51,9 @@ namespace PirateSimulator
 
         void playMusic(size_t id);
         void stopMusic(size_t id);
+
+        void playMusic(const char* fileName);
+        void stopMusic(const char* fileName);
     };
 }
 
