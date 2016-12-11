@@ -240,6 +240,9 @@
     <ClCompile Include="..\..\PirateSimulator\SoundManager.cpp">
       <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\SoundTask.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -475,6 +478,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\SoundManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SoundTask.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
