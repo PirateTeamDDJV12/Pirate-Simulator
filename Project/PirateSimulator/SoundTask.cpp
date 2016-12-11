@@ -8,7 +8,7 @@ void SoundTask::init()
 {
     SoundManager::singleton.init();
 
-    SoundManager::singleton.loadMusicFromFile("C:/Users/gags1920/Desktop/PirateSimulator/Project/PetitMoteur3D/PetitMoteur3D/PirateSimulator/UISoundtrack.mp3");
+    SoundManager::singleton.loadMusicFromFile("PirateSimulator/UISoundtrack.mp3");
     SoundManager::singleton.playMusic(0);
 
     SoundManager::singleton.setVolume(1.0f);
