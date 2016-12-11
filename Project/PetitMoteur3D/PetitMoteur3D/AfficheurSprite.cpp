@@ -2,6 +2,7 @@
 #include "resource.h"
 #include "MoteurWindows.h"
 #include "util.h"
+#include "..\..\PirateSimulator\RendererManager.h"
 
 using namespace UtilitairesDX;
 
@@ -27,7 +28,7 @@ namespace PM3D
     };
 
 
-    CAfficheurSprite::CAfficheurSprite(CDispositifD3D11* _pDispositif) :
+    CAfficheurSprite::CAfficheurSprite() :
         PirateSimulator::Mesh<ShaderCAfficheurSprite::ShadersParams>(ShaderCAfficheurSprite::ShadersParams())
     {
         pVertexBuffer = 0;
@@ -38,7 +39,7 @@ namespace PM3D
         pVertexLayout = 0;
         pSampleState = 0;
 
-        pDispositif = _pDispositif;  // Prendre en note le dispositif
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();  // Prendre en note le dispositif
 
         // Création du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -312,8 +313,7 @@ namespace PM3D
         pPanneau->matPosDim = XMMatrixScaling(pPanneau->dimension.x,
                                               pPanneau->dimension.y, 1.0f) *
             XMMatrixTranslation(pPanneau->position.x,
-                                pPanneau->position.y, pPanneau->position.z) *
-            viewProj;
+                                pPanneau->position.y, pPanneau->position.z);
 
         // On l'ajoute à notre vecteur
         tabSprites.push_back(pPanneau);

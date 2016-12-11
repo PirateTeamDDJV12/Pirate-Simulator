@@ -300,6 +300,29 @@ namespace PM3D
                 PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
             }
 
+
+            CAfficheurSprite* pAfficheurSprite = new PM3D::CAfficheurSprite();
+
+            // ajout de panneaux 
+            pAfficheurSprite->AjouterPanneau("Assets/UI/MainMenu/Background Image.dds",
+                                             XMFLOAT3(-1.0f, -1.0f, -500.0f),
+                                             2.0f, 2.0f);
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(0.5f, 0.0f, 0.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-1.0f, 0.0f, 0.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(-0.5f, 0.0f, 0.0f));
+            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
+                                             XMFLOAT3(0.0f, -1.0f, 0.0f));
+
+            PirateSimulator::GameObjectRef Sprite = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+                new PirateSimulator::GameObject(TransformTerrain, "sprite")
+            );
+            Sprite->addComponent<PirateSimulator::IMesh>(pAfficheurSprite);
+
+            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(pAfficheurSprite);
+
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
