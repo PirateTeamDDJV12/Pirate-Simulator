@@ -36,7 +36,7 @@ private:
         m_xAngle = m_xAngle + (elapsedTime * PIECE_ANGULAR_SPEED);
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
+        m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.getPosition()));
     };
 };
 

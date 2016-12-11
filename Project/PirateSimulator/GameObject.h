@@ -51,7 +51,7 @@ namespace PirateSimulator
 		{
 			m_attachedComponent.push_back(ComponentRef(new IBehaviour()));
 
-			m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_transform.m_up, m_transform.m_forward));
+			//m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_transform.m_up, m_transform.m_forward));
 		}
 
 

@@ -142,7 +142,6 @@
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
@@ -225,7 +224,6 @@
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TerrainShape.h" />
-    <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />

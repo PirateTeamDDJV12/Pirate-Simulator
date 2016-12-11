@@ -17,11 +17,8 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
     // Change the boat forward to match camera forward 
     GameObjectRef camera = CameraManager::singleton.getMainCameraGO();
-    m_gameObject->m_transform.m_forward.vector4_f32[0] = camera->m_transform.m_forward.vector4_f32[0];
-    m_gameObject->m_transform.m_forward.vector4_f32[1] = 0.f;
-    m_gameObject->m_transform.m_forward.vector4_f32[2] = camera->m_transform.m_forward.vector4_f32[2];
-
-    m_gameObject->m_transform.m_forward = XMVector3Normalize(m_gameObject->m_transform.m_forward);
+    XMVECTOR newDir{ camera->m_transform.getForward().vector4_f32[0], 0.0f, camera->m_transform.getForward().vector4_f32[2] };
+    m_gameObject->m_transform.setForward(newDir);
 
     //Get Actor shape to move it
     ShapeComponent* boatShape = PhysicsManager::singleton.getShape();
@@ -31,7 +28,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
     {
         case Move::Translation::FORWARD:
         {
-            m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed);
+            m_gameObject->translate(m_gameObject->m_transform.getForward() * m_speed);
             physx::PxVec3 frontVector = boatPose.q.rotate(physx::PxVec3(0, 0, -1));
             // 			_pxActor->addForce(frontVector);
             boatPose.p += frontVector ;
@@ -41,7 +38,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
         case Move::Translation::BACKWARD:
         {
-            m_gameObject->translate(-m_gameObject->m_transform.m_forward * m_speed);
+            m_gameObject->translate(-m_gameObject->m_transform.getForward() * m_speed);
             physx::PxVec3 frontVector = boatPose.q.rotate(physx::PxVec3(0, 0, -1));
             // 			_pxActor->addForce(frontVector);
             boatPose.p -= frontVector ;
@@ -51,7 +48,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
         case Move::Translation::LEFT:
         {
-            m_gameObject->translate(-transform.m_right * m_speed);
+            m_gameObject->translate(-transform.getRight() * m_speed);
             physx::PxVec3 rightVector = boatPose.q.rotate(physx::PxVec3(-1, 0, 0));
             // 			_pxActor->addForce(frontVector);
             boatPose.p += rightVector;
@@ -62,7 +59,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
         case Move::Translation::RIGHT:
         {
-            m_gameObject->translate(transform.m_right * m_speed);
+            m_gameObject->translate(transform.getRight() * m_speed);
             physx::PxVec3 rightVector = boatPose.q.rotate(physx::PxVec3(-1, 0, 0));
             // 			_pxActor->addForce(frontVector);
             boatPose.p -= rightVector;

@@ -5,7 +5,7 @@ namespace PirateSimulator {
 
     class Transform
     {
-    public:
+    private:
         DirectX::XMVECTOR m_position;
         DirectX::XMVECTOR m_forward;
         DirectX::XMVECTOR m_up;
@@ -19,26 +19,66 @@ namespace PirateSimulator {
             m_right{ 1.f, 0.f, 0.f, 0.f }
         {}
 
-        Transform(DirectX::XMVECTOR position, DirectX::XMVECTOR forward, DirectX::XMVECTOR up, DirectX::XMVECTOR right) :
-            m_position(position),
-            m_forward(forward),
-            m_up(up),
-            m_right(right)
-        {}
-
         Transform(
             const DirectX::XMVECTOR& position, 
             const DirectX::XMVECTOR& forward, 
-            const DirectX::XMVECTOR& up, 
-            const DirectX::XMVECTOR& right
+            const DirectX::XMVECTOR& up
         ) :
             m_position(position),
-            m_forward(forward),
-            m_up(up),
-            m_right(right)
+            m_forward(DirectX::XMVector3Normalize(forward)),
+            m_up(DirectX::XMVector3Normalize(up)),
+            m_right(DirectX::XMVector3Normalize(DirectX::XMVector3Cross(up, forward)))
         {}
 
         Transform(const Transform&) = default;
+
+        const DirectX::XMVECTOR& getPosition() const noexcept
+        {
+            return m_position;
+        }
+        const DirectX::XMVECTOR& getForward() const noexcept
+        {
+            return m_forward;
+        }
+        const DirectX::XMVECTOR& getUp() const noexcept
+        {
+            return m_up;
+        }
+        const DirectX::XMVECTOR& getRight() const noexcept
+        {
+            return m_right;
+        }
+
+        void setPosition(const DirectX::XMVECTOR& pos)
+        {
+            m_position = pos;
+        }
+        void setPosition(float x, float y, float z)
+        {
+            m_position.vector4_f32[0] = x;
+            m_position.vector4_f32[1] = y;
+            m_position.vector4_f32[2] = z;
+        }
+        void setForward(const DirectX::XMVECTOR& forward)
+        {
+            m_forward = DirectX::XMVector3Normalize(forward);
+            m_right = DirectX::XMVector3Cross(m_up, m_forward);
+
+        }
+        void setUp(const DirectX::XMVECTOR& up)
+        {
+            m_up = DirectX::XMVector3Normalize(up);
+        }
+        void setRight(const DirectX::XMVECTOR& right)
+        {
+            m_right = DirectX::XMVector3Normalize(right);
+            m_forward = DirectX::XMVector3Cross(m_right, m_up);
+        }
+
+        void translate(const DirectX::XMVECTOR &dir)
+        {
+            m_position += dir;
+        }
     };
 
 }
