@@ -2,7 +2,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "PhysicsManager.h"
 #include "GameObject.h"
-
+#include "Piece.h"
 
 
 using namespace physx;
@@ -32,5 +32,10 @@ namespace PirateSimulator
         /*m_actor->release();
         m_material->release();
         m_shape->release();*/
+    }
+
+    Piece* ShapeComponent::getPiece()
+    {
+        return m_piece;
     }
 }

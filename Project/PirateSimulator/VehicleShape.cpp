@@ -15,5 +15,13 @@ void VehicleShape::setGameObject(GameObject* parent)
     PxFilterData filterData;
     filterData.word0 = EACTORVEHICLE;
     filterData.word1 = EACTORPIECE | EACTORTERRAIN;
+    PhysicsManager::singleton.scene().addActor(*m_actor);
     PhysicsManager::singleton.registerNewComponent(this);
+}
+
+void VehicleShape::onContact(const physx::PxContactPair &aContactPair) 
+{
+    auto actor0 = static_cast<ShapeComponent*>(aContactPair.shapes[0]->getActor()->userData);
+    auto actor1 = static_cast<ShapeComponent*>(aContactPair.shapes[1]->getActor()->userData);
+    //Todo Set Behaviour
 }

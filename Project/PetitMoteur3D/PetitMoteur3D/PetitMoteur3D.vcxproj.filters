@@ -258,6 +258,9 @@
     <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp">
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\SimulationComponent.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -504,6 +507,18 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PieceShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SimulationComponent.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SimulationComponent.inline.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\IColliderInterface.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
   </ItemGroup>

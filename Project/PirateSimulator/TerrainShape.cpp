@@ -89,7 +89,7 @@ namespace PirateSimulator
          PxShape *_shape = staticActor.createShape(PxHeightFieldGeometry(heightField, PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale),
              *m_material);
 
-
+        PhysicsManager::singleton.scene().addActor(*m_actor);
         PxFilterData filterData;
         filterData.word0 = EACTORTERRAIN;
         filterData.word1 = EACTORVEHICLE;

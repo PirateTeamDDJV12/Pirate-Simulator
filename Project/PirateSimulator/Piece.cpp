@@ -4,11 +4,11 @@
 #include "BlocMeshStructure.h"
 #include "BlocMesh.h"
 
-#include <algorithm>
 #include "TimeManager.h"
 #include "GameObjectManager.h"
 #include "PieceShape.h"
-
+#include "SimulationComponent.h"
+#include <algorithm>
 using namespace PirateSimulator;
 
 
@@ -48,6 +48,7 @@ Piece::Piece(const Transform& spawnPosition, size_t pieceID) :
 {}
 
 
+
 GameObjectRef Piece::createPiece()
 {
     if (this->isEmpty())
@@ -61,11 +62,16 @@ GameObjectRef Piece::createPiece()
 
         auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
         auto pieceShape = new PirateSimulator::PieceShape();
-        
 
         m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
         m_pieceInstance->addComponent<IMesh>(pieceMesh);
-        m_pieceInstance->addComponent<PirateSimulator::ShapeComponent>(pieceShape);
+        m_pieceInstance->addComponent<ShapeComponent>(pieceShape);
+
+        //m_pieceInstance->addComponent<DynamicSimulationComponent>();
+
+
+        std::shared_ptr<DynamicSimulationComponent> simulationComponent;
+
 
         RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
     }

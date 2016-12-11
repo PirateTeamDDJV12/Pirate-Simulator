@@ -23,6 +23,6 @@ void PhysicsTask::update()
     GameObjectManager::singleton.animAllGameObject(elapsedTime);
 
     LightManager::singleton.update(elapsedTime);
-
+    PhysicsManager::singleton.update();
     RendererManager::singleton.update();
 }

@@ -9,23 +9,18 @@ namespace PirateSimulator
 	{
 	public:
 
-        void onContact(const physx::PxContactPair &aContactPair) override
-        {
-            auto actor0 = static_cast<ShapeComponent*>(aContactPair.shapes[0]->getActor()->userData);
-            auto actor1 = static_cast<ShapeComponent*>(aContactPair.shapes[1]->getActor()->userData);
-            //Todo Set Behaviour
-        }
+        void onContact(const physx::PxContactPair &aContactPair) override;
 
         void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
         {
-            auto actor0 = static_cast<ShapeComponent*>(contactShape->getActor()->userData);
-            auto actor1 = static_cast<ShapeComponent*>(actorShape->getActor()->userData);
-            //TODO: Set Behaviour
+           // auto actor0 = static_cast<ShapeComponent*>(contactShape->getActor()->userData);
+            //auto actor1 = static_cast<ShapeComponent*>(actorShape->getActor()->userData);
+            //TODO: Set Behaviour// Or not, there is no trigger Zone
         }
 
 		static std::string typeId() noexcept
 		{
-			return "VehiculeShape";
+			return "VehicleShape";
 		}
 
 		

@@ -136,6 +136,7 @@
     <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RenderTask.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\SimulationComponent.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
@@ -191,6 +192,8 @@
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
     <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\IColliderInterface.h" />
+    <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h" />
     <ClInclude Include="..\..\PirateSimulator\InputManager.h" />
     <ClInclude Include="..\..\PirateSimulator\IGameTask.h" />
     <ClInclude Include="..\..\PirateSimulator\InputTask.h" />
@@ -216,6 +219,8 @@
     <ClInclude Include="..\..\PirateSimulator\Material.h" />
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
     <ClInclude Include="..\..\PirateSimulator\ShapeComponent.h" />
+    <ClInclude Include="..\..\PirateSimulator\SimulationComponent.h" />
+    <ClInclude Include="..\..\PirateSimulator\SimulationComponent.inline.h" />
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />

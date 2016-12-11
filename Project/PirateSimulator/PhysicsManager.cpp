@@ -118,12 +118,22 @@ namespace PirateSimulator {
     void PhysicsManager::update()
     {
         auto &timeManager = TimeManager::GetInstance();
+        auto remainingTimeToSimulate = timeManager.getElapsedTimeFrame();
 
 
-        auto durationStep = 10ms;
-        while (timeManager.isTimeToUpdate())
+        auto durationStep = 100;
+        while (remainingTimeToSimulate > 0)
         {
-            _scene->simulate(duration_cast<duration<PxReal>>(durationStep).count());
+            if (remainingTimeToSimulate > durationStep)
+            {
+                _scene->simulate(durationStep);
+                remainingTimeToSimulate -= durationStep;
+            }
+            else
+            {
+                _scene->simulate(remainingTimeToSimulate);
+                remainingTimeToSimulate = 0;
+            }
             _scene->fetchResults(true);
         }
 
@@ -169,7 +179,7 @@ namespace PirateSimulator {
             _visualDebuggerConnection = physx::unique_ptr<debugger::comm::PvdConnection>(
                 PxVisualDebuggerExt::createConnection(_physics->getPvdConnectionManager(),
                     "localhost", 5425, 100, connectionFlags));
-
+            
             if (_visualDebuggerConnection == nullptr)
                 std::cout << ("    NOT CONNECTED!\n");//PB mais c'est pareil dans balls
             else
@@ -241,11 +251,16 @@ namespace PirateSimulator {
     ShapeComponent* PhysicsManager::getShape()
     {
         ShapeComponent* vehicle = nullptr;
-        std::for_each(m_components.begin(), m_components.end(), [vehicle](ShapeComponent* shape) mutable
+       /* std::for_each(m_components.begin(), m_components.end(), [vehicle](ShapeComponent* shape) mutable
 
         {if (shape->getTypeId() == "VehicleShape")
             vehicle = shape;
-        });
+        });*/
+        for (auto shape : m_components)
+        {
+            if (shape->getTypeId() == "VehicleShape")
+                vehicle = shape;
+        }
         return vehicle;
     }
 }

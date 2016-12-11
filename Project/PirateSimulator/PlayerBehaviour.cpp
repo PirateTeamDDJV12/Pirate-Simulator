@@ -1,4 +1,5 @@
 #include "PlayerBehaviour.h"
+#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "PhysicsManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include <dinput.h>
@@ -23,26 +24,38 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
     m_gameObject->m_transform.m_forward = XMVector3Normalize(m_gameObject->m_transform.m_forward);
 
     //Get Actor shape to move it
-    //VehicleShape boatShape = PhysicsManager::singleton.
+    ShapeComponent* boatShape = PhysicsManager::singleton.getShape();
+    auto boatPose = boatShape->pose();
 
     switch(direction)
     {
         case Move::Translation::FORWARD:
         {
             m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed);
-            
+            physx::PxVec3 frontVector = boatPose.q.rotate(physx::PxVec3(0, 0, -1));
+            // 			_pxActor->addForce(frontVector);
+            boatPose.p += frontVector ;
+            boatShape->setPose(boatPose);
         }
         break;
 
         case Move::Translation::BACKWARD:
         {
             m_gameObject->translate(-m_gameObject->m_transform.m_forward * m_speed);
+            physx::PxVec3 frontVector = boatPose.q.rotate(physx::PxVec3(0, 0, -1));
+            // 			_pxActor->addForce(frontVector);
+            boatPose.p -= frontVector ;
+            boatShape->setPose(boatPose);
         }
         break;
 
         case Move::Translation::LEFT:
         {
             m_gameObject->translate(-transform.m_right * m_speed);
+            physx::PxVec3 rightVector = boatPose.q.rotate(physx::PxVec3(-1, 0, 0));
+            // 			_pxActor->addForce(frontVector);
+            boatPose.p += rightVector;
+            boatShape->setPose(boatPose);
 
         }
         break;
@@ -50,6 +63,10 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
         case Move::Translation::RIGHT:
         {
             m_gameObject->translate(transform.m_right * m_speed);
+            physx::PxVec3 rightVector = boatPose.q.rotate(physx::PxVec3(-1, 0, 0));
+            // 			_pxActor->addForce(frontVector);
+            boatPose.p -= rightVector;
+            boatShape->setPose(boatPose);
         }
         break;
 
