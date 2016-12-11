@@ -13,6 +13,13 @@ namespace PirateSimulator
     class SoundManager
     {
     public:
+        enum
+        {
+            CHANNEL_MAX_COUNT = 1024
+        };
+
+
+    public:
         static SoundManager singleton;
         
 
@@ -40,6 +47,10 @@ namespace PirateSimulator
 
     public:
         void loadMusicFromFile(const char* fileName);
+        void setVolume(float volume);
+
+        void playMusic(size_t id);
+        void stopMusic(size_t id);
     };
 }
 

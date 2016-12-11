@@ -10,10 +10,23 @@ using namespace PirateSimulator;
 SoundManager SoundManager::singleton;
 
 
+class ErrorFMOD {};
+
+template<class Result>
+void FMODTry(Result result)
+{
+#ifdef _DEBUG
+    if (result != FMOD_OK)
+    {
+        throw ErrorFMOD{};
+    }
+#endif
+}
+
+
 struct FMODSystemBloc
 {
 public:
-    FMOD::Studio::System* m_system;
     FMOD::System* m_lowLevelSystem;
 
     void* m_extraDriverData;
@@ -21,7 +34,6 @@ public:
 
 public:
     FMODSystemBloc() :
-        m_system{ nullptr },
         m_lowLevelSystem{ nullptr },
         m_extraDriverData{ nullptr }
     {}
@@ -30,22 +42,29 @@ public:
 class FMODBank
 {
 private:
-    FMOD::Studio::Bank* m_musicBank;
+    FMOD::Sound* m_musicSound;
+    FMOD::Channel* m_musicChannel;
 
     std::string m_name;
 
 
 public:
     FMODBank() :
-        m_musicBank{ nullptr },
-        m_name{ "" }
+        m_musicSound{ nullptr },
+        m_name{ "" },
+        m_musicChannel{ nullptr }
     {}
 
-    FMODBank(FMOD::Studio::System* system, std::string& fileName) :
-        m_musicBank{ nullptr },
-        m_name{ fileName }
+    FMODBank(FMOD::System* system, std::string& fileName) :
+        m_musicSound{ nullptr },
+        m_musicChannel{ nullptr }
     {
-        ERRCHECK(system->loadBankFile(Common_MediaPath(fileName.c_str()), FMOD_STUDIO_LOAD_BANK_NORMAL, &m_musicBank));
+        this->load(system, fileName);
+    }
+
+    ~FMODBank()
+    {
+        this->unload();
     }
 
 
@@ -55,10 +74,39 @@ public:
         return m_name;
     }
 
-    void load(FMOD::Studio::System* system, std::string& fileName)
+    void load(FMOD::System* system, std::string& fileName)
     {
-        ERRCHECK(system->loadBankFile(Common_MediaPath(fileName.c_str()), FMOD_STUDIO_LOAD_BANK_NORMAL, &m_musicBank));
+        FMODTry(system->createSound(fileName.c_str(), FMOD_DEFAULT, 0, &m_musicSound));
+
         m_name = fileName;
+    }
+
+    void unload()
+    {
+        if (m_musicSound)
+        {
+            m_musicSound->release();
+            m_musicSound = nullptr;
+            m_name = "";
+        }
+    }
+
+    void setVolume(float volume)
+    {
+        m_musicChannel->setVolume(volume);
+    }
+
+    void play(FMOD::System* system)
+    {
+        system->playSound(m_musicSound, nullptr, false, &m_musicChannel);
+    }
+
+    void stop()
+    {
+        if (m_musicChannel)
+        {
+            m_musicChannel->stop();
+        }
     }
 };
 
@@ -66,12 +114,9 @@ public:
 SoundManager::SoundManager() :
     m_systemBloc{ new FMODSystemBloc }
 {
-    ERRCHECK(FMOD::Studio::System::create(&m_systemBloc->m_system));
+    FMODTry(FMOD::System_Create(&m_systemBloc->m_lowLevelSystem));
 
-    ERRCHECK(m_systemBloc->m_system->getLowLevelSystem(&m_systemBloc->m_lowLevelSystem));
-    ERRCHECK(m_systemBloc->m_lowLevelSystem->setSoftwareFormat(0, FMOD_SPEAKERMODE_5POINT1, 0));
-
-    ERRCHECK(m_systemBloc->m_system->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, m_systemBloc->m_extraDriverData));
+    FMODTry(m_systemBloc->m_lowLevelSystem->init(SoundManager::CHANNEL_MAX_COUNT, FMOD_INIT_NORMAL, m_systemBloc->m_extraDriverData));
 }
 
 SoundManager::~SoundManager()
@@ -82,20 +127,25 @@ SoundManager::~SoundManager()
 
 void SoundManager::init()
 {
-    
+
 }
 
 void SoundManager::update()
 {
-
+    m_systemBloc->m_lowLevelSystem->update();
 }
 
 void SoundManager::cleanup()
 {
-    if (m_systemBloc->m_system)
+    for (auto iter = m_musicBank.begin(); iter != m_musicBank.end(); ++iter)
     {
-        m_systemBloc->m_system->release();
-        m_systemBloc->m_system = nullptr;
+        iter->unload();
+    }
+
+    if (m_systemBloc->m_lowLevelSystem)
+    {
+        m_systemBloc->m_lowLevelSystem->release();
+        m_systemBloc->m_lowLevelSystem = nullptr;
     }
 }
 
@@ -110,5 +160,23 @@ void SoundManager::loadMusicFromFile(const char* fileName)
         }
     }
 
-    m_musicBank.emplace_back(m_systemBloc->m_system, fileName);
+    m_musicBank.emplace_back(m_systemBloc->m_lowLevelSystem, name);
+}
+
+void SoundManager::setVolume(float volume)
+{
+    for (auto iter = m_musicBank.begin(); iter != m_musicBank.end(); ++iter)
+    {
+        iter->setVolume(volume);
+    }
+}
+
+void SoundManager::playMusic(size_t id)
+{
+    m_musicBank[id].play(m_systemBloc->m_lowLevelSystem);
+}
+
+void SoundManager::stopMusic(size_t id)
+{
+    m_musicBank[id].stop();
 }
