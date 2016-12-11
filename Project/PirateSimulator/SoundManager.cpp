@@ -76,11 +76,13 @@ public:
 
 
 public:
+    /*Get the names i.e. its file name*/
     const std::string& getName() const noexcept
     {
         return m_name;
     }
 
+    /*load a music (or a sound)*/
     void load(FMOD::System* system, const std::string& fileName)
     {
         FMODTry(system->createSound(fileName.c_str(), FMOD_DEFAULT, 0, &m_musicSound));
@@ -88,6 +90,7 @@ public:
         m_name = fileName;
     }
 
+    /*load a music or a sound. Specify the mode (FMOD_DEFAULT, FMOD_LOOP_NORMAL, ...)*/
     void load(FMOD::System* system, const std::string& fileName, int mode)
     {
         FMODTry(system->createSound(fileName.c_str(), mode, 0, &m_musicSound));
@@ -95,6 +98,7 @@ public:
         m_name = fileName;
     }
 
+    /*unload a sound*/
     void unload()
     {
         if (m_musicSound)
@@ -105,11 +109,13 @@ public:
         }
     }
 
+    /*play the music*/
     void play(FMOD::System* system)
     {
         FMODTry(system->playSound(m_musicSound, nullptr, false, &m_musicChannel));
     }
 
+    /*stop the sound*/
     void stop()
     {
         if (m_musicChannel)
@@ -144,6 +150,8 @@ public:
 
             return playing;
         }
+
+        return false;
     }
     
 
@@ -391,4 +399,9 @@ std::vector<FMODBank>::iterator SoundManager::findMusic(const char* fileName)
     }
 
     return iter;
+}
+
+size_t SoundManager::musicCount() const noexcept
+{
+    return m_musicBank.size();
 }
