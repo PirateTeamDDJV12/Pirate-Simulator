@@ -49,7 +49,6 @@ class CollisionPieceHandler : public ICollisionHandler
 void PieceShape::setGameObject(GameObject* parent)
 {
     m_gameObject = parent;
-    GameObjectManager::singleton.getGameObjectByName(m_gameObject->getName());
     m_actor = PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform(PxVec3(parent->m_transform.getPosition().vector4_f32[0], parent->m_transform.getPosition                                                                      ().vector4_f32[1], parent->m_transform.getPosition().vector4_f32[2])));
     m_shape = m_actor->createShape(physx::PxBoxGeometry(10.f, 25.f, 20.f), *m_material);
     PhysicsManager::singleton.scene().addActor(*m_actor);
