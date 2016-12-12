@@ -115,7 +115,6 @@ namespace PM3D
 
             std::vector<std::thread> beginThread;
 
-
             beginThread.emplace_back([this, &resultInit]() {
                 // * Initialisation de la scène
                 InitScene();

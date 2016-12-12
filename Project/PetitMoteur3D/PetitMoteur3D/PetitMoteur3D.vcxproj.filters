@@ -524,6 +524,12 @@
     <ClInclude Include="..\..\PirateSimulator\UIOptionSelector.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIOption.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIOptionSelector.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PetitMoteur3D.ico">
