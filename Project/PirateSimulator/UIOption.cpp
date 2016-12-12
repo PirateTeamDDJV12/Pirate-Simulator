@@ -19,9 +19,9 @@ namespace PirateSimulator
 
 
     public:
-        OptionGraphic(PM3D::CDispositifD3D11* pDispositif)
+        OptionGraphic()
         {
-            m_spriteDisplayer = std::make_unique<PM3D::CAfficheurSprite>(pDispositif);
+            m_spriteDisplayer = std::make_unique<PM3D::CAfficheurSprite>();
         }
 
 
@@ -56,16 +56,17 @@ namespace PirateSimulator
 
 
 
-UIOption::UIOption()
+UIOption::UIOption() :
+    m_graphics{ nullptr }
 {}
 
 void UIOption::initialize()
 {
     const float fullScreenSize = 2.f;
 
-    this->attachGraphics(RendererManager::singleton.getDispositif());
+    this->attachGraphics();
 
-    m_graphics->addSprite("PirateSimulator/OptionTexture.dds", 0.f, 0.f, fullScreenSize, fullScreenSize);
+    m_graphics->addPannel("PirateSimulator/OptionTexture.dds", { -1.0f, -1.0f, 0.0f }, fullScreenSize, fullScreenSize);
 }
 
 bool UIOption::update()
@@ -84,6 +85,11 @@ bool UIOption::cancel()
 {
     //TODO
     return true;
+}
+
+void UIOption::attachGraphics()
+{
+    m_graphics = std::make_unique<OptionGraphic>();
 }
 
 void UIOption::attachItem(OptionItem& optionItem, AlgorithmObject algoCallback)

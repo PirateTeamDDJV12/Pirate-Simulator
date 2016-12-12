@@ -110,7 +110,6 @@ namespace PM3D
             // Création des tasks
             CreateTasks();
 
-            bool resultUI = false;
             bool resultInit = false;
 
             std::vector<std::thread> beginThread;
@@ -149,6 +148,8 @@ namespace PM3D
                 if((resultInit))
                     break;
                 pDispositif->Present();
+
+                std::this_thread::sleep_for(5ms);
             }
 
             //beginThread.front().detach();
