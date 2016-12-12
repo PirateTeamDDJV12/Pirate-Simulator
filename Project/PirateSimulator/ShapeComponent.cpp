@@ -23,10 +23,7 @@ namespace PirateSimulator
         pxActor().setGlobalPose(iPose);
     }
 
-    /*physx::unique_ptr<physx::PxRigidStatic> ShapeComponent::createPxActor()
-    {
-        
-    }*/
+
 
     void ShapeComponent::cleanUp()
     {

@@ -1,13 +1,10 @@
 #include "Piece.h"
-
 #include "IBehaviour.h"
 #include "BlocMeshStructure.h"
 #include "BlocMesh.h"
-
 #include "TimeManager.h"
 #include "GameObjectManager.h"
 #include "PieceShape.h"
-#include "SimulationComponent.h"
 #include <algorithm>
 using namespace PirateSimulator;
 
@@ -66,7 +63,7 @@ GameObjectRef Piece::createPiece()
         m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
         m_pieceInstance->addComponent<IMesh>(pieceMesh);
         m_pieceInstance->addComponent<ShapeComponent>(pieceShape);
-
+        pieceShape->setPiece(this);
         //m_pieceInstance->addComponent<DynamicSimulationComponent>();
 
 

@@ -16,7 +16,6 @@ namespace physx
 namespace PirateSimulator
 {
     class Piece;
-    class SimulationEventCallback;
     class ShapeComponent : public Component
     {
         
@@ -30,8 +29,8 @@ namespace PirateSimulator
         ShapeComponent() : m_actor(nullptr), m_shape(nullptr)
         {
         }
+        static std::string typeId() noexcept { return "ShapeComponent"; }
         virtual std::string getTypeId() const noexcept override = 0;
-       // virtual void onContact(const physx::PxContactPair &aContactPair) =0;
         enum ACTOR
         {
             EACTORTERRAIN = 1<<0,
@@ -58,6 +57,18 @@ namespace PirateSimulator
 
         Piece* getPiece();
         void setHandler(ICollisionHandlerRef callback);
+        ICollisionHandler *getHandler()
+        {
+            return handler.get();
+        };
+
+        void onContact(const physx::PxContactPair &aContactPair)
+        {
+            if (handler)
+            {
+                handler->onContact(aContactPair);
+            }
+        }
     };
 
 

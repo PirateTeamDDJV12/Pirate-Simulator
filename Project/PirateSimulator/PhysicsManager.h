@@ -44,6 +44,7 @@ namespace PirateSimulator
         physx::unique_ptr<physx::debugger::comm::PvdConnection> _visualDebuggerConnection;
         std::vector<ShapeComponent*> m_components;
 
+
     private:
         PhysicsManager() :_foundation(nullptr), _profileZoneManager(nullptr), _physics(nullptr),
             _scene(nullptr), _cpuDispatcher(nullptr), _cudaContextManager(nullptr),
@@ -70,7 +71,7 @@ namespace PirateSimulator
         void reset();
 
 
-        ShapeComponent* getShape();
+        ShapeComponent* getVehiculeShape();
 
     };
 
@@ -78,11 +79,8 @@ namespace PirateSimulator
     {
         EACTORTERRAIN = 1 << 0,
         EACTORVEHICLE = 1 << 1,
-        EACTORPIECE = 1 << 2
-        
-    };
-
-  
+        EACTORPIECE = 1 << 2        
+    };  
 }
 
 #endif

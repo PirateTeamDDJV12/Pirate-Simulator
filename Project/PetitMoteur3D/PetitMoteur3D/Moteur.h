@@ -267,7 +267,7 @@ namespace PM3D
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
             auto vehicleShape = new PirateSimulator::VehicleShape();
             vehicule->addComponent<PirateSimulator::ShapeComponent>(vehicleShape);
-            
+
             PirateSimulator::Transform TransformTerrain;
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
             TransformTerrain.setUp(XMVECTOR{ 0.0f, 1.0f, 0.0f, 0.0f });

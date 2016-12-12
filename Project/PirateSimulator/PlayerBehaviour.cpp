@@ -21,7 +21,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
     m_gameObject->m_transform.setForward(newDir);
 
     //Get Actor shape to move it
-    ShapeComponent* boatShape = PhysicsManager::singleton.getShape();
+    ShapeComponent* boatShape = PhysicsManager::singleton.getVehiculeShape();
     auto boatPose = boatShape->pose();
 
     switch(direction)

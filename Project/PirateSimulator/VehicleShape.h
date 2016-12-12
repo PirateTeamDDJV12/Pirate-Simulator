@@ -9,13 +9,9 @@ namespace PirateSimulator
 	{
 	public:
 
-       // void onContact(const physx::PxContactPair &aContactPair) override;
-
-        
-
 		static std::string typeId() noexcept
 		{
-			return "VehicleShape";
+			return "ShapeComponent";
 		}
 
 		
@@ -23,10 +19,8 @@ namespace PirateSimulator
         {
 			return VehicleShape::typeId();
 		}
-
+   
 		void setGameObject(PirateSimulator::GameObject* parent) override;
-
-
 
 	};
 }

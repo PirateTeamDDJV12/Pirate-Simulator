@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ICOLLISION_HANDLER_H
+#define  ICOLLISION_HANDLER_H
+
 //=============================================================================
 // EXTERNAL DECLARATIONS
 //=============================================================================
@@ -20,4 +22,5 @@ namespace PirateSimulator
 
     using ICollisionHandlerRef = std::shared_ptr<ICollisionHandler>;
 
-} // namespace engine
+}
+#endif // 

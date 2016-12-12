@@ -15,12 +15,9 @@ namespace PirateSimulator
  
         static std::string typeId() noexcept
         {
-            return "PieceShape";
+            return "ShapeComponent";
         }
-        /*Piece* getPiece()
-        {
-            return m_piece;
-        }*/
+
 
         std::string getTypeId() const noexcept override
         {
@@ -29,7 +26,10 @@ namespace PirateSimulator
 
         void setGameObject(PirateSimulator::GameObject* parent);
 
-
+        void setPiece(Piece * piece)
+        {
+            m_piece = piece;
+        }
 
     };
 }

@@ -31,12 +31,15 @@ namespace PirateSimulator {
         virtual void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override
         {
             ICollisionHandler *actor0 = nullptr;
+            GameObject *go1 = static_cast<GameObject*>(pairHeader.actors[0]->userData);
+            GameObject *go2 = static_cast<GameObject*>(pairHeader.actors[1]->userData);
+
             if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_0))
-                actor0 = static_cast<ICollisionHandler*>(pairHeader.actors[0]->userData);
+                actor0 = static_cast<ICollisionHandler *>(go1->getComponent<ShapeComponent>()->getHandler());
 
             ICollisionHandler *actor1 = nullptr;
             if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_1))
-                actor1 = static_cast<ICollisionHandler*>(pairHeader.actors[1]->userData);
+                actor1 = static_cast<ICollisionHandler *>(go2->getComponent<ShapeComponent>()->getHandler());
 
 
             for (int i = 0; i < (int)nbPairs; ++i)
@@ -249,13 +252,13 @@ namespace PirateSimulator {
     }
 
 
-    ShapeComponent* PhysicsManager::getShape()
+    ShapeComponent* PhysicsManager::getVehiculeShape()
     {
         ShapeComponent* vehicle = nullptr;
 
         for (auto shape : m_components)
         {
-            if (shape->getTypeId() == "VehicleShape")
+            if (shape->getPiece() == nullptr)
                 vehicle = shape;
         }
         return vehicle;
