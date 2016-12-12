@@ -117,9 +117,9 @@ namespace PirateSimulator
 
             void updateViewMatrix() {
                 setMatrixView(XMMatrixLookToLH(
-                    m_gameObject->m_transform.m_position,
-                    m_gameObject->m_transform.m_forward,
-                    m_gameObject->m_transform.m_up)
+                    m_gameObject->m_transform.getPosition(),
+                    m_gameObject->m_transform.getForward(),
+                    m_gameObject->m_transform.getUp())
                 );
                 //this->*m_pUpdateViewMatrix)();
             }
@@ -138,24 +138,23 @@ namespace PirateSimulator
             virtual void updateViewMatrixAsForwardCamera()
             {
                 setMatrixView(XMMatrixLookToLH(
-                    m_gameObject->m_transform.m_position, 
-                    m_gameObject->m_transform.m_forward, 
-                    m_gameObject->m_transform.m_up)
+                    m_gameObject->m_transform.getPosition(),
+                    m_gameObject->m_transform.getForward(),
+                    m_gameObject->m_transform.getUp())
                 );
             }
 
             virtual void updateViewMatrixAsObjectCamera()
             {
-                m_gameObject->m_transform.m_forward = DirectX::XMVector3Normalize(m_target->m_transform.m_position - m_gameObject->m_transform.m_position);
+                m_gameObject->m_transform.setForward(m_target->m_transform.getPosition() - m_gameObject->m_transform.getPosition());
 
-                m_gameObject->m_transform.m_position = m_target->m_transform.m_position - m_gameObject->m_transform.m_forward * 50;
+                m_gameObject->m_transform.setPosition(m_target->m_transform.getPosition() - m_gameObject->m_transform.getForward() * 50);
 
-                m_gameObject->m_transform.m_right = DirectX::XMVector3Normalize(DirectX::XMVector3Cross(m_gameObject->m_transform.m_up, m_gameObject->m_transform.m_forward));
 
                 setMatrixView(XMMatrixLookAtLH(
-                    m_gameObject->m_transform.m_position,
-                    m_target->m_transform.m_position,
-                    m_gameObject->m_transform.m_up));
+                    m_gameObject->m_transform.getPosition(),
+                    m_gameObject->m_transform.getForward(),
+                    m_gameObject->m_transform.getUp()));
             }
 
         public:

@@ -61,6 +61,12 @@
     <Filter Include="Fichiers sources\PirateSimulator\Notifier">
       <UniqueIdentifier>{26ad8a2f-d7d0-410f-abed-75b12f319c51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Simulation">
+      <UniqueIdentifier>{365af554-e659-47aa-9b67-20b5e815d6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\ShapeComponent">
+      <UniqueIdentifier>{036106ce-8f78-4e57-9745-1a37e694a0fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Moteur.cpp">
@@ -165,9 +171,6 @@
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
@@ -216,6 +219,18 @@
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp">
       <Filter>Fichiers sources\PirateSimulator\Config</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PhysicsManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
@@ -236,6 +251,9 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp">
       <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -377,9 +395,6 @@
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
@@ -446,6 +461,18 @@
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ShapeComponent.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PhysicsManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\VehicleShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TerrainShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PieceAdministrator.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
@@ -469,6 +496,12 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BezierCurve.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PieceShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
