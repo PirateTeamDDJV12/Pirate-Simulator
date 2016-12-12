@@ -90,23 +90,23 @@ namespace PM3D
         {
             bool bBoucle = true;
 
-            while (bBoucle)
+            while(bBoucle)
             {
-                // Propre � la plateforme - (Conditions d'arr�t, interface, messages)
+                // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
 
                 PirateSimulator::TaskManager::GetInstance().update();
-               
+
             }
-            
+
         }
 
         virtual int Initialisations()
         {
-            // Propre � la plateforme
+            // Propre à la plateforme
             InitialisationsSpecific();
 
-            // Cr�ation des tasks
+            // Création des tasks
             CreateTasks();
 
             bool resultUI = false;
@@ -117,7 +117,7 @@ namespace PM3D
 
 
             beginThread.emplace_back([this, &resultInit]() {
-                // * Initialisation de la sc�ne
+                // * Initialisation de la scène
                 InitScene();
                 resultInit = true;
             });
@@ -144,7 +144,7 @@ namespace PM3D
                 float Couleur[4] = {0.0f, 0.5f, 0.0f, 1.0f};  //  RGBA - Vert pour le moment
                 pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
 
-                // On r�-initialise le tampon de profondeur
+                // On ré-initialise le tampon de profondeur
                 ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                 pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
                 if((resultInit))
@@ -260,9 +260,9 @@ namespace PM3D
             PirateSimulator::Transform transformBoat;
 
             //transformBoat.m_position = {300,0,300,0};
-            transformBoat.setPosition(950.0f,0.0f,900.0f);
-            transformBoat.setUp(XMVECTOR{ 0.0f, 1.0f, 0.0f, 0.0f });
-            transformBoat.setForward(XMVECTOR{ 0.0f, 0.0f, -1.0f, 0.0f });
+            transformBoat.setPosition(950.0f, 0.0f, 900.0f);
+            transformBoat.setUp(XMVECTOR{0.0f, 1.0f, 0.0f, 0.0f});
+            transformBoat.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
 
             // Constructeur avec format binaire
             PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
@@ -287,7 +287,7 @@ namespace PM3D
 
             PirateSimulator::Transform TransformTerrain;
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
-            TransformTerrain.setUp(XMVECTOR{ 0.0f, 1.0f, 0.0f, 0.0f });
+            TransformTerrain.setUp(XMVECTOR{0.0f, 1.0f, 0.0f, 0.0f});
             TransformTerrain.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
 
             // Add our terrain
@@ -310,7 +310,7 @@ namespace PM3D
             // Add the shape for Terrain
             auto terrainShape = new PirateSimulator::TerrainShape();
             //terrain->addComponent<PirateSimulator::ShapeComponent>(terrainShape);
-            
+
             // Add our water plane
             auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(TransformTerrain, "water")
@@ -319,11 +319,11 @@ namespace PM3D
             water->addComponent<PirateSimulator::IMesh>(waterMesh);
 
             // Set the gameobject which is paired to the camera
-            if (PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
+            if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
             {
                 PirateSimulator::CameraManager::singleton.setPairedTarget(vehicule);
             }
-            else if (PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+            else if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
             {
                 PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
             }
