@@ -102,7 +102,6 @@ namespace PM3D
             // Création des tasks
             CreateTasks();
 
-            bool resultUI = false;
             bool resultInit = false;
 
             std::vector<std::thread> beginThread;
@@ -119,7 +118,7 @@ namespace PM3D
             //    beginThread[iter].join();
             //}
 
-            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIOption));
 
             while(true)
             {
@@ -142,6 +141,8 @@ namespace PM3D
                 if((titleScreen() && resultInit))
                    break;
                 pDispositif->Present();
+
+                std::this_thread::sleep_for(5ms);
             }
 
             beginThread.front().detach();

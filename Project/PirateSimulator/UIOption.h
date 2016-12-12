@@ -34,11 +34,7 @@ namespace PirateSimulator
 
 
     public:
-        template<class ... Args>
-        void attachGraphics(Args&& ... graphicsArguments)
-        {
-            m_graphics = std::make_unique<OptionGraphic>(std::forward<Args...>(graphicsArguments...));
-        }
+        void attachGraphics();
 
         void attachItem(OptionItem& optionItem, AlgorithmObject algoCallback);
 
