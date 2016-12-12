@@ -186,6 +186,7 @@ namespace PM3D
             pEffet->GetVariableByName("textureEntree")->AsShaderResource();
 
         pDispositif->ActiverMelangeAlpha();
+        pDispositif->DesactiverZBuffer();
 
         // Faire le rendu de tous nos sprites
         for (size_t i = 0; i < tabSprites.size(); ++i)
@@ -207,8 +208,7 @@ namespace PM3D
         }
 
         pDispositif->DesactiverMelangeAlpha();
-
-
+        pDispositif->ActiverZBuffer();
     }
 
     void CAfficheurSprite::AjouterSprite(string NomTexture,
@@ -307,7 +307,7 @@ namespace PM3D
         }
 
         // Position en coordonnées du monde
-        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
+        /*XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();*/
         pPanneau->position = _position;
 
         pPanneau->matPosDim = XMMatrixScaling(pPanneau->dimension.x,

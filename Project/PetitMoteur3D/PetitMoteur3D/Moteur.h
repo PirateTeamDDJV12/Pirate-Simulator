@@ -97,7 +97,7 @@ namespace PM3D
         {
             // Propre à la plateforme
             InitialisationsSpecific();
-            
+
             // Création des tasks
             CreateTasks();
 
@@ -106,18 +106,7 @@ namespace PM3D
 
             std::vector<std::thread> beginThread;
 
-            beginThread.emplace_back([&resultUI]() {
-                PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
 
-                while (true)
-                {
-                    if (titleScreen())
-                    {
-                        resultUI = true;
-                        break;
-                    }
-                }
-            });
 
             beginThread.emplace_back([this, &resultInit]() {
                 // * Initialisation de la scène
@@ -125,15 +114,37 @@ namespace PM3D
                 resultInit = true;
             });
 
-            for (size_t iter = 0; iter < beginThread.size(); ++iter)
+            //for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            //{
+            //    beginThread[iter].join();
+            //}
+
+            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+
+            while(true)
             {
-                beginThread[iter].join();
+                if(!RunSpecific())
+                {
+                    beginThread.front().detach();
+                    return 1;
+                }
+                auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
+                ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
+                ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
+
+                // On efface la surface de rendu
+                float Couleur[4] = {0.0f, 0.5f, 0.0f, 1.0f};  //  RGBA - Vert pour le moment
+                pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
+
+                // On ré-initialise le tampon de profondeur
+                ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
+                pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+                if((titleScreen() && resultInit))
+                   break;
+                pDispositif->Present();
             }
 
-            while (!(resultUI && resultInit))
-            {
-                std::this_thread::sleep_for(35ms);
-            }
+            beginThread.front().detach();
 
             return 0;
         }
@@ -299,29 +310,6 @@ namespace PM3D
             {
                 PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
             }
-
-
-            CAfficheurSprite* pAfficheurSprite = new PM3D::CAfficheurSprite();
-
-            // ajout de panneaux 
-            pAfficheurSprite->AjouterPanneau("Assets/UI/MainMenu/Background Image.dds",
-                                             XMFLOAT3(-1.0f, -1.0f, -500.0f),
-                                             2.0f, 2.0f);
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(0.5f, 0.0f, 0.0f));
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(-1.0f, 0.0f, 0.0f));
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(-0.5f, 0.0f, 0.0f));
-            pAfficheurSprite->AjouterPanneau("grass_v1_basic_tex.dds",
-                                             XMFLOAT3(0.0f, -1.0f, 0.0f));
-
-            PirateSimulator::GameObjectRef Sprite = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(TransformTerrain, "sprite")
-            );
-            Sprite->addComponent<PirateSimulator::IMesh>(pAfficheurSprite);
-
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(pAfficheurSprite);
 
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
