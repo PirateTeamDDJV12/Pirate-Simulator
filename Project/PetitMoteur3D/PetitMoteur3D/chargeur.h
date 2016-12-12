@@ -16,10 +16,14 @@ namespace PM3D
             bMainGauche = false;
         }
 
-        string NomFichier;
+        CParametresChargement(string NomChemin, string NomFichier, bool bInverserCulling, bool bMainGauche) :
+            NomChemin{ NomChemin }, NomFichier{ NomFichier }, bMainGauche{ bMainGauche }, bInverserCulling{ bInverserCulling }
+        {}
+
         string NomChemin;
-        bool bInverserCulling;
+        string NomFichier;
         bool bMainGauche;
+        bool bInverserCulling;
     };
 
     class IChargeur

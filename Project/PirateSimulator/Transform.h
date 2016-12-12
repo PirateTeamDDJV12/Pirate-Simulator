@@ -14,22 +14,15 @@ namespace PirateSimulator {
     public:
         constexpr Transform() :
             m_position{ 0.f, 0.f, 0.f, 0.f },
-            m_forward{ 0.f,0.f,1.f, 0.f },
-            m_up{ 0.f,1.f,0.f,0.f },
+            m_forward{ 0.f, 0.f, 1.f, 0.f },
+            m_up{ 0.f, 1.f, 0.f, 0.f },
             m_right{ 1.f, 0.f, 0.f, 0.f }
         {}
 
-        Transform(DirectX::XMVECTOR position, DirectX::XMVECTOR forward, DirectX::XMVECTOR up, DirectX::XMVECTOR right) :
-            m_position(position),
-            m_forward(forward),
-            m_up(up),
-            m_right(right)
-        {}
-
         Transform(
-            const DirectX::XMVECTOR& position, 
-            const DirectX::XMVECTOR& forward, 
-            const DirectX::XMVECTOR& up, 
+            const DirectX::XMVECTOR& position,
+            const DirectX::XMVECTOR& forward,
+            const DirectX::XMVECTOR& up,
             const DirectX::XMVECTOR& right
         ) :
             m_position(position),
@@ -40,9 +33,6 @@ namespace PirateSimulator {
 
         Transform(const Transform&) = default;
     };
-
 }
 
 #endif // !_TRANSFORM_H_
-
-
