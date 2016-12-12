@@ -43,6 +43,7 @@
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
 #include "../../PirateSimulator/UIOption.h"
+#include "../../PirateSimulator/UILoading.h"
 
 #include <thread>
 #include <vector>
@@ -118,7 +119,7 @@ namespace PM3D
             //    beginThread[iter].join();
             //}
 
-            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIOption));
+            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UILoading));
 
             while(true)
             {

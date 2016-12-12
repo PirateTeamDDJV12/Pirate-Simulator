@@ -246,6 +246,9 @@
     <ClCompile Include="..\..\PirateSimulator\UIOption.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UILoading.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -483,6 +486,9 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIOptionSelector.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UILoading.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
   </ItemGroup>
