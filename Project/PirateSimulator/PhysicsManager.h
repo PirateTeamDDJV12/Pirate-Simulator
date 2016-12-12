@@ -17,6 +17,8 @@ namespace PirateSimulator
 
     class PhysicsManager
     {
+
+
     private:
         template<class PhysxObj>
         void specificRelease(PhysxObj& physxPtr)
@@ -72,15 +74,15 @@ namespace PirateSimulator
 
     };
 
-
-
-
     enum ACTOR
     {
         EACTORTERRAIN = 1 << 0,
         EACTORVEHICLE = 1 << 1,
         EACTORPIECE = 1 << 2
+        
     };
+
+  
 }
 
 #endif

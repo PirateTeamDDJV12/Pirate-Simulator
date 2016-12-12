@@ -7,6 +7,7 @@
 #include "TimeManager.h"
 #include <iostream>
 #include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysics.h"
+#include "ICollisionHandler.h"
 using namespace physx;
 
 
@@ -29,13 +30,13 @@ namespace PirateSimulator {
 
         virtual void onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs) override
         {
-            ShapeComponent *actor0 = nullptr;
+            ICollisionHandler *actor0 = nullptr;
             if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_0))
-                actor0 = static_cast<ShapeComponent*>(pairHeader.actors[0]->userData);
+                actor0 = static_cast<ICollisionHandler*>(pairHeader.actors[0]->userData);
 
-            ShapeComponent *actor1 = nullptr;
+            ICollisionHandler *actor1 = nullptr;
             if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_1))
-                actor1 = static_cast<ShapeComponent*>(pairHeader.actors[1]->userData);
+                actor1 = static_cast<ICollisionHandler*>(pairHeader.actors[1]->userData);
 
 
             for (int i = 0; i < (int)nbPairs; ++i)
@@ -60,13 +61,13 @@ namespace PirateSimulator {
                 else
                     continue;
 
-                ShapeComponent *trigger = nullptr;
+                ICollisionHandler *trigger = nullptr;
                 if (!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_TRIGGER))
-                    trigger = static_cast<ShapeComponent*>(pairs[i].triggerShape->getActor()->userData);
+                    trigger = static_cast<ICollisionHandler*>(pairs[i].triggerShape->getActor()->userData);
 
-                ShapeComponent *other = nullptr;
+                ICollisionHandler* other = nullptr;
                 if (!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_OTHER))
-                    other = static_cast<ShapeComponent*>(pairs[i].otherShape->getActor()->userData);
+                    other = static_cast<ICollisionHandler*>(pairs[i].otherShape->getActor()->userData);
 
                 if (trigger)
                     trigger->onTrigger(triggerEnter, pairs[i].triggerShape, other ? pairs[i].otherShape : nullptr);
@@ -251,11 +252,7 @@ namespace PirateSimulator {
     ShapeComponent* PhysicsManager::getShape()
     {
         ShapeComponent* vehicle = nullptr;
-       /* std::for_each(m_components.begin(), m_components.end(), [vehicle](ShapeComponent* shape) mutable
 
-        {if (shape->getTypeId() == "VehicleShape")
-            vehicle = shape;
-        });*/
         for (auto shape : m_components)
         {
             if (shape->getTypeId() == "VehicleShape")

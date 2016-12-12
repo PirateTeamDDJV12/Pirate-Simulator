@@ -503,16 +503,13 @@
     <ClInclude Include="..\..\PirateSimulator\PieceShape.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\SimulationComponent.h">
+    <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\SimulationComponent.inline.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\IColliderInterface.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h">
+    <ClInclude Include="..\..\PirateSimulator\SimulationComponent.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
   </ItemGroup>

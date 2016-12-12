@@ -3,6 +3,7 @@
 #define SHAPE_COMPONENT_H
 #include "Component.h"
 #include "PhysicsManager.h"
+#include "ICollisionHandler.h"
 
 
 namespace physx
@@ -15,8 +16,7 @@ namespace physx
 namespace PirateSimulator
 {
     class Piece;
-
-    //class GameObject;
+    class SimulationEventCallback;
     class ShapeComponent : public Component
     {
         
@@ -25,13 +25,13 @@ namespace PirateSimulator
         physx::PxShape* m_shape;
         physx::PxRigidDynamic* m_actor;
         Piece* m_piece;
-
+        ICollisionHandlerRef handler;
     public:
         ShapeComponent() : m_actor(nullptr), m_shape(nullptr)
         {
         }
         virtual std::string getTypeId() const noexcept override = 0;
-        virtual void onContact(const physx::PxContactPair &aContactPair) =0;
+       // virtual void onContact(const physx::PxContactPair &aContactPair) =0;
         enum ACTOR
         {
             EACTORTERRAIN = 1<<0,
@@ -41,7 +41,6 @@ namespace PirateSimulator
 
 
 
-        virtual void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) =0;
 
 
     public:
@@ -58,6 +57,7 @@ namespace PirateSimulator
         void cleanUp();
 
         Piece* getPiece();
+        void setHandler(ICollisionHandlerRef callback);
     };
 
 

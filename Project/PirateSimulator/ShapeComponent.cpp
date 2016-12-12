@@ -3,6 +3,7 @@
 #include "PhysicsManager.h"
 #include "GameObject.h"
 #include "Piece.h"
+#include "ICollisionHandler.h"
 
 
 using namespace physx;
@@ -37,5 +38,10 @@ namespace PirateSimulator
     Piece* ShapeComponent::getPiece()
     {
         return m_piece;
+    }
+
+    void ShapeComponent::setHandler(ICollisionHandlerRef callback)
+    {
+        handler = callback;
     }
 }

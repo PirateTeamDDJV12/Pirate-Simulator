@@ -70,7 +70,7 @@ GameObjectRef Piece::createPiece()
         //m_pieceInstance->addComponent<DynamicSimulationComponent>();
 
 
-        std::shared_ptr<DynamicSimulationComponent> simulationComponent;
+     //   std::shared_ptr<DynamicSimulationComponent> simulationComponent;
 
 
         RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
