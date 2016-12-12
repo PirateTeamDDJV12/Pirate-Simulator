@@ -46,6 +46,7 @@
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
 #include "../../PirateSimulator/UIHUD.h"
+#include "../../PirateSimulator/UIOption.h"
 
 #include <thread>
 #include <vector>
@@ -113,7 +114,6 @@ namespace PM3D
             bool resultInit = false;
 
             std::vector<std::thread> beginThread;
-
 
 
             beginThread.emplace_back([this, &resultInit]() {

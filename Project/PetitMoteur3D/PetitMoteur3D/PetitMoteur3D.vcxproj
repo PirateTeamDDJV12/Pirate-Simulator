@@ -148,6 +148,7 @@
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIHUD.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIOption.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp" />
@@ -228,6 +229,8 @@
     <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
     <ClInclude Include="..\..\PirateSimulator\UIHUD.h" />
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIOption.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIOptionSelector.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h" />

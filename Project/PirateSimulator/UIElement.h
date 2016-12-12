@@ -49,7 +49,9 @@ namespace PirateSimulator
     public:
         UIBase(UIRef titleScreenMenu) :
             m_baseMenu{ titleScreenMenu }
-        {}
+        {
+            m_baseMenu->initialize();
+        }
 
 
     public:
