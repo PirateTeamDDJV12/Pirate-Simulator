@@ -127,6 +127,10 @@ namespace PirateSimulator
          //Register shape
         PhysicsManager::singleton.registerNewComponent(this);
         m_gameObject = parent;
+        m_shape->setSimulationFilterData(filterData);
+        setHandler(ICollisionHandlerRef(new CollisionTerrainHandler));
+        //m_actor->setMass(0.0001f);
+        m_actor->userData = parent;
     }
 
 }
