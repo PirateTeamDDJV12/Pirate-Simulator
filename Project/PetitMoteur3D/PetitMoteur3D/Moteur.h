@@ -42,6 +42,7 @@
 //UI
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
+#include "../../PirateSimulator/UIOption.h"
 
 #include <thread>
 #include <vector>
@@ -107,7 +108,7 @@ namespace PM3D
             std::vector<std::thread> beginThread;
 
             beginThread.emplace_back([&resultUI]() {
-                PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+                PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIOption));
 
                 while (true)
                 {
