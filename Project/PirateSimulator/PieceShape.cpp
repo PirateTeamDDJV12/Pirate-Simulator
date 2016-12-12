@@ -17,8 +17,8 @@ class CollisionPieceHandler : public ICollisionHandler
         GameObject* actor1 = static_cast<GameObject*>(aContactPair.shapes[1]->getActor()->userData);
         if (actor1->getComponent<ShapeComponent>()->getPiece() != nullptr)
         {
-            //unspawn the piece
-            actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            //unspawn the piece UNCOMMENT WHEN FONCTIONS WORKS
+            //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
         }
         else if (actor0->getComponent<ShapeComponent>()->getPiece() != nullptr) //the piece is not actor1, so it is actor0
         {
