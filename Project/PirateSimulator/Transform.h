@@ -1,3 +1,4 @@
+#include "..\PetitMoteur3D\PetitMoteur3D\PhysX\Include\foundation\PxTransform.h"
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_
 
@@ -10,13 +11,15 @@ namespace PirateSimulator {
         DirectX::XMVECTOR m_forward;
         DirectX::XMVECTOR m_up;
         DirectX::XMVECTOR m_right;
+        physx::PxTransform m_pose;
 
     public:
-        constexpr Transform() :
+            Transform() :
             m_position{ 0.f, 0.f, 0.f, 0.f },
             m_forward{ 0.f,0.f,1.f, 0.f },
             m_up{ 0.f,1.f,0.f,0.f },
-            m_right{ 1.f, 0.f, 0.f, 0.f }
+            m_right{ 1.f, 0.f, 0.f, 0.f },
+            m_pose{ physx::PxTransform(physx::PxVec3{ 0.f,0.f,0.f }) } //
         {}
 
         Transform(
@@ -28,7 +31,11 @@ namespace PirateSimulator {
             m_forward(DirectX::XMVector3Normalize(forward)),
             m_up(DirectX::XMVector3Normalize(up)),
             m_right(DirectX::XMVector3Normalize(DirectX::XMVector3Cross(up, forward)))
-        {}
+        {
+            physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
+            m_pose.p = newPos;
+
+        }
 
         Transform(const Transform&) = default;
 
@@ -48,17 +55,33 @@ namespace PirateSimulator {
         {
             return m_right;
         }
+        const physx::PxTransform& getPose()
+        {
+            return m_pose;
+        }
+
 
         void setPosition(const DirectX::XMVECTOR& pos)
         {
             m_position = pos;
+            physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
+            m_pose.p = newPos;
         }
+        void setPose(const physx::PxTransform& transform)
+        {
+            m_pose = transform;
+        }
+        
+
         void setPosition(float x, float y, float z)
         {
             m_position.vector4_f32[0] = x;
             m_position.vector4_f32[1] = y;
             m_position.vector4_f32[2] = z;
-        }
+            physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
+            
+            m_pose.p = newPos;
+         }
         void setForward(const DirectX::XMVECTOR& forward)
         {
             m_forward = DirectX::XMVector3Normalize(forward);
@@ -78,6 +101,9 @@ namespace PirateSimulator {
         void translate(const DirectX::XMVECTOR &dir)
         {
             m_position += dir;
+            physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
+
+            m_pose.p = newPos;
         }
     };
 

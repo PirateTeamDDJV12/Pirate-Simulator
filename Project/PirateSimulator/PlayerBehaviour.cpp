@@ -22,7 +22,6 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
     //Get Actor shape to move it
     ShapeComponent* boatShape = PhysicsManager::singleton.getVehiculeShape();
-    auto boatPose = boatShape->pose();
 
     switch(direction)
     {
@@ -30,10 +29,9 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
         {
             m_gameObject->translate(m_gameObject->m_transform.getForward() * m_speed);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
-            physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
             // 			_pxActor->addForce(frontVector);
-            boatPose.p = newPos;
-            boatShape->setPose(boatPose);
+            
+            boatShape->setPose(transform.getPose());
         }
         break;
 
@@ -41,10 +39,8 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
         {
             m_gameObject->translate(-m_gameObject->m_transform.getForward() * m_speed);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
-            physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
             // 			_pxActor->addForce(frontVector);
-            boatPose.p = newPos ;
-            boatShape->setPose(boatPose);
+            boatShape->setPose(transform.getPose());
         }
         break;
 
@@ -52,10 +48,8 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
         {
             m_gameObject->translate(-transform.getRight() * m_speed);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
-            physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
             // 			_pxActor->addForce(frontVector);
-            boatPose.p = newPos;
-            boatShape->setPose(boatPose);
+            boatShape->setPose(transform.getPose());
 
         }
         break;
@@ -64,10 +58,8 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
         {
             m_gameObject->translate(transform.getRight() * m_speed);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
-            physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
             // 			_pxActor->addForce(frontVector);
-            boatPose.p = newPos;
-            boatShape->setPose(boatPose);
+            boatShape->setPose(transform.getPose());
         }
         break;
 
