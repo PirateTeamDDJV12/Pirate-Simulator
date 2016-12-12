@@ -12,15 +12,10 @@ void PhysicsTask::init()
 
 void PhysicsTask::update()
 {
-    // Affichage optimisé 
-    RendererManager::singleton.getDispositif()->Present();
-
     float elapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
 
     // On prépare la prochaine image
     GameObjectManager::singleton.animAllGameObject(elapsedTime);
 
     LightManager::singleton.update(elapsedTime);
-
-    RendererManager::singleton.update();
 }

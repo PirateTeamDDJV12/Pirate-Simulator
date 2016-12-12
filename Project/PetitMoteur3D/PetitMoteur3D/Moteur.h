@@ -68,7 +68,7 @@ namespace PM3D
     template <class T, class TClasseDispositif>
     class CMoteur : public CSingleton<T>
     {
-        enum
+        enum TasksOrder
         {
             TIMETASK,
             INPUTTASK,
@@ -79,6 +79,51 @@ namespace PM3D
 
 
     public:
+
+        virtual int Initialisations()
+        {
+            // Propre à la plateforme
+            InitialisationsSpecific();
+
+            // Création des tasks
+            CreateTasks();
+
+            bool resultUI = false;
+            bool resultInit = false;
+
+            std::vector<std::thread> beginThread;
+
+            beginThread.emplace_back([&resultUI]() {
+                PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+
+                while(true)
+                {
+                    if(titleScreen())
+                    {
+                        resultUI = true;
+                        break;
+                    }
+                }
+            });
+
+            beginThread.emplace_back([this, &resultInit]() {
+                // * Initialisation de la scène
+                InitScene();
+                resultInit = true;
+            });
+
+            for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            {
+                beginThread[iter].join();
+            }
+
+            while(!(resultUI && resultInit))
+            {
+                std::this_thread::sleep_for(35ms);
+            }
+
+            return 0;
+        }
 
         virtual void Run()
         {
@@ -93,60 +138,15 @@ namespace PM3D
             }
         }
 
-        virtual int Initialisations()
-        {
-            // Propre à la plateforme
-            InitialisationsSpecific();
-            
-            // Création des tasks
-            CreateTasks();
-
-            bool resultUI = false;
-            bool resultInit = false;
-
-            std::vector<std::thread> beginThread;
-
-            beginThread.emplace_back([&resultUI]() {
-                PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
-
-                while (true)
-                {
-                    if (titleScreen())
-                    {
-                        resultUI = true;
-                        break;
-                    }
-                }
-            });
-
-            beginThread.emplace_back([this, &resultInit]() {
-                // * Initialisation de la scène
-                InitScene();
-                resultInit = true;
-            });
-
-            for (size_t iter = 0; iter < beginThread.size(); ++iter)
-            {
-                beginThread[iter].join();
-            }
-
-            while (!(resultUI && resultInit))
-            {
-                std::this_thread::sleep_for(35ms);
-            }
-
-            return 0;
-        }
-
         void CreateTasks()
         {
             PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
 
-            taskManager->addTask<PirateSimulator::TimeTask>(TIMETASK);
-            taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
-            taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
-            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
-            taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
+            taskManager->addTask<PirateSimulator::TimeTask>(TasksOrder::TIMETASK);
+            taskManager->addTask<PirateSimulator::InputTask>(TasksOrder::INPUTTASK);
+            taskManager->addTask<PirateSimulator::RenderTask>(TasksOrder::RENDERTASK);
+            taskManager->addTask<PirateSimulator::PhysicsTask>(TasksOrder::PHYSICSTASK);
+            taskManager->addTask<PirateSimulator::PlayerTask>(TasksOrder::PLAYERTASK);
         }
 
         CGestionnaireDeTextures& GetTextureManager()

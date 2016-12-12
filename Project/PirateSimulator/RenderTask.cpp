@@ -14,6 +14,11 @@ void RenderTask::init()
 
 void RenderTask::update()
 {
+    // Affichage optimisé 
+    RendererManager::singleton.getDispositif()->Present();
+
+    RendererManager::singleton.update();
+
     auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
     ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
     ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
