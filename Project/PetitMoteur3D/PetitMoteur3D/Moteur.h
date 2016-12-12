@@ -128,6 +128,7 @@ namespace PM3D
                     beginThread.front().detach();
                     return 1;
                 }
+                PirateSimulator::InputManager::singleton.update();
                 auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
                 ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
                 ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
