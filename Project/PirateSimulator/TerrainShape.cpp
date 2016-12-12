@@ -7,6 +7,7 @@
 #include "RessourceManager.h"
 #include "Vertex.h"
 #include "ICollisionHandler.h"
+#include "GameObjectManager.h"
 
 
 using namespace physx;
@@ -57,6 +58,7 @@ namespace PirateSimulator
     void TerrainShape::setGameObject(GameObject* parent)
     {
         //_heightmapData
+        auto penis = GameObjectManager::singleton.getGameObjectByName("Terrain");
         auto config = Config::getInstance();
         float width = config->getWidth();
         float height = config->getHeight();

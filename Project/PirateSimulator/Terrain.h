@@ -125,6 +125,10 @@ namespace PirateSimulator
         void addSommet(Vertex v);
         void addTriangle(Triangle t);
         float getHeight(XMVECTOR pos);
+        std::vector<Vertex>& getVertices()
+        {
+            return std::move(m_vertexArray);
+        }
 
 		void setTexture(PM3D::CTexture* texture);
 
