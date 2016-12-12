@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Singleton.h"
 #include "dispositif.h" 
 
@@ -53,15 +53,15 @@ namespace PM3D
     const int IMAGESPARSECONDE = 60;
 
     //
-    //   TEMPLATE : CMoteur
+    //   TEMPLATEÂ : CMoteur
     //
-    //   BUT : Template servant à construire un objet Moteur qui implantera les
-    //         aspects "génériques" du moteur de jeu
+    //   BUTÂ : Template servant Ã  construire un objet Moteur qui implantera les
+    //         aspects "gÃ©nÃ©riques" du moteur de jeu
     //
-    //   COMMENTAIRES :
+    //   COMMENTAIRESÂ :
     //
-    //        Comme plusieurs de nos objets représenteront des éléments uniques 
-    //		  du système (ex: le moteur lui-même, le lien vers 
+    //        Comme plusieurs de nos objets reprÃ©senteront des Ã©lÃ©ments uniques 
+    //		  du systÃ¨me (ex: le moteur lui-mÃªme, le lien vers 
     //        le dispositif Direct3D), l'utilisation d'un singleton 
     //        nous simplifiera plusieurs aspects.
     //
@@ -80,12 +80,25 @@ namespace PM3D
 
     public:
 
+        virtual void Run()
+        {
+            bool bBoucle = true;
+
+            while(bBoucle)
+            {
+                // Propre ï¿½ la plateforme - (Conditions d'arrï¿½t, interface, messages)
+                bBoucle = RunSpecific();
+
+                PirateSimulator::TaskManager::GetInstance().update();
+            }
+        }
+
         virtual int Initialisations()
         {
-            // Propre à la plateforme
+            // Propre ï¿½ la plateforme
             InitialisationsSpecific();
 
-            // Création des tasks
+            // Crï¿½ation des tasks
             CreateTasks();
 
             bool resultUI = false;
@@ -93,49 +106,47 @@ namespace PM3D
 
             std::vector<std::thread> beginThread;
 
-            beginThread.emplace_back([&resultUI]() {
-                PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
 
-                while(true)
-                {
-                    if(titleScreen())
-                    {
-                        resultUI = true;
-                        break;
-                    }
-                }
-            });
 
             beginThread.emplace_back([this, &resultInit]() {
-                // * Initialisation de la scène
+                // * Initialisation de la scï¿½ne
                 InitScene();
                 resultInit = true;
             });
 
-            for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            //for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            //{
+            //    beginThread[iter].join();
+            //}
+
+            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+
+            while(true)
             {
-                beginThread[iter].join();
+                if(!RunSpecific())
+                {
+                    beginThread.front().detach();
+                    return 1;
+                }
+                auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
+                ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
+                ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
+
+                // On efface la surface de rendu
+                float Couleur[4] = {0.0f, 0.5f, 0.0f, 1.0f};  //  RGBA - Vert pour le moment
+                pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
+
+                // On rï¿½-initialise le tampon de profondeur
+                ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
+                pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+                if((titleScreen() && resultInit))
+                    break;
+                pDispositif->Present();
             }
 
-            while(!(resultUI && resultInit))
-            {
-                std::this_thread::sleep_for(35ms);
-            }
+            beginThread.front().detach();
 
             return 0;
-        }
-
-        virtual void Run()
-        {
-            bool bBoucle = true;
-
-            while(bBoucle)
-            {
-                // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
-                bBoucle = RunSpecific();
-
-                PirateSimulator::TaskManager::GetInstance().update();
-            }
         }
 
         void CreateTasks()
@@ -156,7 +167,7 @@ namespace PM3D
 
     protected:
 
-        // Constructeur par défaut
+        // Constructeur par dÃ©faut
         CMoteur(void)
         {}
 
@@ -166,7 +177,7 @@ namespace PM3D
             Cleanup();
         }
 
-        // Spécifiques - Doivent être implantés
+        // SpÃ©cifiques - Doivent Ãªtre implantÃ©s
         virtual bool RunSpecific() = 0;
         virtual int InitialisationsSpecific() = 0;
         virtual __int64 GetTimeSpecific() = 0;
@@ -221,7 +232,7 @@ namespace PM3D
             skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
 
-            // Initialisation des objets 3D - création et/ou chargement 
+            // Initialisation des objets 3D - crÃ©ation et/ou chargement 
             if(!InitObjets()) return 1;
 
             return 0;
@@ -300,7 +311,7 @@ namespace PM3D
                 PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
             }
 
-            // Puis, il est ajouté à la scène
+            // Puis, il est ajoutÃ© Ã  la scÃ¨ne
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);

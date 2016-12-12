@@ -28,10 +28,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		rMoteur.SetWindowsAppInstance(hInstance);
 
 		// Initialisation du moteur
-		rMoteur.Initialisations();
-
-		// Boucle d'application
-		rMoteur.Run();
+		if (rMoteur.Initialisations() == 0)
+		{
+            // Boucle d'application
+		    rMoteur.Run();
+		}
         
         return (int)1;
     }
