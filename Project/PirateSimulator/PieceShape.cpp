@@ -18,12 +18,22 @@ class CollisionPieceHandler : public ICollisionHandler
         if (actor1->getComponent<ShapeComponent>()->getPiece() != nullptr)
         {
             //unspawn the piece UNCOMMENT WHEN FONCTIONS WORKS
+
+            //remove Mesh
             //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            //remove physX actor from scene, actually does nothing :(
+            PhysicsManager::singleton.scene().removeActor(actor1->getComponent<ShapeComponent>()->pxActor());
+            //remove Shape Component
+//            actor1->getComponent<ShapeComponent>()->cleanUp();
+            
         }
         else if (actor0->getComponent<ShapeComponent>()->getPiece() != nullptr) //the piece is not actor1, so it is actor0
         {
 
-            actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            //actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            PhysicsManager::singleton.scene().removeActor(actor1->getComponent<ShapeComponent>()->pxActor());
+  //          actor0->getComponent<ShapeComponent>()->cleanUp();
+            
         }
     }
     

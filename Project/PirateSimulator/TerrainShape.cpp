@@ -85,8 +85,8 @@ namespace PirateSimulator
             ++pointCount;
         }
 
-        _heightMap = std::make_unique<physx::PxHeightFieldSample[]>(Config::getInstance()->getHeight()*Config::getInstance()->getScale()
-            *Config::getInstance()->getWidth()*Config::getInstance()->getScale());
+        _heightMap = std::make_unique<physx::PxHeightFieldSample[]>(Config::getInstance()->getHeight()
+            *Config::getInstance()->getWidth());
 
         for (int y = 0; y < height; ++y)
         {
