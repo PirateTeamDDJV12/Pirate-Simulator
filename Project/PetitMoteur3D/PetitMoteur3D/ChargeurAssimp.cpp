@@ -38,7 +38,7 @@ namespace PM3D
     {
     }
 
-    int  CChargeurAssimp::GetNombreSubmesh()
+    int CChargeurAssimp::GetNombreSubmesh()
     {
         return scene->mNumMeshes;
     }
@@ -59,8 +59,12 @@ namespace PM3D
     XMFLOAT2 CChargeurAssimp::GetCoordTex(int noMesh, int NoSommet)
     {
         scene->mMeshes[noMesh]->mTextureCoords[NoSommet]->x;
-        XMFLOAT2 r(scene->mMeshes[noMesh]->mTextureCoords[0][NoSommet].x,
-            scene->mMeshes[noMesh]->mTextureCoords[0][NoSommet].y);
+        XMFLOAT2 r;
+        if (scene->mMeshes[noMesh]->mTextureCoords[0])
+        {
+            r.x = scene->mMeshes[noMesh]->mTextureCoords[0][NoSommet].x;
+            r.y = scene->mMeshes[noMesh]->mTextureCoords[0][NoSommet].y;
+        }
 
         return r;
     }

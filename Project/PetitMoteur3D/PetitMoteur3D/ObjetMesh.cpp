@@ -30,8 +30,9 @@ namespace PM3D
 
 
     // Ancien constructeur
-    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
-        Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
+    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, const std::wstring& shaderName, IChargeur& chargeur) :
+        Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter),
+        m_drawPtrMethod{ &CObjetMesh::elementaryDraw }
     {
         // prendre en note le dispositif
         pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
@@ -40,7 +41,7 @@ namespace PM3D
         TransfertObjet(chargeur);
 
         // Initialisation de l'effet
-        InitEffet();
+        InitEffet(shaderName);
     }
 
 
@@ -66,8 +67,9 @@ namespace PM3D
 
 
     // Constructeur pour lecture d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter) :
-        PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
+    CObjetMesh::CObjetMesh(const std::string& nomFichier, const std::wstring& shaderName, const ShaderCObjectMesh::ShadersParams& shaderParameter) :
+        PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter),
+        m_drawPtrMethod{ &CObjetMesh::elementaryDraw }
     {
         // prendre en note le dispositif
         pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
@@ -76,7 +78,7 @@ namespace PM3D
         LireFichierBinaire(nomFichier);
 
         // Initialisation de l'effet
-        InitEffet();
+        InitEffet(shaderName);
     }
 
 
@@ -96,7 +98,7 @@ namespace PM3D
     }
 
 
-    void CObjetMesh::InitEffet()
+    void CObjetMesh::InitEffet(const std::wstring& shaderName)
     {
         // Compilation et chargement du vertex shader
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -114,7 +116,7 @@ namespace PM3D
         // Pour l'effet
         ID3DBlob* pFXBlob = NULL;
 
-        DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
+        DXEssayer(D3DCompileFromFile(shaderName.c_str(), 0, 0, 0,
             "fx_5_0", 0, 0, &pFXBlob, 0),
             DXE_ERREURCREATION_FX);
 
@@ -168,6 +170,23 @@ namespace PM3D
 
 
     void CObjetMesh::Draw()
+    {
+        (this->*m_drawPtrMethod)();
+    }
+
+
+    void CObjetMesh::drawWithoutBackfaceCulling()
+    {
+        // Désactiver Culling et ZBuffer
+        pDispositif->DesactiverCulling();
+
+        this->elementaryDraw();
+
+        // Réactiver Culling et ZBuffer
+        pDispositif->ActiverCulling();
+    }
+
+    void CObjetMesh::elementaryDraw()
     {
 #ifdef DEBUG_PIRATE_SIMULATOR
         //OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
@@ -238,6 +257,11 @@ namespace PM3D
         }
     }
 
+    void CObjetMesh::setBackFaceCulling(bool backface) noexcept
+    {
+        m_drawPtrMethod = backface ? &CObjetMesh::elementaryDraw : &CObjetMesh::drawWithoutBackfaceCulling;
+    }
+
 
     void CObjetMesh::TransfertObjet(IChargeur& chargeur)
     {
@@ -254,7 +278,7 @@ namespace PM3D
             {
                 s.position = chargeur.GetPosition(iSubmesh, i);
                 s.normal = chargeur.GetNormale(iSubmesh, i);
-                //s.coordTex = chargeur.GetCoordTex(iSubmesh,i);
+                s.coordTex = chargeur.GetCoordTex(iSubmesh,i);
 
                 ts.push_back(s);
             }

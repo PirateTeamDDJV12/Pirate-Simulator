@@ -234,6 +234,12 @@
     <ClCompile Include="..\..\PirateSimulator\LightManager.cpp">
       <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="ChargeurAssimp.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Tunnel.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -453,8 +459,8 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
-		<Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-	</ClInclude>
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Light.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
@@ -463,6 +469,12 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameUtils.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="ChargeurAssimp.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Tunnel.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

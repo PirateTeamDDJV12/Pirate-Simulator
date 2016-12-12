@@ -30,7 +30,9 @@ namespace PM3D
             XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
             float puissance;
             int bTex;					// Texture ou materiau 
-            XMFLOAT2 remplissage;
+
+            float sunPower;
+            float remplissage;
 
             ShadersParams() :
                 bTex{ 1 }
@@ -139,20 +141,26 @@ namespace PM3D
         };
 
     public:
-        CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur);
+        CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, const std::wstring& shaderName, IChargeur& chargeur);
         //CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur);
-        CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter);
+        CObjetMesh(const std::string& nomfichier, const std::wstring& shaderName, const ShaderCObjectMesh::ShadersParams& shaderParameter);
 
         virtual ~CObjetMesh();
 
     public:
-        void Draw();
+        virtual void Draw();
+
+    public:
+        void setBackFaceCulling(bool backface) noexcept;
 
     protected:
         void TransfertObjet(IChargeur& chargeur);
-        void InitEffet();
+        void InitEffet(const std::wstring& shaderName);
         //void EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier);
         void LireFichierBinaire(string nomFichier);
+
+        void drawWithoutBackfaceCulling();
+        void elementaryDraw();
 
     protected:
         // Pour le dessin
@@ -175,5 +183,7 @@ namespace PM3D
         ID3DX11EffectTechnique* pTechnique;
         ID3DX11EffectPass* pPasse;
         ID3D11InputLayout* pVertexLayout;
+
+        void (CObjetMesh::* m_drawPtrMethod)();
     };
 }

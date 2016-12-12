@@ -10,6 +10,7 @@
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
+#include "ChargeurAssimp.h"
 
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
@@ -45,6 +46,7 @@
 
 #include <thread>
 #include <vector>
+#include "../../PirateSimulator/Tunnel.h"
 
 
 namespace PM3D
@@ -84,7 +86,7 @@ namespace PM3D
         {
             bool bBoucle = true;
 
-            while(bBoucle)
+            while (bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
@@ -97,7 +99,7 @@ namespace PM3D
         {
             // Propre à la plateforme
             InitialisationsSpecific();
-            
+
             // Création des tasks
             CreateTasks();
 
@@ -222,48 +224,85 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
 
             // Initialisation des objets 3D - création et/ou chargement 
-            if(!InitObjets()) return 1;
+            if (!InitObjets()) return 1;
 
             return 0;
         }
 
         bool InitObjets()
         {
-            // TODO - Get this with a config
+            //CParametresChargement param;
+            //param.bInverserCulling = false;
+            //param.bMainGauche = true;
+            //param.NomChemin = ".\\modeles\\Tunnel\\";
+            //param.NomFichier = "tunnel.obj";
+            //CChargeurOBJ chargeur;
+            //chargeur.Chargement(param);
+            //tunnel->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\Tunnel\\tunnel.OMB", ShaderCObjectMesh::ShadersParams(), chargeur));
+
+            CChargeurAssimp chargeur;
+
+            PirateSimulator::Transform transformTunnel;
+
+            transformTunnel.m_position = { 150,0,900,0 };
+            transformTunnel.m_right = { 1,0,0,0 };
+            transformTunnel.m_up = { 0,1,0,0 };
+            transformTunnel.m_forward = { 0,0,-1,0 };
+
+            // Constructeur avec format binaire
+            PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+                new PirateSimulator::GameObject(transformTunnel, "tunnel")
+            );
+
+            // Création du mesh du tunnel à partir d'un fichier .OBJ
+            CParametresChargement paramTunnel;
+            paramTunnel.NomChemin = ".\\modeles\\Tunnel\\";
+            paramTunnel.NomFichier = "tunnel.obj";
+            paramTunnel.bMainGauche = false;
+            paramTunnel.bInverserCulling = true;
+
+            chargeur.Chargement(paramTunnel);
+
+            auto tunnelMesh = new PM3D::CObjetMesh(ShaderCObjectMesh::ShadersParams(), L"MiniPhongField.fx", chargeur);
+
+            tunnelMesh->setBackFaceCulling(false);
+
+            tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
+
 
             PirateSimulator::Transform transformBoat;
 
-            //transformBoat.m_position = {300,0,300,0};
-            transformBoat.m_position = {950,0,900,0};
-            transformBoat.m_right = {1,0,0,0};
-            transformBoat.m_up = {0,1,0,0};
-            transformBoat.m_forward = {0,0,-1,0};
+            transformBoat.m_position = { 950,0,900,0 };
+            transformBoat.m_right = { 1,0,0,0 };
+            transformBoat.m_up = { 0,1,0,0 };
+            transformBoat.m_forward = { 0,0,-1,0 };
 
             // Constructeur avec format binaire
             PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transformBoat, "vehicule")
             );
 
-            /*CObjetMesh().ConvertToOMB(".\\modeles\\Boat\\boat.obj", ".\\modeles\\Boat\\boat.OMB");*/
-            /*CParametresChargement param;
-            param.bInverserCulling = false;
-            param.bMainGauche = true;
-            param.NomChemin = ".\\modeles\\Boat\\";
-            param.NomFichier = "boat.obj";
-            CChargeurOBJ chargeur;
-            chargeur.Chargement(param);
-            vehicule->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), chargeur));*/
+            // Création du mesh du boat à partir d'un fichier .OBJ
+            CParametresChargement paramBoat;
+            paramBoat.NomChemin = ".\\modeles\\Boat\\";
+            paramBoat.NomFichier = "boat.obj";
+            paramBoat.bMainGauche = false;
+            paramBoat.bInverserCulling = false;
 
-            auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams());
+            chargeur.Chargement(paramBoat);
+
+            auto vehiculeMesh = new CObjetMesh(ShaderCObjectMesh::ShadersParams(), L"MiniPhong.fx", chargeur);
+
             vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
 
+
             PirateSimulator::Transform TransformTerrain;
 
-            TransformTerrain.m_position = {0,0,0,0};
-            TransformTerrain.m_right = {1,0,0,0};
-            TransformTerrain.m_up = {0,1,0,0};
-            TransformTerrain.m_forward = {0,0,-1,0};
+            TransformTerrain.m_position = { 0,0,0,0 };
+            TransformTerrain.m_right = { 1,0,0,0 };
+            TransformTerrain.m_up = { 0,1,0,0 };
+            TransformTerrain.m_forward = { 0,0,-1,0 };
 
             // Add our terrain
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
@@ -291,11 +330,11 @@ namespace PM3D
             water->addComponent<PirateSimulator::IMesh>(waterMesh);
 
             // Set the gameobject which is paired to the camera
-            if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
+            if (PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
             {
                 PirateSimulator::CameraManager::singleton.setPairedTarget(vehicule);
             }
-            else if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+            else if (PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
             {
                 PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
             }
@@ -304,6 +343,7 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
+            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(tunnelMesh);
 
             return true;
         }
