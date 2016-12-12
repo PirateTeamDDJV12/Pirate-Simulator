@@ -45,6 +45,7 @@
 
 #include <thread>
 #include <vector>
+#include "../../PirateSimulator/UIHUD.h"
 
 
 namespace PM3D
@@ -114,12 +115,12 @@ namespace PM3D
                 resultInit = true;
             });
 
-            //for(size_t iter = 0; iter < beginThread.size(); ++iter)
-            //{
-            //    beginThread[iter].join();
-            //}
+            for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            {
+                beginThread[iter].join();
+            }
 
-            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+            //PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
 
             while(true)
             {
@@ -139,13 +140,13 @@ namespace PM3D
                 // On r�-initialise le tampon de profondeur
                 ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                 pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-                if((titleScreen() && resultInit))
+                if((resultInit))
                     break;
                 pDispositif->Present();
             }
 
-            beginThread.front().detach();
-
+            //beginThread.front().detach();
+            TimeManager::GetInstance().startGameTime();
             return 0;
         }
 
@@ -231,6 +232,8 @@ namespace PM3D
             m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
             skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
+
+            auto HUD = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(new PirateSimulator::UIHUD());
 
             // Initialisation des objets 3D - création et/ou chargement 
             if(!InitObjets()) return 1;
