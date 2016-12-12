@@ -11,10 +11,10 @@ UIMenu::UIMenu()
 {
     PirateSimulator::Transform transform;
 
-    transform.m_position = {0,0,0,0};
-    transform.m_right = {1,0,0,0};
-    transform.m_up = {0,1,0,0};
-    transform.m_forward = {0,0,-1,0};
+    transform.setPosition({0,0,0,0});
+    transform.setRight({1,0,0,0});
+    transform.setUp({0,1,0,0});
+    transform.setForward({0,0,-1,0});
 
     pAfficheurSprite = new PM3D::CAfficheurSprite();
 

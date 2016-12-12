@@ -7,7 +7,9 @@ using namespace PirateSimulator;
 
 void PhysicsTask::init()
 {
+    PhysicsManager::singleton.initialize();
     GameObjectManager::singleton.init();
+    
 }
 
 void PhysicsTask::update()
@@ -18,4 +20,6 @@ void PhysicsTask::update()
     GameObjectManager::singleton.animAllGameObject(elapsedTime);
 
     LightManager::singleton.update(elapsedTime);
+	
+    PhysicsManager::singleton.update();
 }
