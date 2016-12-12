@@ -42,10 +42,10 @@
 //UI
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
+#include "../../PirateSimulator/UIHUD.h"
 
 #include <thread>
 #include <vector>
-#include "../../PirateSimulator/UIHUD.h"
 
 
 namespace PM3D
@@ -146,7 +146,10 @@ namespace PM3D
             }
 
             //beginThread.front().detach();
+
+            // Start the game time when all menu and loading screen are close to begin the game
             TimeManager::GetInstance().startGameTime();
+
             return 0;
         }
 

@@ -1,12 +1,9 @@
 #ifndef UIHUD_H_INCLUDED
 #define UIHUD_H_INCLUDED
 
-#include "UIElement.h"
-
-#include "..\PetitMoteur3D\PetitMoteur3D\AfficheurSprite.h"
-
-#include <Gdiplus.h>
+#include "../PetitMoteur3D/PetitMoteur3D/AfficheurSprite.h"
 #include "../PetitMoteur3D/PetitMoteur3D/AfficheurTexte.h"
+#include <Gdiplus.h>
 #include "GameObject.h"
 #pragma comment(lib, "gdiplus.lib")
 
@@ -16,7 +13,6 @@ namespace PirateSimulator
     {
     public:
         UIHUD();
-
 
         void anime(float elapsedTime) override;
     private:
@@ -29,5 +25,3 @@ namespace PirateSimulator
 }
 
 #endif // !UIHUD_H_INCLUDED
-
-
