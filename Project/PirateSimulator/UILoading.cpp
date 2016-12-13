@@ -104,8 +104,6 @@ UILoading::UILoading() :
         { 0.75f, -0.75f, 0.0f },
         0.5f, 0.5f
     );
-
-    this->initialize();
 }
 
 void UILoading::initialize()
