@@ -1,6 +1,6 @@
 #include <DirectXMath.h>
 
-#include "ObjectCameraBehaviour.h"
+#include "FirstPersonCameraBehaviour.h"
 #include "PlayerBehaviour.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "InputManager.h"
@@ -10,17 +10,18 @@ using namespace cameraModule;
 using namespace DirectX;
 
 
-void ObjectCameraBehaviour::move(Move::Translation::Direction direction)
+void FirstPersonCameraBehaviour::move(Move::Translation::Direction direction)
 {
     // Move the camera to the target position
-    m_gameObject->m_transform.setPosition(m_target->m_transform.getPosition());
+    m_gameObject->m_transform.m_position = m_target->m_transform.m_position;
 
     // Translate the camera back by the offset
-    XMVECTOR dir = -m_gameObject->m_transform.getForward() * m_offset;
+    XMVECTOR newPosition = m_target->m_transform.m_position + m_offset;
+    XMVECTOR dir = m_gameObject->m_transform.m_position * m_offset;
     m_gameObject->translate(dir);
 }
 
-void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
+void FirstPersonCameraBehaviour::rotate(Move::Rotation::Direction direction)
 {
     using namespace std::chrono;
 
@@ -44,16 +45,21 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
     angleY = DirectX::XMConvertToRadians(m_rotationAroundY);
     angleX = DirectX::XMConvertToRadians(m_rotationAroundX);
 
-    float cosX = cosf(angleX);
-    float cosY = cosf(angleY);
-    float sinX = sinf(angleX);
-    float sinY = sinf(angleY);
-
     // Look in the new direction
-    m_gameObject->m_transform.setForward(XMVECTOR{ sinY * cosX, sinX, cosX * cosY });
+    m_gameObject->m_transform.m_forward.vector4_f32[0] = sin(angleY) * cos(angleX);
+    m_gameObject->m_transform.m_forward.vector4_f32[1] = sin(angleX);
+    m_gameObject->m_transform.m_forward.vector4_f32[2] = cos(angleX) * cos(angleY);
+    // Update the rightDirection vector when rotating
+    m_gameObject->m_transform.m_right =
+        DirectX::XMVector3Normalize(
+            DirectX::XMVector3Cross(
+                m_gameObject->m_transform.m_up,
+                m_gameObject->m_transform.m_forward
+            )
+        );
 }
 
-void ObjectCameraBehaviour::anime(float ellapsedTime)
+void FirstPersonCameraBehaviour::anime(float ellapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
