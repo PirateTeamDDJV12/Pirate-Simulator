@@ -80,10 +80,8 @@ UILoading::UILoading() :
     m_customLoadingDisplayer = std::make_unique<CustomLoadingScreenDisplayer>();
 
     m_policeFont = std::make_unique<Gdiplus::Font>(&Gdiplus::FontFamily{ L"Edwardian Script ITC", NULL }, 70.0, FontStyleBold, UnitPixel);
-    //m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(250, 50, police, Gdiplus::Color(255, 255, 255, 255));
+    m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(260, 90, m_policeFont.get(), Gdiplus::Color(255, 255, 255, 255));
 
-    auto dispositif = RendererManager::singleton.getDispositif();
-    m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(dispositif, 260, 90, m_policeFont.get());
 
     // ajout de panneaux 
     m_afficheurSprite->AjouterPanneau(
@@ -93,6 +91,8 @@ UILoading::UILoading() :
     );
 
     m_loadingMessage->Ecrire(L"Loading");
+
+    auto dispositif = RendererManager::singleton.getDispositif();
 
     int loadingMessageXPos = 0.37f * dispositif->GetLargeur();
     int loadingMessageYPos = 0.96f * dispositif->GetHauteur();
