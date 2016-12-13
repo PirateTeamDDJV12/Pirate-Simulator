@@ -31,10 +31,11 @@ namespace PirateSimulator
 
     BlocStructure::BlocStructure(const PirateSimulator::Transform& centralPoint, float xLength, float yLength, float zLength)
     {
+        DirectX::XMVECTOR position = centralPoint.getPosition();
         mapPoints(DirectX::XMFLOAT3(
-                centralPoint.m_position.vector4_f32[0],
-                centralPoint.m_position.vector4_f32[1],
-                centralPoint.m_position.vector4_f32[2]
+            position.vector4_f32[0],
+            position.vector4_f32[1],
+            position.vector4_f32[2]
             ),
             xLength, yLength, zLength
         );

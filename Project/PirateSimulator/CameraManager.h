@@ -66,12 +66,12 @@ namespace PirateSimulator
             m_cameraInfo.m_mainCamera->anime(0);
         }
 
-        DirectX::XMMATRIX getMatView() const
+        const DirectX::XMMATRIX& getMatView() const
         {
             return m_cameraInfo.m_cameraComponent->getViewMatrix();
         }
 
-        DirectX::XMMATRIX getMatProj() const
+        const DirectX::XMMATRIX& getMatProj() const
         {
             return m_cameraInfo.m_cameraComponent->getProjMatrix();
         }

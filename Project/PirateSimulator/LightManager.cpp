@@ -121,6 +121,10 @@ namespace PirateSimulator
             m_distanceToCenter = sqrtf(m_vectorToCenter.x * m_vectorToCenter.x + m_vectorToCenter.y * m_vectorToCenter.y);
 
             m_angle = acosf(m_vectorToCenter.x / m_distanceToCenter);
+            if (asinf(m_vectorToCenter.x / m_distanceToCenter) < 0.f)
+            {
+                m_angle = DirectX::XM_2PI - m_angle;
+            }
         }
 
 
