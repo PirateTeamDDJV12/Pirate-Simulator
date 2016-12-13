@@ -8,14 +8,17 @@ namespace PirateSimulator
     class GameFabric
     {
     public:
-        static void createSkybox();
-        static void createHUD();
+        GameFabric() = default;
 
-        static void createWater(const Transform& fieldTransform);
-        static void createBoat(const Transform& boatTransform);
-        static void createField(const Transform& fieldTransform);
+    public:
+        void createSkybox();
+        void createHUD();
 
-        static void createCamera(const Transform& cameraTransform);
+        void createWater(const Transform& fieldTransform);
+        void createBoat(const Transform& boatTransform);
+        void createField(const Transform& fieldTransform);
+
+        void createCamera(const Transform& cameraTransform);
     };
 }
 

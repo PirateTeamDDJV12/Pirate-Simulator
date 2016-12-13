@@ -159,26 +159,6 @@ namespace PM3D
 
         virtual int InitScene()
         {
-            using PirateSimulator::GameFabric;
-
-
-            // Initialisation des matrices View et Proj
-            // Dans notre cas, ces matrices sont fixes
-            PirateSimulator::Transform cameraTransform = PirateSimulator::Transform();
-            cameraTransform.setPosition({ 0.f, 0.f, -10.f, 0.f }); //XMVectorSet before
-            cameraTransform.setUp({ 0.f, 1.f, 0.f, 0.f }); //XMVectorSet before
-            cameraTransform.setForward({ 0.f, 0.f, 1.f, 0.f }); //XMVectorSet before
-
-
-            // create camera
-            GameFabric::createCamera(cameraTransform);
-            
-            // Skybox
-            GameFabric::createSkybox();
-
-            //HUD
-            GameFabric::createHUD();
-
             // Initialisation des objets 3D - création et/ou chargement 
             if(!InitObjets()) return 1;
 
@@ -190,7 +170,14 @@ namespace PM3D
             using PirateSimulator::GameFabric;
             using PirateSimulator::Transform;
 
-            // TODO - Get this with a config
+            // Initialisation des matrices View et Proj
+            // Dans notre cas, ces matrices sont fixes
+            Transform cameraTransform;
+
+            cameraTransform.setPosition({ 0.f, 0.f, -10.f, 0.f }); //XMVectorSet before
+            cameraTransform.setUp({ 0.f, 1.f, 0.f, 0.f }); //XMVectorSet before
+            cameraTransform.setForward({ 0.f, 0.f, 1.f, 0.f }); //XMVectorSet before
+
 
             Transform transformBoat;
 
@@ -206,14 +193,24 @@ namespace PM3D
             TransformTerrain.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
 
+            GameFabric gameFabric;
+
+            gameFabric.createCamera(cameraTransform);
+
+            // Skybox
+            gameFabric.createSkybox();
+
+            //HUD
+            gameFabric.createHUD();
+
             // Create our boat
-            GameFabric::createBoat(transformBoat);
+            gameFabric.createBoat(transformBoat);
 
             // Add our water plane
-            GameFabric::createWater(TransformTerrain);
+            gameFabric.createWater(TransformTerrain);
 
             // Add our terrain
-            GameFabric::createField(TransformTerrain);
+            gameFabric.createField(TransformTerrain);
 
             return true;
         }
