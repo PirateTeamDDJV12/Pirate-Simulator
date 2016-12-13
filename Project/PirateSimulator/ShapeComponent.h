@@ -51,6 +51,9 @@ namespace PirateSimulator
         }
         physx::PxRigidDynamic& pxActor();
 
+        virtual bool isBoat() = 0;
+        virtual bool isPiece() = 0;
+
         virtual physx::PxTransform pose();
         void setPose(const physx::PxTransform &iPose);
         void cleanUp();

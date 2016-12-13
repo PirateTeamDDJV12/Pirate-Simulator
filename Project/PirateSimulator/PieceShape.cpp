@@ -15,7 +15,7 @@ class CollisionPieceHandler : public ICollisionHandler
     {
         GameObject* actor0 = static_cast<GameObject*>(aContactPair.shapes[0]->getActor()->userData);
         GameObject* actor1 = static_cast<GameObject*>(aContactPair.shapes[1]->getActor()->userData);
-        if (actor1->getComponent<ShapeComponent>()->getPiece() != nullptr)
+        if (actor1->getComponent<ShapeComponent>()->isPiece())
         {
             //unspawn the piece UNCOMMENT WHEN FONCTIONS WORKS
 
@@ -25,7 +25,7 @@ class CollisionPieceHandler : public ICollisionHandler
             PhysicsManager::singleton.scene().removeActor(actor1->getComponent<ShapeComponent>()->pxActor());
             
         }
-        else if (actor0->getComponent<ShapeComponent>()->getPiece() != nullptr) //the piece is not actor1, so it is actor0
+        else if (actor0->getComponent<ShapeComponent>()->isPiece()) //the piece is not actor1, so it is actor0
         {
 
             //actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();

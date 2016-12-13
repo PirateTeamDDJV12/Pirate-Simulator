@@ -21,8 +21,14 @@ namespace PirateSimulator
         std::unique_ptr<physx::PxHeightFieldSample[]> _heightMap;
         physx::unique_ptr<physx::PxHeightField> _heightField;
 
-        
-
+        bool isBoat()
+        {
+            return false;
+        };
+        bool isPiece()
+        {
+            return false;
+        };
         
         static std::string typeId() noexcept
         {

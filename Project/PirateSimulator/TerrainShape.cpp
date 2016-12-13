@@ -1,14 +1,12 @@
 #include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "TerrainShape.h"
 #include "PhysicsManager.h"
-#include "ShapeComponent.h"
-#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
-#include <d3d9types.h>
 #include "RessourceManager.h"
 #include "Vertex.h"
 #include "ICollisionHandler.h"
 #include "GameObjectManager.h"
-
+#include "Terrain.h"
+#include <d3d9types.h>
 
 using namespace physx;
 
@@ -57,35 +55,13 @@ namespace PirateSimulator
 
     void TerrainShape::setGameObject(GameObject* parent)
     {
-        //_heightmapData
-        auto penis = GameObjectManager::singleton.getGameObjectByName("Terrain");
-        auto config = Config::getInstance();
-        float width = config->getWidth();
-        float height = config->getHeight();
-        float scale = config->getScale();
+        //On récupère le Terrain
+        Terrain* terrainData = GameObjectManager::singleton.getGameObjectByName("terrain")->getComponent<Terrain>();
+        float width = terrainData->getWidth();
+        float height = terrainData->getHeight();
+        float scale = terrainData->getScale();
         std::vector<CUSTOMVERTEX> pVoid;
         
-        std::vector<float> myFile = PirateSimulator::RessourcesManager::GetInstance().ReadHeightMapFile("PirateSimulator/heightmapOutput.txt");
-        const int vertexLineCount = 1 + PirateSimulator::Vertex::INFO_COUNT;
-        int nbPoint = vertexLineCount * Config::getInstance()->getHeight() * Config::getInstance()->getWidth();
-        int pointCount = 0;
-        for (int i = 0; i < nbPoint; i += vertexLineCount)
-        {
-            float x = myFile[i + 1];
-            float y = myFile[i + 3];
-            float z = myFile[i + 2];
-            float xNorm = myFile[i + 4];
-            float yNorm = myFile[i + 5];
-            float zNorm = myFile[i + 6];
-            pVoid.push_back(CUSTOMVERTEX());
-            pVoid[pointCount].p.x = x;
-            pVoid[pointCount].p.y = y;
-            pVoid[pointCount].p.z = z;
-            pVoid[pointCount].n.x = xNorm;
-            pVoid[pointCount].n.y = yNorm;
-            pVoid[pointCount].n.z = zNorm;
-            ++pointCount;
-        }
 
         _heightMap = std::make_unique<physx::PxHeightFieldSample[]>(Config::getInstance()->getHeight()
             *Config::getInstance()->getWidth());
@@ -94,8 +70,7 @@ namespace PirateSimulator
         {
             for (int x = 0; x < width; ++x)
             {
-                _heightMap[x*height + y].height =
-                    PxI16(65535 * pVoid[x + width].p.y / scale);
+                _heightMap[x*height + y].height = terrainData->getHeight(DirectX::XMVECTOR{static_cast<float>(x),static_cast<float>(y) });
                 _heightMap[x*height + y].materialIndex0 = 0;
                 _heightMap[x*height + y].materialIndex1 = 0;
                 _heightMap[x*height + y].clearTessFlag();
@@ -105,34 +80,37 @@ namespace PirateSimulator
 
 
         //HeightMapData
+        
         PxHeightFieldDesc heightMapDesc;
         heightMapDesc.format = PxHeightFieldFormat::eS16_TM;
         heightMapDesc.nbColumns = width;
         heightMapDesc.nbRows = height;
         heightMapDesc.samples.data = _heightMap.get();
         heightMapDesc.samples.stride = sizeof(PxHeightFieldSample);
-        PxHeightField * heightField = PhysicsManager::singleton.physics().createHeightField(heightMapDesc);
-        _heightField = physx::unique_ptr<physx::PxHeightField>(
+        
+         _heightField = physx::unique_ptr<physx::PxHeightField>(
             PhysicsManager::singleton.physics().createHeightField(heightMapDesc));
         //Création Shape
 
         //m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
-        m_actor = PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform::createIdentity());
-        PxRigidStatic &staticActor = *PhysicsManager::singleton.physics().createRigidStatic(physx::PxTransform::createIdentity());
-         PxShape *_shape = staticActor.createShape(PxHeightFieldGeometry(heightField, PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale),
+        //m_actor = PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform::createIdentity());
+        PxRigidStatic &m_actor = *PhysicsManager::singleton.physics().createRigidStatic(parent->m_transform.getPose());
+        
+        PxShape *_shape = m_actor.createShape(PxHeightFieldGeometry(_heightField.get(), PxMeshGeometryFlag::eDOUBLE_SIDED, scale / 65535.f , scale/width, scale/height),
              *m_material);
-
-        PhysicsManager::singleton.scene().addActor(*m_actor);
+         m_shape = _shape;
+       
+        PhysicsManager::singleton.scene().addActor(m_actor);
         PxFilterData filterData;
         filterData.word0 = EACTORTERRAIN;
-        filterData.word1 = EACTORVEHICLE;
-         //Register shape
-        PhysicsManager::singleton.registerNewComponent(this);
-        m_gameObject = parent;
+        filterData.word1 = 0;
         m_shape->setSimulationFilterData(filterData);
+         //Register shape
         setHandler(ICollisionHandlerRef(new CollisionTerrainHandler));
         //m_actor->setMass(0.0001f);
-        m_actor->userData = parent;
+        m_actor.userData = parent;
+        PhysicsManager::singleton.registerNewComponent(this);
+        m_gameObject = parent;
     }
 
 }

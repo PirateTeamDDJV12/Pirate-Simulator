@@ -258,7 +258,7 @@ namespace PirateSimulator {
 
         for (auto shape : m_components)
         {
-            if (shape->getPiece() == nullptr)
+            if (shape->isBoat())
                 vehicle = shape;
         }
         return vehicle;
