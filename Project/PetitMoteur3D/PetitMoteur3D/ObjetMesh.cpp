@@ -350,7 +350,7 @@ namespace PM3D
 
 
         // 4b) Copie des matériaux dans la version locale
-        for (int i = 0; i < chargeur.GetNombreMaterial(); ++i)
+        for (unsigned int i = 0; i < chargeur.GetNombreMaterial(); ++i)
         {
             CMaterial mat;
 

@@ -21,15 +21,15 @@ namespace PM3D
 
         virtual void Chargement(const CParametresChargement& param);
 
-        virtual int  GetNombreSubmesh();
-        virtual int	 GetNombreSommetsSubmesh(unsigned int n);
+        virtual unsigned int GetNombreSubmesh();
+        virtual unsigned int GetNombreSommetsSubmesh(unsigned int n);
         virtual XMFLOAT3 GetPosition(int noMesh, int NoSommet);
         virtual XMFLOAT2 GetCoordTex(int noMesh, int NoSommet);
         virtual XMFLOAT3 GetNormale(int noMesh, int NoSommet);
         virtual unsigned int GetIndice(int noMesh, int noPoly, int NoIndice);
-        virtual int  GetNombrePolygonesSubmesh(int noMesh);
+        virtual unsigned int GetNombrePolygonesSubmesh(int noMesh);
 
-        virtual int  GetNombreMaterial();
+        virtual unsigned int  GetNombreMaterial();
 
         virtual void GetMaterial(int _i,
             string& _NomFichierTexture,

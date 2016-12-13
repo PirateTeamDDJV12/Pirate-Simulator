@@ -133,7 +133,7 @@ namespace PirateSimulator {
         {
             if (remainingTimeToSimulate > durationStep)
             {
-                _scene->simulate(durationStep);
+                _scene->simulate(static_cast<physx::PxReal>(durationStep));
                 remainingTimeToSimulate -= durationStep;
             }
             else
