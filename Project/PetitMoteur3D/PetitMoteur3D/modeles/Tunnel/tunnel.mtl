@@ -20,7 +20,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd textureTerrain.dds
+map_Kd ../../PirateSimulator/textureTerrain.dds
 
 newmtl Under;ight
 Ns 96.078431

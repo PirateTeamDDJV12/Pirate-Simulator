@@ -266,7 +266,7 @@ namespace PM3D
             /* Init Boat                                                            */
             /************************************************************************/
 
-            PirateSimulator::Transform transformBoat({ 950,0,900,0 }, { 0,0,-1,0 }, { 0,1,0,0 }, { 1,0,0,0 });
+            PirateSimulator::Transform transformBoat({ 950,0,900,0 }, { 0,0,-1,0 }, { 0,1,0,0 });
             PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transformBoat, "vehicule")
             );
@@ -287,7 +287,7 @@ namespace PM3D
             /* Init Tunnel                                                          */
             /************************************************************************/
 
-            PirateSimulator::Transform transformTunnel({ 150,0,1000,0 }, { 0,0,-1,0 }, { 0,1,0,0 }, { 1,0,0,0 });
+            PirateSimulator::Transform transformTunnel({ 150,0,1000,0 }, { 0,0,-1,0 }, { 0,1,0,0 });
             PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(transformTunnel, "tunnel")
             );
@@ -306,7 +306,7 @@ namespace PM3D
             /* Init Terrain                                                         */
             /************************************************************************/
 
-            PirateSimulator::Transform TransformTerrain({ 0,0,0,0 }, { 0,0,-1,0 }, { 0,1,0,0 }, { 1,0,0,0 });
+            PirateSimulator::Transform TransformTerrain({ 0,0,0,0 }, { 0,0,-1,0 }, { 0,1,0,0 });
 
             // Add our terrain
             PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(

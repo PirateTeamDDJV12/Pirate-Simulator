@@ -305,7 +305,7 @@ void Tunnel::Draw()
     m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
     m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-    m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
+    m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.getPosition();
 
     LightManager& lightManager = LightManager::singleton;
     m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&lightManager.getBrightSun()->m_vector);
