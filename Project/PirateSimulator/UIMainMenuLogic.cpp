@@ -1,10 +1,11 @@
 #include "UIMainMenuLogic.h"
 
 #include "UIMenu.h"
+#include "UILoading.h"
 
 using namespace PirateSimulator;
 
-UIMainMenuLogic::UIMainMenuLogic() : m_optionsScreen{nullptr}, m_creditsScreen{nullptr}, m_loadingScreen{nullptr}
+UIMainMenuLogic::UIMainMenuLogic() : m_optionsScreen{nullptr}, m_creditsScreen{nullptr}, m_loadingScreen{new UILoading()}
 {
     m_mainScreen = UIRef(new UIMenu(this));
     m_ptrTab[GameState::MainMenu] = m_mainScreen;
@@ -23,7 +24,7 @@ bool UIMainMenuLogic::operator()()
     for(std::map<GameState, UIRef>::const_iterator it = m_ptrTab.begin(); it != m_ptrTab.end(); ++it)
     {
         if(it->first == m_gameState)
-            it->second->update();
+            return it->second->update();
     }
     return false;
 }
