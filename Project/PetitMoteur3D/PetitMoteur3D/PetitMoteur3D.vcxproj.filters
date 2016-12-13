@@ -246,12 +246,6 @@
     <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp">
       <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIButton.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
@@ -271,9 +265,15 @@
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UIOption.cpp">
-	  <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UILoading.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIButton.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -503,12 +503,6 @@
     <ClInclude Include="..\..\PirateSimulator\BezierCurve.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\UIButton.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\UIMainMenuLogic.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
@@ -540,6 +534,12 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UILoading.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIMainMenuLogic.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIButton.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
   </ItemGroup>
