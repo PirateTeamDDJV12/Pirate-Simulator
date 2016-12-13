@@ -34,9 +34,12 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\lib.props" />
+    <Import Project="Config\lib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PhysX\lib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -78,8 +81,9 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>dxguid.lib;winmm.lib;d3d11.lib;DXGI.lib;effects11d.lib;d3dcompiler.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxguid.lib;winmm.lib;d3d11.lib;DXGI.lib;effects11d.lib;d3dcompiler.lib;dinput8.lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\fmodstudioL_vc.lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib\fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,24 +127,32 @@
     <ClCompile Include="..\..\PirateSimulator\Mesh.cpp" />
     <ClCompile Include="..\..\PirateSimulator\NotifierManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ObjectCameraBehaviour.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PhysicsManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PhysicsTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Piece.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Plane.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RenderTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\SoundManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\SoundTask.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIHUD.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vertex.cpp" />
     <ClCompile Include="AfficheurSprite.cpp" />
     <ClCompile Include="AfficheurTexte.cpp" />
@@ -181,6 +193,7 @@
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
     <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />
     <ClInclude Include="..\..\PirateSimulator\IBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h" />
     <ClInclude Include="..\..\PirateSimulator\InputManager.h" />
     <ClInclude Include="..\..\PirateSimulator\IGameTask.h" />
     <ClInclude Include="..\..\PirateSimulator\InputTask.h" />
@@ -192,9 +205,11 @@
     <ClInclude Include="..\..\PirateSimulator\Notifier.h" />
     <ClInclude Include="..\..\PirateSimulator\NotifierManager.h" />
     <ClInclude Include="..\..\PirateSimulator\ObjectCameraBehaviour.h" />
+    <ClInclude Include="..\..\PirateSimulator\PhysicsManager.h" />
     <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Piece.h" />
     <ClInclude Include="..\..\PirateSimulator\PieceAdministrator.h" />
+    <ClInclude Include="..\..\PirateSimulator\PieceShape.h" />
     <ClInclude Include="..\..\PirateSimulator\Plane.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerTask.h" />
@@ -203,17 +218,23 @@
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Material.h" />
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
+    <ClInclude Include="..\..\PirateSimulator\ShapeComponent.h" />
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
+    <ClInclude Include="..\..\PirateSimulator\SoundManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\SoundTask.h" />
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
+    <ClInclude Include="..\..\PirateSimulator\TerrainShape.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeManager.h" />
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIHUD.h" />
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
+    <ClInclude Include="..\..\PirateSimulator\VehicleShape.h" />
     <ClInclude Include="..\..\PirateSimulator\Vertex.h" />
     <ClInclude Include="AfficheurSprite.h" />
     <ClInclude Include="AfficheurTexte.h" />

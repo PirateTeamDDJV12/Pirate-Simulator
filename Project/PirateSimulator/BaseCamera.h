@@ -65,9 +65,9 @@ namespace PirateSimulator
 
             void updateViewMatrix() {
                 setMatrixView(XMMatrixLookToLH(
-                    m_gameObject->m_transform.m_position,
-                    m_gameObject->m_transform.m_forward,
-                    m_gameObject->m_transform.m_up)
+                    m_gameObject->m_transform.getPosition(),
+                    m_gameObject->m_transform.getForward(),
+                    m_gameObject->m_transform.getUp())
                 );
                 //this->*m_pUpdateViewMatrix)();
             }

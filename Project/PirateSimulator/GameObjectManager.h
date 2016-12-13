@@ -79,6 +79,11 @@ namespace PirateSimulator
 
         void init();
 
+        PieceAdministrator* getPieceAdministrator()
+        {
+            return &m_pieceAdministrator;
+        }
+
 
     private:
         GameObjectRef minimalSubscribingGameObject(GameObject* newGameObject)
