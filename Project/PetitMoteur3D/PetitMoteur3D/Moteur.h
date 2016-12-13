@@ -8,6 +8,7 @@
 
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/GameFabric.h"
+#include "../../PirateSimulator/GameLogic.h"
 
 // Manager
 #include "../../PirateSimulator/TimeManager.h"
@@ -15,14 +16,6 @@
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
-
-// Tasks
-#include "../../PirateSimulator/TimeTask.h"
-#include "../../PirateSimulator/InputTask.h"
-#include "../../PirateSimulator/PhysicsTask.h"
-#include "../../PirateSimulator/RenderTask.h"
-#include "../../PirateSimulator/PlayerTask.h"
-#include "../../PirateSimulator/SoundTask.h"
 
 //UI
 #include "../../PirateSimulator/UIElement.h"
@@ -56,17 +49,6 @@ namespace PM3D
     template <class T, class TClasseDispositif>
     class CMoteur : public CSingleton<T>
     {
-        enum TasksOrder
-        {
-            TIMETASK,
-            INPUTTASK,
-            PHYSICSTASK,
-            PLAYERTASK,
-            RENDERTASK,
-            SOUNDTASK,
-        };
-
-
     public:
 
         virtual void Run()
@@ -90,7 +72,7 @@ namespace PM3D
             InitialisationsSpecific();
 
             // Création des tasks
-            CreateTasks();
+            PirateSimulator::GameLogic::createAllTask();
 
             bool resultUI = false;
             bool resultInit = false;
@@ -143,18 +125,6 @@ namespace PM3D
             return 0;
         }
 
-        void CreateTasks()
-        {
-            PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
-
-            taskManager->addTask<PirateSimulator::TimeTask>(TIMETASK);
-            taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
-            taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
-            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
-            taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
-            taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
-        }
-
         CGestionnaireDeTextures& GetTextureManager()
         {
             return TexturesManager;
@@ -191,11 +161,6 @@ namespace PM3D
         virtual int InitScene()
         {
             using PirateSimulator::GameFabric;
-
-            PirateSimulator::RendererManager& rendererManager = PirateSimulator::RendererManager::singleton;
-            
-            rendererManager.setSortingMesh(true);
-            rendererManager.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
 
 
             // Initialisation des matrices View et Proj
