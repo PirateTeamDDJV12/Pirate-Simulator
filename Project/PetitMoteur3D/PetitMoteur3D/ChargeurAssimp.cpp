@@ -43,7 +43,7 @@ namespace PM3D
         return scene->mNumMeshes;
     }
 
-    int	 CChargeurAssimp::GetNombreSommetsSubmesh(unsigned int n)
+    int CChargeurAssimp::GetNombreSommetsSubmesh(unsigned int n)
     {
         return scene->mMeshes[n]->mNumVertices;
     }

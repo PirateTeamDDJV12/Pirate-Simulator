@@ -234,25 +234,6 @@ namespace PM3D
             CChargeurAssimp chargeur;
 
             /************************************************************************/
-            /* Init Tunnel                                                          */
-            /************************************************************************/
-
-            PirateSimulator::Transform transformTunnel({ 150,0,900,0 }, { 0,0,-1,0 }, { 0,1,0,0 }, { 1,0,0,0 });
-            PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(transformTunnel, "tunnel")
-            );
-
-            // Création du mesh du tunnel à partir d'un fichier .OBJ
-            CParametresChargement paramTunnel(".\\modeles\\Tunnel\\", "tunnel.obj", false, true);
-            chargeur.Chargement(paramTunnel);
-
-            auto tunnelMesh = new PM3D::CObjetMesh(ShaderCObjectMesh::ShadersParams(), L"MiniPhongField.fx", chargeur);
-            tunnelMesh->setBackFaceCulling(false);
-
-            tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
-
-
-            /************************************************************************/
             /* Init Boat                                                            */
             /************************************************************************/
 
@@ -269,6 +250,25 @@ namespace PM3D
 
             vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
             vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
+
+
+            /************************************************************************/
+            /* Init Tunnel                                                          */
+            /************************************************************************/
+
+            PirateSimulator::Transform transformTunnel({ 150,0,1000,0 }, { 0,0,-1,0 }, { 0,1,0,0 }, { 1,0,0,0 });
+            PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+                new PirateSimulator::GameObject(transformTunnel, "tunnel")
+            );
+
+            // Création du mesh du tunnel à partir d'un fichier .OBJ
+            CParametresChargement paramTunnel(".\\modeles\\Tunnel\\", "tunnel.obj", false, true);
+            chargeur.Chargement(paramTunnel);
+
+            auto tunnelMesh = new PM3D::CObjetMesh(ShaderCObjectMesh::ShadersParams(), L"MiniPhongField.fx", chargeur);
+            tunnelMesh->setBackFaceCulling(false);
+
+            tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
 
 
             /************************************************************************/

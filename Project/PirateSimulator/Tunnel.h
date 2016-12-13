@@ -1,4 +1,3 @@
-/*
 #ifndef TUNNEL_H
 #define TUNNEL_H
 
@@ -41,4 +40,3 @@ namespace PirateSimulator
 }
 
 #endif // TUNNEL_H
-*/

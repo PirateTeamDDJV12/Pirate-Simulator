@@ -1,4 +1,4 @@
-/*
+
 #include "Tunnel.h"
 
 #include "CameraManager.h"
@@ -357,4 +357,3 @@ void Tunnel::Draw()
     // Réactiver Culling et ZBuffer
     pDispositif->ActiverCulling();
 }
-*/
