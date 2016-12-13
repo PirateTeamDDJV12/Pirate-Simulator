@@ -7,6 +7,7 @@
 *.jpg
 *.mp3
 *.lib
+*.dds
 **/testOutput.txt
 **/OldheightmapOutput.txt
 **/heightmapOutput.txt
