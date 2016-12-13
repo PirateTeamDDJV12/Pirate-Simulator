@@ -61,6 +61,8 @@ namespace PirateSimulator {
         void setPosition(const DirectX::XMVECTOR& pos)
         {
             m_position = pos;
+            physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
+          //  m_pose.p = newPos;
         }
 
 
@@ -71,7 +73,7 @@ namespace PirateSimulator {
             m_position.vector4_f32[1] = y;
             m_position.vector4_f32[2] = z;
             physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
-            m_pose.p = newPos;
+            //m_pose.p = newPos;
         }
         void setPose(const physx::PxTransform& transform)
         {
@@ -101,7 +103,11 @@ namespace PirateSimulator {
 
         void translate(const DirectX::XMVECTOR &dir)
         {
+            
             m_position += dir;
+            physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
+            //m_pose.p = newPos;
+
         }
     };
 

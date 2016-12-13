@@ -43,7 +43,7 @@ void VehicleShape::setGameObject(GameObject* parent)
     m_shape->setSimulationFilterData(filterData);
     setHandler(ICollisionHandlerRef(new CollisionVehicleHandler));
     m_actor->userData = parent;
-
+    m_actor->setMass(99999.f);
     PhysicsManager::singleton.scene().addActor(*m_actor);
     PhysicsManager::singleton.registerNewComponent(this);
 }
