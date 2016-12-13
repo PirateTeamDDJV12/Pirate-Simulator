@@ -15,8 +15,10 @@ class CollisionPieceHandler : public ICollisionHandler
     {
         GameObject* actor0 = static_cast<GameObject*>(aContactPair.shapes[0]->getActor()->userData);
         GameObject* actor1 = static_cast<GameObject*>(aContactPair.shapes[1]->getActor()->userData);
+
         if(actor1->getComponent<ShapeComponent>()->getPiece() != nullptr)
         {
+            GameObjectManager::singleton.getPieceAdministrator()->addScore();
             //unspawn the piece UNCOMMENT WHEN FONCTIONS WORKS
             //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
         }

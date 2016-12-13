@@ -17,7 +17,7 @@ PirateSimulator::UIHUD::UIHUD() : GameObject(Transform(), "HUDGO")
 
     // Add score text
     m_score = new PM3D::CAfficheurTexte(50, 50, m_police, Gdiplus::Color(255, 255, 255, 255));
-    m_score->Ecrire(L"0");
+    m_score->Ecrire(std::to_wstring(GameObjectManager::singleton.getPieceAdministrator()->getScore()));
 
     // Add time text
     m_time = new PM3D::CAfficheurTexte(150, 50, m_police, Gdiplus::Color(255, 255, 255, 255));
@@ -40,6 +40,6 @@ void PirateSimulator::UIHUD::anime(float elapsedTime)
     std::chrono::milliseconds timeFromStart = TimeManager::GetInstance().getTimeFromStart();
     m_time->Ecrire(TimeUtils::timeToString(timeFromStart));
 
-    // TODO - update score text
+    m_score->Ecrire(std::to_wstring(GameObjectManager::singleton.getPieceAdministrator()->getScore()));
     // TODO - update speed text
 }
