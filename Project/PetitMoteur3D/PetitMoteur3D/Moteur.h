@@ -13,7 +13,6 @@
 
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
-#include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/LevelCameraBehaviour.h"
 #include "../../PirateSimulator/FreeCameraBehaviour.h"
 #include "../../PirateSimulator/ObjectCameraBehaviour.h"
@@ -253,58 +252,32 @@ namespace PM3D
         bool InitObjets()
         {
             using PirateSimulator::GameFabric;
+            using PirateSimulator::Transform;
 
             // TODO - Get this with a config
 
-            PirateSimulator::Transform transformBoat;
+            Transform transformBoat;
 
-            //transformBoat.m_position = {300,0,300,0};
             transformBoat.setPosition(950.0f, 0.0f, 900.0f);
-            transformBoat.setUp(XMVECTOR{0.0f, 1.0f, 0.0f, 0.0f});
-            transformBoat.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
+            transformBoat.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            transformBoat.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
-            // Constructeur avec format binaire
-            GameFabric::createBoat(transformBoat);
+            
+            Transform TransformTerrain;
 
-            PirateSimulator::Transform TransformTerrain;
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
-            TransformTerrain.setUp(XMVECTOR{0.0f, 1.0f, 0.0f, 0.0f});
-            TransformTerrain.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
+            TransformTerrain.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            TransformTerrain.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
-            // Add our terrain
-            PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(TransformTerrain, "terrain")
-            );
-#ifdef DEBUG_TEST_TERRAIN        
-            // If we want to test our own terrain and not the one int the config file
 
-            int terrainH = 257;
-            int terrainW = 257;
-            int terrainScale = 4;
-
-            auto fieldMesh = new PirateSimulator::Terrain(terrainH, terrainW, terrainScale, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
-#else
-            // Get all the information from the config file
-            auto fieldMesh = new PirateSimulator::Terrain();
-#endif
-            terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
-            // Add the shape for Terrain
-            auto terrainShape = new PirateSimulator::TerrainShape();
-            //terrain->addComponent<PirateSimulator::ShapeComponent>(terrainShape);
+            // Create our boat
+            GameFabric::createBoat(transformBoat);
 
             // Add our water plane
             GameFabric::createWater(TransformTerrain);
 
-
-
-            // Set the gameobject which is paired to the camera
-            if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
-            {
-                PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
-            }
-
-            // Puis, il est ajouté à la scène
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
+            // Add our terrain
+            GameFabric::createField(TransformTerrain);
 
             return true;
         }
