@@ -4,11 +4,12 @@
 
 #include "GameObject.h"
 #include "BaseCamera.h"
-#include "IBehaviour.h"
 
 
 namespace PirateSimulator
 {
+    class IBehaviour;
+
     struct CameraInfo
     {
         GameObjectRef m_mainCamera;

@@ -1,5 +1,7 @@
 #include "CameraManager.h"
 
+#include "IBehaviour.h"
+
 #include "LevelCameraBehaviour.h"
 #include "FreeCameraBehaviour.h"
 #include "ObjectCameraBehaviour.h"
