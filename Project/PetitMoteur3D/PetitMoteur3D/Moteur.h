@@ -123,10 +123,10 @@ namespace PM3D
                 resultInit = true;
             });
 
-            for(size_t iter = 0; iter < beginThread.size(); ++iter)
-            {
-                beginThread[iter].join();
-            }
+            //for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            //{
+            //    beginThread[iter].join();
+            //}
 
             PirateSimulator::UIMainMenuLogic mainMenu;
 
@@ -159,7 +159,7 @@ namespace PM3D
                 std::this_thread::sleep_for(5ms);
             }
 
-            //beginThread.front().detach();
+            beginThread.front().detach();
 
             // Start the game time when all menu and loading screen are close to begin the game
             TimeManager::GetInstance().startGameTime();
