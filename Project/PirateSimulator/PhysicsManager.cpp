@@ -13,7 +13,8 @@ using namespace physx;
 
 PirateSimulator::PhysicsManager PirateSimulator::PhysicsManager::singleton;
 
-namespace PirateSimulator {
+namespace PirateSimulator
+{
 
     ///////////////////////CALLBACKS//////////////////////////
     class SimulationEventCallback : public PxSimulationEventCallback
@@ -34,20 +35,20 @@ namespace PirateSimulator {
             GameObject *go1 = static_cast<GameObject*>(pairHeader.actors[0]->userData);
             GameObject *go2 = static_cast<GameObject*>(pairHeader.actors[1]->userData);
 
-            if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_0))
+            if(!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_0))
                 actor0 = static_cast<ICollisionHandler *>(go1->getComponent<ShapeComponent>()->getHandler());
 
             ICollisionHandler *actor1 = nullptr;
-            if (!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_1))
+            if(!(pairHeader.flags & PxContactPairHeaderFlag::eDELETED_ACTOR_1))
                 actor1 = static_cast<ICollisionHandler *>(go2->getComponent<ShapeComponent>()->getHandler());
 
 
-            for (int i = 0; i < (int)nbPairs; ++i)
+            for(int i = 0; i < (int)nbPairs; ++i)
             {
-                if (actor0)
+                if(actor0)
                     actor0->onContact(pairs[i]);
 
-                if (actor1)
+                if(actor1)
                     actor1->onContact(pairs[i]);
             }
         }
@@ -58,6 +59,10 @@ namespace PirateSimulator {
             {
                 GameObject *go1 = static_cast<GameObject*>(pairs[i].triggerActor->userData);
                 GameObject *go2 = static_cast<GameObject*>(pairs[i].otherActor->userData);
+                if(!go1 || !go2)
+                {
+                    return;
+                }
 
                 bool triggerEnter = false;
                 if(pairs->status == PxPairFlag::eNOTIFY_TOUCH_FOUND)
@@ -69,7 +74,14 @@ namespace PirateSimulator {
 
                 ICollisionHandler *trigger = nullptr;
                 if(!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_TRIGGER))
-                    trigger = static_cast<ICollisionHandler *>(go1->getComponent<ShapeComponent>()->getHandler());
+                {
+                    auto shapeComp = go1->getComponent<ShapeComponent>();
+                    if(shapeComp != nullptr)
+                    {
+                        trigger = static_cast<ICollisionHandler *>(shapeComp->getHandler());
+                    }
+                }
+
 
                 ICollisionHandler* other = nullptr;
                 if(!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_OTHER))
@@ -96,7 +108,7 @@ namespace PirateSimulator {
         PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
     {
         // let triggers through
-        if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+        if(PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
         {
             pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
             return PxFilterFlag::eDEFAULT;
@@ -106,7 +118,7 @@ namespace PirateSimulator {
 
         // trigger the contact callback for pairs (A,B) where 
         // the filtermask of A contains the ID of B and vice versa.
-        if ((filterData0.word0 & filterData1.word1) || (filterData1.word0 & filterData0.word1))
+        if((filterData0.word0 & filterData1.word1) || (filterData1.word0 & filterData0.word1))
         {
             pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
             return PxFilterFlag::eDEFAULT;
@@ -129,9 +141,9 @@ namespace PirateSimulator {
 
 
         auto durationStep = 100;
-        while (remainingTimeToSimulate > 0)
+        while(remainingTimeToSimulate > 0)
         {
-            if (remainingTimeToSimulate > durationStep)
+            if(remainingTimeToSimulate > durationStep)
             {
                 _scene->simulate(durationStep);
                 remainingTimeToSimulate -= durationStep;
@@ -155,16 +167,16 @@ namespace PirateSimulator {
             &PxProfileZoneManager::createProfileZoneManager(_foundation.get())
             );
 
-        if (!_profileZoneManager)
-            std::cout<<("PxProfileZoneManager::createProfileZoneManager failed"); //GOOD
+        if(!_profileZoneManager)
+            std::cout << ("PxProfileZoneManager::createProfileZoneManager failed"); //GOOD
 
 #if PX_SUPPORT_GPU_PHYSX
         PxCudaContextManagerDesc cudaContextManagerDesc;
         _cudaContextManager = physx::unique_ptr<PxCudaContextManager>(
             PxCreateCudaContextManager(*_foundation, cudaContextManagerDesc, _profileZoneManager.get()));
-        if (_cudaContextManager)
+        if(_cudaContextManager)
         {
-            if (!_cudaContextManager->contextIsValid())
+            if(!_cudaContextManager->contextIsValid())
             {
                 _cudaContextManager.reset();
             }
@@ -173,24 +185,24 @@ namespace PirateSimulator {
 
         _physics = physx::unique_ptr<PxPhysics>(
             PxCreatePhysics(PX_PHYSICS_VERSION, *_foundation,
-                PxTolerancesScale(), recordMemoryAllocations, _profileZoneManager.get()));
-        if (!_physics)
-            std::cout<<("PxCreatePhysics failed");
-        if (!PxInitExtensions(*_physics))
+                            PxTolerancesScale(), recordMemoryAllocations, _profileZoneManager.get()));
+        if(!_physics)
+            std::cout << ("PxCreatePhysics failed");
+        if(!PxInitExtensions(*_physics))
             std::cout << ("PxInitExtensions failed");
 
 
-        if (_physics->getPvdConnectionManager() != nullptr)
+        if(_physics->getPvdConnectionManager() != nullptr)
         {
             PxVisualDebuggerConnectionFlags connectionFlags(PxVisualDebuggerExt::getAllConnectionFlags());
             _visualDebuggerConnection = physx::unique_ptr<debugger::comm::PvdConnection>(
                 PxVisualDebuggerExt::createConnection(_physics->getPvdConnectionManager(),
-                    "localhost", 5425, 100, connectionFlags));
-            
-            if (_visualDebuggerConnection == nullptr)
+                                                      "localhost", 5425, 100, connectionFlags));
+
+            if(_visualDebuggerConnection == nullptr)
                 std::cout << ("    NOT CONNECTED!\n");//PB mais c'est pareil dans balls
             else
-                std::cout<<("    CONNECTED!\n");
+                std::cout << ("    CONNECTED!\n");
         }
 
 
@@ -198,31 +210,31 @@ namespace PirateSimulator {
         PxSceneDesc sceneDesc(_physics->getTolerancesScale());
         customizeSceneDesc(&sceneDesc);
 
-        if (!sceneDesc.cpuDispatcher)
+        if(!sceneDesc.cpuDispatcher)
         {
             _cpuDispatcher = physx::unique_ptr<PxDefaultCpuDispatcher>(PxDefaultCpuDispatcherCreate(1));
-            if (!_cpuDispatcher)
+            if(!_cpuDispatcher)
                 std::cout << "PxDefaultCpuDispatcherCreate failed!"; //GOOD
             sceneDesc.cpuDispatcher = _cpuDispatcher.get();
-            if (!sceneDesc.filterShader)
+            if(!sceneDesc.filterShader)
                 sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 
 #if PX_SUPPORT_GPU_PHYSX
-            if (!sceneDesc.gpuDispatcher && _cudaContextManager)
+            if(!sceneDesc.gpuDispatcher && _cudaContextManager)
             {
                 sceneDesc.gpuDispatcher = _cudaContextManager->getGpuDispatcher();
             }
 #endif
 
             _scene = physx::unique_ptr<physx::PxScene>(_physics->createScene(sceneDesc));
-            if (!_scene)
+            if(!_scene)
                 std::cout << "createScene failed!"; //PB
 
             _scene->setSimulationEventCallback(&gDefaultSimulationCallback);
-        }
-        
     }
-    
+
+}
+
 
 
     physx::PxPhysics& PhysicsManager::physics()
@@ -235,9 +247,21 @@ namespace PirateSimulator {
         return *_scene;
     }
 
+    void PhysicsManager::removeComponent(ShapeComponent* component)
+    {
+        for(auto iter = begin(m_components); iter != end(m_components); ++iter)
+        {
+            if(*iter == component)
+            {
+                m_components.erase(iter);
+                break;
+            }
+        }
+    }
+
     void PhysicsManager::reset()
     {
-        for (auto shape : m_components)
+        for(auto shape : m_components)
         {
             shape->cleanUp();
             //shape->~ShapeComponent();
@@ -259,9 +283,9 @@ namespace PirateSimulator {
     {
         ShapeComponent* vehicle = nullptr;
 
-        for (auto shape : m_components)
+        for(auto shape : m_components)
         {
-            if (shape->getPiece() == nullptr)
+            if(shape->getPiece() == nullptr)
                 vehicle = shape;
         }
         return vehicle;

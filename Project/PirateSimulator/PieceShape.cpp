@@ -4,6 +4,7 @@
 #include "Piece.h"
 #include "GameObjectManager.h"
 #include "ICollisionHandler.h"
+#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 
 using namespace PirateSimulator;
 using namespace physx;
@@ -30,6 +31,11 @@ class CollisionPieceHandler : public ICollisionHandler
 
     void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
     {
+        if(actorShape == nullptr || contactShape == nullptr)
+        {
+            return;
+        }
+
         auto actor0 = static_cast<GameObject*>(contactShape->getActor()->userData);
         auto actor1 = static_cast<GameObject*>(actorShape->getActor()->userData);
 
@@ -40,7 +46,7 @@ class CollisionPieceHandler : public ICollisionHandler
                 GameObjectManager::singleton.getPieceAdministrator()->addScore();                
             }
             //unspawn the piece
-            //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            GameObjectManager::singleton.destroyCoin(actor1->getComponent<ShapeComponent>()->getPiece());
         }
         else if(actor0->getComponent<ShapeComponent>()->getPiece() != nullptr) //the piece is not actor1, so it is actor0
         {
@@ -59,7 +65,7 @@ void PieceShape::setGameObject(GameObject* parent)
         parent->m_transform.getPosition().vector4_f32[0],
         parent->m_transform.getPosition().vector4_f32[1],
         parent->m_transform.getPosition().vector4_f32[2]));
-    m_actor = PhysicsManager::singleton.physics().createRigidDynamic(parentTransform);
+    m_actor = physx::unique_ptr<physx::PxRigidDynamic>(PhysicsManager::singleton.physics().createRigidDynamic(parentTransform));
 
     m_shape = m_actor->createShape(physx::PxBoxGeometry(10.f, 25.f, 20.f), *m_material);
     PhysicsManager::singleton.scene().addActor(*m_actor);

@@ -115,7 +115,7 @@ namespace PirateSimulator
         //Création Shape
 
         //m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
-        m_actor = PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform::createIdentity());
+        m_actor = physx::unique_ptr<physx::PxRigidDynamic>(PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform::createIdentity()));
         PxRigidStatic &staticActor = *PhysicsManager::singleton.physics().createRigidStatic(physx::PxTransform::createIdentity());
          PxShape *_shape = staticActor.createShape(PxHeightFieldGeometry(heightField, PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale),
              *m_material);

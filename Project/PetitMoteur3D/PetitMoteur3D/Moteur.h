@@ -53,8 +53,7 @@
 
 #include <thread>
 #include <vector>
-
-
+#include "../../PirateSimulator/SpawnTask.h"
 
 
 namespace PM3D
@@ -86,6 +85,7 @@ namespace PM3D
             PLAYERTASK,
             RENDERTASK,
             SOUNDTASK,
+            SPAWNTASK,
         };
 
 
@@ -178,7 +178,8 @@ namespace PM3D
             taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
             taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
-            taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
+            taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
+            //taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
         }
 
         CGestionnaireDeTextures& GetTextureManager()

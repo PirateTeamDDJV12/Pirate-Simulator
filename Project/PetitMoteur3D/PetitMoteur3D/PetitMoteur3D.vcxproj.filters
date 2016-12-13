@@ -282,6 +282,9 @@
     <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\SpawnTask.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -553,6 +556,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIButton.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SpawnTask.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
