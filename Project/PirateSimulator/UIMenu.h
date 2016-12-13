@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "UIElement.h"
-#include "UIMainMenu.h"
+#include "UIMainMenuLogic.h"
 #include "UIButton.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\AfficheurSprite.h"
 

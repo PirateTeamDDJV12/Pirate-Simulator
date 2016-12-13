@@ -17,10 +17,10 @@ UIMenu::UIMenu(UIMainMenuLogic *parent) : m_parent{parent}
     transform.m_forward = {0,0,-1,0};
 
     m_mainMenuImages = new PM3D::CAfficheurSprite();
-    m_buttons[0] = createButton([this]() {m_parent->setGameState(Starting); });
-    m_buttons[1] = createButton([this]() {m_parent->setGameState(Starting); });
-    m_buttons[2] = createButton([this]() {m_parent->setGameState(Starting); });
-    m_buttons[3] = createButton([this]() {m_parent->setGameState(Starting); });
+    m_buttons[0] = createButton([this]() {m_parent->setGameState(GameState::Starting); });
+    m_buttons[1] = createButton([this]() {m_parent->setGameState(GameState::Options); });
+    m_buttons[2] = createButton([this]() {m_parent->setGameState(GameState::Credits); });
+    m_buttons[3] = createButton([this]() {m_parent->setGameState(GameState::Quitting); });
 
     m_currentButton = 0;
     // ajout de panneaux 
