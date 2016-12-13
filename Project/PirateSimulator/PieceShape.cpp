@@ -11,7 +11,7 @@ using namespace physx;
 
 class CollisionPieceHandler : public ICollisionHandler
 {
-    void onContact(const physx::PxContactPair &aContactPair)
+    void onContact(const physx::PxContactPair &aContactPair) override
     {
         GameObject* actor0 = static_cast<GameObject*>(aContactPair.shapes[0]->getActor()->userData);
         GameObject* actor1 = static_cast<GameObject*>(aContactPair.shapes[1]->getActor()->userData);
@@ -29,20 +29,24 @@ class CollisionPieceHandler : public ICollisionHandler
         }
     }
 
-    void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape)
+    void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
     {
         auto actor0 = static_cast<GameObject*>(contactShape->getActor()->userData);
         auto actor1 = static_cast<GameObject*>(actorShape->getActor()->userData);
 
         if(actor1->getComponent<ShapeComponent>()->getPiece() != nullptr)
         {
+            if(triggerEnter)
+            {
+                GameObjectManager::singleton.getPieceAdministrator()->addScore();                
+            }
             //unspawn the piece
-            actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
         }
         else if(actor0->getComponent<ShapeComponent>()->getPiece() != nullptr) //the piece is not actor1, so it is actor0
         {
 
-            actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            //actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
         }
     }
 };
@@ -60,6 +64,8 @@ void PieceShape::setGameObject(GameObject* parent)
 
     m_shape = m_actor->createShape(physx::PxBoxGeometry(10.f, 25.f, 20.f), *m_material);
     PhysicsManager::singleton.scene().addActor(*m_actor);
+    m_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+    m_shape->setFlag(PxShapeFlag::eTRIGGER_SHAPE, true);
 
     PxFilterData filterData;
     filterData.word0 = EACTORPIECE;
