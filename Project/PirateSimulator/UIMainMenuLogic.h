@@ -34,6 +34,10 @@ namespace PirateSimulator
         
         void setGameState(GameState state)
         {
+            if(state == Loading)
+            {
+                m_loadingScreen->initialize();
+            }
             m_gameState = state;
         }
 

@@ -47,6 +47,8 @@
 #include "../../PirateSimulator/UIMenu.h"
 #include "../../PirateSimulator/UIMainMenuLogic.h"
 #include "../../PirateSimulator/UIHUD.h"
+#include "../../PirateSimulator/UIOption.h"
+#include "../../PirateSimulator/UILoading.h"
 
 #include <thread>
 #include <vector>
@@ -110,11 +112,9 @@ namespace PM3D
             // Création des tasks
             CreateTasks();
 
-            bool resultUI = false;
             bool resultInit = false;
 
             std::vector<std::thread> beginThread;
-
 
 
             beginThread.emplace_back([this, &resultInit]() {
@@ -123,13 +123,12 @@ namespace PM3D
                 resultInit = true;
             });
 
-            for(size_t iter = 0; iter < beginThread.size(); ++iter)
-            {
-                beginThread[iter].join();
-            }
+            //for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            //{
+            //    beginThread[iter].join();
+            //}
 
             PirateSimulator::UIMainMenuLogic mainMenu;
-
 
             while(true)
             {
@@ -156,9 +155,11 @@ namespace PM3D
                 if((mainMenu() && resultInit))
                     break;
                 pDispositif->Present();
+
+                std::this_thread::sleep_for(5ms);
             }
 
-            //beginThread.front().detach();
+            beginThread.front().detach();
 
             // Start the game time when all menu and loading screen are close to begin the game
             TimeManager::GetInstance().startGameTime();
