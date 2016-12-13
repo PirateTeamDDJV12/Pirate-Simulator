@@ -171,7 +171,7 @@ namespace PM3D
             taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
             taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
             taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
-            taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
+            //taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
         }
 
         CGestionnaireDeTextures& GetTextureManager()
@@ -220,16 +220,12 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.setSortingMesh(true);
             PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
 
-            // Initialisation des matrices View et Proj
-            // Dans notre cas, ces matrices sont fixes
             PirateSimulator::Transform cameraTransform = PirateSimulator::Transform();
-            cameraTransform.setPosition(XMVectorSet(0.f, 0.f, -10.f, 0.f));
+            cameraTransform.setPosition(XMVectorSet(1000.0f, 200.0f, 500.0f, 0.f));
             cameraTransform.setUp(XMVectorSet(0.f, 1.f, 0.f, 0.f));
             cameraTransform.setForward(XMVectorSet(0.f, 0.f, 1.f, 0.f));
 
             PirateSimulator::Transform transformBoat;
-
-            //transformBoat.m_position = {300,0,300,0};
             transformBoat.setPosition(950.0f, 0.0f, 900.0f);
             transformBoat.setUp(XMVECTOR{0.0f, 1.0f, 0.0f, 0.0f});
             transformBoat.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
@@ -314,7 +310,7 @@ namespace PM3D
             auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
                 new PirateSimulator::GameObject(TransformTerrain, "water")
             );
-            PirateSimulator::Plane* waterMesh = new PirateSimulator::Plane("PirateSimulator/water.dds");
+            PirateSimulator::Plane* waterMesh = new PirateSimulator::Plane("PirateSimulator/water3.dds");
             water->addComponent<PirateSimulator::IMesh>(waterMesh);
 
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);

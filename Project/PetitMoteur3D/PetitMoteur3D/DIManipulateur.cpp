@@ -8,7 +8,7 @@ using namespace UtilitairesDX;
 
 bool CDIManipulateur::bDejaInit = false;
 
-MouseState::MouseState() : m_offsetMouseX{0.0f}, m_offsetMouseY{0.0f}, m_sensibility{0.1f}
+MouseState::MouseState() : m_offsetMouseX{0.0f}, m_offsetMouseY{0.0f}, m_sensibility{0.08f}
 {
 
 }

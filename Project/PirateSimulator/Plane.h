@@ -161,9 +161,9 @@ namespace PirateSimulator
         static constexpr const float DEFAULT_Y_LEVEL_WATER_PLANE = 0.f;
 
         static constexpr const float TICK_INCREMENT = 0.04806f;
-        static constexpr const float WAVE_AMPLITUDE = 1.1f;
+        static constexpr const float WAVE_AMPLITUDE = 0.5f;
         static constexpr const float WAVE_FREQUENCY = 0.70f;
-        static constexpr const float WAVE_SPEED_COEFFICIENT = 0.455f;
+        static constexpr const float WAVE_SPEED_COEFFICIENT = 0.01f;
 
 
     private:

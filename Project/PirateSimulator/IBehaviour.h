@@ -19,6 +19,7 @@ namespace PirateSimulator
         virtual void rotate(float xAngle, float yAngle) {}
         virtual void move(Move::Translation::Direction direction) {}
         virtual void rotate(Move::Rotation::Direction rotation) {}
+
     };
 }
 

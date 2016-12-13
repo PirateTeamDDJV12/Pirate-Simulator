@@ -10,7 +10,7 @@
 using namespace PirateSimulator;
 using namespace DirectX;
 
-PlayerBehaviour::PlayerBehaviour() : m_speed{5000.0f}, m_cameraRef{CameraManager::singleton.getMainCameraGO()}
+PlayerBehaviour::PlayerBehaviour() : m_speed{5000.0f}, m_cameraRef{CameraManager::singleton.getMainCameraGO()}, test{0.0f}
 {}
 
 void PlayerBehaviour::move(Move::Translation::Direction direction)
@@ -19,27 +19,28 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
     // Change the boat forward to match camera forward 
     GameObjectRef camera = CameraManager::singleton.getMainCameraGO();
-    XMVECTOR newDir{ camera->m_transform.getForward().vector4_f32[0], 0.0f, camera->m_transform.getForward().vector4_f32[2] };
+    XMVECTOR newDir{camera->m_transform.getForward().vector4_f32[0], 0.0f, camera->m_transform.getForward().vector4_f32[2]};
     m_gameObject->m_transform.setForward(newDir);
 
     //Get Actor shape to move it
     ShapeComponent* boatShape = PhysicsManager::singleton.getVehiculeShape();
 
+    float ellapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
+
     switch(direction)
     {
         case Move::Translation::FORWARD:
         {
-            m_gameObject->translate(m_gameObject->m_transform.getForward() * m_speed);
+            m_gameObject->translate(m_gameObject->m_transform.getForward() * m_speed * ellapsedTime);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
             // 			_pxActor->addForce(frontVector);
-            
             boatShape->setPose(transform.getPose());
         }
         break;
 
         case Move::Translation::BACKWARD:
         {
-            m_gameObject->translate(-m_gameObject->m_transform.getForward() * m_speed);
+            m_gameObject->translate(-m_gameObject->m_transform.getForward() * m_speed * ellapsedTime);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
             // 			_pxActor->addForce(frontVector);
             boatShape->setPose(transform.getPose());
@@ -48,7 +49,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
         case Move::Translation::LEFT:
         {
-            m_gameObject->translate(-transform.getRight() * m_speed);
+            m_gameObject->translate(-transform.getRight() * m_speed * ellapsedTime);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
             // 			_pxActor->addForce(frontVector);
             boatShape->setPose(transform.getPose());
@@ -58,7 +59,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
         case Move::Translation::RIGHT:
         {
-            m_gameObject->translate(transform.getRight() * m_speed);
+            m_gameObject->translate(transform.getRight() * m_speed * ellapsedTime);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
             // 			_pxActor->addForce(frontVector);
             boatShape->setPose(transform.getPose());
@@ -77,45 +78,13 @@ void PlayerBehaviour::rotate(Move::Rotation::Direction direction)
 
 void PlayerBehaviour::anime(float ellapsedTime)
 {
-    // Pour les mouvements, nous utilisons le gestionnaire de saisie
+    test += 0.05f;
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
-
-    /*
-    * Rotation
-    */
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LSHIFT))
-    {
-        m_speed = 10000.0f;
-    }
-    else
-    {
-        m_speed = 5000.0f;
-    }
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
-    {
-        rotate(Move::Rotation::Y_CLOCKWISE);
-    }
-
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
-    {
-        rotate(Move::Rotation::Y_INVERT_CLOCKWISE);
-    }
-
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
-    {
-        rotate(Move::Rotation::X_INVERT_CLOCKWISE);
-    }
-
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
-    {
-        rotate(Move::Rotation::X_CLOCKWISE);
-    }
-
-
-    /*
-    * Translation
-    */
+    XMVECTOR position = m_gameObject->m_transform.getPosition();
+    float angle = sinf(test);
+    m_gameObject->setPosition(position.vector4_f32[0], angle * 0.5f, position.vector4_f32[2]);
+    // Translate the boat
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
     {
         move(Move::Translation::LEFT);

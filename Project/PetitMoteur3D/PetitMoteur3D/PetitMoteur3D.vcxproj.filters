@@ -159,9 +159,6 @@
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
       <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
@@ -266,6 +263,9 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp">
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

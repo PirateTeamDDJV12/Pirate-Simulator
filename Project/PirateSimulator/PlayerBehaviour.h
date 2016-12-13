@@ -14,6 +14,7 @@ namespace PirateSimulator
     {
     private:
         bool            m_sprinting;
+        float           test;
         float           m_speed;
         GameObjectRef   m_cameraRef;
 
