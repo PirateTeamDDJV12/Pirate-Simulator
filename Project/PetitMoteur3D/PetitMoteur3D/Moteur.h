@@ -40,6 +40,7 @@
 #include "../../PirateSimulator/PhysicsTask.h"
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
+#include "../../PirateSimulator/SoundTask.h"
 #include "../../PirateSimulator/Piece.h"
 
 //UI
@@ -81,6 +82,7 @@ namespace PM3D
             PHYSICSTASK,
             PLAYERTASK,
             RENDERTASK,
+            SOUNDTASK,
         };
 
 
@@ -164,11 +166,12 @@ namespace PM3D
         {
             PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
 
-            taskManager->addTask<PirateSimulator::TimeTask>(TasksOrder::TIMETASK);
-            taskManager->addTask<PirateSimulator::InputTask>(TasksOrder::INPUTTASK);
-            taskManager->addTask<PirateSimulator::RenderTask>(TasksOrder::RENDERTASK);
-            taskManager->addTask<PirateSimulator::PhysicsTask>(TasksOrder::PHYSICSTASK);
-            taskManager->addTask<PirateSimulator::PlayerTask>(TasksOrder::PLAYERTASK);
+            taskManager->addTask<PirateSimulator::TimeTask>(TIMETASK);
+            taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
+            taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
+            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
+            taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
+            taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
         }
 
         CGestionnaireDeTextures& GetTextureManager()
