@@ -7,20 +7,19 @@ using namespace PirateSimulator;
 
 void PhysicsTask::init()
 {
+    PhysicsManager::singleton.initialize();
     GameObjectManager::singleton.init();
+    
 }
 
 void PhysicsTask::update()
 {
-    // Affichage optimisé 
-    RendererManager::singleton.getDispositif()->Present();
-
     float elapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
 
     // On prépare la prochaine image
     GameObjectManager::singleton.animAllGameObject(elapsedTime);
 
     LightManager::singleton.update(elapsedTime);
-
-    RendererManager::singleton.update();
+	
+    PhysicsManager::singleton.update();
 }

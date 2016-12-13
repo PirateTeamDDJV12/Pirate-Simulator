@@ -61,6 +61,18 @@
     <Filter Include="Fichiers sources\PirateSimulator\Notifier">
       <UniqueIdentifier>{26ad8a2f-d7d0-410f-abed-75b12f319c51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\UI">
+      <UniqueIdentifier>{16ab472a-7278-401f-b7cf-f3dbe132b95a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\UI">
+      <UniqueIdentifier>{e87f83ff-26aa-4a46-bd70-8f1c3e88f65e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\PirateSimulator\Simulation">
+      <UniqueIdentifier>{365af554-e659-47aa-9b67-20b5e815d6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\PirateSimulator\ShapeComponent">
+      <UniqueIdentifier>{036106ce-8f78-4e57-9745-1a37e694a0fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Moteur.cpp">
@@ -97,12 +109,6 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="AfficheurSprite.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="AfficheurTexte.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="DIManipulateur.cpp">
@@ -165,9 +171,6 @@
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\TestBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
@@ -216,16 +219,22 @@
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp">
       <Filter>Fichiers sources\PirateSimulator\Config</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PhysicsManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Piece.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIElement.cpp">
-      <Filter>Fichiers sources\PirateSimulator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Light.cpp">
@@ -239,6 +248,27 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\Tunnel.cpp">
       <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIElement.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AfficheurSprite.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AfficheurTexte.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIHUD.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,12 +326,6 @@
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="AfficheurSprite.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="AfficheurTexte.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="DIManipulateur.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -316,9 +340,6 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Effect.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameObject.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
@@ -378,9 +399,6 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\TestBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
@@ -449,6 +467,18 @@
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Config</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ShapeComponent.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PhysicsManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\VehicleShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TerrainShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PieceAdministrator.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
@@ -475,6 +505,33 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\Tunnel.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\BezierCurve.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIElement.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AfficheurSprite.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AfficheurTexte.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\RessourceManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIHUD.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PieceShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

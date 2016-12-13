@@ -126,7 +126,7 @@ namespace PirateSimulator
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
-        m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
+        m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.getPosition();
 
         // Activer le PS
         pImmediateContext->PSSetShader(pPixelShader, NULL, 0);

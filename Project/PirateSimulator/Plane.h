@@ -4,15 +4,12 @@
 #include "Material.h"
 #include "Effect.h"
 #include "Mesh.h"
-#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
-#include <DirectXMath.h>
-#include <d3d11.h>
-#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
 #include <vector>
 #include <DirectXMath.h>
-#include <math.h>
+#include <d3d11.h>
+
 namespace PirateSimulator
 {
     class SommetPlane
@@ -61,7 +58,13 @@ namespace PirateSimulator
             DirectX::XMVECTOR vLightPoint2;
             DirectX::XMVECTOR vLightPoint3;
             DirectX::XMVECTOR vLightPoint4;
-            DirectX::XMVECTOR mappedLightPointScope;
+            DirectX::XMVECTOR mappedLightPointPower1;
+
+            DirectX::XMVECTOR vLightPoint5;
+            DirectX::XMVECTOR vLightPoint6;
+            DirectX::XMVECTOR vLightPoint7;
+            DirectX::XMVECTOR vLightPoint8;
+            DirectX::XMVECTOR mappedLightPointPower2;
 
             DirectX::XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
             DirectX::XMVECTOR vAMat; 			// la valeur ambiante du matériau
