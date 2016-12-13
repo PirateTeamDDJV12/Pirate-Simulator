@@ -130,12 +130,12 @@ namespace PirateSimulator
         {
             return m_terrainScale;
         }
-        float getWidth()
+        int getWidth()
         {
             return m_terrainWidth;
         }
 
-        float getHeight()
+        int getHeight()
         {
             return m_terrainHeight;
         }

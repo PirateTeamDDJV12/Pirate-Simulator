@@ -1,18 +1,9 @@
 #include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "TerrainShape.h"
-#include "PhysicsManager.h"
-#include "RessourceManager.h"
-#include "Vertex.h"
 #include "ICollisionHandler.h"
 #include "GameObjectManager.h"
 #include "Terrain.h"
-#include <d3d9types.h>
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
-#include <d3d9.h>
-#include "RendererManager.h"
-#include "BlocMeshStructure.h"
-#include <vector>
-#include "../PetitMoteur3D/PetitMoteur3D/util.h"
 
 using namespace physx;
 
@@ -21,11 +12,7 @@ namespace PirateSimulator
 {
     class CollisionTerrainHandler: public ICollisionHandler
     {
-        struct CUSTOMVERTEX {
-            physx::PxVec3 p;
-            physx::PxVec3 n;
-            static const int FORMAT = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE;
-        };
+
         void onContact(const physx::PxContactPair &aContactPair) override
         {
             auto actor0 = static_cast<ShapeComponent*>(aContactPair.shapes[0]->getActor()->userData);
@@ -46,8 +33,8 @@ namespace PirateSimulator
    
         //On récupère le Terrain
         Terrain* terrainData = GameObjectManager::singleton.getGameObjectByName("terrain")->getComponent<Terrain>();
-        float width = terrainData->getWidth();
-        float height = terrainData->getHeight();
+        int width = terrainData->getWidth();
+        int height = terrainData->getHeight();
         float scale = terrainData->getScale();
         auto config = Config::getInstance();
         int verticeCount = width*height;
