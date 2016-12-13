@@ -2,18 +2,11 @@
 #include "Singleton.h"
 #include "dispositif.h" 
 
-#include "Bloc.h"
-#include "BlocEffet1.h"
-#include "ObjetMesh.h"
-#include "ChargeurOBJ.h"
 #include "GestionnaireDeTextures.h"
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
-#include "DIManipulateur.h"
 
 #include "../../PirateSimulator/GameConfig.h"
-#include "../../PirateSimulator/BlocMesh.h"
-#include "../../PirateSimulator/Piece.h"
 #include "../../PirateSimulator/GameFabric.h"
 
 // Manager
@@ -199,16 +192,18 @@ namespace PM3D
         {
             using PirateSimulator::GameFabric;
 
+            PirateSimulator::RendererManager& rendererManager = PirateSimulator::RendererManager::singleton;
             
-            PirateSimulator::RendererManager::singleton.setSortingMesh(true);
-            PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
+            rendererManager.setSortingMesh(true);
+            rendererManager.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
+
 
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
             PirateSimulator::Transform cameraTransform = PirateSimulator::Transform();
-            cameraTransform.setPosition(XMVectorSet(0.f, 0.f, -10.f, 0.f));
-            cameraTransform.setUp(XMVectorSet(0.f, 1.f, 0.f, 0.f));
-            cameraTransform.setForward(XMVectorSet(0.f, 0.f, 1.f, 0.f));
+            cameraTransform.setPosition({ 0.f, 0.f, -10.f, 0.f }); //XMVectorSet before
+            cameraTransform.setUp({ 0.f, 1.f, 0.f, 0.f }); //XMVectorSet before
+            cameraTransform.setForward({ 0.f, 0.f, 1.f, 0.f }); //XMVectorSet before
 
 
             // create camera

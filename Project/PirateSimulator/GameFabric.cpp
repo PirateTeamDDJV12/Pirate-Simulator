@@ -4,8 +4,6 @@
 #include "Plane.h"
 #include "Terrain.h"
 
-//#include "Transform.h"
-
 #include "GameObjectManager.h"
 #include "CameraManager.h"
 #include "RendererManager.h"
