@@ -47,6 +47,7 @@
 #include "../../PirateSimulator/UIMenu.h"
 #include "../../PirateSimulator/UIHUD.h"
 #include "../../PirateSimulator/UIOption.h"
+#include "../../PirateSimulator/UILoading.h"
 
 #include <thread>
 #include <vector>
@@ -114,6 +115,7 @@ namespace PM3D
 
             std::vector<std::thread> beginThread;
 
+
             beginThread.emplace_back([this, &resultInit]() {
                 // * Initialisation de la scène
                 InitScene();
@@ -125,7 +127,7 @@ namespace PM3D
                 beginThread[iter].join();
             }
 
-            //PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UILoading));
 
             while(true)
             {
@@ -145,7 +147,7 @@ namespace PM3D
                 // On ré-initialise le tampon de profondeur
                 ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                 pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-                if((resultInit))
+                if((titleScreen() && resultInit))
                     break;
                 pDispositif->Present();
 

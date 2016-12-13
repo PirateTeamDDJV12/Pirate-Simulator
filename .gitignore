@@ -5,7 +5,10 @@
 *.ipch
 *.lnk
 *.jpg
+<<<<<<< HEAD
 *.lib
+=======
+>>>>>>> 8f20758e9afc854552d2a7478a6661e56a845f86
 *.dds
 *.png
 *.mp3
