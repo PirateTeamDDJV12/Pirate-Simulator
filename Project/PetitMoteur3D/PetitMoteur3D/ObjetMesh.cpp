@@ -1,5 +1,3 @@
-#include <string>
-
 #include "ObjetMesh.h"
 #include "moteurWindows.h"
 #include "util.h"
@@ -10,13 +8,15 @@
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/CameraManager.h"
 
+#include <string>
 #include <fstream>
+
 
 using namespace UtilitairesDX;
 
+
 namespace PM3D
 {
-
     // Definir l'organisation de notre sommet
     D3D11_INPUT_ELEMENT_DESC CObjetMesh::CSommetMesh::layout[] =
     {
@@ -25,33 +25,14 @@ namespace PM3D
             { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
+
     UINT CObjetMesh::CSommetMesh::numElements;
 
 
-    //void CObjetMesh::ConvertToOMB(string totalFileNameIn, const string& totalFileNameOut)
-    //{
-    //    if (totalFileNameIn != totalFileNameOut)
-    //    {
-    //        if (access(totalFileNameIn.c_str(), 0) != -1)
-    //        {
-    //            CParametresChargement param;
-
-    //            param.bInverserCulling = false;
-    //            param.bMainGauche = true;
-    //            param.NomFichier = totalFileNameIn;
-
-    //            CChargeurOBJ chargeur;
-    //            chargeur.Chargement(param);
-
-    //            EcrireFichierBinaire(chargeur, totalFileNameOut);
-    //        }
-    //    }        
-    //}
-    
-
     // Ancien constructeur
-    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
-        Mesh<ShaderCObjectMesh::ShadersParams>( shaderParameter )
+    CObjetMesh::CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, const std::wstring& shaderName, IChargeur& chargeur) :
+        Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter),
+        m_drawPtrMethod{ &CObjetMesh::elementaryDraw }
     {
         // prendre en note le dispositif
         pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
@@ -60,32 +41,35 @@ namespace PM3D
         TransfertObjet(chargeur);
 
         // Initialisation de l'effet
-        InitEffet();
+        InitEffet(shaderName);
     }
 
-    // Constructeur de conversion
-    // Constructeur pour test ou pour création d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
-        PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
-    {
-        // prendre en note le dispositif
-        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
+
+    //// Constructeur de conversion
+    //// Constructeur pour test ou pour création d'un objet de format OMB
+    //CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur) :
+    //    PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
+    //{
+    //    // prendre en note le dispositif
+    //    pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
 
 
-        //// Placer l'objet sur la carte graphique
-        // TransfertObjet(chargeur); // On n'utilisera plus cette fonction
+    //    //// Placer l'objet sur la carte graphique
+    //    // TransfertObjet(chargeur); // On n'utilisera plus cette fonction
 
-        EcrireFichierBinaire(chargeur, nomFichier);
+    //    EcrireFichierBinaire(chargeur, nomFichier);
 
-        LireFichierBinaire(nomFichier);
+    //    LireFichierBinaire(nomFichier);
 
-        // Initialisation de l'effet
-        InitEffet();
-    }
+    //    // Initialisation de l'effet
+    //    InitEffet();
+    //}
+
 
     // Constructeur pour lecture d'un objet de format OMB
-    CObjetMesh::CObjetMesh(string nomFichier, const ShaderCObjectMesh::ShadersParams& shaderParameter) :
-        PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter)
+    CObjetMesh::CObjetMesh(const std::string& nomFichier, const std::wstring& shaderName, const ShaderCObjectMesh::ShadersParams& shaderParameter) :
+        PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>(shaderParameter),
+        m_drawPtrMethod{ &CObjetMesh::elementaryDraw }
     {
         // prendre en note le dispositif
         pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
@@ -94,8 +78,9 @@ namespace PM3D
         LireFichierBinaire(nomFichier);
 
         // Initialisation de l'effet
-        InitEffet();
+        InitEffet(shaderName);
     }
+
 
     CObjetMesh::~CObjetMesh(void)
     {
@@ -112,7 +97,8 @@ namespace PM3D
         DXRelacher(pVertexBuffer);
     }
 
-    void CObjetMesh::InitEffet()
+
+    void CObjetMesh::InitEffet(const std::wstring& shaderName)
     {
         // Compilation et chargement du vertex shader
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -130,9 +116,9 @@ namespace PM3D
         // Pour l'effet
         ID3DBlob* pFXBlob = NULL;
 
-        DXEssayer(D3DCompileFromFile(L"MiniPhong.fx", 0, 0, 0,
-                                     "fx_5_0", 0, 0, &pFXBlob, 0),
-                  DXE_ERREURCREATION_FX);
+        DXEssayer(D3DCompileFromFile(shaderName.c_str(), 0, 0, 0,
+            "fx_5_0", 0, 0, &pFXBlob, 0),
+            DXE_ERREURCREATION_FX);
 
         D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &pEffet);
 
@@ -155,11 +141,11 @@ namespace PM3D
 
         CSommetMesh::numElements = ARRAYSIZE(CSommetMesh::layout);
         DXEssayer(pD3DDevice->CreateInputLayout(CSommetMesh::layout,
-                                                CSommetMesh::numElements,
-                                                vsCodePtr,
-                                                vsCodeLen,
-                                                &pVertexLayout),
-                  DXE_CREATIONLAYOUT);
+            CSommetMesh::numElements,
+            vsCodePtr,
+            vsCodeLen,
+            &pVertexLayout),
+            DXE_CREATIONLAYOUT);
 
         // Initialisation des paramètres de sampling de la texture
         D3D11_SAMPLER_DESC samplerDesc;
@@ -181,13 +167,30 @@ namespace PM3D
         // Création de l'état de sampling
         pD3DDevice->CreateSamplerState(&samplerDesc, &pSampleState);
     }
-    
+
+
     void CObjetMesh::Draw()
+    {
+        (this->*m_drawPtrMethod)();
+    }
+
+
+    void CObjetMesh::drawWithoutBackfaceCulling()
+    {
+        // Désactiver Culling et ZBuffer
+        pDispositif->DesactiverCulling();
+
+        this->elementaryDraw();
+
+        // Réactiver Culling et ZBuffer
+        pDispositif->ActiverCulling();
+    }
+
+    void CObjetMesh::elementaryDraw()
     {
 #ifdef DEBUG_PIRATE_SIMULATOR
         //OutputDebugStringA(LPCSTR((m_gameObject->m_name + " is drawn " + to_string(PirateSimulator::debugCount++) + "\n").c_str()));
 #endif
-        
 
         // Obtenir le contexte
         ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
@@ -221,11 +224,11 @@ namespace PM3D
         DXRelacher(variableSampler);
 
         // Dessiner les subsets non-transparents
-        for(int i = 0; i < NombreSubset; ++i)
+        for (int i = 0; i < NombreSubset; ++i)
         {
             int indexStart = SubsetIndex[i];
             int indexDrawAmount = SubsetIndex[i + 1] - indexStart;
-            if(indexDrawAmount)
+            if (indexDrawAmount)
             {
                 m_shaderParameter.vAMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Ambient);
                 m_shaderParameter.vDMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Diffuse);
@@ -233,7 +236,7 @@ namespace PM3D
                 m_shaderParameter.puissance = m_materials[SubsetMaterialIndex[i]].Puissance;
 
                 // Activation de la texture ou non
-                if(m_materials[SubsetMaterialIndex[i]].pTextureD3D != NULL)
+                if (m_materials[SubsetMaterialIndex[i]].pTextureD3D != NULL)
                 {
                     ID3DX11EffectShaderResourceVariable* variableTexture;
                     variableTexture = pEffet->GetVariableByName("textureEntree")->AsShaderResource();
@@ -254,18 +257,47 @@ namespace PM3D
         }
     }
 
+    void CObjetMesh::setBackFaceCulling(bool backface) noexcept
+    {
+        m_drawPtrMethod = backface ? &CObjetMesh::elementaryDraw : &CObjetMesh::drawWithoutBackfaceCulling;
+    }
+
+
     void CObjetMesh::TransfertObjet(IChargeur& chargeur)
     {
-        // 1. SOMMETS a) Créations des sommets dans un tableau temporaire
-        unsigned int nombreSommets = chargeur.GetNombreSommets();
-        CSommetMesh* ts = new CSommetMesh[nombreSommets];
+        // 1. SOMMETS a) Créations des sommets dans un tableau temporaire    
+        vector<CSommetMesh> ts;
+        CSommetMesh s;
+        vector<unsigned int> SommetDansMesh;
+        vector<unsigned int> Indices;
 
-        for(unsigned int i = 0; i < nombreSommets; ++i)
+        for (unsigned int iSubmesh = 0; iSubmesh < chargeur.GetNombreSubmesh(); ++iSubmesh)
         {
-            ts[i].position = chargeur.GetPosition(i);
-            ts[i].normal = chargeur.GetNormale(i);
-            ts[i].coordTex = chargeur.GetCoordTex(i);
+            SommetDansMesh.push_back(ts.size());
+            for (unsigned int i = 0; i < chargeur.GetNombreSommetsSubmesh(iSubmesh); ++i)
+            {
+                s.position = chargeur.GetPosition(iSubmesh, i);
+                s.normal = chargeur.GetNormale(iSubmesh, i);
+                s.coordTex = chargeur.GetCoordTex(iSubmesh, i);
+
+                ts.push_back(s);
+            }
         }
+
+        for (unsigned int iSubmesh = 0; iSubmesh < chargeur.GetNombreSubmesh(); ++iSubmesh)
+        {
+            SubsetIndex.push_back(Indices.size());
+            for (unsigned int i = 0; i < chargeur.GetNombrePolygonesSubmesh(iSubmesh); ++i)
+            {
+                for (unsigned int j = 0; j < 3; ++j)
+                {
+                    unsigned int index = chargeur.GetIndice(iSubmesh, i, j);
+                    Indices.push_back(SommetDansMesh[iSubmesh] + index);
+                }
+            }
+        }
+        SubsetIndex.push_back(Indices.size());
+
 
         // 1. SOMMETS b) Création du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -274,19 +306,17 @@ namespace PM3D
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(CSommetMesh) * nombreSommets;
+        bd.ByteWidth = sizeof(CSommetMesh) * ts.size();
         bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bd.CPUAccessFlags = 0;
 
         D3D11_SUBRESOURCE_DATA InitData;
         ZeroMemory(&InitData, sizeof(InitData));
-        InitData.pSysMem = ts;
+        InitData.pSysMem = ts.data();
         pVertexBuffer = NULL;
 
         DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
 
-        // Détruire ts, devenu inutile
-        delete[] ts;
 
         // 2. INDEX - Création de l'index buffer et copie des indices
         //            Les indices étant habituellement des entiers, j'ai
@@ -295,22 +325,21 @@ namespace PM3D
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(unsigned int) * chargeur.GetNombreIndex();
+        bd.ByteWidth = sizeof(unsigned int) * Indices.size();
         bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
         bd.CPUAccessFlags = 0;
 
         ZeroMemory(&InitData, sizeof(InitData));
-        InitData.pSysMem = chargeur.GetIndexData();
+        InitData.pSysMem = Indices.data();
         pIndexBuffer = NULL;
 
         DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer),
-                  DXE_CREATIONINDEXBUFFER);
+            DXE_CREATIONINDEXBUFFER);
+
 
         // 3. Les sous-objets
-        NombreSubset = chargeur.GetNombreSubset();
+        NombreSubset = chargeur.GetNombreSubmesh();
 
-        //    Début de chaque sous-objet et un pour la fin
-        chargeur.CopieSubsetIndex(SubsetIndex);
 
         // 4. MATERIAUX
         // 4a) Créer un matériau de défaut en index 0
@@ -319,42 +348,36 @@ namespace PM3D
         CMaterial m;
         m_materials.push_back(m);
 
+
         // 4b) Copie des matériaux dans la version locale
-        for(int i = 0; i < chargeur.GetNombreMaterial(); ++i)
+        for (int i = 0; i < chargeur.GetNombreMaterial(); ++i)
         {
             CMaterial mat;
 
             chargeur.GetMaterial(i, mat.NomFichierTexture,
-                                 mat.NomMateriau,
-                                 mat.Ambient,
-                                 mat.Diffuse,
-                                 mat.Specular,
-                                 mat.Puissance);
+                mat.NomMateriau,
+                mat.Ambient,
+                mat.Diffuse,
+                mat.Specular,
+                mat.Puissance);
 
             m_materials.push_back(mat);
         }
 
-        // 4c) Trouver l'index du materiau pour chaque sous-ensemble
-        for(int i = 0; i < chargeur.GetNombreSubset(); ++i)
+
+        // 4c) Trouver l'index du materiau pour chaque sous-ensemble (+1 car 0 est default)
+        for (int i = 0; i < chargeur.GetNombreSubmesh(); ++i)
         {
-            size_t index;
-            for(index = 0; index < m_materials.size(); ++index)
-            {
-                if(m_materials[index].NomMateriau == chargeur.GetMaterialName(i)) break;
-            }
-
-            if(index >= m_materials.size()) index = 0;  // valeur de défaut
-
-            SubsetMaterialIndex.push_back(index);
+            SubsetMaterialIndex.push_back(chargeur.GetMaterialIndex(i) + 1);
         }
 
 
         // 4d) Chargement des textures
         CGestionnaireDeTextures& TexturesManager = CMoteurWindows::GetInstance().GetTextureManager();
 
-        for(unsigned int i = 0; i < m_materials.size(); ++i)
+        for (unsigned int i = 0; i < m_materials.size(); ++i)
         {
-            if(m_materials[i].NomFichierTexture != "")
+            if (m_materials[i].NomFichierTexture != "")
             {
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
@@ -365,109 +388,114 @@ namespace PM3D
         }
     }
 
-    void CObjetMesh::EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier)
-    {
-        // 1. SOMMETS a) Créations des sommets dans un tableau temporaire
-        unsigned int nombreSommets = chargeur.GetNombreSommets();
-        CSommetMesh* ts = new CSommetMesh[nombreSommets];
 
-        for(unsigned int i = 0; i < nombreSommets; ++i)
-        {
-            ts[i].position = chargeur.GetPosition(i);
-            ts[i].normal = chargeur.GetNormale(i);
-            ts[i].coordTex = chargeur.GetCoordTex(i);
-        }
+    //void CObjetMesh::EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier)
+    //{
+    //    // 1. SOMMETS a) Créations des sommets dans un tableau temporaire
+    //    unsigned int nombreSommets = chargeur.GetNombreSommets();
+    //    CSommetMesh* ts = new CSommetMesh[nombreSommets];
 
-        // 1. SOMMETS b) Écriture des sommets dans un fichier binaire
-        ofstream fichier;
-        fichier.open(nomFichier, ios::out | ios_base::binary);
+    //    for(unsigned int i = 0; i < nombreSommets; ++i)
+    //    {
+    //        ts[i].position = chargeur.GetPosition(i);
+    //        ts[i].normal = chargeur.GetNormale(i);
+    //        ts[i].coordTex = chargeur.GetCoordTex(i);
+    //    }
 
-        fichier.write((char*)&nombreSommets, sizeof(nombreSommets));
-        fichier.write((char*)ts, nombreSommets * sizeof(CSommetMesh));
+    //    // 1. SOMMETS b) Écriture des sommets dans un fichier binaire
+    //    ofstream fichier;
+    //    fichier.open(nomFichier, ios::out | ios_base::binary);
 
-        // Détruire ts, devenu inutile
-        delete[] ts;
+    //    fichier.write((char*)&nombreSommets, sizeof(nombreSommets));
+    //    fichier.write((char*)ts, nombreSommets * sizeof(CSommetMesh));
 
-        // 2. INDEX 
-        int nombreIndex = chargeur.GetNombreIndex();
+    //    // Détruire ts, devenu inutile
+    //    delete[] ts;
 
-        fichier.write((char*)&nombreIndex, sizeof(nombreIndex));
-        fichier.write((char*)chargeur.GetIndexData(), nombreIndex * sizeof(unsigned int));
+    //    // 2. INDEX 
+    //    int nombreIndex = chargeur.GetNombreIndex();
 
-        // 3. Les sous-objets
-        NombreSubset = chargeur.GetNombreSubset();
+    //    fichier.write((char*)&nombreIndex, sizeof(nombreIndex));
+    //    fichier.write((char*)chargeur.GetIndexData(), nombreIndex * sizeof(unsigned int));
 
-        //    Début de chaque sous-objet et un pour la fin
-        vector<int> SI;
-        chargeur.CopieSubsetIndex(SI);
+    //    // 3. Les sous-objets
+    //    NombreSubset = chargeur.GetNombreSubset();
 
-        fichier.write((char*)&NombreSubset, sizeof(NombreSubset));
-        fichier.write((char*)SI.data(), (NombreSubset + 1) * sizeof(int));
+    //    //    Début de chaque sous-objet et un pour la fin
+    //    vector<int> SI;
+    //    chargeur.CopieSubsetIndex(SI);
 
-        // 4. MATERIAUX
-        // 4a) Créer un matériau de défaut en index 0
-        //     Vous pourriez changer les valeurs, j'ai conservé 
-        //     celles du constructeur
-        CMaterial mat;
-        vector<CMaterial> MatLoad;
-        MatLoad.push_back(mat);
-        int NbMaterial = chargeur.GetNombreMaterial();
-        // 4b) Copie des matériaux dans la version locale
-        for(int i = 0; i < NbMaterial; ++i)
-        {
-            chargeur.GetMaterial(i, mat.NomFichierTexture,
-                                 mat.NomMateriau,
-                                 mat.Ambient,
-                                 mat.Diffuse,
-                                 mat.Specular,
-                                 mat.Puissance);
+    //    fichier.write((char*)&NombreSubset, sizeof(NombreSubset));
+    //    fichier.write((char*)SI.data(), (NombreSubset + 1) * sizeof(int));
 
-            MatLoad.push_back(mat);
-        }
+    //    // 4. MATERIAUX
+    //    // 4a) Créer un matériau de défaut en index 0
+    //    //     Vous pourriez changer les valeurs, j'ai conservé 
+    //    //     celles du constructeur
+    //    CMaterial mat;
+    //    vector<CMaterial> MatLoad;
+    //    MatLoad.push_back(mat);
+    //    int NbMaterial = chargeur.GetNombreMaterial();
+    //    // 4b) Copie des matériaux dans la version locale
+    //    for(int i = 0; i < NbMaterial; ++i)
+    //    {
+    //        chargeur.GetMaterial(i, mat.NomFichierTexture,
+    //                             mat.NomMateriau,
+    //                             mat.Ambient,
+    //                             mat.Diffuse,
+    //                             mat.Specular,
+    //                             mat.Puissance);
 
-        NbMaterial++;
-        fichier.write((char*)&NbMaterial, sizeof(int));
+    //        MatLoad.push_back(mat);
+    //    }
 
-        MaterialBlock mb;
-        for(int i = 0; i < NbMaterial; ++i)
-        {
-            MatLoad[i].MatToBlock(mb);
-            fichier.write((char*)&mb, sizeof(MaterialBlock));
-        }
+    //    NbMaterial++;
+    //    fichier.write((char*)&NbMaterial, sizeof(int));
 
-        // 4c) Trouver l'index du materiau pour chaque sous-ensemble
-        vector<int> SubsetMI;
-        for(int i = 0; i < NombreSubset; ++i)
-        {
-            size_t index;
-            for(index = 0; index < MatLoad.size(); ++index)
-            {
-                if(MatLoad[index].NomMateriau == chargeur.GetMaterialName(i)) break;
-            }
+    //    MaterialBlock mb;
+    //    for(int i = 0; i < NbMaterial; ++i)
+    //    {
+    //        MatLoad[i].MatToBlock(mb);
+    //        fichier.write((char*)&mb, sizeof(MaterialBlock));
+    //    }
 
-            if(index >= MatLoad.size()) index = 0;  // valeur de défaut
+    //    // 4c) Trouver l'index du materiau pour chaque sous-ensemble
+    //    vector<int> SubsetMI;
+    //    for(int i = 0; i < NombreSubset; ++i)
+    //    {
+    //        size_t index;
+    //        for(index = 0; index < MatLoad.size(); ++index)
+    //        {
+    //            if(MatLoad[index].NomMateriau == chargeur.GetMaterialName(i)) break;
+    //        }
 
-            SubsetMI.push_back(index);
-        }
+    //        if(index >= MatLoad.size()) index = 0;  // valeur de défaut
 
-        fichier.write((char*)SubsetMI.data(), (NombreSubset) * sizeof(int));
+    //        SubsetMI.push_back(index);
+    //    }
 
-        fichier.close();
-    }
+    //    fichier.write((char*)SubsetMI.data(), (NombreSubset) * sizeof(int));
+
+    //    fichier.close();
+    //}
+
 
     void CObjetMesh::LireFichierBinaire(string nomFichier)
     {
         ifstream fichier;
         fichier.open(nomFichier, ios::in | ios_base::binary);
-        // 1. SOMMETS a) Créations des sommets dans un tableau temporaire
 
+
+        // 1. SOMMETS a) Créations des sommets dans un tableau temporaire
         int nombreSommets;
         fichier.read((char*)&nombreSommets, sizeof(nombreSommets));
 
         CSommetMesh* ts = new CSommetMesh[nombreSommets];
 
+
         // 1. SOMMETS b) Lecture des sommets à partir d'un fichier binaire
         fichier.read((char*)ts, nombreSommets * sizeof(CSommetMesh));
+
 
         // 1. SOMMETS b) Création du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -510,10 +538,11 @@ namespace PM3D
         pIndexBuffer = NULL;
 
         DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer),
-                  DXE_CREATIONINDEXBUFFER);
+            DXE_CREATIONINDEXBUFFER);
 
         // Détruire index, devenu inutile
         delete[] index;
+
 
         // 3. Les sous-objets
         fichier.read((char*)&NombreSubset, sizeof(NombreSubset));
@@ -523,6 +552,7 @@ namespace PM3D
         SubsetIndex.assign(si, si + (NombreSubset + 1));
 
         delete[] si;
+
 
         // 4. MATERIAUX
         // 4a) Créer un matériau de défaut en index 0
@@ -536,11 +566,12 @@ namespace PM3D
         m_materials.resize(NbMaterial);
 
         MaterialBlock mb;
-        for(int i = 0; i < NbMaterial; ++i)
+        for (int i = 0; i < NbMaterial; ++i)
         {
             fichier.read((char*)&mb, sizeof(MaterialBlock));
             m_materials[i].BlockToMat(mb);
         }
+
 
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble
         int* smi = new int[NombreSubset];
@@ -548,23 +579,21 @@ namespace PM3D
         SubsetMaterialIndex.assign(smi, smi + NombreSubset);
         delete[] smi;
 
+
         // 4d) Chargement des textures
         CGestionnaireDeTextures& TexturesManager = CMoteurWindows::GetInstance().GetTextureManager();
 
-        for(unsigned int i = 0; i < m_materials.size(); ++i)
+        for (unsigned int i = 0; i < m_materials.size(); ++i)
         {
-            if(m_materials[i].NomFichierTexture != "")
+            if (m_materials[i].NomFichierTexture != "")
             {
                 wstring ws;
                 ws.assign(m_materials[i].NomFichierTexture.begin(), m_materials[i].NomFichierTexture.end());
 
                 m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
             }
-
         }
-
         fichier.close();
-
     }
 
-}   // fin PM3D
+} // fin PM3D

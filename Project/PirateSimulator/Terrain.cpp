@@ -11,6 +11,8 @@
 #include "LightManager.h"
 #include "CameraManager.h"
 
+#include <DirectXMath.h>
+
 using namespace DirectX;
 
 namespace PirateSimulator
@@ -120,7 +122,7 @@ namespace PirateSimulator
         // input layout des sommets
         pImmediateContext->IASetInputLayout(pVertexLayout);
 
-        // Initialiser et sélectionner les «constantes» du VS
+        // Initialiser et sÃ©lectionner les Â«constantesÂ» du VS
         XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
@@ -158,7 +160,7 @@ namespace PirateSimulator
 
     void Terrain::Init(const std::string& textureFileName)
     {
-        // Création du vertex buffer et copie des sommets
+        // CrÃ©ation du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 
         D3D11_BUFFER_DESC bd;
@@ -176,7 +178,7 @@ namespace PirateSimulator
         UtilitairesDX::DXRelacher(pVertexBuffer);
         UtilitairesDX::DXEssayer(pD3DDevice->CreateBuffer(&bd, &InitData, &pVertexBuffer), DXE_CREATIONVERTEXBUFFER);
 
-        // Création de l'index buffer et copie des indices
+        // CrÃ©ation de l'index buffer et copie des indices
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
@@ -283,7 +285,7 @@ namespace PirateSimulator
                                                                 &pVertexShader),
                                  DXE_CREATION_VS);
 
-        // Créer l'organisation des sommets
+        // CrÃ©er l'organisation des sommets
         UtilitairesDX::DXRelacher(pVertexLayout);
         UtilitairesDX::DXEssayer(pD3DDevice->CreateInputLayout(Terrain::layout,
                                                                Terrain::numElements,
@@ -294,7 +296,7 @@ namespace PirateSimulator
 
         pVSBlob->Release(); //  On n'a plus besoin du blob
 
-                            // Création d'un tampon pour les constantes du VS
+                            // CrÃ©ation d'un tampon pour les constantes du VS
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
 
@@ -354,7 +356,7 @@ namespace PirateSimulator
 
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
 
-        // Création d'un tampon pour les constantes du VS
+        // CrÃ©ation d'un tampon pour les constantes du VS
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
 
@@ -384,7 +386,7 @@ namespace PirateSimulator
         UtilitairesDX::DXRelacher(m_textureEffect.m_pass);
         m_textureEffect.m_pass = m_textureEffect.m_technique->GetPassByIndex(0);
 
-        // Créer l'organisation des sommets pour le VS de notre effet
+        // CrÃ©er l'organisation des sommets pour le VS de notre effet
         D3DX11_PASS_SHADER_DESC effectVSDesc;
         m_textureEffect.m_pass->GetVertexShaderDesc(&effectVSDesc);
 
@@ -403,7 +405,7 @@ namespace PirateSimulator
                                                                &pVertexLayout),
                                  DXE_CREATIONLAYOUT);
 
-        // Initialisation des paramètres de sampling de la texture
+        // Initialisation des paramÃ¨tres de sampling de la texture
         D3D11_SAMPLER_DESC samplerDesc;
 
         samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
@@ -430,7 +432,7 @@ namespace PirateSimulator
             UtilitairesDX::DXRelacher(variableTexture);
         }
 
-        // Création de l'état de sampling
+        // CrÃ©ation de l'Ã©tat de sampling
         UtilitairesDX::DXRelacher(m_textureEffect.m_sampleState);
         pD3DDevice->CreateSamplerState(&samplerDesc, &m_textureEffect.m_sampleState);
 

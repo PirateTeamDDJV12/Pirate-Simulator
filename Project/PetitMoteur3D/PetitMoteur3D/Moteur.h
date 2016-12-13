@@ -5,6 +5,8 @@
 #include "GestionnaireDeTextures.h"
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
+#include "DIManipulateur.h"
+#include "ChargeurAssimp.h"
 
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/GameFabric.h"
@@ -23,6 +25,7 @@
 
 #include <thread>
 #include <vector>
+#include "../../PirateSimulator/Tunnel.h"
 
 
 
@@ -54,7 +57,7 @@ namespace PM3D
         {
             bool bBoucle = true;
 
-            while(bBoucle)
+            while (bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
@@ -191,7 +194,7 @@ namespace PM3D
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
             TransformTerrain.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             TransformTerrain.setForward({0.0f, 0.0f, -1.0f, 0.0f});
-
+            
 
             GameFabric gameFabric;
 
@@ -212,6 +215,53 @@ namespace PM3D
 
             // Add our terrain
             gameFabric.createField(TransformTerrain);
+
+
+
+          
+            CChargeurAssimp chargeur;
+
+            /************************************************************************/
+            /* Init Boat                                                            */
+            /************************************************************************/
+
+            PirateSimulator::Transform transformBoat({ 950,0,900,0 }, { 0,0,-1,0 }, { 0,1,0,0 });
+            PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+                new PirateSimulator::GameObject(transformBoat, "vehicule")
+            );
+
+            // Cr�ation du mesh du boat � partir d'un fichier .OBJ
+            CParametresChargement paramBoat(".\\modeles\\Boat\\", "boat.obj", false, false);
+            chargeur.Chargement(paramBoat);
+
+            auto vehiculeMesh = new CObjetMesh(ShaderCObjectMesh::ShadersParams(), L"MiniPhong.fx", chargeur);
+
+            vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
+            vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
+            auto vehicleShape = new PirateSimulator::VehicleShape();
+            vehicule->addComponent<PirateSimulator::ShapeComponent>(vehicleShape);
+
+
+            /************************************************************************/
+            /* Init Tunnel                                                          */
+            /************************************************************************/
+
+            PirateSimulator::Transform transformTunnel({ 150,0,1000,0 }, { 0,0,-1,0 }, { 0,1,0,0 });
+            PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+                new PirateSimulator::GameObject(transformTunnel, "tunnel")
+            );
+
+            // Cr�ation du mesh du tunnel � partir d'un fichier .OBJ
+            CParametresChargement paramTunnel(".\\modeles\\Tunnel\\", "tunnel.obj", false, true);
+            chargeur.Chargement(paramTunnel);
+
+            auto tunnelMesh = new PM3D::CObjetMesh(ShaderCObjectMesh::ShadersParams(), L"MiniPhongField.fx", chargeur);
+            tunnelMesh->setBackFaceCulling(false);
+
+            tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
+
+            PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(tunnelMesh);
+
 
             return true;
         }
