@@ -74,27 +74,27 @@ void ObjectCameraBehaviour::anime(float ellapsedTime)
     /*
     * Rotation
     */
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_LEFT))
+    if (rGestionnaireDeSaisie.getKey(DIK_LEFT))
     {
         rotate(Move::Rotation::Y_CLOCKWISE);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_RIGHT))
+    if (rGestionnaireDeSaisie.getKey(DIK_RIGHT))
     {
         rotate(Move::Rotation::Y_INVERT_CLOCKWISE);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_UP))
+    if (rGestionnaireDeSaisie.getKey(DIK_UP))
     {
         rotate(Move::Rotation::X_INVERT_CLOCKWISE);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_DOWN))
+    if (rGestionnaireDeSaisie.getKey(DIK_DOWN))
     {
         rotate(Move::Rotation::X_CLOCKWISE);
     }
 
-    if (rGestionnaireDeSaisie.ToucheAppuyee(DIK_CAPSLOCK))
+    if (rGestionnaireDeSaisie.getKey(DIK_CAPSLOCK))
     {
         m_cameraComponent->changeVelocity();
     }

@@ -1,14 +1,14 @@
-#ifndef UIELEMENT_H_INCLUDED
-#define UIELEMENT_H_INCLUDED
+#ifndef _UIELEMENT_H_
+#define _UIELEMENT_H_
 
 #include <memory>
+#include <map>
 
-namespace PirateSimulator 
+namespace PirateSimulator
 {
     class UIElementBase;
 
     using UIRef = std::shared_ptr<UIElementBase>;
-
 
     class UIElementBase
     {
@@ -19,9 +19,7 @@ namespace PirateSimulator
     public:
         virtual void initialize() = 0;
         virtual bool update() = 0;
-        virtual bool select() = 0;
-        virtual bool cancel() = 0;
-        
+
 
     public:
         template<class UIObject>
@@ -32,37 +30,13 @@ namespace PirateSimulator
                 std::is_same<UIElementBase, UIObject>::value ||
                 std::is_convertible<UIObject, UIElementBase>::value,
                 "Not an UI Object"
-            );
+                );
 
             return static_cast<UIObject*>(this);
         }
     };
-
-
-
-    class UIBase
-    {
-    private:
-        UIRef m_baseMenu;
-
-
-    public:
-        UIBase(UIRef titleScreenMenu) :
-            m_baseMenu{ titleScreenMenu }
-        {
-            m_baseMenu->initialize();
-        }
-
-
-    public:
-        UIRef getTitleScreen() const noexcept;
-
-
-    public:
-        bool operator()();
-    };
 }
 
-#endif // !UIELEMENT_H_INCLUDED
+#endif // !_UIELEMENT_H_
 
 
