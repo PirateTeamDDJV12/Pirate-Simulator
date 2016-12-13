@@ -10,51 +10,52 @@ using namespace PM3D;
 
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+                       HINSTANCE hPrevInstance,
+                       LPTSTR    lpCmdLine,
+                       int       nCmdShow)
 {
-	// Pour ne pas avoir d'avertissement
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
-	UNREFERENCED_PARAMETER(nCmdShow);
+    // Pour ne pas avoir d'avertissement
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+    UNREFERENCED_PARAMETER(nCmdShow);
 
     try
     {
         // Création de l'objet Moteur
-		CMoteurWindows& rMoteur = CMoteurWindows::GetInstance();
+        CMoteurWindows& rMoteur = CMoteurWindows::GetInstance();
 
-		// Spécifiques à une application Windows
-		rMoteur.SetWindowsAppInstance(hInstance);
+        // Spécifiques à une application Windows
+        rMoteur.SetWindowsAppInstance(hInstance);
 
-		// Initialisation du moteur
-		rMoteur.Initialisations();
+        // Initialisation du moteur
+        if(rMoteur.Initialisations() == 0)
+        {
+            // Boucle d'application
+            rMoteur.Run();
+        }
 
-		// Boucle d'application
-		rMoteur.Run();
-        
         return (int)1;
     }
 
-	catch (const std::exception& E)
+    catch(const std::exception& E)
     {
-		wchar_t message[35];     
-		mbtowc( message, E.what(), 34 );
+        wchar_t message[35];
+        mbtowc(message, E.what(), 34);
 
         MessageBox(NULL, message, L"Erreur", MB_ICONWARNING);
-	    
-		return (int)99;
+
+        return (int)99;
     }
 
-	catch (int codeErreur)
-  	{
-	wchar_t szErrMsg[MAX_LOADSTRING];	// Un message d'erreur selon le code
+    catch(int codeErreur)
+    {
+        wchar_t szErrMsg[MAX_LOADSTRING];	// Un message d'erreur selon le code
 
-		::LoadString(hInstance, codeErreur, szErrMsg, MAX_LOADSTRING);
-		::MessageBox(NULL,szErrMsg,L"Erreur",MB_ICONWARNING);
-	  
-		return (int)99; // POURQUOI 99???
-	}
+        ::LoadString(hInstance, codeErreur, szErrMsg, MAX_LOADSTRING);
+        ::MessageBox(NULL, szErrMsg, L"Erreur", MB_ICONWARNING);
+
+        return (int)99; // POURQUOI 99???
+    }
 
 }
 
