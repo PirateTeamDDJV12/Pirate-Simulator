@@ -117,6 +117,8 @@
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\GameFabric.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\GameLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
@@ -192,6 +194,8 @@
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameFabric.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
     <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />

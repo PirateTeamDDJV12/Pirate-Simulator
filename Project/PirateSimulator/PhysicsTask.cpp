@@ -2,6 +2,7 @@
 #include "GameObjectManager.h"
 #include "RendererManager.h"
 #include "LightManager.h"
+#include "PhysicsManager.h"
 
 using namespace PirateSimulator;
 
@@ -22,4 +23,9 @@ void PhysicsTask::update()
     LightManager::singleton.update(elapsedTime);
 	
     PhysicsManager::singleton.update();
+}
+
+void PhysicsTask::cleanup()
+{
+    PhysicsManager::singleton.reset();
 }

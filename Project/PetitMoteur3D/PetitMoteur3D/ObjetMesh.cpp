@@ -6,10 +6,10 @@
 #include "../../PirateSimulator/Moves.h"
 
 #include "../../PirateSimulator/RendererManager.h"
+#include "../../PirateSimulator/CameraManager.h"
 
 #include <string>
 #include <fstream>
-#include <corecrt_io.h>
 
 
 using namespace UtilitairesDX;

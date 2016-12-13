@@ -2,10 +2,6 @@
 #include "Singleton.h"
 #include "dispositif.h" 
 
-#include "Bloc.h"
-#include "BlocEffet1.h"
-#include "ObjetMesh.h"
-#include "ChargeurOBJ.h"
 #include "GestionnaireDeTextures.h"
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
@@ -13,41 +9,19 @@
 #include "ChargeurAssimp.h"
 
 #include "../../PirateSimulator/GameConfig.h"
-#include "../../PirateSimulator/Mesh.h"
-#include "../../PirateSimulator/Skybox.h"
-#include "../../PirateSimulator/Plane.h"
-#include "../../PirateSimulator/Terrain.h"
-#include "../../PirateSimulator/LevelCameraBehaviour.h"
-#include "../../PirateSimulator/FreeCameraBehaviour.h"
-#include "../../PirateSimulator/ObjectCameraBehaviour.h"
-#include "../../PirateSimulator/GameObject.h"
-#include "../../PirateSimulator/PlayerBehaviour.h"
-#include "../../PirateSimulator/ShapeComponent.h"
-#include "../../PirateSimulator/VehicleShape.h"
-#include "../../PirateSimulator/TerrainShape.h"
+#include "../../PirateSimulator/GameFabric.h"
+#include "../../PirateSimulator/GameLogic.h"
 
 // Manager
 #include "../../PirateSimulator/TimeManager.h"
 #include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
-#include "../../PirateSimulator/CameraManager.h"
 #include "../../PirateSimulator/InputManager.h"
-#include "../../PirateSimulator/BlocMesh.h"
 #include "../../PirateSimulator/TaskManager.h"
-
-// Tasks
-#include "../../PirateSimulator/TimeTask.h"
-#include "../../PirateSimulator/InputTask.h"
-#include "../../PirateSimulator/PhysicsTask.h"
-#include "../../PirateSimulator/RenderTask.h"
-#include "../../PirateSimulator/PlayerTask.h"
-#include "../../PirateSimulator/SoundTask.h"
-#include "../../PirateSimulator/Piece.h"
 
 //UI
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
-#include "../../PirateSimulator/UIHUD.h"
 
 #include <thread>
 #include <vector>
@@ -77,17 +51,6 @@ namespace PM3D
     template <class T, class TClasseDispositif>
     class CMoteur : public CSingleton<T>
     {
-        enum TasksOrder
-        {
-            TIMETASK,
-            INPUTTASK,
-            PHYSICSTASK,
-            PLAYERTASK,
-            RENDERTASK,
-            SOUNDTASK,
-        };
-
-
     public:
 
         virtual void Run()
@@ -111,7 +74,7 @@ namespace PM3D
             InitialisationsSpecific();
 
             // Création des tasks
-            CreateTasks();
+            PirateSimulator::GameLogic::createAllTask();
 
             bool resultUI = false;
             bool resultInit = false;
@@ -164,18 +127,6 @@ namespace PM3D
             return 0;
         }
 
-        void CreateTasks()
-        {
-            PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
-
-            taskManager->addTask<PirateSimulator::TimeTask>(TIMETASK);
-            taskManager->addTask<PirateSimulator::InputTask>(INPUTTASK);
-            taskManager->addTask<PirateSimulator::RenderTask>(RENDERTASK);
-            taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
-            taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
-            taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
-        }
-
         CGestionnaireDeTextures& GetTextureManager()
         {
             return TexturesManager;
@@ -211,47 +162,6 @@ namespace PM3D
 
         virtual int InitScene()
         {
-            auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(
-                XM_PI / 4,
-                PirateSimulator::GameGlobals::CameraGlobals::NEAREST_PLANE,
-                PirateSimulator::GameGlobals::CameraGlobals::FARTHEST_PLANE,
-                PirateSimulator::RendererManager::singleton.getDispositif()->GetLargeur(),
-                PirateSimulator::RendererManager::singleton.getDispositif()->GetHauteur()
-            );
-
-            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(
-                PirateSimulator::GameGlobals::CameraGlobals::LINEAR_SPEED,
-                PirateSimulator::GameGlobals::CameraGlobals::ANGULAR_SPEED);
-
-            PirateSimulator::RendererManager::singleton.setSortingMesh(true);
-            PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
-
-            // Initialisation des matrices View et Proj
-            // Dans notre cas, ces matrices sont fixes
-            PirateSimulator::Transform cameraTransform = PirateSimulator::Transform();
-            cameraTransform.setPosition(XMVectorSet(0.f, 0.f, -10.f, 0.f));
-            cameraTransform.setUp(XMVectorSet(0.f, 1.f, 0.f, 0.f));
-            cameraTransform.setForward(XMVectorSet(0.f, 0.f, 1.f, 0.f));
-
-            PirateSimulator::CameraManager::singleton.createCamera(
-                PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA,
-                cameraTransform,
-                camProjParameters,
-                camMovParameters,
-                "mainCamera"
-            );
-
-            // Skybox
-            PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox();
-            m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform, "skybox")
-            );
-            m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
-            skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
-
-            auto HUD = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(new PirateSimulator::UIHUD());
-
             // Initialisation des objets 3D - création et/ou chargement 
             if(!InitObjets()) return 1;
 
@@ -260,6 +170,55 @@ namespace PM3D
 
         bool InitObjets()
         {
+            using PirateSimulator::GameFabric;
+            using PirateSimulator::Transform;
+
+            // Initialisation des matrices View et Proj
+            // Dans notre cas, ces matrices sont fixes
+            Transform cameraTransform;
+
+            cameraTransform.setPosition({ 0.f, 0.f, -10.f, 0.f }); //XMVectorSet before
+            cameraTransform.setUp({ 0.f, 1.f, 0.f, 0.f }); //XMVectorSet before
+            cameraTransform.setForward({ 0.f, 0.f, 1.f, 0.f }); //XMVectorSet before
+
+
+            Transform transformBoat;
+
+            transformBoat.setPosition(950.0f, 0.0f, 900.0f);
+            transformBoat.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            transformBoat.setForward({0.0f, 0.0f, -1.0f, 0.0f});
+
+            
+            Transform TransformTerrain;
+
+            TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
+            TransformTerrain.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            TransformTerrain.setForward({0.0f, 0.0f, -1.0f, 0.0f});
+            
+
+            GameFabric gameFabric;
+
+            // Camera
+            gameFabric.createCamera(cameraTransform);
+
+            // Skybox
+            gameFabric.createSkybox();
+
+            // HUD
+            gameFabric.createHUD();
+
+            // Create our boat
+            gameFabric.createBoat(transformBoat);
+
+            // Add our water plane
+            gameFabric.createWater(TransformTerrain);
+
+            // Add our terrain
+            gameFabric.createField(TransformTerrain);
+
+
+
+          
             CChargeurAssimp chargeur;
 
             /************************************************************************/
@@ -301,68 +260,14 @@ namespace PM3D
 
             tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
 
-
-            /************************************************************************/
-            /* Init Terrain                                                         */
-            /************************************************************************/
-
-            PirateSimulator::Transform TransformTerrain({ 0,0,0,0 }, { 0,0,-1,0 }, { 0,1,0,0 });
-
-            // Add our terrain
-            PirateSimulator::GameObjectRef terrain = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(TransformTerrain, "terrain")
-            );
-#ifdef DEBUG_TEST_TERRAIN        
-            // If we want to test our own terrain and not the one int the config file
-
-            int terrainH = 257;
-            int terrainW = 257;
-            int terrainScale = 4;
-
-            auto fieldMesh = new PirateSimulator::Terrain(terrainH, terrainW, terrainScale, "PirateSimulator/heightmapOutput.txt", "PirateSimulator/textureTerrain.dds");
-#else
-            // Get all the information from the config file
-            auto fieldMesh = new PirateSimulator::Terrain();
-#endif
-            terrain->addComponent<PirateSimulator::IMesh>(fieldMesh);
-            // Add the shape for Terrain
-            auto terrainShape = new PirateSimulator::TerrainShape();
-            //terrain->addComponent<PirateSimulator::ShapeComponent>(terrainShape);
-
-            // Add our water plane
-            auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(TransformTerrain, "water")
-            );
-            PirateSimulator::Plane* waterMesh = new PirateSimulator::Plane("PirateSimulator/water.dds");
-            water->addComponent<PirateSimulator::IMesh>(waterMesh);
-
-            // Set the gameobject which is paired to the camera
-            if (PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
-            {
-                PirateSimulator::CameraManager::singleton.setPairedTarget(vehicule);
-            }
-            else if (PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
-            {
-                PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
-            }
-
-
-            /************************************************************************/
-            /* Render Mesh                                                          */
-            /************************************************************************/
-
-            // Puis, il est ajouté à la scène
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
-            PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
             PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(tunnelMesh);
+
 
             return true;
         }
 
 
     protected:
-        PirateSimulator::GameObjectRef m_skybox;
 
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;
