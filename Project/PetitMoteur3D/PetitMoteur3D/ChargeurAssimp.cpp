@@ -38,12 +38,12 @@ namespace PM3D
     {
     }
 
-    int CChargeurAssimp::GetNombreSubmesh()
+    unsigned int CChargeurAssimp::GetNombreSubmesh()
     {
         return scene->mNumMeshes;
     }
 
-    int CChargeurAssimp::GetNombreSommetsSubmesh(unsigned int n)
+    unsigned int CChargeurAssimp::GetNombreSommetsSubmesh(unsigned int n)
     {
         return scene->mMeshes[n]->mNumVertices;
     }
@@ -83,12 +83,12 @@ namespace PM3D
         return scene->mMeshes[noMesh]->mFaces[noPoly].mIndices[NoIndice];
     }
 
-    int  CChargeurAssimp::GetNombrePolygonesSubmesh(int noMesh)
+    unsigned int  CChargeurAssimp::GetNombrePolygonesSubmesh(int noMesh)
     {
         return scene->mMeshes[noMesh]->mNumFaces;
     }
 
-    int  CChargeurAssimp::GetNombreMaterial()
+    unsigned int  CChargeurAssimp::GetNombreMaterial()
     {
         return scene->mNumMaterials;
     }

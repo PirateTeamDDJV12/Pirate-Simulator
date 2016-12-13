@@ -52,11 +52,11 @@ public:
 	
 	virtual ~CChargeurOBJ(void);
 
-	int GetNombreSommets(){ return tabVertexInfo.size();}
-	int GetNombreIndex(){ return tabIndex.size();}
+    unsigned int GetNombreSommets(){ return tabVertexInfo.size();}
+    unsigned int GetNombreIndex(){ return tabIndex.size();}
 	void* GetIndexData(){ return tabIndex.data();}
-	int GetNombreSubset(){ return NombreSubset; }
-	int GetNombreMaterial(){ return material.size();}
+	unsigned int GetNombreSubset(){ return NombreSubset; }
+    unsigned int GetNombreMaterial(){ return material.size();}
 	void GetMaterial(int _i,
 					string& _NomFichierTexture,
 					string& _NomMateriau,
