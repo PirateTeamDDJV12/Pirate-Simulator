@@ -195,12 +195,13 @@ namespace PM3D
 
             GameFabric gameFabric;
 
+            // Camera
             gameFabric.createCamera(cameraTransform);
 
             // Skybox
             gameFabric.createSkybox();
 
-            //HUD
+            // HUD
             gameFabric.createHUD();
 
             // Create our boat
