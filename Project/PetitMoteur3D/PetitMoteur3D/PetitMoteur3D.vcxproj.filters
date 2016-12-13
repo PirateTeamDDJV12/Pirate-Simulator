@@ -276,6 +276,12 @@
     <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIPause.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\UIPauseLogic.cpp">
+      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -540,6 +546,12 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIButton.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIPause.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\UIPauseLogic.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
   </ItemGroup>

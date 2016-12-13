@@ -49,16 +49,14 @@
 #include "../../PirateSimulator/UIHUD.h"
 #include "../../PirateSimulator/UIOption.h"
 #include "../../PirateSimulator/UILoading.h"
+#include "../../PirateSimulator/UIPauseLogic.h"
 
 #include <thread>
 #include <vector>
 
 
-
-
 namespace PM3D
 {
-
     const int IMAGESPARSECONDE = 60;
 
     //
@@ -91,17 +89,59 @@ namespace PM3D
 
         virtual void Run()
         {
+            using PirateSimulator::UIPauseLogic;
+
             bool bBoucle = true;
+            PirateSimulator::UIPauseLogic pauseMenu;
 
             while(bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
 
-                PirateSimulator::TaskManager::GetInstance().update();
+                CDIManipulateur& input = PirateSimulator::InputManager::singleton.getManipulator();
+                if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Resuming)
+                {
+                    pauseMenu.setPauseState(UIPauseLogic::Paused);
+                }
+                else if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Paused)
+                {
+                    pauseMenu.setPauseState(UIPauseLogic::Resuming);
+                }
+                else if(pauseMenu.getPauseState() == UIPauseLogic::Leaving)
+                {
+                    return;
+                }
 
+                if (pauseMenu.getPauseState() == UIPauseLogic::Paused)
+                {
+                    // Get the Input
+                    PirateSimulator::InputManager::singleton.update();
+                    // Render
+                    auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
+                    ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
+                    ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
+
+                    float Couleur[4] = { 0.0f, 0.5f, 0.0f, 1.0f };  //  RGBA - Vert pour le moment
+                    pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
+
+                    ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
+                    pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+                    PirateSimulator::RendererManager::singleton.draw();
+
+                    // Display the pause
+                    pauseMenu();
+
+                    pDispositif->Present();
+
+                    std::this_thread::sleep_for(17ms);
+                }
+                else
+                {
+                    PirateSimulator::TaskManager::GetInstance().update();
+                }
             }
-
         }
 
         virtual int Initialisations()
@@ -357,6 +397,4 @@ namespace PM3D
         Gdiplus::Font* pPolice;
     };
 
-
 } // namespace PM3D
-

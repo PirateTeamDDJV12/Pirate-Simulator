@@ -152,6 +152,8 @@
     <ClCompile Include="..\..\PirateSimulator\UILoading.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIOption.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIPause.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIPauseLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp" />
@@ -237,6 +239,8 @@
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h" />
     <ClInclude Include="..\..\PirateSimulator\UIOption.h" />
     <ClInclude Include="..\..\PirateSimulator\UIOptionSelector.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIPause.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIPauseLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h" />
