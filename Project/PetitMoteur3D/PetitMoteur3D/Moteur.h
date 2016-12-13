@@ -20,7 +20,6 @@
 #include "../../PirateSimulator/GameObject.h"
 #include "../../PirateSimulator/PlayerBehaviour.h"
 #include "../../PirateSimulator/ShapeComponent.h"
-#include "../../PirateSimulator/VehicleShape.h"
 #include "../../PirateSimulator/TerrainShape.h"
 #include "../../PirateSimulator/BlocMesh.h"
 #include "../../PirateSimulator/Piece.h"
@@ -265,25 +264,7 @@ namespace PM3D
             transformBoat.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
 
             // Constructeur avec format binaire
-            PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(transformBoat, "vehicule")
-            );
-
-            /*CObjetMesh().ConvertToOMB(".\\modeles\\Boat\\boat.obj", ".\\modeles\\Boat\\boat.OMB");*/
-            /*CParametresChargement param;
-            param.bInverserCulling = false;
-            param.bMainGauche = true;
-            param.NomChemin = ".\\modeles\\Boat\\";
-            param.NomFichier = "boat.obj";
-            CChargeurOBJ chargeur;
-            chargeur.Chargement(param);
-            vehicule->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), chargeur));*/
-
-            auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams());
-            vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
-            vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
-            auto vehicleShape = new PirateSimulator::VehicleShape();
-            vehicule->addComponent<PirateSimulator::ShapeComponent>(vehicleShape);
+            GameFabric::createBoat(transformBoat);
 
             PirateSimulator::Transform TransformTerrain;
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
@@ -317,18 +298,13 @@ namespace PM3D
 
 
             // Set the gameobject which is paired to the camera
-            if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
-            {
-                PirateSimulator::CameraManager::singleton.setPairedTarget(vehicule);
-            }
-            else if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
+            if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::LEVEL_CAMERA)
             {
                 PirateSimulator::CameraManager::singleton.setPairedTarget(terrain);
             }
 
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
-            PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
 
             return true;
         }
