@@ -51,57 +51,25 @@ namespace PirateSimulator
         float scale = terrainData->getScale();
         auto config = Config::getInstance();
         int verticeCount = width*height;
-        std::vector<physx::PxVec3> vertexArray;
-        std::vector<unsigned int> index_bloc;
+        std::vector<CSommetBloc> vertexArray = terrainData->getSommetsArray();
 
-        CUSTOMVERTEX* pVoid;
-        auto pDispositif = RendererManager::singleton.getDispositif(); // Prendre en note le dispositif
-        vertexArray.reserve(width * height);
-        std::vector<float> myFile = RessourcesManager::GetInstance().ReadHeightMapFile(config->getExportName());
-        int nbPoint = Vertex::INFO_COUNT * width * height;
-        for (int i = 0; i < nbPoint; i += Vertex::INFO_COUNT)
-        {
-            physx::PxVec3 p{ myFile[i], myFile[i + 2], myFile[i + 1]};
-            vertexArray.push_back(p);
-        }
-        for (size_t i = nbPoint; i < myFile.size(); i += 3)
-        {
-            index_bloc.push_back(static_cast<unsigned int>(myFile[i]));
-            index_bloc.push_back(static_cast<unsigned int>(myFile[i]+1));
-            index_bloc.push_back(static_cast<unsigned int>(myFile[i]+2));
-        }
-
-    
-
-
-
+        //Get Terrain Points
+        
         _heightMap = std::make_unique<physx::PxHeightFieldSample[]>(height*width);
 
         for (int z = 0; z < height; ++z)
         {
             for (int x = 0; x < width; ++x)
             {
-                physx::PxVec3 getPoint = vertexArray.at(x*height+z);
-                auto ptHeight = getPoint.y;
-                _heightMap[x*height + z].height = ptHeight;
+                CSommetBloc ptTerrain = terrainData->getSommetsArray()[z*width + x];
+                float getPointy = vertexArray.at(z*width+x).getPosition().y;
+                _heightMap[x*height + z].height = getPointy;
                 _heightMap[x*height + z].materialIndex0 = 0;
                 _heightMap[x*height + z].materialIndex1 = 0;
                 _heightMap[x*height + z].clearTessFlag();
             }
         }
-        int* pIdx;    // a void pointer
-        for (int z= 0; z < height - 1; ++z)
-        {
-            for (int x = 0; x < width; ++x)
-            {
-                index_bloc.push_back( x + z*width);
-                index_bloc.push_back(x + (z+1)*width);
-            }
-        }
-
-
-
-
+  
         //HeightMapData
         
         PxHeightFieldDesc heightMapDesc;
@@ -113,7 +81,8 @@ namespace PirateSimulator
         
          _heightField = physx::unique_ptr<physx::PxHeightField>(
             PhysicsManager::singleton.physics().createHeightField(heightMapDesc));
-        //Création Shape
+
+         //Création Shape
 
         PxRigidStatic &m_actor = *PhysicsManager::singleton.physics().createRigidStatic(parent->m_transform.getPose());
         
@@ -128,7 +97,6 @@ namespace PirateSimulator
         m_shape->setSimulationFilterData(filterData);
          //Register shape
         setHandler(ICollisionHandlerRef(new CollisionTerrainHandler));
-        //m_actor->setMass(0.0001f);
         m_actor.userData = parent;
         PhysicsManager::singleton.registerNewComponent(this);
         m_gameObject = parent;

@@ -11,6 +11,10 @@ public:
 public:
 	static UINT numElements;
 	static D3D11_INPUT_ELEMENT_DESC layout[];
+    XMFLOAT3 getPosition()
+    {
+        return position;
+    }
 
 protected:
 	XMFLOAT3 position;

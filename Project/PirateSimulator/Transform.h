@@ -76,6 +76,10 @@ namespace PirateSimulator {
         void setPose(const physx::PxTransform& transform)
         {
             m_pose = transform;
+            m_position.vector4_f32[0] = transform.p.x;
+            m_position.vector4_f32[1] = transform.p.y;
+            m_position.vector4_f32[2] = transform.p.z;
+            
         }
 
 

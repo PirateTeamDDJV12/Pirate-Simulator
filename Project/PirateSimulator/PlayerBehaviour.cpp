@@ -28,22 +28,29 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
     {
         case Move::Translation::FORWARD:
         {
+            auto frontVec= boatPose.q.rotate(physx::PxVec3(0, 0, -1));
+            //boatPose.p += frontVec*m_speed;
             m_gameObject->translate(m_gameObject->m_transform.getForward() * m_speed);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
             physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
             // 			_pxActor->addForce(frontVector);
             boatPose.p = newPos;
+            //m_gameObject->m_transform.setPose(boatPose);
             boatShape->setPose(boatPose);
+
         }
         break;
 
         case Move::Translation::BACKWARD:
         {
+            auto frontVec = boatPose.q.rotate(physx::PxVec3(0, 0, -1));
+            //boatPose.p -= frontVec*m_speed;
             m_gameObject->translate(-m_gameObject->m_transform.getForward() * m_speed);
             DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
             physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
-            // 			_pxActor->addForce(frontVector);
+          //   			_pxActor->addForce(frontVector);
             boatPose.p = newPos ;
+            //m_gameObject->m_transform.setPose(boatPose);
             boatShape->setPose(boatPose);
         }
         break;
