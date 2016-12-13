@@ -9,6 +9,8 @@ namespace PirateSimulator
     {
     public:
         static void createSkybox();
+        static void createHUD();
+
         static void createWater(const Transform& fieldTransform);
         static void createBoat(const Transform& boatTransform);
         static void createField(const Transform& fieldTransform);

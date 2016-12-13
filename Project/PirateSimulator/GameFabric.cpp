@@ -1,19 +1,25 @@
 #include "GameFabric.h"
 
-#include "Skybox.h"
-#include "Plane.h"
-#include "Terrain.h"
-
+//Manager
 #include "GameObjectManager.h"
 #include "CameraManager.h"
 #include "RendererManager.h"
 
+//Mesh
 #include "..\PetitMoteur3D\PetitMoteur3D\ObjetMesh.h"
+#include "Skybox.h"
+#include "Plane.h"
+#include "Terrain.h"
 
+//Shape
 #include "VehicleShape.h"
-
-#include "PlayerBehaviour.h"
 #include "TerrainShape.h"
+
+//Behavior
+#include "PlayerBehaviour.h"
+
+//UI
+#include "UIHUD.h"
 
 
 using namespace PirateSimulator;
@@ -144,4 +150,9 @@ void GameFabric::createCamera(const Transform& cameraTransform)
         camMovParameters,
         "mainCamera"
     );
+}
+
+void GameFabric::createHUD()
+{
+    GameObjectManager::singleton.subscribeAGameObject(new UIHUD());
 }

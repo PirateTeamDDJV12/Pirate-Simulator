@@ -20,7 +20,6 @@
 //UI
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
-#include "../../PirateSimulator/UIHUD.h"
 
 #include <thread>
 #include <vector>
@@ -177,7 +176,8 @@ namespace PM3D
             // Skybox
             GameFabric::createSkybox();
 
-            auto HUD = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(new PirateSimulator::UIHUD());
+            //HUD
+            GameFabric::createHUD();
 
             // Initialisation des objets 3D - création et/ou chargement 
             if(!InitObjets()) return 1;
