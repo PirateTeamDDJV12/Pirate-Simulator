@@ -40,9 +40,7 @@ public:
             std::begin(m_spawnPos),
             std::end(m_spawnPos),
             [&](Transform& pos) {
-                pos.m_position.vector4_f32[0] = xPos;
-                pos.m_position.vector4_f32[1] = PieceAdministrator::PIECE_HEIGHT_FROM_SOIL;
-                pos.m_position.vector4_f32[2] = zPos;
+                pos.setPosition(xPos, PieceAdministrator::PIECE_HEIGHT_FROM_SOIL, zPos);
 
                 xPos += separatorX;
 

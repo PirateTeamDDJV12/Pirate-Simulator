@@ -4,6 +4,7 @@
 #include "UIElement.h"
 
 #include <memory>
+#include "..\PetitMoteur3D\PetitMoteur3D\AfficheurSprite.h"
 
 namespace PirateSimulator 
 {
@@ -18,6 +19,8 @@ namespace PirateSimulator
         virtual bool update();
         virtual bool select();
         virtual bool cancel();
+    private:
+        PM3D::CAfficheurSprite* pAfficheurSprite;
     };
 }
 

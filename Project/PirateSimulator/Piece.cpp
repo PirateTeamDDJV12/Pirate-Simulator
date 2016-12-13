@@ -1,12 +1,11 @@
 #include "Piece.h"
-
 #include "IBehaviour.h"
 #include "BlocMeshStructure.h"
 #include "BlocMesh.h"
-
-#include <algorithm>
 #include "TimeManager.h"
-
+#include "GameObjectManager.h"
+#include "PieceShape.h"
+#include <algorithm>
 using namespace PirateSimulator;
 
 
@@ -34,7 +33,7 @@ private:
         m_xAngle = m_xAngle + (elapsedTime * PIECE_ANGULAR_SPEED);
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
+        m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.getPosition()));
     };
 };
 
@@ -44,6 +43,7 @@ Piece::Piece(const Transform& spawnPosition, size_t pieceID) :
     m_pieceID{ pieceID },
     m_unspawnedTime{ TimeManager::msNow().count() }
 {}
+
 
 
 GameObjectRef Piece::createPiece()
@@ -58,9 +58,17 @@ GameObjectRef Piece::createPiece()
         GameObjectManager::singleton.setSubscribingStrategy(GameObjectManager::NONE);
 
         auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
+        auto pieceShape = new PirateSimulator::PieceShape();
 
         m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
         m_pieceInstance->addComponent<IMesh>(pieceMesh);
+        m_pieceInstance->addComponent<ShapeComponent>(pieceShape);
+        pieceShape->setPiece(this);
+        //m_pieceInstance->addComponent<DynamicSimulationComponent>();
+
+
+     //   std::shared_ptr<DynamicSimulationComponent> simulationComponent;
+
 
         RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
     }

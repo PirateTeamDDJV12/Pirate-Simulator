@@ -231,7 +231,7 @@ void CSkybox::Draw()
 
 
     // Initialiser et sélectionner les «constantes» de l'effet
-    XMVECTOR cameraPos = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
+    XMVECTOR cameraPos = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.getPosition();
 
     m_matWorld = XMMatrixTranslation(cameraPos.vector4_f32[0], cameraPos.vector4_f32[1], cameraPos.vector4_f32[2]);
     XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();

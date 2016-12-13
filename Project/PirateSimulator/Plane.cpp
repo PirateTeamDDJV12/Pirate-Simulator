@@ -244,7 +244,7 @@ void Plane::Draw()
 
     m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
     m_shaderParameter.matWorld = m_matWorld;
-    m_shaderParameter.vCamera = CameraManager::singleton.getMainCameraGO()->m_transform.m_position;
+    m_shaderParameter.vCamera = CameraManager::singleton.getMainCameraGO()->m_transform.getPosition();
 
 
     // Dessiner les subsets non-transparents    
