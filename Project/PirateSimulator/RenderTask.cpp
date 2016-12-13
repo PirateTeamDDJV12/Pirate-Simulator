@@ -9,6 +9,9 @@ using namespace PirateSimulator;
 
 void RenderTask::init()
 {
+    // Init afficheur texte
+    PM3D::CAfficheurTexte::Init();
+
     RendererManager::singleton.init(PM3D::CDS_FENETRE, PM3D::CMoteurWindows::GetInstance().getMainWindowHandle());
 }
 

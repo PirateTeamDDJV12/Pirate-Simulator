@@ -11,6 +11,10 @@ namespace PM3D
     class CAfficheurTexte;
 }
 
+namespace Gdiplus
+{
+    class Font;
+}
 
 
 namespace PirateSimulator 
@@ -22,7 +26,8 @@ namespace PirateSimulator
     public:
         enum
         {
-            MINIMUM_LOADING_TIME_IN_MILLISECONDS = 3000
+            MINIMUM_LOADING_TIME_IN_MILLISECONDS = 3000,
+            UPDATE_LOADING_MESSAGE_TIME_IN_MILLISECONDS = 450
         };
 
         static constexpr const float ROTATION_SPEED_RAD_PER_SEC = 0.02f;
@@ -33,10 +38,14 @@ namespace PirateSimulator
         std::unique_ptr<CustomLoadingScreenDisplayer> m_customLoadingDisplayer;
 
         std::unique_ptr<PM3D::CAfficheurTexte> m_loadingMessage;
+        std::unique_ptr<Gdiplus::Font> m_policeFont;
 
         long long m_currentTime;
         long long m_lastUpdateTime;
         long long m_launchTime;
+        long long m_timeToIncreasePoints;
+
+        unsigned char m_pointCount;
 
 
     public:
@@ -48,6 +57,10 @@ namespace PirateSimulator
         virtual bool update();
         virtual bool select();
         virtual bool cancel();
+
+
+    private:
+        void updateLoadingMessage();
     };
 }
 

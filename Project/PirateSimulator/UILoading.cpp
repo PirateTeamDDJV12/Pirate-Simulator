@@ -5,6 +5,7 @@
 #include "TimeManager.h"
 
 #include <Gdiplus.h>
+#pragma comment(lib, "gdiplus.lib")
 
 using namespace PirateSimulator;
 
@@ -72,14 +73,17 @@ namespace PirateSimulator
 }
 
 
-UILoading::UILoading()
+UILoading::UILoading() :
+    m_pointCount{1}
 {
     m_afficheurSprite = std::make_unique<PM3D::CAfficheurSprite>();
     m_customLoadingDisplayer = std::make_unique<CustomLoadingScreenDisplayer>();
 
-    Gdiplus::Font police(&Gdiplus::FontFamily{ L"Edwardian Script ITC", NULL }, 20.00, FontStyleBold, UnitPixel);
-    m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(250, 50, police, Gdiplus::Color(255, 255, 255, 255));
+    m_policeFont = std::make_unique<Gdiplus::Font>(&Gdiplus::FontFamily{ L"Edwardian Script ITC", NULL }, 70.0, FontStyleBold, UnitPixel);
+    //m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(250, 50, police, Gdiplus::Color(255, 255, 255, 255));
 
+    auto dispositif = RendererManager::singleton.getDispositif();
+    m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(dispositif, 260, 90, m_policeFont.get());
 
     // ajout de panneaux 
     m_afficheurSprite->AjouterPanneau(
@@ -90,17 +94,25 @@ UILoading::UILoading()
 
     m_loadingMessage->Ecrire(L"Loading");
 
+    int loadingMessageXPos = 0.37f * dispositif->GetLargeur();
+    int loadingMessageYPos = 0.96f * dispositif->GetHauteur();
+
+    m_afficheurSprite->AjouterSpriteTexte(m_loadingMessage->GetTextureView(), loadingMessageXPos, loadingMessageYPos);
+
     m_customLoadingDisplayer->AjouterPanneau(
         "PirateSimulator/ShipWheel.dds",
         { 0.75f, -0.75f, 0.0f },
         0.5f, 0.5f
     );
+
+    this->initialize();
 }
 
 void UILoading::initialize()
 {
     m_launchTime = TimeManager::GetInstance().msNow().count();
     m_lastUpdateTime = m_launchTime;
+    m_timeToIncreasePoints = m_launchTime + UILoading::UPDATE_LOADING_MESSAGE_TIME_IN_MILLISECONDS;
 }
 
 bool UILoading::update()
@@ -111,12 +123,20 @@ bool UILoading::update()
 
     m_customLoadingDisplayer->rotate(((m_currentTime - m_lastUpdateTime) % 360) * speedDegree);
 
+    long long deltaTime = m_currentTime - m_timeToIncreasePoints;
+
+    if (deltaTime > 0)
+    {
+        this->updateLoadingMessage();
+        m_timeToIncreasePoints = m_currentTime + UILoading::UPDATE_LOADING_MESSAGE_TIME_IN_MILLISECONDS - deltaTime;
+    }
+
     m_afficheurSprite->Draw();
     m_customLoadingDisplayer->Draw();
 
     m_lastUpdateTime = m_currentTime;
 
-    if (m_currentTime - m_launchTime < UILoading::MINIMUM_LOADING_TIME_IN_MILLISECONDS)
+    if (m_currentTime - m_launchTime > UILoading::MINIMUM_LOADING_TIME_IN_MILLISECONDS)
     {
         return true;
     }
@@ -136,4 +156,30 @@ bool UILoading::cancel()
 {
     //TODO
     return true;
+}
+
+void UILoading::updateLoadingMessage()
+{
+    switch (m_pointCount)
+    {
+    case 0:
+        m_loadingMessage->Ecrire(L"Loading");
+        break;
+
+    case 1:
+        m_loadingMessage->Ecrire(L"Loading.");
+        break;
+
+    case 2:
+        m_loadingMessage->Ecrire(L"Loading..");
+        break;
+
+    case 3:
+    default:
+        m_loadingMessage->Ecrire(L"Loading...");
+        m_pointCount = 0;
+        return;
+    }
+
+    ++m_pointCount;
 }

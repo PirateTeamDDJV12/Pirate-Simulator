@@ -33,7 +33,7 @@ CAfficheurTexte::CAfficheurTexte(CDispositifD3D11* pDispositif, int largeur, int
 	// Un brosse noire pour le remplissage
 	//		Notez que la brosse aurait pu être passée 
 	//		en paramètre pour plus de flexibilité
-	pBlackBrush = new SolidBrush( Gdiplus::Color( 255, 0, 0, 0 ) );        
+	pBlackBrush = new SolidBrush( Gdiplus::Color( 255, 255, 0, 0 ) );        
  
 	// On efface le bitmap (notez le NOIR TRANSPARENT...)
 	pCharGraphics->Clear( Gdiplus::Color( 0, 0, 0, 0) );
