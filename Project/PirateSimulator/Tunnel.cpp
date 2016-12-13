@@ -1,4 +1,3 @@
-
 #include "Tunnel.h"
 
 #include "CameraManager.h"
@@ -8,11 +7,12 @@
 #include "..\PetitMoteur3D\PetitMoteur3D\util.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\sommetbloc.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\ObjetMesh.h"
-#include <d3dcompiler.h>
-#include <d3dcompiler.h>
 #include "..\PetitMoteur3D\PetitMoteur3D\MoteurWindows.h"
-#include <string>
+#include "..\PetitMoteur3D\PetitMoteur3D\Resource.h"
 #include "Light.h"
+
+#include <string>
+#include <d3dcompiler.h>
 
 
 using namespace PirateSimulator;

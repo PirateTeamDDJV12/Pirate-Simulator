@@ -1,4 +1,4 @@
-#include "GameFabric.h"
+ï»¿#include "GameFabric.h"
 
 //Manager
 #include "GameObjectManager.h"
@@ -20,6 +20,9 @@
 
 //UI
 #include "UIHUD.h"
+
+//Loader
+#include "..\PetitMoteur3D\PetitMoteur3D\ChargeurAssimp.h"
 
 
 using namespace PirateSimulator;
@@ -66,7 +69,14 @@ void GameFabric::createBoat(const Transform& boatTransform)
     chargeur.Chargement(param);*/
 
     //Mesh
-    auto vehiculeMesh = new PM3D::CObjetMesh(".\\modeles\\Boat\\boat.OMB", PM3D::ShaderCObjectMesh::ShadersParams());
+
+    PM3D::CChargeurAssimp chargeur;
+
+    // Crï¿½ation du mesh du boat ï¿½ partir d'un fichier .OBJ
+    PM3D::CParametresChargement paramBoat(".\\modeles\\Boat\\", "boat.obj", false, false);
+    chargeur.Chargement(paramBoat);
+
+    auto vehiculeMesh = new PM3D::CObjetMesh(PM3D::ShaderCObjectMesh::ShadersParams(), L"MiniPhong.fx", chargeur);
     vehicule->addComponent<IMesh>(vehiculeMesh);
     RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
     
@@ -108,7 +118,7 @@ void GameFabric::createField(const Transform& fieldTransform)
 #endif
     field->addComponent<IMesh>(fieldMesh);
 
-    // Puis, il est ajouté à la scène
+    // Puis, il est ajoutÃ© Ã  la scÃ¨ne
     RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
 
 
@@ -155,4 +165,24 @@ void GameFabric::createCamera(const Transform& cameraTransform)
 void GameFabric::createHUD()
 {
     GameObjectManager::singleton.subscribeAGameObject(new UIHUD());
+}
+
+void GameFabric::createTunnel(const Transform& tunnelTransform)
+{
+    PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+        new PirateSimulator::GameObject(tunnelTransform, "tunnel")
+    );
+
+    PM3D::CChargeurAssimp chargeur;
+
+    // Crï¿½ation du mesh du tunnel ï¿½ partir d'un fichier .OBJ
+    PM3D::CParametresChargement paramTunnel(".\\modeles\\Tunnel\\", "tunnel.obj", false, true);
+    chargeur.Chargement(paramTunnel);
+
+    auto tunnelMesh = new PM3D::CObjetMesh(PM3D::ShaderCObjectMesh::ShadersParams(), L"MiniPhongField.fx", chargeur);
+    tunnelMesh->setBackFaceCulling(false);
+
+    tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
+
+    PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(tunnelMesh);
 }
