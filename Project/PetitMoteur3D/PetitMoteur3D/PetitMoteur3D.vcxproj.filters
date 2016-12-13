@@ -240,7 +240,7 @@
     <ClCompile Include="..\..\PirateSimulator\UIButton.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIMainMenu.cpp">
+    <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
   </ItemGroup>
@@ -479,7 +479,7 @@
     <ClInclude Include="..\..\PirateSimulator\UIButton.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\UIMainMenu.h">
+    <ClInclude Include="..\..\PirateSimulator\UIMainMenuLogic.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>

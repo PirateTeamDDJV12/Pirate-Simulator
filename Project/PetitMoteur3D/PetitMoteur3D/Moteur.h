@@ -42,7 +42,7 @@
 //UI
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
-#include "../../PirateSimulator/UIMainMenu.h"
+#include "../../PirateSimulator/UIMainMenuLogic.h"
 
 #include <thread>
 #include <vector>
@@ -120,28 +120,31 @@ namespace PM3D
             //    beginThread[iter].join();
             //}
 
-            PirateSimulator::UIMainMenuLogic titleScreen;
+            PirateSimulator::UIMainMenuLogic mainMenu;
 
             while(true)
             {
+                // Update the window
                 if(!RunSpecific())
                 {
+                    // Kill all thread if the user closes the window
                     beginThread.front().detach();
                     return 1;
                 }
+                // Get the Input
                 PirateSimulator::InputManager::singleton.update();
+                // Render
                 auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
                 ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
                 ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
 
-                // On efface la surface de rendu
                 float Couleur[4] = {0.0f, 0.5f, 0.0f, 1.0f};  //  RGBA - Vert pour le moment
                 pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
 
-                // On ré-initialise le tampon de profondeur
                 ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                 pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-                if((titleScreen() && resultInit))
+                // Display the mainMenu
+                if((mainMenu() && resultInit))
                     break;
                 pDispositif->Present();
             }
