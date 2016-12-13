@@ -1,4 +1,6 @@
 #include "PlayerBehaviour.h"
+#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
+#include "PhysicsManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include <dinput.h>
 #include "InputManager.h"
@@ -15,36 +17,49 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
     // Change the boat forward to match camera forward 
     GameObjectRef camera = CameraManager::singleton.getMainCameraGO();
-    m_gameObject->m_transform.m_forward.vector4_f32[0] = camera->m_transform.m_forward.vector4_f32[0];
-    m_gameObject->m_transform.m_forward.vector4_f32[1] = 0.f;
-    m_gameObject->m_transform.m_forward.vector4_f32[2] = camera->m_transform.m_forward.vector4_f32[2];
+    XMVECTOR newDir{ camera->m_transform.getForward().vector4_f32[0], 0.0f, camera->m_transform.getForward().vector4_f32[2] };
+    m_gameObject->m_transform.setForward(newDir);
 
-    m_gameObject->m_transform.m_forward = XMVector3Normalize(m_gameObject->m_transform.m_forward);
+    //Get Actor shape to move it
+    ShapeComponent* boatShape = PhysicsManager::singleton.getVehiculeShape();
 
     switch(direction)
     {
         case Move::Translation::FORWARD:
         {
-            m_gameObject->translate(m_gameObject->m_transform.m_forward * m_speed);
+            m_gameObject->translate(m_gameObject->m_transform.getForward() * m_speed);
+            DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
+            // 			_pxActor->addForce(frontVector);
+            
+            boatShape->setPose(transform.getPose());
         }
         break;
 
         case Move::Translation::BACKWARD:
         {
-            m_gameObject->translate(-m_gameObject->m_transform.m_forward * m_speed);
+            m_gameObject->translate(-m_gameObject->m_transform.getForward() * m_speed);
+            DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
+            // 			_pxActor->addForce(frontVector);
+            boatShape->setPose(transform.getPose());
         }
         break;
 
         case Move::Translation::LEFT:
         {
-            m_gameObject->translate(-transform.m_right * m_speed);
+            m_gameObject->translate(-transform.getRight() * m_speed);
+            DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
+            // 			_pxActor->addForce(frontVector);
+            boatShape->setPose(transform.getPose());
 
         }
         break;
 
         case Move::Translation::RIGHT:
         {
-            m_gameObject->translate(transform.m_right * m_speed);
+            m_gameObject->translate(transform.getRight() * m_speed);
+            DirectX::XMVECTOR position = m_gameObject->m_transform.getPosition();
+            // 			_pxActor->addForce(frontVector);
+            boatShape->setPose(transform.getPose());
         }
         break;
 

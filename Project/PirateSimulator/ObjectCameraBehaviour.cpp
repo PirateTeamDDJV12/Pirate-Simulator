@@ -57,18 +57,13 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
     else if (m_rotationAroundX > 85.0f)
         m_rotationAroundX = 85.0f;
 
+    float cosX = cosf(angleX);
+    float cosY = cosf(angleY);
+    float sinX = sinf(angleX);
+    float sinY = sinf(angleY);
+
     // Look in the new direction
-    m_gameObject->m_transform.m_forward.vector4_f32[0] = sin(angleY) * cos(angleX);
-    m_gameObject->m_transform.m_forward.vector4_f32[1] = sin(angleX);
-    m_gameObject->m_transform.m_forward.vector4_f32[2] = cos(angleX) * cos(angleY);
-    // Update the rightDirection vector when rotating
-    m_gameObject->m_transform.m_right =
-        DirectX::XMVector3Normalize(
-            DirectX::XMVector3Cross(
-                m_gameObject->m_transform.m_up,
-                m_gameObject->m_transform.m_forward
-            )
-        );
+    m_gameObject->m_transform.setForward(XMVECTOR{ sinY * cosX, sinX, cosX * cosY });
 }
 
 void ObjectCameraBehaviour::anime(float ellapsedTime)
@@ -105,10 +100,10 @@ void ObjectCameraBehaviour::anime(float ellapsedTime)
     }
 
     // Move the camera to the target position
-    m_gameObject->m_transform.m_position = m_target->m_transform.m_position;
+    m_gameObject->m_transform.setPosition(m_target->m_transform.getPosition());
 
     // Translate the camera back by the offset
-    XMVECTOR dir = -m_gameObject->m_transform.m_forward * m_offset;
+    XMVECTOR dir = -m_gameObject->m_transform.getForward() * m_offset;
     m_gameObject->translate(dir);
 
     // Update the view matrix

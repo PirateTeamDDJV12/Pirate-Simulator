@@ -9,6 +9,7 @@ enum KeyStates
     KeyRealesed
 };
 
+
 class CDIManipulateur
 {
 public:

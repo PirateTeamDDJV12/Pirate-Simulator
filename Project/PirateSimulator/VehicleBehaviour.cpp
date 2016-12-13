@@ -19,7 +19,7 @@ void VehicleBehaviour::anime(float ellapsedTime)
 
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
+        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.getPosition()));
     }
 
     // Vérifier si déplacement vers la droite
@@ -30,17 +30,17 @@ void VehicleBehaviour::anime(float ellapsedTime)
 
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
+        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.getPosition()));
     }
 
     // Vérifier si déplacement vers la droite
     if ((rGestionnaireDeSaisie.getKey(DIK_T)))
     {
         Transform intermediary = m_gameObject->m_transform;
-        intermediary.m_position += m_gameObject->m_transform.m_forward * velocity;
+        intermediary.setPosition(intermediary.getPosition() + m_gameObject->m_transform.getForward() * velocity);
         m_gameObject->m_transform = intermediary;
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
+        m_gameObject->setWorldMatrix(XMMatrixRotationY(rotation) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.getPosition()));
     }
 }
