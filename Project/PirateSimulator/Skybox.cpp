@@ -4,6 +4,7 @@
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "../PetitMoteur3D/PetitMoteur3D/util.h"
 #include "LightManager.h"
+#include "CameraManager.h"
 
 #include <d3d11.h>
 #include <winnt.h>

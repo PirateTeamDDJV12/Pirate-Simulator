@@ -9,6 +9,7 @@
 #include "RessourceManager.h"
 #include "RendererManager.h"
 #include "LightManager.h"
+#include "CameraManager.h"
 
 using namespace DirectX;
 

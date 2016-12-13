@@ -12,6 +12,8 @@ namespace PirateSimulator
         static void createWater(const Transform& fieldTransform);
         static void createBoat(const Transform& boatTransform);
         static void createField(const Transform& fieldTransform);
+
+        static void createCamera(const Transform& cameraTransform);
     };
 }
 

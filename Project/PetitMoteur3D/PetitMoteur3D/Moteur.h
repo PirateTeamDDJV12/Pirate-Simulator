@@ -12,14 +12,6 @@
 #include "DIManipulateur.h"
 
 #include "../../PirateSimulator/GameConfig.h"
-#include "../../PirateSimulator/Mesh.h"
-#include "../../PirateSimulator/LevelCameraBehaviour.h"
-#include "../../PirateSimulator/FreeCameraBehaviour.h"
-#include "../../PirateSimulator/ObjectCameraBehaviour.h"
-#include "../../PirateSimulator/GameObject.h"
-#include "../../PirateSimulator/PlayerBehaviour.h"
-#include "../../PirateSimulator/ShapeComponent.h"
-#include "../../PirateSimulator/TerrainShape.h"
 #include "../../PirateSimulator/BlocMesh.h"
 #include "../../PirateSimulator/Piece.h"
 #include "../../PirateSimulator/GameFabric.h"
@@ -28,7 +20,6 @@
 #include "../../PirateSimulator/TimeManager.h"
 #include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
-#include "../../PirateSimulator/CameraManager.h"
 #include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
 
@@ -208,18 +199,7 @@ namespace PM3D
         {
             using PirateSimulator::GameFabric;
 
-            auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(
-                XM_PI / 4,
-                PirateSimulator::GameGlobals::CameraGlobals::NEAREST_PLANE,
-                PirateSimulator::GameGlobals::CameraGlobals::FARTHEST_PLANE,
-                PirateSimulator::RendererManager::singleton.getDispositif()->GetLargeur(),
-                PirateSimulator::RendererManager::singleton.getDispositif()->GetHauteur()
-            );
-
-            auto camMovParameters = PirateSimulator::cameraModule::CameraMovingParameters(
-                PirateSimulator::GameGlobals::CameraGlobals::LINEAR_SPEED,
-                PirateSimulator::GameGlobals::CameraGlobals::ANGULAR_SPEED);
-
+            
             PirateSimulator::RendererManager::singleton.setSortingMesh(true);
             PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
 
@@ -230,14 +210,10 @@ namespace PM3D
             cameraTransform.setUp(XMVectorSet(0.f, 1.f, 0.f, 0.f));
             cameraTransform.setForward(XMVectorSet(0.f, 0.f, 1.f, 0.f));
 
-            PirateSimulator::CameraManager::singleton.createCamera(
-                PirateSimulator::cameraModule::BaseCamera::type::OBJECT_CAMERA,
-                cameraTransform,
-                camProjParameters,
-                camMovParameters,
-                "mainCamera"
-            );
 
+            // create camera
+            GameFabric::createCamera(cameraTransform);
+            
             // Skybox
             GameFabric::createSkybox();
 

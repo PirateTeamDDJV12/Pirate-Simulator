@@ -14,6 +14,9 @@
 
 #include "VehicleShape.h"
 
+#include "PlayerBehaviour.h"
+#include "TerrainShape.h"
+
 
 using namespace PirateSimulator;
 
@@ -118,4 +121,29 @@ void GameFabric::createField(const Transform& fieldTransform)
     {
         cameraManager.setPairedTarget(field);
     }
+}
+
+void GameFabric::createCamera(const Transform& cameraTransform)
+{
+    RendererManager& rendererManager = RendererManager::singleton;
+
+    auto camProjParameters = cameraModule::CameraProjectionParameters(
+        XM_PI / 4,
+        GameGlobals::CameraGlobals::NEAREST_PLANE,
+        GameGlobals::CameraGlobals::FARTHEST_PLANE,
+        rendererManager.getDispositif()->GetLargeur(),
+        rendererManager.getDispositif()->GetHauteur()
+    );
+
+    auto camMovParameters = cameraModule::CameraMovingParameters(
+        GameGlobals::CameraGlobals::LINEAR_SPEED,
+        GameGlobals::CameraGlobals::ANGULAR_SPEED);
+
+    CameraManager::singleton.createCamera(
+        cameraModule::BaseCamera::type::OBJECT_CAMERA,
+        cameraTransform,
+        camProjParameters,
+        camMovParameters,
+        "mainCamera"
+    );
 }

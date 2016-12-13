@@ -1,5 +1,9 @@
 #include "CameraManager.h"
 
+#include "LevelCameraBehaviour.h"
+#include "FreeCameraBehaviour.h"
+#include "ObjectCameraBehaviour.h"
+
 #include <algorithm>
 
 using PirateSimulator::CameraManager;
