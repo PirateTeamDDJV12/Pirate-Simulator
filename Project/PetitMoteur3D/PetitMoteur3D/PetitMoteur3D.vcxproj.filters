@@ -246,6 +246,12 @@
     <ClCompile Include="..\..\PirateSimulator\BezierCurve.cpp">
       <Filter>Fichiers sources\PirateSimulator\Maths</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\SoundManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\SoundTask.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
@@ -490,6 +496,12 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BezierCurve.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SoundManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SoundTask.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
