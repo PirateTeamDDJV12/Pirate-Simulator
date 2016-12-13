@@ -4,15 +4,18 @@
 #include <memory>
 
 #include "UIElement.h"
+#include "UIMainMenu.h"
 #include "UIButton.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\AfficheurSprite.h"
 
 namespace PirateSimulator 
 {
+    class UIMainMenuLogic;
+
     class UIMenu : public UIElementBase
     {
     public:
-        UIMenu();
+        UIMenu(UIMainMenuLogic *parent);
 
     public:
         virtual void initialize();
@@ -21,8 +24,9 @@ namespace PirateSimulator
         virtual bool cancel();
 
     private:
+        UIMainMenuLogic *m_parent;
         PM3D::CAfficheurSprite  *m_mainMenuImages;
-        UIButton                *m_buttons[4];
+        IUIButton                *m_buttons[4];
         unsigned int            m_currentButton;
     };
 }

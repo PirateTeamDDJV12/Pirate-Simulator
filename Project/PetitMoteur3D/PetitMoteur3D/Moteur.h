@@ -42,6 +42,7 @@
 //UI
 #include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
+#include "../../PirateSimulator/UIMainMenu.h"
 
 #include <thread>
 #include <vector>
@@ -119,7 +120,7 @@ namespace PM3D
             //    beginThread[iter].join();
             //}
 
-            PirateSimulator::UIBase titleScreen(PirateSimulator::UIRef(new PirateSimulator::UIMenu));
+            PirateSimulator::UIMainMenuLogic titleScreen;
 
             while(true)
             {
@@ -141,7 +142,7 @@ namespace PM3D
                 ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                 pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
                 if((titleScreen() && resultInit))
-                   break;
+                    break;
                 pDispositif->Present();
             }
 

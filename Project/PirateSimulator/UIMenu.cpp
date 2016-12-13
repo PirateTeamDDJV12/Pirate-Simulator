@@ -2,12 +2,12 @@
 
 #include "UIMenu.h"
 #include "GameObjectManager.h"
-#include "RendererManager.h"
+#include "InputManager.h"
 
 using namespace PirateSimulator;
 using namespace DirectX;
 
-UIMenu::UIMenu()
+UIMenu::UIMenu(UIMainMenuLogic *parent) : m_parent{parent}
 {
     PirateSimulator::Transform transform;
 
@@ -17,10 +17,10 @@ UIMenu::UIMenu()
     transform.m_forward = {0,0,-1,0};
 
     m_mainMenuImages = new PM3D::CAfficheurSprite();
-    m_buttons[0] = new UIButton();
-    m_buttons[1] = new UIButton();
-    m_buttons[2] = new UIButton();
-    m_buttons[3] = new UIButton();
+    m_buttons[0] = createButton([this]() {m_parent->setGameState(Starting); });
+    m_buttons[1] = createButton([this]() {m_parent->setGameState(Starting); });
+    m_buttons[2] = createButton([this]() {m_parent->setGameState(Starting); });
+    m_buttons[3] = createButton([this]() {m_parent->setGameState(Starting); });
 
     m_currentButton = 0;
     // ajout de panneaux 
@@ -41,7 +41,7 @@ UIMenu::UIMenu()
 
     // Start Button Highlighting
     startSprite->AjouterPanneau("Assets/UI/MainMenu/Start.dds",
-                                     XMFLOAT3(-0.7f, 0.2f, -1.0f));
+                                XMFLOAT3(-0.7f, 0.2f, -1.0f));
     startHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Highlighted Start.dds",
                                             XMFLOAT3(-1.1f, 0.15f, -1.0f));
     startHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Separation.dds",
@@ -74,9 +74,9 @@ UIMenu::UIMenu()
     quitSprite->AjouterPanneau("Assets/UI/MainMenu/Quit.dds",
                                XMFLOAT3(-0.7f, -0.4f, -1.0f));
     quitHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Highlighted Quit.dds",
-                                              XMFLOAT3(-1.1f, -0.45f, -1.0f));
+                                           XMFLOAT3(-1.1f, -0.45f, -1.0f));
     quitHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Separation.dds",
-                                              XMFLOAT3(-0.7f, -0.4f, -1.0f));
+                                           XMFLOAT3(-0.7f, -0.4f, -1.0f));
     m_buttons[3]->setDefaultSprites(quitSprite);
     m_buttons[3]->setSelectedSpriteDrawer(quitHighlightedSprites);
 
@@ -114,7 +114,7 @@ bool UIMenu::update()
 
     // Draw sprites
     m_mainMenuImages->Draw();
-    for (auto button : m_buttons)
+    for(auto button : m_buttons)
         button->draw();
     return false;
 }
