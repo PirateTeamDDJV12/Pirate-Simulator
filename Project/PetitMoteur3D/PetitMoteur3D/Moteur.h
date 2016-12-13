@@ -13,7 +13,6 @@
 
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
-#include "../../PirateSimulator/Plane.h"
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/LevelCameraBehaviour.h"
 #include "../../PirateSimulator/FreeCameraBehaviour.h"
@@ -209,6 +208,8 @@ namespace PM3D
 
         virtual int InitScene()
         {
+            using PirateSimulator::GameFabric;
+
             auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(
                 XM_PI / 4,
                 PirateSimulator::GameGlobals::CameraGlobals::NEAREST_PLANE,
@@ -240,7 +241,7 @@ namespace PM3D
             );
 
             // Skybox
-            PirateSimulator::GameFabric::createSkybox();
+            GameFabric::createSkybox();
 
             auto HUD = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(new PirateSimulator::UIHUD());
 
@@ -252,6 +253,8 @@ namespace PM3D
 
         bool InitObjets()
         {
+            using PirateSimulator::GameFabric;
+
             // TODO - Get this with a config
 
             PirateSimulator::Transform transformBoat;
@@ -309,11 +312,9 @@ namespace PM3D
             //terrain->addComponent<PirateSimulator::ShapeComponent>(terrainShape);
 
             // Add our water plane
-            auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(TransformTerrain, "water")
-            );
-            PirateSimulator::Plane* waterMesh = new PirateSimulator::Plane("PirateSimulator/water.dds");
-            water->addComponent<PirateSimulator::IMesh>(waterMesh);
+            GameFabric::createWater(TransformTerrain);
+
+
 
             // Set the gameobject which is paired to the camera
             if(PirateSimulator::CameraManager::singleton.getCameraType() == PirateSimulator::cameraModule::BaseCamera::OBJECT_CAMERA)
@@ -327,7 +328,6 @@ namespace PM3D
 
             // Puis, il est ajouté à la scène
             PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
             PirateSimulator::RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
 
             return true;

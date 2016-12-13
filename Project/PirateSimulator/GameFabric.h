@@ -3,10 +3,13 @@
 
 namespace PirateSimulator
 {
+    class Transform;
+
     class GameFabric
     {
     public:
         static void createSkybox();
+        static void createWater(const Transform& fieldTransform);
     };
 }
 

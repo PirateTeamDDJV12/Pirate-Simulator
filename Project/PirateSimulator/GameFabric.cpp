@@ -1,6 +1,9 @@
 #include "GameFabric.h"
 
 #include "Skybox.h"
+
+//#include "Transform.h"
+
 #include "GameObjectManager.h"
 #include "CameraManager.h"
 #include "RendererManager.h"
@@ -20,4 +23,16 @@ void GameFabric::createSkybox()
 
     skyBoxMesh->setTexture(L"PirateSimulator/skybox.dds");
     RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
+}
+
+void GameFabric::createWater(const Transform& fieldTransform)
+{
+    auto water = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+        new PirateSimulator::GameObject(fieldTransform, "water")
+    );
+
+    PirateSimulator::Plane* waterMesh = new PirateSimulator::Plane("PirateSimulator/water.dds");
+    water->addComponent<PirateSimulator::IMesh>(waterMesh);
+
+    PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
 }
