@@ -1,6 +1,7 @@
-#include "..\PetitMoteur3D\PetitMoteur3D\PhysX\Include\foundation\PxTransform.h"
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_
+
+#include "..\PetitMoteur3D\PetitMoteur3D\PhysX\Include\foundation\PxTransform.h"
 
 namespace PirateSimulator {
 
@@ -16,10 +17,9 @@ namespace PirateSimulator {
     public:
             Transform() :
             m_position{ 0.f, 0.f, 0.f, 0.f },
-            m_forward{ 0.f,0.f,1.f, 0.f },
-            m_up{ 0.f,1.f,0.f,0.f },
-            m_right{ 1.f, 0.f, 0.f, 0.f },
-            m_pose{ physx::PxTransform(physx::PxVec3{ 0.f,0.f,0.f }) } //
+            m_forward{ 0.f, 0.f, 1.f, 0.f },
+            m_up{ 0.f, 1.f, 0.f, 0.f },
+            m_right{ 1.f, 0.f, 0.f, 0.f }
         {}
 
         Transform(
@@ -106,9 +106,6 @@ namespace PirateSimulator {
             m_pose.p = newPos;
         }
     };
-
 }
 
 #endif // !_TRANSFORM_H_
-
-

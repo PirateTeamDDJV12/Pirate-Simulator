@@ -1,5 +1,4 @@
 *.vs
-*.obj
 *.db
 *.opendb
 *.ipch

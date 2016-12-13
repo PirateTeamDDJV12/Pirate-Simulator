@@ -9,6 +9,7 @@
 #include "RessourceManager.h"
 #include "RendererManager.h"
 #include "LightManager.h"
+#include <DirectXMath.h>
 
 using namespace DirectX;
 
