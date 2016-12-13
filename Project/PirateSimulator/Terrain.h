@@ -139,6 +139,16 @@ namespace PirateSimulator
         {
             return m_terrainHeight;
         }
+        std::vector<CSommetBloc>& getSommetsArray()
+        {
+            return std::move(m_csommetsArray);
+        }
+        std::vector<unsigned int>& getIndex()
+        {
+            return std::move(m_index_bloc);
+        }
+
+
 		void setTexture(PM3D::CTexture* texture);
 
 		void loadTexture(const std::string& filename);
