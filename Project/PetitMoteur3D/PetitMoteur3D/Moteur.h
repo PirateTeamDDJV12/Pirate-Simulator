@@ -13,7 +13,6 @@
 
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
-#include "../../PirateSimulator/Skybox.h"
 #include "../../PirateSimulator/Plane.h"
 #include "../../PirateSimulator/Terrain.h"
 #include "../../PirateSimulator/LevelCameraBehaviour.h"
@@ -24,6 +23,9 @@
 #include "../../PirateSimulator/ShapeComponent.h"
 #include "../../PirateSimulator/VehicleShape.h"
 #include "../../PirateSimulator/TerrainShape.h"
+#include "../../PirateSimulator/BlocMesh.h"
+#include "../../PirateSimulator/Piece.h"
+#include "../../PirateSimulator/GameFabric.h"
 
 // Manager
 #include "../../PirateSimulator/TimeManager.h"
@@ -31,7 +33,6 @@
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/CameraManager.h"
 #include "../../PirateSimulator/InputManager.h"
-#include "../../PirateSimulator/BlocMesh.h"
 #include "../../PirateSimulator/TaskManager.h"
 
 // Tasks
@@ -41,7 +42,6 @@
 #include "../../PirateSimulator/RenderTask.h"
 #include "../../PirateSimulator/PlayerTask.h"
 #include "../../PirateSimulator/SoundTask.h"
-#include "../../PirateSimulator/Piece.h"
 
 //UI
 #include "../../PirateSimulator/UIElement.h"
@@ -240,13 +240,7 @@ namespace PM3D
             );
 
             // Skybox
-            PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox();
-            m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform, "skybox")
-            );
-            m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
-            skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
+            PirateSimulator::GameFabric::createSkybox();
 
             auto HUD = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(new PirateSimulator::UIHUD());
 
@@ -341,7 +335,6 @@ namespace PM3D
 
 
     protected:
-        PirateSimulator::GameObjectRef m_skybox;
 
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;

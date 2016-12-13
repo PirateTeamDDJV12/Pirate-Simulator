@@ -270,6 +270,9 @@
     <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp">
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\GameFabric.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -526,6 +529,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\ICollisionHandler.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\GameFabric.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

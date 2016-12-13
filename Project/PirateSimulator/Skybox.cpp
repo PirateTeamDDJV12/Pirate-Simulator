@@ -197,10 +197,16 @@ void CSkybox::InitEffet()
     DXRelacher(pD3DDevice);
 }
 
-void CSkybox::SetTexture(CTexture* pTexture)
+void CSkybox::setTexture(const std::wstring& fileName)
 {
-    DXRelacher(pTextureD3D);
-    pTextureD3D = pTexture->GetD3DTexture();
+    PM3D::CGestionnaireDeTextures& TexturesManager = PM3D::CMoteurWindows::GetInstance().GetTextureManager();
+    auto texture = TexturesManager.GetNewTexture(fileName.c_str());
+
+    if (texture)
+    {
+        DXRelacher(pTextureD3D);
+        pTextureD3D = texture->GetD3DTexture();
+    }
 }
 
 CSkybox::~CSkybox(void)
