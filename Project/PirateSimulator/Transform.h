@@ -1,7 +1,7 @@
 #ifndef _TRANSFORM_H_
 #define _TRANSFORM_H_
 
-#include "..\PetitMoteur3D\PetitMoteur3D\PhysX\Include\foundation\PxTransform.h"
+#include "..\PetitMoteur3D\PetitMoteur3D\PhysX\Include\PxPhysicsAPI.h"
 
 
 namespace PirateSimulator {
@@ -65,22 +65,13 @@ namespace PirateSimulator {
             return m_pose;
         }
 
-
-
         void setPosition(const DirectX::XMVECTOR& pos)
         {
             m_position = pos;
             physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
 
             m_pose.p = newPos;
-        }
-
-        void setPose(const physx::PxTransform& transform) noexcept
-        {
-            m_pose = transform;
-        }
-        
-
+        }    
 
         void setPosition(float x, float y, float z)
         {
@@ -89,6 +80,7 @@ namespace PirateSimulator {
             m_position.vector4_f32[2] = z;
 
         }
+
         void setPose(const physx::PxTransform& transform)
         {
             m_pose = transform;
