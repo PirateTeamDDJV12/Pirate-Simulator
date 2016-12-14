@@ -86,7 +86,8 @@ namespace PirateSimulator
 
         public:
             ShadersParams() :
-                tick{ 0.f }
+                tick{ 0.f },
+                puissance{ 1.f }
             {
                 vLumiere = DirectX::XMVectorSet(130.0f, 130.0f, -50.0f, 1.0f);
                 vAEcl = DirectX::XMVectorSet(0.2f, 0.2f, 0.2f, 1.0f);
@@ -103,7 +104,8 @@ namespace PirateSimulator
                 const DirectX::XMVECTOR& DEcl,
                 const DirectX::XMVECTOR& DMat
             ) :
-                tick{ 0.f }
+                tick{ 0.f },
+                puissance{ 1.f }
             {
                 vLumiere = lumiere;
                 vAEcl = AEcl;

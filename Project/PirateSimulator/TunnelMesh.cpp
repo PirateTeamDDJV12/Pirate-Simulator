@@ -18,15 +18,17 @@
 
 using namespace PirateSimulator;
 
-TunnelMesh::TunnelMesh( const ShaderPlane::ShadersParams& shaderParameter,
+TunnelMesh::TunnelMesh( const ShaderTunnel::ShadersParams& shaderParameter,
                 const std::wstring& shaderName,
                 PM3D::IChargeur& chargeur) :
-    Mesh<ShaderPlane::ShadersParams>(shaderParameter),
+    Mesh<ShaderTunnel::ShadersParams>(shaderParameter),
     pDispositif{ RendererManager::singleton.getDispositif() }
 {
     TransfertObjet(chargeur);
 
     InitEffet(shaderName);
+
+    InitShaderParameter();
 }
 
 void TunnelMesh::TransfertObjet(PM3D::IChargeur& chargeur)
@@ -150,7 +152,6 @@ void TunnelMesh::TransfertObjet(PM3D::IChargeur& chargeur)
 
             m_materials[i].pTextureD3D = TexturesManager.GetNewTexture(ws.c_str())->GetD3DTexture();
         }
-
     }
 }
 
@@ -164,7 +165,7 @@ void TunnelMesh::InitEffet(const std::wstring& shaderName)
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(ShaderPlane::ShadersParams);
+    bd.ByteWidth = sizeof(ShaderTunnel::ShadersParams);
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bd.CPUAccessFlags = 0;
     HRESULT hr = pD3DDevice->CreateBuffer(&bd, NULL, &m_textureEffect.m_constantBuffer);
@@ -246,12 +247,8 @@ void TunnelMesh::Draw()
     UINT offset = 0;
     pImmediateContext->IASetVertexBuffers(0, 1, &pVertexBuffer, &stride, &offset);
 
-
-    // Initialiser et sélectionner les «constantes» de l'effet
-    XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
-
-    m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
-    m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
+    //Update the shader parameters with camera position and light position
+    updateShaderParameter();
 
 
     // Le sampler state
@@ -273,7 +270,7 @@ void TunnelMesh::Draw()
             m_shaderParameter.vAMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Ambient);
             m_shaderParameter.vDMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Diffuse);
             m_shaderParameter.vSMat = XMLoadFloat4(&m_materials[SubsetMaterialIndex[i]].Specular);
-            m_shaderParameter.puissance = m_materials[SubsetMaterialIndex[i]].Puissance;
+            //m_shaderParameter.puissance = m_materials[SubsetMaterialIndex[i]].Puissance;
 
             // Activation de la texture ou non
             if (m_materials[SubsetMaterialIndex[i]].pTextureD3D != NULL)
@@ -281,6 +278,7 @@ void TunnelMesh::Draw()
                 ID3DX11EffectShaderResourceVariable* variableTexture;
                 variableTexture = m_textureEffect.m_effect->GetVariableByName("textureEntree")->AsShaderResource();
                 variableTexture->SetResource(m_materials[SubsetMaterialIndex[i]].pTextureD3D);
+
                 UtilitairesDX::DXRelacher(variableTexture);
             }
 
@@ -298,4 +296,61 @@ void TunnelMesh::Draw()
 
     // Réactiver Culling
     pDispositif->ActiverCulling();
+}
+
+void TunnelMesh::InitShaderParameter()
+{
+    m_shaderParameter.vSMat = { 0.12f, 0.12f, 0.12f, 1.f };
+
+    LightManager& lightManager = LightManager::singleton;
+
+    m_shaderParameter.sunPower = lightManager.getBrightSun()->m_power;
+
+    auto& lightArray = lightManager.getBrightPointsLights();
+
+    if (lightArray.size() > 7)
+    {
+        m_shaderParameter.vLightPoint1 = XMLoadFloat3(&lightArray[0]->m_vector);
+        m_shaderParameter.vLightPoint2 = XMLoadFloat3(&lightArray[1]->m_vector);
+        m_shaderParameter.vLightPoint3 = XMLoadFloat3(&lightArray[2]->m_vector);
+        m_shaderParameter.vLightPoint4 = XMLoadFloat3(&lightArray[3]->m_vector);
+
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[0] = lightArray[0]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[1] = lightArray[1]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[2] = lightArray[2]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[3] = lightArray[3]->m_scope;
+
+        m_shaderParameter.vLightPoint5 = XMLoadFloat3(&lightArray[4]->m_vector);
+        m_shaderParameter.vLightPoint6 = XMLoadFloat3(&lightArray[5]->m_vector);
+        m_shaderParameter.vLightPoint7 = XMLoadFloat3(&lightArray[6]->m_vector);
+        m_shaderParameter.vLightPoint8 = XMLoadFloat3(&lightArray[7]->m_vector);
+
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[0] = lightArray[4]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[1] = lightArray[5]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[2] = lightArray[6]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[3] = lightArray[7]->m_scope;
+    }
+}
+
+void TunnelMesh::updateShaderParameter()
+{
+    CameraManager& mainCamera = CameraManager::singleton;
+    LightManager& lightManager = LightManager::singleton;
+
+    //Camera position
+    XMMATRIX viewProj = mainCamera.getMatViewProj();
+
+    m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
+    m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
+
+    m_shaderParameter.vCamera = mainCamera.getMainCameraGO()->m_transform.getPosition();
+
+    //Light
+    m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&lightManager.getBrightSun()->m_vector);
+
+    float ambientLightVal = lightManager.getAmbientLightCoefficient();
+
+    m_shaderParameter.vAEcl.vector4_f32[0] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[1] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[2] = ambientLightVal;
 }
