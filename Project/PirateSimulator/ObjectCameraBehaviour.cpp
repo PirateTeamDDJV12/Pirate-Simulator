@@ -1,9 +1,6 @@
-#include <DirectXMath.h>
-
 #include "ObjectCameraBehaviour.h"
-#include "PlayerBehaviour.h"
-#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "InputManager.h"
+#include "TimeManager.h"
 
 using namespace PirateSimulator;
 using namespace cameraModule;
@@ -101,7 +98,7 @@ void ObjectCameraBehaviour::anime(float ellapsedTime)
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
 
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_F))
+    if(rGestionnaireDeSaisie.getButtonDown(DIK_F))
     {
         if(m_state == CameraState::ThirdPersonCamera)
         {

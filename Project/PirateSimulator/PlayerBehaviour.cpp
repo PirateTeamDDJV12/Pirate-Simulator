@@ -1,12 +1,7 @@
-#include <dinput.h>
-
 #include "PlayerBehaviour.h"
-#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "CameraManager.h"
-
-#include <dinput.h>
 
 using namespace PirateSimulator;
 using namespace DirectX;
@@ -26,7 +21,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
     float ellapsedTime = TimeManager::GetInstance().getElapsedTimeFrame();
 
-    physx::PxVec3 velocity = boatShape->pxActor().getLinearVelocity();
+    physx::PxVec3 velocity = boatShape->pxActor()->getLinearVelocity();
     switch(direction)
     {
         case PirateSimulator::Move::Translation::FORWARD:
@@ -35,7 +30,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
             XMVECTOR tmp = m_desiredDirection * m_speed * ellapsedTime;
             physx::PxVec3 dir(tmp.vector4_f32[0], tmp.vector4_f32[1], tmp.vector4_f32[2]);
             if(velocity.magnitudeSquared() < (m_maxSpeed * m_maxSpeed))
-                boatShape->pxActor().addForce(dir * 100.0f);
+                boatShape->pxActor()->addForce(dir * 100.0f);
             break;
 
         }
@@ -44,7 +39,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
             m_desiredDirection = XMVECTOR{-boatRight.vector4_f32[0], 0.0f, -boatRight.vector4_f32[2]};
             XMVECTOR tmp = m_desiredDirection * m_speed * ellapsedTime;
             physx::PxVec3 dir(tmp.vector4_f32[0], tmp.vector4_f32[1], tmp.vector4_f32[2]);
-            boatShape->pxActor().addForce(dir * 50.0f);
+            boatShape->pxActor()->addForce(dir * 50.0f);
             break;
 
         }
@@ -53,7 +48,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
             m_desiredDirection = XMVECTOR{boatRight.vector4_f32[0], 0.0f, boatRight.vector4_f32[2]};
             XMVECTOR tmp = m_desiredDirection * m_speed * ellapsedTime;
             physx::PxVec3 dir(tmp.vector4_f32[0], tmp.vector4_f32[1], tmp.vector4_f32[2]);
-            boatShape->pxActor().addForce(dir * 50.0f);
+            boatShape->pxActor()->addForce(dir * 50.0f);
             break;
         }
         default:
@@ -72,26 +67,23 @@ void PlayerBehaviour::anime(float ellapsedTime)
 
     // Add contrary force to stop the boat
     ShapeComponent* boatShape = PhysicsManager::singleton.getVehiculeShape();
-    physx::PxVec3 velocity = boatShape->pxActor().getLinearVelocity();
+    physx::PxVec3 velocity = boatShape->pxActor()->getLinearVelocity();
     velocity.normalize();
-    boatShape->pxActor().addForce(-velocity * 10.0f);
+    boatShape->pxActor()->addForce(-velocity * 10.0f);
 
     // Nake the boat look at the movement direction
-    //m_gameObject->m_transform.setForward(velocity.x, velocity.y, velocity.z);
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
+    if(rGestionnaireDeSaisie.getKey(DIK_W))
     {
         move(Move::Translation::FORWARD);
-    }
-	
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
+    }	
+    if(rGestionnaireDeSaisie.getKey(DIK_A))
     {
         move(Move::Translation::LEFT);
     }
-    if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
+    if(rGestionnaireDeSaisie.getKey(DIK_D))
 	{
         move(Move::Translation::RIGHT);
     }
-
 	
     // Boat tangling
     physx::PxTransform pose = boatShape->pose();

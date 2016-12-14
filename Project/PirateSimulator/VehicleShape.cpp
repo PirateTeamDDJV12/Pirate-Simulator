@@ -42,7 +42,7 @@ void VehicleShape::setGameObject(GameObject* parent)
 
     setHandler(ICollisionHandlerRef(new CollisionVehicleHandler));
     m_actor->userData = parent;
-    m_actor->setMass(1.0f);
+
     PhysicsManager::singleton.scene().addActor(*m_actor);
     PhysicsManager::singleton.registerNewComponent(this);
 }

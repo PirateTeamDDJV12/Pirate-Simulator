@@ -235,14 +235,6 @@ namespace PM3D
 
         virtual int InitScene()
         {
-            auto camProjParameters = PirateSimulator::cameraModule::CameraProjectionParameters(
-                XM_PI / 4,
-                PirateSimulator::GameGlobals::CameraGlobals::NEAREST_PLANE,
-                PirateSimulator::GameGlobals::CameraGlobals::FARTHEST_PLANE,
-                PirateSimulator::RendererManager::singleton.getDispositif()->GetLargeur(),
-                PirateSimulator::RendererManager::singleton.getDispositif()->GetHauteur()
-            );
-
             PirateSimulator::RendererManager::singleton.setSortingMesh(true);
             PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
 
