@@ -163,7 +163,6 @@
     <ClCompile Include="..\..\PirateSimulator\UIPause.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIPauseLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vertex.cpp" />
     <ClCompile Include="AfficheurSprite.cpp" />
@@ -260,7 +259,6 @@
     <ClInclude Include="..\..\PirateSimulator\UIPauseLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
-    <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\VehicleShape.h" />
     <ClInclude Include="..\..\PirateSimulator\Vertex.h" />
     <ClInclude Include="AfficheurSprite.h" />

@@ -1,3 +1,5 @@
+#include <string>
+
 #include "DIManipulateur.h"
 #include "util.h"
 #include "resource.h"
@@ -6,13 +8,13 @@ using namespace UtilitairesDX;
 
 bool CDIManipulateur::bDejaInit = false;
 
-CDIManipulateur::CDIManipulateur(void)
+MouseState::MouseState() : m_offsetMouseX{0.0f}, m_offsetMouseY{0.0f}, m_sensibility{0.08f}
 {
-    pDirectInput = NULL;
-    pClavier = NULL;
-    pSouris = NULL;
-    pJoystick = NULL;
+}
 
+CDIManipulateur::CDIManipulateur(void) :
+    pDirectInput{nullptr}, pClavier{nullptr}, pSouris{nullptr}, pJoystick{nullptr}
+{
 }
 
 
@@ -145,6 +147,8 @@ bool CDIManipulateur::getButtonUp(UINT touche)
 
 void CDIManipulateur::SaisirEtatSouris()
 {
-    pSouris->GetDeviceState(sizeof(mouseState), (void*)&mouseState);
+	pSouris->GetDeviceState(sizeof(mouseInfo), (void*)&mouseInfo);
+    m_mouseState.m_offsetMouseX = mouseInfo.lX;
+    m_mouseState.m_offsetMouseY = mouseInfo.lY;
 }
 

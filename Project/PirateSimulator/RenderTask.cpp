@@ -2,6 +2,7 @@
 
 #include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
 #include "RendererManager.h"
+#include "../PetitMoteur3D/PetitMoteur3D/AfficheurTexte.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 
 using namespace PirateSimulator;

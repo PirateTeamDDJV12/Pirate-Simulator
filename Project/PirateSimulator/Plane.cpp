@@ -83,7 +83,7 @@ Plane::Plane(const std::string& textureFileName) :
                 m_sommets.emplace_back(
                     intermediaryPosition, 
                     defaultNormals, 
-                    XMFLOAT2{ columnValue, rowValue },
+                    XMFLOAT2{ columnValue / 20.0f, rowValue / 20.0f},
                     (columnValue + rowValue) / (XCoefficientPosition + ZCoefficientPosition)
                 );
             }

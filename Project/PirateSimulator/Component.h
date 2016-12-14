@@ -16,9 +16,12 @@ namespace PirateSimulator
     {
     protected:
         GameObject *m_gameObject;
+        bool        m_enabled;
 
 
     public:
+        Component() : m_enabled{true}
+        {}
         virtual void setGameObject(GameObject* parent)
         {
             m_gameObject = parent;
@@ -29,6 +32,16 @@ namespace PirateSimulator
             return m_gameObject;
         }
 
+        bool    isEnabled() const
+        {
+            return m_enabled;
+        }
+
+        void    enable(bool state)
+        {
+            m_enabled = state;
+        }
+
         virtual std::string getTypeId() const noexcept = 0;
 
     public:
@@ -36,6 +49,7 @@ namespace PirateSimulator
         {
             return fromCompare.size() == toCompare.size() && fromCompare == toCompare;
         }
+
 
 
     public:

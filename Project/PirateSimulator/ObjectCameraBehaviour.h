@@ -15,35 +15,55 @@ Created by Sun-lay Gagneux
 
 namespace PirateSimulator
 {
-	namespace cameraModule
-	{
-		class ObjectCameraBehaviour : public IBehaviour
-		{
+    namespace cameraModule
+    {
+        class ObjectCameraBehaviour : public IBehaviour
+        {
         public:
-            enum
+
+            enum CameraState
             {
-                DEFAULT_OFFSET = 100
+                ThirdPersonCamera,
+                FirstPersonCamera
             };
 
         private:
-            cameraModule::BaseCamera* m_cameraComponent;
+            cameraModule::Camera* m_cameraComponent;
 
-            float m_offset;
-            float m_rotationAroundY;
-            float m_rotationAroundX;
-            GameObjectRef m_target;
+            bool                        m_firstPersonPositionOk;
+            float                       m_maxAngleX;
+            float                       m_minAngleX;
+            float                       m_distanceFromTarget;
+            float                       m_rotationAroundY;
+            float                       m_rotationAroundX;
+            float                       m_newAngleX;
+            float                       m_newAngleY;
+            float                       m_rotationSmooth;
+            float                       m_translationSmooth;
+            GameObjectRef               m_target;
+            CameraState                 m_state;
+            DirectX::XMVECTOR           m_desiredPosition;
 
         public:
-            ObjectCameraBehaviour(float offset = DEFAULT_OFFSET) :
-                m_offset{ offset },
-                m_rotationAroundY{ 0.0f },
-                m_rotationAroundX{ 0.0f }
+            ObjectCameraBehaviour(GameObjectRef target) :
+                m_firstPersonPositionOk{false},
+                m_maxAngleX {0.0f},
+                m_minAngleX{-85.0f},
+                m_distanceFromTarget{60.0f},
+                m_rotationAroundY{0.0f},
+                m_rotationAroundX{0.0f},
+                m_newAngleX{0.0f},
+                m_newAngleY{0.0f},
+                m_rotationSmooth{0.1f},
+                m_translationSmooth{0.1f},
+                m_target{target},
+                m_state{CameraState::ThirdPersonCamera}
             {}
 
             void setGameObject(GameObject* parent)
             {
                 m_gameObject = parent;
-                m_cameraComponent = m_gameObject->getComponent<BaseCamera>();
+                m_cameraComponent = m_gameObject->getComponent<Camera>();
             }
 
             void setTarget(GameObjectRef target)
@@ -56,8 +76,8 @@ namespace PirateSimulator
             virtual void rotate(Move::Rotation::Direction direction);
 
             virtual void anime(float ellapsedTime);
-		};
-	}
+        };
+    }
 }
 
 

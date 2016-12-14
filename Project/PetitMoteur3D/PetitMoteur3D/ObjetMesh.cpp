@@ -10,6 +10,8 @@
 
 #include <string>
 #include <fstream>
+#include "../../PirateSimulator/Light.h"
+#include "../../PirateSimulator/LightManager.h"
 
 
 using namespace UtilitairesDX;
@@ -216,6 +218,10 @@ namespace PM3D
         m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
         m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
 
+        PirateSimulator::LightManager& lightManager = PirateSimulator::LightManager::singleton;
+        PirateSimulator::LightRef sun = lightManager.getBrightSun();
+
+        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&sun->m_vector);
 
         // Le sampler state
         ID3DX11EffectSamplerVariable* variableSampler;

@@ -12,27 +12,27 @@ void LevelCameraBehaviour::move(Move::Translation::Direction direction)
     switch(direction)
     {
         case Move::Translation::FORWARD:
-            m_gameObject->m_transform.translate(m_gameObject->m_transform.getForward() * m_cameraComponent->getTranslationVelocity());
+            m_gameObject->m_transform.translate(m_gameObject->m_transform.getForward());
             break;
 
         case Move::Translation::BACKWARD:
-            m_gameObject->m_transform.translate(-m_gameObject->m_transform.getForward() * m_cameraComponent->getTranslationVelocity());
+            m_gameObject->m_transform.translate(-m_gameObject->m_transform.getForward());
             break;
 
         case Move::Translation::LEFT:
-            m_gameObject->m_transform.translate(-m_gameObject->m_transform.getRight() * m_cameraComponent->getTranslationVelocity());
+            m_gameObject->m_transform.translate(-m_gameObject->m_transform.getRight());
             break;
 
         case Move::Translation::RIGHT:
-            m_gameObject->m_transform.translate(m_gameObject->m_transform.getRight() * m_cameraComponent->getTranslationVelocity());
+            m_gameObject->m_transform.translate(m_gameObject->m_transform.getRight());
             break;
 
         case Move::Translation::UP:
-            m_gameObject->m_transform.translate(m_gameObject->m_transform.getUp() * m_cameraComponent->getTranslationVelocity());
+            m_gameObject->m_transform.translate(m_gameObject->m_transform.getUp());
             break;
 
         case Move::Translation::DOWN:
-            m_gameObject->m_transform.translate(-m_gameObject->m_transform.getUp() * m_cameraComponent->getTranslationVelocity());
+            m_gameObject->m_transform.translate(-m_gameObject->m_transform.getUp());
             break;
 
         case Move::Translation::NONE:
@@ -53,19 +53,19 @@ void LevelCameraBehaviour::rotate(Move::Rotation::Direction direction)
     switch(direction)
     {
         case Move::Rotation::X_CLOCKWISE:
-            m_rotationAroundX -= m_cameraComponent->getRotationVelocity();
+            m_rotationAroundX -= m_speed;
             break;
 
         case Move::Rotation::X_INVERT_CLOCKWISE:
-            m_rotationAroundX += m_cameraComponent->getRotationVelocity();
+            m_rotationAroundX += m_speed;
             break;
 
         case Move::Rotation::Y_CLOCKWISE:
-            m_rotationAroundY -= m_cameraComponent->getRotationVelocity();
+            m_rotationAroundY -= m_speed;
             break;
 
         case Move::Rotation::Y_INVERT_CLOCKWISE:
-            m_rotationAroundY += m_cameraComponent->getRotationVelocity();
+            m_rotationAroundY += m_speed;
             break;
 
         case Move::Rotation::Z_CLOCKWISE:
@@ -146,10 +146,5 @@ void LevelCameraBehaviour::anime(float ellapsedTime)
     if(rGestionnaireDeSaisie.getKey(DIK_DOWN))
     {
         rotate(Move::Rotation::X_CLOCKWISE);
-    }
-
-    if(rGestionnaireDeSaisie.getKey(DIK_CAPSLOCK))
-    {
-        m_cameraComponent->changeVelocity();
     }
 }

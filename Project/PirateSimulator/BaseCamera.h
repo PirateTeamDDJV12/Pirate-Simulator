@@ -1,5 +1,5 @@
-#ifndef BASECAMERA_H
-#define BASECAMERA_H
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #include "Component.h"
 #include "GameObject.h"
@@ -35,85 +35,33 @@ namespace PirateSimulator
             }
         };
 
-        struct CameraMovingParameters
+        class Camera : public Component
         {
-            float translationVelocity;
-            float rotationVelocity;
-
-            CameraMovingParameters(float translationVelocity, float rotationVelocity) :
-                translationVelocity{ translationVelocity },
-                rotationVelocity{ rotationVelocity }
-            {}
-
-            void setTranslationVelocity(float velocity)
-            {
-                translationVelocity = velocity;
-            }
-
-            void setRotationVelocity(float velocity)
-            {
-                rotationVelocity = velocity;
-            }
-        };
-
-
-        class BaseCamera : public Component
-        {
-        public:
-            enum
-            {
-                HEIGHT_OFFSET = 10
-            };
-
-            enum type
-            {
-                FREE_CAMERA,
-                LEVEL_CAMERA,
-                OBJECT_CAMERA
-            };
-
         private:
-            void (BaseCamera::* m_pUpdateViewMatrix)();
+            void (Camera::* m_pUpdateViewMatrix)();
 
 
         public:
             template<class Origin>
             Origin* as()
             {
-                static_assert(std::is_convertible<Origin*, BaseCamera*>::value, "Error, wrong camera casting");
+                static_assert(std::is_convertible<Origin*, Camera*>::value, "Error, wrong camera casting");
                 return static_cast<Origin*>(this);
             }
 
 
         protected:
             CameraProjectionParameters m_Parameters;
-            CameraMovingParameters m_moveParams;
 
             DirectX::XMMATRIX  m_view;      // View matrix
             DirectX::XMMATRIX  m_proj;      // Projection matrix
 
-            GameObjectRef m_target;
-
-            type m_cameraType;
-
-
         public:
-            BaseCamera(
-                const CameraProjectionParameters& defaultProjParameters,
-                const CameraMovingParameters& moveParams);
+            Camera(
+                const CameraProjectionParameters& defaultProjParameters);
 
             static std::string typeId() noexcept { return "CameraComponent"; }
-            virtual std::string getTypeId() const noexcept { return BaseCamera::typeId(); }
-
-            void setTarget(GameObjectRef target) noexcept
-            {
-                m_target = target;
-
-                m_pUpdateViewMatrix = (m_target ? 
-                    &BaseCamera::updateViewMatrixAsObjectCamera : &BaseCamera::updateViewMatrixAsForwardCamera);
-            }
-
-            GameObjectRef getTarget() noexcept { return m_target; }
+            virtual std::string getTypeId() const noexcept { return Camera::typeId(); }
 
             void updateViewMatrix() {
                 setMatrixView(XMMatrixLookToLH(
@@ -124,58 +72,12 @@ namespace PirateSimulator
                 //this->*m_pUpdateViewMatrix)();
             }
 
-            type getCameraType() const noexcept
-            {
-                return m_cameraType;
-            }
-
-            virtual void setCameraType(type cameraType) noexcept
-            {
-                m_cameraType = cameraType;
-            }
-
-        protected:
-            virtual void updateViewMatrixAsForwardCamera()
-            {
-                setMatrixView(XMMatrixLookToLH(
-                    m_gameObject->m_transform.getPosition(),
-                    m_gameObject->m_transform.getForward(),
-                    m_gameObject->m_transform.getUp())
-                );
-            }
-
-            virtual void updateViewMatrixAsObjectCamera()
-            {
-                m_gameObject->m_transform.setForward(m_target->m_transform.getPosition() - m_gameObject->m_transform.getPosition());
-
-                m_gameObject->m_transform.setPosition(m_target->m_transform.getPosition() - m_gameObject->m_transform.getForward() * 50);
-
-
-                setMatrixView(XMMatrixLookAtLH(
-                    m_gameObject->m_transform.getPosition(),
-                    m_gameObject->m_transform.getForward(),
-                    m_gameObject->m_transform.getUp()));
-            }
-
         public:
             // Initialize camera's perspective Projection matrix
             void initProjMatrix();
 
             // Resize matrices when window size changes
             void onResize(float width, float height);
-
-            void changeVelocity()
-            {
-                if (m_moveParams.translationVelocity == 5.0f)
-                {
-                    m_moveParams.setTranslationVelocity(0.5f);
-                    m_moveParams.setRotationVelocity(0.02f);
-                }
-                else
-                {
-                    m_moveParams.setTranslationVelocity(5.0f);
-                }
-            }
 
             // Returns transposed camera's View matrix
             const DirectX::XMMATRIX& getViewMatrix() const noexcept { return m_view; }
@@ -223,18 +125,10 @@ namespace PirateSimulator
             // Get farthest culling plane distance from view frustum's projection plane
             const float getFarthestPlane() const noexcept { return m_Parameters.farthest; }
 
-
-            /*Camera's moving parameters such as its translation and rotation velocity*/
-            float getTranslationVelocity() const noexcept   { return m_moveParams.translationVelocity; }
-            float getRotationVelocity() const noexcept      { return m_moveParams.rotationVelocity; }
-
-            void setTranslationVelocity(float speed) noexcept { m_moveParams.translationVelocity = speed; }
-            void setRotationVelocity(float speed) noexcept    { m_moveParams.rotationVelocity = speed; }
-
         public:
             virtual void setGameObject(GameObject* parent);
         };
     }
 }
 
-#endif //!BASECAMERA_H
+#endif //!CAMERA_H

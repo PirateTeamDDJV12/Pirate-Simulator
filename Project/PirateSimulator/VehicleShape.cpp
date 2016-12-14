@@ -30,8 +30,7 @@ void VehicleShape::setGameObject(GameObject* parent)
 
     m_actor = physx::unique_ptr<physx::PxRigidDynamic>(PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform::createIdentity()));
     m_shape = m_actor->createShape(physx::PxSphereGeometry(11.f), *m_material);
-
-
+    m_actor->setMass(0.0001f);
     auto boatPose = pose();
     boatPose.p = newPos;
     setPose(boatPose);
@@ -44,7 +43,7 @@ void VehicleShape::setGameObject(GameObject* parent)
 
     setHandler(ICollisionHandlerRef(new CollisionVehicleHandler));
     m_actor->userData = parent;
-    m_actor->setMass(1.0f);
+
     PhysicsManager::singleton.scene().addActor(*m_actor);
     PhysicsManager::singleton.registerNewComponent(this);
 }

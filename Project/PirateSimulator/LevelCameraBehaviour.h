@@ -15,28 +15,26 @@ namespace PirateSimulator
         class LevelCameraBehaviour : public IBehaviour
         {
         public:
-            enum
-            {
-                HEIGHT_OFFSET = BaseCamera::HEIGHT_OFFSET
-            };
+
 
         private:
-            cameraModule::BaseCamera* m_cameraComponent;
+            cameraModule::Camera* m_cameraComponent;
 
             AngleRad m_rotationAroundY;
             AngleRad m_rotationAroundX;
             Terrain* m_terrain;
             float m_offsetCam;
+            float m_speed;
 
         public:
-            LevelCameraBehaviour(float heightOffset = HEIGHT_OFFSET) :
-                m_offsetCam{ heightOffset }
+            LevelCameraBehaviour(float heightOffset) :
+                m_offsetCam{ 100.0f }, m_speed{50.0f}
             {}
 
             void setGameObject(GameObject* parent)
             {
                 m_gameObject = parent;
-                m_cameraComponent = m_gameObject->getComponent<BaseCamera>();
+                m_cameraComponent = m_gameObject->getComponent<Camera>();
             }
 
             void move(Move::Translation::Direction direction);

@@ -3,7 +3,6 @@
 #include "dispositif.h" 
 
 #include "GestionnaireDeTextures.h"
-#include "AfficheurTexte.h"
 #include "DIManipulateur.h"
 #include "PanneauPE.h"
 #include "../../PirateSimulator/GameFabric.h"
@@ -14,11 +13,13 @@
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
+#include "../../PirateSimulator/PhysicsManager.h"
 
 //UI
 #include "../../PirateSimulator/UIMainMenuLogic.h"
-#include "../../PirateSimulator/UIHUD.h"
 #include "../../PirateSimulator/UIPauseLogic.h"
+
+#include "../../PirateSimulator/Transform.h"
 
 #include <thread>
 #include <vector>
@@ -198,6 +199,7 @@ namespace PM3D
 
             return 0;
         }
+		
         CGestionnaireDeTextures& GetTextureManager()
         {
             return TexturesManager;
@@ -234,6 +236,9 @@ namespace PM3D
 
         virtual int InitScene()
         {
+            PirateSimulator::RendererManager::singleton.setSortingMesh(true);
+            PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
+
             // Initialisation des objets 3D - création et/ou chargement 
             if(!InitObjets()) return 1;
 
@@ -248,17 +253,17 @@ namespace PM3D
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
             Transform cameraTransform;
-
+            
             cameraTransform.setPosition({0.f, 0.f, -10.f, 0.f}); //XMVectorSet before
             cameraTransform.setUp({0.f, 1.f, 0.f, 0.f}); //XMVectorSet before
             cameraTransform.setForward({0.f, 0.f, 1.f, 0.f}); //XMVectorSet before
-
-            Transform transformBoat;
-
-            transformBoat.setPosition(950.0f, 0.0f, 900.0f);
-            transformBoat.setUp({0.0f, 1.0f, 0.0f, 0.0f});
-            transformBoat.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 			
+            Transform boatTransform;
+
+            boatTransform.setPosition(950.0f, 0.0f, 900.0f);
+            boatTransform.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            boatTransform.setForward({0.0f, 0.0f, -1.0f, 0.0f});
+
             Transform TransformTerrain;
 
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
@@ -271,21 +276,16 @@ namespace PM3D
             transformTunnel.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             transformTunnel.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
-
-
             GameFabric gameFabric;
 
             // Camera
-            gameFabric.createCamera(cameraTransform);
+            gameFabric.createCameraAndBoat(cameraTransform, boatTransform);
 
-            // Skybox
+            //// Skybox
             gameFabric.createSkybox();
 
             // HUD
             gameFabric.createHUD();
-
-            // Create our boat
-            gameFabric.createBoat(transformBoat);
 
             // Add our water plane
             gameFabric.createWater(TransformTerrain);
@@ -295,7 +295,6 @@ namespace PM3D
 
             // Add Tunnel
             gameFabric.createTunnel(transformTunnel);
-
 
             return true;
         }

@@ -99,7 +99,15 @@ namespace PirateSimulator {
         {
             m_forward = DirectX::XMVector3Normalize(forward);
             m_right = DirectX::XMVector3Cross(m_up, m_forward);
+        }
 
+        void setForward(float x, float y, float z)
+        {
+            m_forward.vector4_f32[0] = x;
+            m_forward.vector4_f32[1] = y;
+            m_forward.vector4_f32[2] = z;
+            m_forward = DirectX::XMVector3Normalize(m_forward);
+            m_right = DirectX::XMVector3Cross(m_up, m_forward);
         }
 
         void setUp(const DirectX::XMVECTOR& up)

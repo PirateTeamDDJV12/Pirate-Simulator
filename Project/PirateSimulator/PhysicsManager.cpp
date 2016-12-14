@@ -139,7 +139,6 @@ namespace PirateSimulator
         auto &timeManager = TimeManager::GetInstance();
         auto remainingTimeToSimulate = timeManager.getElapsedTimeFrame();
 
-
         auto durationStep = 100;
         while(remainingTimeToSimulate > 0)
         {

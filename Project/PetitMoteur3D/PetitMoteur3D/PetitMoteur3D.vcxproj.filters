@@ -159,9 +159,6 @@
     <ClCompile Include="..\..\PirateSimulator\TimeManager.cpp">
       <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\LevelCameraBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
@@ -169,9 +166,6 @@
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp">
-      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\BinaryFast.cpp">
@@ -276,6 +270,9 @@
     <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp">
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
+	</ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UIOption.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
@@ -438,9 +435,6 @@
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\BinaryFast.h">
