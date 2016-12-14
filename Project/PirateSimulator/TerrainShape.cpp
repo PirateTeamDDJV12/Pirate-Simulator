@@ -69,11 +69,16 @@ namespace PirateSimulator
          _heightField = physx::unique_ptr<physx::PxHeightField>(
             PhysicsManager::singleton.physics().createHeightField(heightMapDesc));
 
-         //Création Shape
+        //m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
+        //m_actor = physx::unique_ptr<physx::PxRigidDynamic>(PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform::createIdentity()));
+        //PxRigidStatic &staticActor = *PhysicsManager::singleton.physics().createRigidStatic(physx::PxTransform::createIdentity());
+        //PxShape *_shape = staticActor.createShape(PxHeightFieldGeometry(heightField, PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale), *m_material);
+        
+		//Création Shape
 
         PxRigidStatic &m_actor = *PhysicsManager::singleton.physics().createRigidStatic(parent->m_transform.getPose());
         
-       PxShape *_shape = m_actor.createShape(PxHeightFieldGeometry(_heightField.get(), PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale),
+        PxShape *_shape = m_actor.createShape(PxHeightFieldGeometry(_heightField.get(), PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale),
              *m_material);
          m_shape = _shape;
        

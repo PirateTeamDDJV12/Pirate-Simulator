@@ -14,7 +14,7 @@ CDIManipulateur& PirateSimulator::InputManager::Key::m_gestionnaireDeSaisie = In
 void PirateSimulator::InputManager::Key::update()
 {
     lastState = currentState;
-    currentState = static_cast<State>(m_gestionnaireDeSaisie.ToucheAppuyee(keyValue));
+    currentState = static_cast<State>(m_gestionnaireDeSaisie.getKey(keyValue));
 }
 
 void InputManager::update()
