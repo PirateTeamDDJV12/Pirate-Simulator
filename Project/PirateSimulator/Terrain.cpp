@@ -44,7 +44,10 @@ namespace PirateSimulator
         int nbPoint = Vertex::INFO_COUNT * m_terrainWidth * m_terrainHeight;
         for(int i = 0; i < nbPoint; i += Vertex::INFO_COUNT)
         {
-            PirateSimulator::Vertex p{myFile[i], myFile[i + 2], myFile[i + 1], myFile[i + 3], myFile[i + 4], myFile[i + 5], myFile[i + 6], myFile[i + 7]};
+            PirateSimulator::Vertex p{
+                myFile[i], myFile[i + 2], myFile[i + 1],
+                -myFile[i + 3], -myFile[i + 4], -myFile[i + 5],
+                myFile[i + 6], myFile[i + 7]};
             addSommet(p);
         }
         for(size_t i = nbPoint; i < myFile.size(); i += 3)
