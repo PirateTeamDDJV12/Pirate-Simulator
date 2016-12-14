@@ -1,7 +1,7 @@
-#include "StdAfx.h"
 #include "PanneauPE.h"
 #include "util.h"
 #include "resource.h"
+#include "../../PirateSimulator/RendererManager.h"
 
 
 using namespace UtilitairesDX;
@@ -24,7 +24,7 @@ namespace PM3D
         CSommetPanneauPE(XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT2(1.0f, 0.0f)),
         CSommetPanneauPE(XMFLOAT3(-1.0f, -1.0f, 0.0f), XMFLOAT2(0.0f, 1.0f)),
         CSommetPanneauPE(XMFLOAT3(1.0f, 1.0f, 0.0f), XMFLOAT2(1.0f, 0.0f)),
-        CSommetPanneauPE(XMFLOAT3(1.0f, -1.0f, 0.0f), XMFLOAT2(1.0f, 1.0f)) };
+        CSommetPanneauPE(XMFLOAT3(1.0f, -1.0f, 0.0f), XMFLOAT2(1.0f, 1.0f))};
 
     CPanneauPE::~CPanneauPE(void)
     {
@@ -42,16 +42,16 @@ namespace PM3D
 
     // FONCTION : CPanneauPE, constructeur paramètré
     // BUT : Constructeur d'une classe de PanneauPE
-    // PARAMÈTRE : pDispositif: pointeur sur notre objet dispositif
-    CPanneauPE::CPanneauPE(CDispositifD3D11* pDispositif_in)
+    CPanneauPE::CPanneauPE()
     {
         pVertexBuffer = 0;
         pEffet = 0;
         pTechnique = 0;
         pPasse = 0;
         pSampleState = 0;
-        pDispositif = pDispositif_in; // Prendre en note le dispositif
-                                      // Création du vertex buffer et copie des sommets
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif(); // Prendre en note le dispositif
+        
+        // Création du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
         D3D11_BUFFER_DESC bd;
         ZeroMemory(&bd, sizeof(bd));
@@ -71,7 +71,7 @@ namespace PM3D
 
         m_shaderParams.darkening = CPanneauPE::DARKENING_COEFFICIENT_VALUE;
 
-        
+
         D3D11_BUFFER_DESC contantBufferDesc;
         ZeroMemory(&contantBufferDesc, sizeof(contantBufferDesc));
 
@@ -89,9 +89,9 @@ namespace PM3D
         ID3DBlob* pFXBlob = NULL;
 
         DXEssayer(D3DCompileFromFile(L"GreyPostEffect.fx", 0, 0, 0,
-            "fx_5_0", 0, 0,
-            &pFXBlob, 0),
-            DXE_ERREURCREATION_FX);
+                                     "fx_5_0", 0, 0,
+                                     &pFXBlob, 0),
+                  DXE_ERREURCREATION_FX);
 
         D3DX11CreateEffectFromMemory(pFXBlob->GetBufferPointer(), pFXBlob->GetBufferSize(), 0, pD3DDevice, &pEffet);
 
@@ -110,11 +110,11 @@ namespace PM3D
         pVertexLayout = NULL;
 
         DXEssayer(pD3DDevice->CreateInputLayout(CSommetPanneauPE::layout,
-            CSommetPanneauPE::numElements,
-            vsCodePtr,
-            vsCodeLen,
-            &pVertexLayout),
-            DXE_CREATIONLAYOUT);
+                                                CSommetPanneauPE::numElements,
+                                                vsCodePtr,
+                                                vsCodeLen,
+                                                &pVertexLayout),
+                  DXE_CREATIONLAYOUT);
 
         // Initialisation des paramètres de sampling de la texture
         // Pas nécessaire d'être compliqué puisque l'affichage sera en 1 pour 1 et à plat
@@ -166,8 +166,8 @@ namespace PM3D
 
         // Création de la vue.
         pD3DDevice->CreateRenderTargetView(pTextureScene,
-            &renderTargetViewDesc,
-            &pRenderTargetView);
+                                           &renderTargetViewDesc,
+                                           &pRenderTargetView);
 
         // VUE – Ressource de shader
         shaderResourceViewDesc.Format = textureDesc.Format;
@@ -177,8 +177,8 @@ namespace PM3D
 
         // Création de la vue.
         pD3DDevice->CreateShaderResourceView(pTextureScene,
-            &shaderResourceViewDesc,
-            &pResourceView);
+                                             &shaderResourceViewDesc,
+                                             &pResourceView);
 
         // Au tour du tampon de profondeur
         D3D11_TEXTURE2D_DESC depthTextureDesc;
@@ -205,8 +205,8 @@ namespace PM3D
         descDSView.Texture2D.MipSlice = 0;
 
         DXEssayer(pD3DDevice->CreateDepthStencilView(pDepthTexture, &descDSView,
-            &pDepthStencilView),
-            DXE_ERREURCREATIONDEPTHSTENCILTARGET);
+                                                     &pDepthStencilView),
+                  DXE_ERREURCREATIONDEPTHSTENCILTARGET);
     }
 
     void CPanneauPE::DebutPostEffect()

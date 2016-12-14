@@ -39,15 +39,13 @@ namespace PM3D
 
 
     public:
-        CPanneauPE(CDispositifD3D11* pDispositif_in);
+        CPanneauPE();
         ~CPanneauPE(void);
         void Draw();
         void DebutPostEffect();
         void FinPostEffect();
 
     protected:
-        // Constructeur par défaut
-        CPanneauPE() {}
         virtual void InitEffet();
 
     protected:

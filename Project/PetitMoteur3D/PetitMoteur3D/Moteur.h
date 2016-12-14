@@ -50,8 +50,7 @@ namespace PM3D
         {
             using PirateSimulator::UIPauseLogic;
 
-            auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
-            std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>(pDispositif);
+            std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>();
 
             bool bBoucle = true;
             PirateSimulator::UIPauseLogic pauseMenu;
@@ -81,6 +80,7 @@ namespace PM3D
                 {
                     // Get the Input
                     PirateSimulator::InputManager::singleton.update();
+
                     // Render
                     auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
                     ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
