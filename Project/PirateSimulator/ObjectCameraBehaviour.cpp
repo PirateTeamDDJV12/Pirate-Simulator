@@ -17,7 +17,7 @@ void ObjectCameraBehaviour::move(Move::Translation::Direction direction)
         XMVECTOR targetPos = m_target->m_transform.getPosition();
 
         // Move the camera to the target position
-        m_desiredPosition = XMVECTOR{targetPos.vector4_f32[0], 5.0f, targetPos.vector4_f32[2]};
+        m_desiredPosition = XMVECTOR{targetPos.vector4_f32[0], 10.0f, targetPos.vector4_f32[2]};
 
         // Translate the camera back by the offset
         XMVECTOR dir = -m_gameObject->m_transform.getForward() * m_distanceFromTarget;

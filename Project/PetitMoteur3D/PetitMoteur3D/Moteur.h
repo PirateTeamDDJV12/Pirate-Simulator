@@ -24,6 +24,7 @@
 #include <thread>
 #include <vector>
 #include "../../PirateSimulator/Tunnel.h"
+#include "../../PirateSimulator/BaseCamera.h"
 
 
 
@@ -183,20 +184,20 @@ namespace PM3D
             PirateSimulator::RendererManager::singleton.setSortingMesh(true);
             PirateSimulator::RendererManager::singleton.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
 
-            PirateSimulator::Transform cameraTransform = PirateSimulator::Transform();
-            cameraTransform.setPosition(XMVectorSet(1000.0f, 200.0f, 500.0f, 0.f));
-            cameraTransform.setUp(XMVectorSet(0.f, 1.f, 0.f, 0.f));
-            cameraTransform.setForward(XMVectorSet(0.f, 0.f, 1.f, 0.f));
+            //PirateSimulator::Transform cameraTransform = PirateSimulator::Transform();
+            //cameraTransform.setPosition(XMVectorSet(1000.0f, 200.0f, 500.0f, 0.f));
+            //cameraTransform.setUp(XMVectorSet(0.f, 1.f, 0.f, 0.f));
+            //cameraTransform.setForward(XMVectorSet(0.f, 0.f, 1.f, 0.f));
 
-            PirateSimulator::Transform transformBoat;
-            transformBoat.setPosition(950.0f, 0.0f, 900.0f);
-            transformBoat.setUp(XMVECTOR{0.0f, 1.0f, 0.0f, 0.0f});
-            transformBoat.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
+            //PirateSimulator::Transform transformBoat;
+            //transformBoat.setPosition(950.0f, 0.0f, 900.0f);
+            //transformBoat.setUp(XMVECTOR{0.0f, 1.0f, 0.0f, 0.0f});
+            //transformBoat.setForward(XMVECTOR{0.0f, 0.0f, -1.0f, 0.0f});
 
-            // Constructeur avec format binaire
-            PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(transformBoat, "vehicule")
-            );
+            //// Constructeur avec format binaire
+            //PirateSimulator::GameObjectRef vehicule = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+            //    new PirateSimulator::GameObject(transformBoat, "vehicule")
+            //);
 
             /*CObjetMesh().ConvertToOMB(".\\modeles\\Boat\\boat.obj", ".\\modeles\\Boat\\boat.OMB");*/
             /*CParametresChargement param;
@@ -208,31 +209,31 @@ namespace PM3D
             chargeur.Chargement(param);
             vehicule->addComponent<PirateSimulator::IMesh>(new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams(), chargeur));*/
 
-            auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams());
-            vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
-            vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
-            auto vehicleShape = new PirateSimulator::VehicleShape();
-            vehicule->addComponent<PirateSimulator::ShapeComponent>(vehicleShape);
+            //auto vehiculeMesh = new CObjetMesh(".\\modeles\\Boat\\boat.OMB", ShaderCObjectMesh::ShadersParams());
+            //vehicule->addComponent<PirateSimulator::IMesh>(vehiculeMesh);
+            //vehicule->addComponent<PirateSimulator::IBehaviour>(new PirateSimulator::PlayerBehaviour());
+            //auto vehicleShape = new PirateSimulator::VehicleShape();
+            //vehicule->addComponent<PirateSimulator::ShapeComponent>(vehicleShape);
 
-            PirateSimulator::CameraManager::singleton.createObjectCamera(
-                vehicule,
-                cameraTransform,
-                camProjParameters,
-                "mainCamera"
-            );
+            //PirateSimulator::CameraManager::singleton.createObjectCamera(
+            //    vehicule,
+            //    cameraTransform,
+            //    camProjParameters,
+            //    "mainCamera"
+            //);
 
-            // Skybox
-            PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox();
-            m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
-                new PirateSimulator::GameObject(PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform, "skybox")
-            );
-            m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
-            skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
+            //// Skybox
+            //PirateSimulator::CSkybox* skyBoxMesh = new PirateSimulator::CSkybox();
+            //m_skybox = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+            //    new PirateSimulator::GameObject(PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform, "skybox")
+            //);
+            //m_skybox->addComponent<PirateSimulator::IMesh>(skyBoxMesh);
+            //skyBoxMesh->SetTexture(new CTexture(L"PirateSimulator/skybox.dds"));
+            //PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(skyBoxMesh);
 
-            auto HUD = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(new PirateSimulator::UIHUD());
+            //auto HUD = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(new PirateSimulator::UIHUD());
 
-            PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(vehiculeMesh);
+            //PirateSimulator::RendererManager::singleton.addAnObligatoryMeshToDrawBefore(vehiculeMesh);
             // Initialisation des objets 3D - création et/ou chargement 
             if(!InitObjets()) return 1;
 
@@ -251,15 +252,13 @@ namespace PM3D
             cameraTransform.setPosition({ 0.f, 0.f, -10.f, 0.f }); //XMVectorSet before
             cameraTransform.setUp({ 0.f, 1.f, 0.f, 0.f }); //XMVectorSet before
             cameraTransform.setForward({ 0.f, 0.f, 1.f, 0.f }); //XMVectorSet before
-
-
-            Transform transformBoat;
-
-            transformBoat.setPosition(950.0f, 0.0f, 900.0f);
-            transformBoat.setUp({0.0f, 1.0f, 0.0f, 0.0f});
-            transformBoat.setForward({0.0f, 0.0f, -1.0f, 0.0f});
-
             
+            Transform boatTransform;
+
+            boatTransform.setPosition(950.0f, 0.0f, 900.0f);
+            boatTransform.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            boatTransform.setForward({0.0f, 0.0f, -1.0f, 0.0f});
+
             Transform TransformTerrain;
 
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
@@ -277,17 +276,14 @@ namespace PM3D
             GameFabric gameFabric;
 
             // Camera
-            //gameFabric.createCamera(cameraTransform);
+            gameFabric.createCameraAndBoat(cameraTransform, boatTransform);
 
             //// Skybox
-            //gameFabric.createSkybox();
+            gameFabric.createSkybox();
 
             // HUD
             gameFabric.createHUD();
 
-            // Create our boat
-            /*gameFabric.createBoat(transformBoat);
-*/
             // Add our water plane
 
             gameFabric.createWater(TransformTerrain);

@@ -47,53 +47,10 @@ void GameFabric::createWater(const Transform& fieldTransform)
         new GameObject(fieldTransform, "water")
     );
 
-    Plane* waterMesh = new Plane("PirateSimulator/water.dds");
+    Plane* waterMesh = new Plane("PirateSimulator/water3.dds");
     water->addComponent<IMesh>(waterMesh);
 
     RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
-}
-
-void GameFabric::createBoat(const Transform& boatTransform)
-{
-    GameObjectRef vehicule = GameObjectManager::singleton.subscribeAGameObject(
-        new GameObject(boatTransform, "vehicule")
-    );
-
-    /*CObjetMesh().ConvertToOMB(".\\modeles\\Boat\\boat.obj", ".\\modeles\\Boat\\boat.OMB");*/
-    /*CParametresChargement param;
-    param.bInverserCulling = false;
-    param.bMainGauche = true;
-    param.NomChemin = ".\\modeles\\Boat\\";
-    param.NomFichier = "boat.obj";
-    CChargeurOBJ chargeur;
-    chargeur.Chargement(param);*/
-
-    //Mesh
-
-    PM3D::CChargeurAssimp chargeur;
-
-    // Cr�ation du mesh du boat � partir d'un fichier .OBJ
-    PM3D::CParametresChargement paramBoat(".\\modeles\\Boat\\", "boat.obj", false, false);
-    chargeur.Chargement(paramBoat);
-
-    auto vehiculeMesh = new PM3D::CObjetMesh(PM3D::ShaderCObjectMesh::ShadersParams(), L"MiniPhong.fx", chargeur);
-    vehicule->addComponent<IMesh>(vehiculeMesh);
-    RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
-    
-    //Behavior
-    vehicule->addComponent<IBehaviour>(new PlayerBehaviour());
-    
-    //Shape
-    auto vehicleShape = new VehicleShape();
-    vehicule->addComponent<ShapeComponent>(vehicleShape);
-
-    //Set the pairedTarget of the camera in case the camera is Object type camera
-    CameraManager& cameraManager = CameraManager::singleton;
-
-    if (cameraManager.getCameraType() == cameraModule::BaseCamera::OBJECT_CAMERA)
-    {
-        cameraManager.setPairedTarget(vehicule);
-    }
 }
 
 void GameFabric::createField(const Transform& fieldTransform)
@@ -130,14 +87,10 @@ void GameFabric::createField(const Transform& fieldTransform)
     //Set the pairedTarget of the camera in case the camera is Level type camera
     CameraManager& cameraManager = CameraManager::singleton;
 
-    // Set the gameobject which is paired to the camera
-    if (cameraManager.getCameraType() == cameraModule::BaseCamera::LEVEL_CAMERA)
-    {
-        cameraManager.setPairedTarget(field);
-    }
+
 }
 
-void GameFabric::createCamera(const Transform& cameraTransform)
+void GameFabric::createCameraAndBoat(const Transform& cameraTransform, const Transform& boatTransform)
 {
     RendererManager& rendererManager = RendererManager::singleton;
 
@@ -149,15 +102,43 @@ void GameFabric::createCamera(const Transform& cameraTransform)
         rendererManager.getDispositif()->GetHauteur()
     );
 
-    auto camMovParameters = cameraModule::CameraMovingParameters(
-        GameGlobals::CameraGlobals::LINEAR_SPEED,
-        GameGlobals::CameraGlobals::ANGULAR_SPEED);
 
-    CameraManager::singleton.createCamera(
-        cameraModule::BaseCamera::type::OBJECT_CAMERA,
+    GameObjectRef vehicule = GameObjectManager::singleton.subscribeAGameObject(
+        new GameObject(boatTransform, "vehicule")
+    );
+
+    /*CObjetMesh().ConvertToOMB(".\\modeles\\Boat\\boat.obj", ".\\modeles\\Boat\\boat.OMB");*/
+    /*CParametresChargement param;
+    param.bInverserCulling = false;
+    param.bMainGauche = true;
+    param.NomChemin = ".\\modeles\\Boat\\";
+    param.NomFichier = "boat.obj";
+    CChargeurOBJ chargeur;
+    chargeur.Chargement(param);*/
+
+    //Mesh
+
+    PM3D::CChargeurAssimp chargeur;
+
+    // Cr�ation du mesh du boat � partir d'un fichier .OBJ
+    PM3D::CParametresChargement paramBoat(".\\modeles\\Boat\\", "boat.obj", false, false);
+    chargeur.Chargement(paramBoat);
+
+    auto vehiculeMesh = new PM3D::CObjetMesh(PM3D::ShaderCObjectMesh::ShadersParams(), L"MiniPhong.fx", chargeur);
+    vehicule->addComponent<IMesh>(vehiculeMesh);
+    RendererManager::singleton.addAMovingSortableMesh(vehiculeMesh);
+
+    //Behavior
+    vehicule->addComponent<IBehaviour>(new PlayerBehaviour());
+
+    //Shape
+    auto vehicleShape = new VehicleShape();
+    vehicule->addComponent<ShapeComponent>(vehicleShape);
+
+    CameraManager::singleton.createObjectCamera(
+        vehicule,
         cameraTransform,
         camProjParameters,
-        camMovParameters,
         "mainCamera"
     );
 }

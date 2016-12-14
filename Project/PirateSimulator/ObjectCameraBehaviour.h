@@ -53,7 +53,7 @@ namespace PirateSimulator
                 m_newAngleX{0.0f},
                 m_newAngleY{0.0f},
                 m_rotationSmooth{0.01f},
-                m_translationSmooth{0.05f},
+                m_translationSmooth{0.2f},
                 m_target{target},
                 m_state{CameraState::ThirdPersonCamera}
             {}

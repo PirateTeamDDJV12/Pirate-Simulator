@@ -15,11 +15,10 @@ namespace PirateSimulator
         void createHUD();
 
         void createWater(const Transform& fieldTransform);
-        void createBoat(const Transform& boatTransform);
         void createField(const Transform& fieldTransform);
         void createTunnel(const Transform& tunnelTransform);
 
-        void createCamera(const Transform& cameraTransform);
+        void createCameraAndBoat(const Transform& cameraTransform, const Transform& boatTransform);
     };
 }
 

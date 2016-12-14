@@ -30,11 +30,10 @@ void VehicleShape::setGameObject(GameObject* parent)
 {
     DirectX::XMVECTOR position = parent->m_transform.getPosition();
     physx::PxVec3 newPos(position.vector4_f32[0], position.vector4_f32[1], position.vector4_f32[2]);
-    // 			_pxActor->addForce(frontVector);
 
     m_actor = PhysicsManager::singleton.physics().createRigidDynamic(physx::PxTransform::createIdentity());
-    m_shape = m_actor->createShape(physx::PxBoxGeometry(10.f, 15.f, 20.f), *m_material);
-
+    m_shape = m_actor->createShape(physx::PxSphereGeometry(10.f), *m_material);
+    m_actor->setMass(0.0001f);
     auto boatPose = pose();
     boatPose.p = newPos;
     setPose(boatPose);

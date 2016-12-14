@@ -128,7 +128,7 @@ namespace PirateSimulator {
         auto remainingTimeToSimulate = timeManager.getElapsedTimeFrame();
 
 
-        auto durationStep = 100;
+        auto durationStep = 10;
         while (remainingTimeToSimulate > 0)
         {
             if (remainingTimeToSimulate > durationStep)
