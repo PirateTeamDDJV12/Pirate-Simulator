@@ -14,6 +14,7 @@
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
+#include "../../PirateSimulator/SoundManager.h"
 
 //UI
 #include "../../PirateSimulator/UIMainMenuLogic.h"
@@ -49,13 +50,20 @@ namespace PM3D
         virtual void Run()
         {
             using PirateSimulator::UIPauseLogic;
+            using PirateSimulator::SoundManager;
 
             std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>();
+
+            SoundManager& soundManager = SoundManager::singleton;
+            soundManager.loadBackgroundMusics("PirateSimulator/SeaNoise.wav");
+            soundManager.stopMusic("PirateSimulator/UISoundtrack.mp3");
+            soundManager.playMusic("PirateSimulator/SeaNoise.wav");
+
 
             bool bBoucle = true;
             PirateSimulator::UIPauseLogic pauseMenu;
 
-            while(bBoucle)
+            while (bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
@@ -141,7 +149,7 @@ namespace PM3D
             InitialisationsSpecific();
 
             // Création des tasks
-            PirateSimulator::GameLogic::createAllTask();
+            PirateSimulator::GameLogic().createAllTask();
 
             bool resultInit = false;
 
@@ -149,6 +157,9 @@ namespace PM3D
 
 
             beginThread.emplace_back([this, &resultInit]() {
+                //Loading of some noises
+                PirateSimulator::GameLogic().loadMusics();
+
                 // * Initialisation de la scène
                 InitScene();
                 resultInit = true;
@@ -158,6 +169,8 @@ namespace PM3D
             //{
             //    beginThread[iter].join();
             //}
+
+            
 
             PirateSimulator::UIMainMenuLogic mainMenu;
 
