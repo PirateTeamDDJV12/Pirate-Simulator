@@ -14,7 +14,7 @@
 
 using namespace PirateSimulator;
 
-void GameLogic::createAllTask()
+void GameLogic::createAllTask() const
 {
     PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
 
@@ -27,23 +27,44 @@ void GameLogic::createAllTask()
     taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
 }
 
-void GameLogic::loadMusics()
+void GameLogic::loadMusics() const
 {
     SoundManager& soundManager = SoundManager::singleton;
 
-    // for the menu. First Music
-    soundManager.playMusic("PirateSimulator/UISoundtrack.mp3");
-    
-
     soundManager.loadBackgroundMusics(
-        "PirateSimulator/SeaNoise.wav",
-        "PirateSimulator/WaterTunnel.wav",
-        "PirateSimulator/PlayBackgroundMusic.mp3"
+        "PirateSimulator/SeaNoise.wav",             //Sea noise (sea wave)
+        "PirateSimulator/WaterTunnel.wav",          //Water that splashes continuously on an underground cavern.
+        "PirateSimulator/PlayBackgroundMusic.mp3"   //Assassin's creed black flag combat music
     );
 
     soundManager.loadNoises(
-        "PirateSimulator/Collision1Noise.wav",
-        "PirateSimulator/SeagullNoise.mp3",
-        "PirateSimulator/JackpotPieceNoise.mp3"
+        "PirateSimulator/Collision1Noise.wav",      //Boing collision noise
+        "PirateSimulator/SeagullNoise.mp3",         //Seagull that passes occasionnaly on the sea
+        "PirateSimulator/JackpotPieceNoise.mp3"     //Jackpot machine that sends you a nice Tint
     );
+}
+
+void GameLogic::startGameMusic() const
+{
+    SoundManager& soundManager = SoundManager::singleton;
+
+    //stop the title Screen music
+    soundManager.stopMusic("PirateSimulator/UISoundtrack.mp3");
+
+    //Play the background music of the main game
+    soundManager.playMusic("PirateSimulator/PlayBackgroundMusic.mp3");  
+    soundManager.playMusic("PirateSimulator/SeaNoise.wav");
+
+    //reduce the sound of the Sea Noise to let the magnificent background music be well listened
+    constexpr const float seaNoiseSoundVolume = 0.65f;
+
+    soundManager.setVolumeMusic("PirateSimulator/SeaNoise.wav", seaNoiseSoundVolume);
+}
+
+void GameLogic::startTitleScreenMusic() const
+{
+    SoundManager& soundManager = SoundManager::singleton;
+
+    //start the title Screen music
+    soundManager.playMusic("PirateSimulator/UISoundtrack.mp3"); //Loyd's Yohoho music ( ... -_-' )
 }
