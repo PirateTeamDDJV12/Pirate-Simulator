@@ -14,6 +14,7 @@
 #include <DirectXMath.h>
 
 using namespace DirectX;
+using namespace PirateSimulator;
 
 namespace PirateSimulator
 {
@@ -27,7 +28,7 @@ namespace PirateSimulator
     UINT Terrain::numElements = ARRAYSIZE(Terrain::layout);
 
     Terrain::Terrain()
-        : Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
+        : Mesh<ShaderTunnelAndField::ShadersParams>(ShaderTunnelAndField::ShadersParams()),
         pVertexBuffer{nullptr}, pVertexLayout{nullptr}, pIndexBuffer{nullptr}, pConstantBuffer{nullptr}
     {
         // Get the configuration from the config file
@@ -61,7 +62,7 @@ namespace PirateSimulator
 
     Terrain::Terrain(int h, int w, float s, const std::string& fieldFileName, const std::string& textureFileName)
         : m_terrainWidth{w}, m_terrainHeight{h}, m_terrainScale{s},
-        Mesh<ShaderTerrain::ShadersParams>(ShaderTerrain::ShadersParams()),
+        Mesh<ShaderTunnelAndField::ShadersParams>(ShaderTunnelAndField::ShadersParams()),
         pVertexBuffer{nullptr}, pVertexLayout{nullptr}, pIndexBuffer{nullptr}, pConstantBuffer{nullptr}
     {
         pDispositif = RendererManager::singleton.getDispositif(); // Prendre en note le dispositif
@@ -102,7 +103,6 @@ namespace PirateSimulator
 
     void Terrain::Draw()
     {
-
         // Obtenir le contexte
         ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
 
@@ -120,25 +120,8 @@ namespace PirateSimulator
         // input layout des sommets
         pImmediateContext->IASetInputLayout(pVertexLayout);
 
-        // Initialiser et sélectionner les «constantes» du VS
-        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
-
-        m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
-        m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
-
-        m_shaderParameter.vCamera = PirateSimulator::CameraManager::singleton.getMainCameraGO()->m_transform.getPosition();
-        
-        // Dessiner les subsets non-transparents    
-        //m_material = Material(MaterialProperties());
-
-        LightManager& lightManager = LightManager::singleton;
-        m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&lightManager.getBrightSun()->m_vector);
-
-        float ambientLightVal = lightManager.getAmbientLightCoefficient();
-
-        m_shaderParameter.vAEcl.vector4_f32[0] = ambientLightVal;
-        m_shaderParameter.vAEcl.vector4_f32[1] = ambientLightVal;
-        m_shaderParameter.vAEcl.vector4_f32[2] = ambientLightVal;
+        //we're updating shader parameters
+        updateShaderParameter();
 
         // IMPORTANT pour ajuster les param.
         m_textureEffect.m_pass->Apply(0, pImmediateContext);
@@ -269,7 +252,7 @@ namespace PirateSimulator
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(ShaderTerrain::ShadersParams);
+        bd.ByteWidth = sizeof(ShaderTunnelAndField::ShadersParams);
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         bd.CPUAccessFlags = 0;
         pD3DDevice->CreateBuffer(&bd, NULL, &pConstantBuffer);
@@ -309,7 +292,7 @@ namespace PirateSimulator
         ZeroMemory(&bd, sizeof(bd));
 
         bd.Usage = D3D11_USAGE_DEFAULT;
-        bd.ByteWidth = sizeof(ShaderTerrain::ShadersParams);
+        bd.ByteWidth = sizeof(ShaderTunnelAndField::ShadersParams);
         bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
         bd.CPUAccessFlags = 0;
 
@@ -319,7 +302,7 @@ namespace PirateSimulator
         // Pour l'effet
         ID3DBlob* pFXBlob = NULL;
 
-        UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhongField.fx", 0, 0, 0,
+        UtilitairesDX::DXEssayer(D3DCompileFromFile(L"MiniPhongFieldAndTunnel.fx", 0, 0, 0,
                                                     "fx_5_0", 0, 0, &pFXBlob, 0),
                                  DXE_ERREURCREATION_FX);
 
@@ -395,5 +378,65 @@ namespace PirateSimulator
         UtilitairesDX::DXRelacher(pTextureInterface);
         UtilitairesDX::DXRelacher(pResource);
         UtilitairesDX::DXRelacher(pD3DDevice);
+    }
+}
+
+void Terrain::updateShaderParameter()
+{
+    CameraManager& mainCamera = CameraManager::singleton;
+    LightManager& lightManager = LightManager::singleton;
+
+    //Camera
+    // Initialiser et sélectionner les «constantes» du VS
+    XMMATRIX viewProj = mainCamera.getMatViewProj();
+
+    m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
+    m_shaderParameter.matWorld = XMMatrixTranspose(m_matWorld);
+
+    m_shaderParameter.vCamera = mainCamera.getMainCameraGO()->m_transform.getPosition();
+
+    //Light
+    m_shaderParameter.vLumiere = DirectX::XMLoadFloat3(&lightManager.getBrightSun()->m_vector);
+
+    float ambientLightVal = lightManager.getAmbientLightCoefficient();
+
+    m_shaderParameter.vAEcl.vector4_f32[0] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[1] = ambientLightVal;
+    m_shaderParameter.vAEcl.vector4_f32[2] = ambientLightVal;
+
+
+}
+
+void Terrain::InitShaderParameter()
+{
+    m_shaderParameter.vSMat = { 0.12f, 0.12f, 0.12f, 1.f };
+
+    LightManager& lightManager = LightManager::singleton;
+
+    m_shaderParameter.sunPower = lightManager.getBrightSun()->m_power;
+
+    auto& lightArray = lightManager.getBrightPointsLights();
+
+    if (lightArray.size() > 7)
+    {
+        m_shaderParameter.vLightPoint1 = XMLoadFloat3(&lightArray[0]->m_vector);
+        m_shaderParameter.vLightPoint2 = XMLoadFloat3(&lightArray[1]->m_vector);
+        m_shaderParameter.vLightPoint3 = XMLoadFloat3(&lightArray[2]->m_vector);
+        m_shaderParameter.vLightPoint4 = XMLoadFloat3(&lightArray[3]->m_vector);
+
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[0] = lightArray[0]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[1] = lightArray[1]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[2] = lightArray[2]->m_scope;
+        m_shaderParameter.mappedLightPointPower1.vector4_f32[3] = lightArray[3]->m_scope;
+
+        m_shaderParameter.vLightPoint5 = XMLoadFloat3(&lightArray[4]->m_vector);
+        m_shaderParameter.vLightPoint6 = XMLoadFloat3(&lightArray[5]->m_vector);
+        m_shaderParameter.vLightPoint7 = XMLoadFloat3(&lightArray[6]->m_vector);
+        m_shaderParameter.vLightPoint8 = XMLoadFloat3(&lightArray[7]->m_vector);
+
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[0] = lightArray[4]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[1] = lightArray[5]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[2] = lightArray[6]->m_scope;
+        m_shaderParameter.mappedLightPointPower2.vector4_f32[3] = lightArray[7]->m_scope;
     }
 }

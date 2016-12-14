@@ -236,6 +236,7 @@
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
+    <ClInclude Include="..\..\PirateSimulator\TunnelAndFieldShaderParameter.h" />
     <ClInclude Include="..\..\PirateSimulator\TunnelMesh.h" />
     <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
     <ClInclude Include="..\..\PirateSimulator\UIHUD.h" />

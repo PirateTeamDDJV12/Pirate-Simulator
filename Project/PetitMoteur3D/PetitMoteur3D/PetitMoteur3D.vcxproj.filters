@@ -557,6 +557,9 @@
     <ClInclude Include="..\..\PirateSimulator\TunnelMesh.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TunnelAndFieldShaderParameter.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="PetitMoteur3D.ico">

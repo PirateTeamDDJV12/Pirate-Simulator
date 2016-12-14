@@ -182,7 +182,7 @@ namespace PM3D
 
             Transform transformBoat;
 
-            transformBoat.setPosition(950.0f, 0.0f, 900.0f);
+            transformBoat.setPosition(250.f, 0.f, 750.f);
             transformBoat.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             transformBoat.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 

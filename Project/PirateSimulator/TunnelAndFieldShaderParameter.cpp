@@ -18,10 +18,10 @@
 
 using namespace PirateSimulator;
 
-TunnelMesh::TunnelMesh( const ShaderTunnelAndField::ShadersParams& shaderParameter,
+TunnelMesh::TunnelMesh( const ShaderTunnel::ShadersParams& shaderParameter,
                 const std::wstring& shaderName,
                 PM3D::IChargeur& chargeur) :
-    Mesh<ShaderTunnelAndField::ShadersParams>(shaderParameter),
+    Mesh<ShaderTunnel::ShadersParams>(shaderParameter),
     pDispositif{ RendererManager::singleton.getDispositif() }
 {
     TransfertObjet(chargeur);
@@ -165,7 +165,7 @@ void TunnelMesh::InitEffet(const std::wstring& shaderName)
     ZeroMemory(&bd, sizeof(bd));
 
     bd.Usage = D3D11_USAGE_DEFAULT;
-    bd.ByteWidth = sizeof(ShaderTunnelAndField::ShadersParams);
+    bd.ByteWidth = sizeof(ShaderTunnel::ShadersParams);
     bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     bd.CPUAccessFlags = 0;
     HRESULT hr = pD3DDevice->CreateBuffer(&bd, NULL, &m_textureEffect.m_constantBuffer);
