@@ -20,9 +20,9 @@ namespace PirateSimulator
 
         enum
         {
-            DEFAULT_PLAY = 0x0,
-            LOOP_OFF_PLAY = 0x1,
-            LOOP_ON_PLAY = 0x2
+            DEFAULT_PLAY = 0x0, //FMOD_DEFAULT
+            LOOP_OFF_PLAY = 0x1, //FMOD_LOOP_OFF
+            LOOP_ON_PLAY = 0x2 //FMOD_LOOP_NORMAL
         };
 
         static constexpr const float MAX_VOLUME     = 1.0f;
@@ -109,6 +109,30 @@ namespace PirateSimulator
 
         /*return the music load count*/
         size_t musicCount() const noexcept;
+
+
+        template<typename ... Args>
+        void loadNoises(Args ... args)
+        {
+            const char* noiseArray[sizeof...(Args)]{ reinterpret_cast<const char*>(args)... };
+
+            for (auto iter = 0; iter < sizeof...(Args); ++iter)
+            {
+                this->loadMusicFromFile(noiseArray[iter], LOOP_OFF_PLAY);
+            }
+        }
+
+        template<typename ... Args>
+        void loadBackgroundMusics(Args ... args)
+        {
+            const char* noiseArray[sizeof...(Args)]{ reinterpret_cast<const char*>(args)... };
+
+            for (auto iter = 0; iter < sizeof...(Args); ++iter)
+            {
+
+                this->loadMusicFromFile(noiseArray[iter], LOOP_ON_PLAY);
+            }
+        }
 
 
     private:
