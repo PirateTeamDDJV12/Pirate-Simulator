@@ -12,8 +12,7 @@ using namespace physx;
 class CollisionPieceHandler : public ICollisionHandler
 {
     void onContact(const physx::PxContactPair &aContactPair) override
-    {
-    }
+    {}
 
     void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
     {
@@ -25,19 +24,18 @@ class CollisionPieceHandler : public ICollisionHandler
         auto actor0 = static_cast<GameObject*>(contactShape->getActor()->userData);
         auto actor1 = static_cast<GameObject*>(actorShape->getActor()->userData);
 
-        if(actor1->getComponent<ShapeComponent>()->getPiece() != nullptr)
+        if(triggerEnter)
         {
-            if(triggerEnter)
+            if(actor1->getComponent<ShapeComponent>()->isPiece() && actor0->getComponent<ShapeComponent>()->isBoat())
             {
-                GameObjectManager::singleton.getPieceAdministrator()->addScore();                
+                GameObjectManager::singleton.getPieceAdministrator()->addScore();
+                GameObjectManager::singleton.destroyCoin(actor1->getComponent<ShapeComponent>()->getPiece());
             }
-            //unspawn the piece
-            GameObjectManager::singleton.destroyCoin(actor1->getComponent<ShapeComponent>()->getPiece());
-        }
-        else if(actor0->getComponent<ShapeComponent>()->getPiece() != nullptr) //the piece is not actor1, so it is actor0
-        {
-
-            //actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            else if(actor0->getComponent<ShapeComponent>()->isPiece() && actor1->getComponent<ShapeComponent>()->isBoat())
+            {
+                GameObjectManager::singleton.getPieceAdministrator()->addScore();
+                GameObjectManager::singleton.destroyCoin(actor0->getComponent<ShapeComponent>()->getPiece());
+            }
         }
     }
 };
