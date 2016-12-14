@@ -14,7 +14,7 @@
 //Shape
 #include "VehicleShape.h"
 #include "TerrainShape.h"
-
+#include "TunnelShape.h"
 //Behavior
 #include "PlayerBehaviour.h"
 
@@ -23,7 +23,6 @@
 
 //Loader
 #include "..\PetitMoteur3D\PetitMoteur3D\ChargeurAssimp.h"
-#include "TunnelShape.h"
 
 
 using namespace PirateSimulator;
