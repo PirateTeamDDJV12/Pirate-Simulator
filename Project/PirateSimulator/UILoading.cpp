@@ -3,6 +3,8 @@
 #include "GameObjectManager.h"
 #include "RendererManager.h"
 #include "TimeManager.h"
+#include "../PetitMoteur3D/PetitMoteur3D/AfficheurTexte.h"
+#include "../PetitMoteur3D/PetitMoteur3D/AfficheurSprite.h"
 
 #include <Gdiplus.h>
 #pragma comment(lib, "gdiplus.lib")
@@ -79,7 +81,7 @@ UILoading::UILoading() :
     m_afficheurSprite = std::make_unique<PM3D::CAfficheurSprite>();
     m_customLoadingDisplayer = std::make_unique<CustomLoadingScreenDisplayer>();
 
-    m_policeFont = std::make_unique<Gdiplus::Font>(&Gdiplus::FontFamily{ L"Edwardian Script ITC", NULL }, 70.0, FontStyleBold, UnitPixel);
+    m_policeFont = std::make_unique<Gdiplus::Font>(&Gdiplus::FontFamily{ L"Edwardian Script ITC", NULL }, 70.0, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
     m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(260, 90, m_policeFont.get(), Gdiplus::Color(255, 255, 255, 255));
 
 

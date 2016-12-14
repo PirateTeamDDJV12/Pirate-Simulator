@@ -24,9 +24,7 @@
 //Loader
 #include "..\PetitMoteur3D\PetitMoteur3D\ChargeurAssimp.h"
 
-
 using namespace PirateSimulator;
-
 
 void GameFabric::createSkybox()
 {
@@ -78,16 +76,9 @@ void GameFabric::createField(const Transform& fieldTransform)
     // Puis, il est ajouté à la scène
     RendererManager::singleton.addAnObligatoryMeshToDrawBefore(fieldMesh);
 
-
     // Add the shape for Terrain
     auto fieldShape = new TerrainShape();
     field->addComponent<ShapeComponent>(fieldShape);
-
-
-    //Set the pairedTarget of the camera in case the camera is Level type camera
-    CameraManager& cameraManager = CameraManager::singleton;
-
-
 }
 
 void GameFabric::createCameraAndBoat(const Transform& cameraTransform, const Transform& boatTransform)
@@ -102,25 +93,14 @@ void GameFabric::createCameraAndBoat(const Transform& cameraTransform, const Tra
         rendererManager.getDispositif()->GetHauteur()
     );
 
-
     GameObjectRef vehicule = GameObjectManager::singleton.subscribeAGameObject(
         new GameObject(boatTransform, "vehicule")
     );
 
-    /*CObjetMesh().ConvertToOMB(".\\modeles\\Boat\\boat.obj", ".\\modeles\\Boat\\boat.OMB");*/
-    /*CParametresChargement param;
-    param.bInverserCulling = false;
-    param.bMainGauche = true;
-    param.NomChemin = ".\\modeles\\Boat\\";
-    param.NomFichier = "boat.obj";
-    CChargeurOBJ chargeur;
-    chargeur.Chargement(param);*/
-
     //Mesh
-
     PM3D::CChargeurAssimp chargeur;
 
-    // Cr�ation du mesh du boat � partir d'un fichier .OBJ
+    // Création du mesh du boat à partir d'un fichier .OBJ
     PM3D::CParametresChargement paramBoat(".\\modeles\\Boat\\", "boat.obj", false, false);
     chargeur.Chargement(paramBoat);
 
@@ -156,7 +136,7 @@ void GameFabric::createTunnel(const Transform& tunnelTransform)
 
     PM3D::CChargeurAssimp chargeur;
 
-    // Cr�ation du mesh du tunnel � partir d'un fichier .OBJ
+    // Création du mesh du tunnel à partir d'un fichier .OBJ
     PM3D::CParametresChargement paramTunnel(".\\modeles\\Tunnel\\", "tunnel.obj", false, true);
     chargeur.Chargement(paramTunnel);
 

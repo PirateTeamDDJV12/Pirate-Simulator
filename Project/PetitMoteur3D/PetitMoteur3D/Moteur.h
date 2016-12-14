@@ -3,7 +3,6 @@
 #include "dispositif.h" 
 
 #include "GestionnaireDeTextures.h"
-#include "AfficheurTexte.h"
 #include "DIManipulateur.h"
 #include "PanneauPE.h"
 #include "../../PirateSimulator/GameFabric.h"
@@ -14,11 +13,13 @@
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
+#include "../../PirateSimulator/PhysicsManager.h"
 
 //UI
 #include "../../PirateSimulator/UIMainMenuLogic.h"
-#include "../../PirateSimulator/UIHUD.h"
 #include "../../PirateSimulator/UIPauseLogic.h"
+
+#include "../../PirateSimulator/Transform.h"
 
 #include <thread>
 #include <vector>
@@ -274,8 +275,6 @@ namespace PM3D
             transformTunnel.setPosition(150.f, 0.f, 1000.f);
             transformTunnel.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             transformTunnel.setForward({0.0f, 0.0f, -1.0f, 0.0f});
-
-
 
             GameFabric gameFabric;
 
