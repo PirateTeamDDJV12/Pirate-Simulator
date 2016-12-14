@@ -57,6 +57,7 @@ namespace PM3D
             SoundManager& soundManager = SoundManager::singleton;
             soundManager.loadBackgroundMusics("PirateSimulator/SeaNoise.wav");
             soundManager.stopMusic("PirateSimulator/UISoundtrack.mp3");
+            soundManager.playMusic("PirateSimulator/PlayBackgroundMusic.mp3");
             soundManager.playMusic("PirateSimulator/SeaNoise.wav");
 
 
