@@ -30,6 +30,7 @@ class CollisionVehicleHandler : public ICollisionHandler
             if (actor1->getComponent<ShapeComponent>()->isBoat() && actor0->getComponent<ShapeComponent>()->isTrigger())
             {
                 //Behaviour Here
+                bool t=true;
             }
         }
     }
