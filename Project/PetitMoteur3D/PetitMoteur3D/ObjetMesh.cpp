@@ -177,12 +177,12 @@ namespace PM3D
 
     void CObjetMesh::drawWithoutBackfaceCulling()
     {
-        // Désactiver Culling et ZBuffer
+        // Désactiver Culling
         pDispositif->DesactiverCulling();
 
         this->elementaryDraw();
 
-        // Réactiver Culling et ZBuffer
+        // Réactiver Culling
         pDispositif->ActiverCulling();
     }
 

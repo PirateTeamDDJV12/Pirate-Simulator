@@ -31,8 +31,7 @@ namespace PM3D
             float puissance;
             int bTex;					// Texture ou materiau 
 
-            float sunPower;
-            float remplissage;
+            XMFLOAT2 remplissage;
 
             ShadersParams() :
                 bTex{ 1 }
@@ -65,7 +64,7 @@ namespace PM3D
 
     class CObjetMesh : public PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>
     {
-    protected:
+    public:
         class CSommetMesh
         {
         public:

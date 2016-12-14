@@ -210,7 +210,7 @@ namespace PirateSimulator
 
     protected:
         void setTexture(PM3D::CTexture* texture) { m_material.pTextureD3D = texture->GetD3DTexture(); }
-        void loadTexture(const std::string& filename);    
+        void loadTexture(const std::string& filename);
 
         //void InitSin();
     };

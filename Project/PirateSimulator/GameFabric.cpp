@@ -179,8 +179,7 @@ void GameFabric::createTunnel(const Transform& tunnelTransform)
     PM3D::CParametresChargement paramTunnel(".\\modeles\\Tunnel\\", "tunnel.obj", false, true);
     chargeur.Chargement(paramTunnel);
 
-    auto tunnelMesh = new PM3D::CObjetMesh(PM3D::ShaderCObjectMesh::ShadersParams(), L"MiniPhongField.fx", chargeur);
-    tunnelMesh->setBackFaceCulling(false);
+    auto tunnelMesh = new TunnelMesh(ShaderPlane::ShadersParams(), L"MiniPhongField.fx", chargeur);
 
     tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
 

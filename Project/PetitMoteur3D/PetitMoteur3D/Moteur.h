@@ -23,7 +23,7 @@
 
 #include <thread>
 #include <vector>
-#include "../../PirateSimulator/Tunnel.h"
+#include "../../PirateSimulator/TunnelMesh.h"
 
 
 
