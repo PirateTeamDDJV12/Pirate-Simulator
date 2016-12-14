@@ -45,7 +45,7 @@ void GameFabric::createWater(const Transform& fieldTransform)
         new GameObject(fieldTransform, "water")
     );
 
-    Plane* waterMesh = new Plane("PirateSimulator/water.dds");
+    Plane* waterMesh = new Plane("PirateSimulator/water3.dds");
     water->addComponent<IMesh>(waterMesh);
 
     RendererManager::singleton.addAnObligatoryMeshToDrawBefore(waterMesh);
