@@ -10,8 +10,13 @@ class FMODBank;
 
 namespace PirateSimulator
 {
+    class TimedSoundAdmin;
     class SoundManager
     {
+    private:
+        using TimedSoundCallback = typename void(*)(long long elapsed);
+
+
     public:
         enum
         {
@@ -37,6 +42,8 @@ namespace PirateSimulator
         FMODSystemBloc* m_systemBloc;
 
         std::vector<FMODBank> m_musicBank;
+
+        TimedSoundCallback m_timedCallback;
 
 
     private:
@@ -137,6 +144,10 @@ namespace PirateSimulator
 
     private:
         std::vector<FMODBank>::iterator findMusic(const char* fileName);
+
+
+    public:
+        friend void defineTimedSound(const char* fileName, long long minTimer, long long maxTimer);
     };
 }
 
