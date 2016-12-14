@@ -117,5 +117,4 @@ namespace PM3D
 
         pCharBitmap->UnlockBits(&bmData);
     }
-
 }

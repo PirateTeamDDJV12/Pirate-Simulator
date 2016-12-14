@@ -92,8 +92,6 @@ namespace PM3D
         vector<CSprite*> tabSprites;
 
 
-
-
     protected:
         virtual	void InitEffet();
 

@@ -34,6 +34,7 @@ namespace PM3D
         void DesactiverZBuffer();
         void ActiverCulling();
         void DesactiverCulling();
+        void SetRenderTargetView(ID3D11RenderTargetView* pRenderTargetView_in, ID3D11DepthStencilView* pDepthStencilView_in);
 
 	protected:
 		CDispositifD3D11(void);

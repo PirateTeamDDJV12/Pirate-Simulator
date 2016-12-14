@@ -34,7 +34,7 @@ void VehicleBehaviour::anime(float ellapsedTime)
     }
 
     // Vérifier si déplacement vers la droite
-    if ((rGestionnaireDeSaisie.ToucheAppuyee(DIK_T)))
+    if ((rGestionnaireDeSaisie.getKey(DIK_T)))
     {
         Transform intermediary = m_gameObject->m_transform;
         intermediary.setPosition(intermediary.getPosition() + m_gameObject->m_transform.getForward() * velocity);

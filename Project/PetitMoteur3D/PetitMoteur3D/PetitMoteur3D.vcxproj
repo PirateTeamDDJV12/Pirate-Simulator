@@ -143,6 +143,7 @@
     <ClCompile Include="..\..\PirateSimulator\SoundManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\SoundTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\SpawnTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp" />
@@ -150,10 +151,16 @@
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIButton.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Tunnel.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIHUD.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UILoading.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIOption.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIPause.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIPauseLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp" />
@@ -173,6 +180,7 @@
     <ClCompile Include="Moteur.cpp" />
     <ClCompile Include="MoteurWindows.cpp" />
     <ClCompile Include="ObjetMesh.cpp" />
+    <ClCompile Include="PanneauPE.cpp" />
     <ClCompile Include="PetitMoteur3D.cpp" />
     <ClCompile Include="sommetbloc.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -229,6 +237,7 @@
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\SoundManager.h" />
     <ClInclude Include="..\..\PirateSimulator\SoundTask.h" />
+    <ClInclude Include="..\..\PirateSimulator\SpawnTask.h" />
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TerrainShape.h" />
@@ -236,10 +245,17 @@
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIButton.h" />
     <ClInclude Include="..\..\PirateSimulator\Tunnel.h" />
     <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIMainMenuLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\UIHUD.h" />
+    <ClInclude Include="..\..\PirateSimulator\UILoading.h" />
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIOption.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIOptionSelector.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIPause.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIPauseLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
     <ClInclude Include="..\..\PirateSimulator\VehicleBehaviour.h" />
@@ -262,6 +278,7 @@
     <ClInclude Include="Moteur.h" />
     <ClInclude Include="MoteurWindows.h" />
     <ClInclude Include="ObjetMesh.h" />
+    <ClInclude Include="PanneauPE.h" />
     <ClInclude Include="PetitMoteur3D.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="sommetbloc.h" />

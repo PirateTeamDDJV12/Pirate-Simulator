@@ -10,26 +10,25 @@ using namespace physx;
 namespace PirateSimulator
 {
 
-    physx::PxRigidDynamic& ShapeComponent::pxActor()
+    physx::PxRigidDynamic* ShapeComponent::pxActor()
     {
-        return *m_actor;
+        return m_actor.get();
     }
     physx::PxTransform ShapeComponent::pose()
     {
-        return pxActor().getGlobalPose();
+        return m_actor->getGlobalPose();
     }
     void ShapeComponent::setPose(const physx::PxTransform &iPose)
     {
-        pxActor().setGlobalPose(iPose);
+        m_actor->setGlobalPose(iPose);
     }
 
 
 
     void ShapeComponent::cleanUp()
     {
-        /*m_actor->release();
-        m_material->release();
-        m_shape->release();*/
+        m_actor.reset();
+        PhysicsManager::singleton.removeComponent(this);
     }
 
     Piece* ShapeComponent::getPiece()

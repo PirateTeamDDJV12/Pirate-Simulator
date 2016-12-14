@@ -9,6 +9,7 @@
 #include "RenderTask.h"
 #include "PlayerTask.h"
 #include "SoundTask.h"
+#include "SpawnTask.h"
 
 using namespace PirateSimulator;
 
@@ -22,4 +23,5 @@ void GameLogic::createAllTask()
     taskManager->addTask<PirateSimulator::PhysicsTask>(PHYSICSTASK);
     taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
     taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
+    taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
 }

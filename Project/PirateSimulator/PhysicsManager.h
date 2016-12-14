@@ -1,6 +1,6 @@
 #ifndef PHYSICS_MANAGER_H
 #define PHYSICS_MANAGER_H
-#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.forward.h"
+#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 #include <memory>
 #include <vector>
 #include <algorithm>
@@ -68,6 +68,7 @@ namespace PirateSimulator
         {
             m_components.push_back(component);
         }
+        void removeComponent(ShapeComponent* component);
         void reset();
 
 
