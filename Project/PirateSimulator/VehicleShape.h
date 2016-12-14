@@ -8,6 +8,14 @@ namespace PirateSimulator
 	class VehicleShape : public ShapeComponent
 	{
 	public:
+        bool isBoat()
+        {
+            return true;
+        };
+        bool isPiece()
+        {
+            return false;
+        };
 
 		static std::string typeId() noexcept
 		{

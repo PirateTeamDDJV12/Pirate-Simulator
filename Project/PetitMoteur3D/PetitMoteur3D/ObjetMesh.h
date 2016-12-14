@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../PirateSimulator/Mesh.h"
 #include "dispositifD3D11.h"
 #include "d3dx11effect.h"
@@ -7,7 +8,9 @@
 #include <vector>
 #include <DirectXMath.h>
 
+
 using namespace std;
+
 
 namespace PM3D
 {
@@ -16,7 +19,7 @@ namespace PM3D
         struct ShadersParams // toujours un multiple de 16 pour les constantes
         {
             XMMATRIX matWorldViewProj;	// la matrice totale 
-            XMMATRIX matWorld;			// matrice de transformation dans le monde 
+            XMMATRIX matWorld;			// la matrice de transformation dans le monde 
             XMVECTOR vLumiere; 			// la position de la source d'éclairage (Point)
             XMVECTOR vCamera; 			// la position de la caméra
             XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
@@ -27,11 +30,12 @@ namespace PM3D
             XMVECTOR vSMat; 			// la valeur spéculaire du matériau 
             float puissance;
             int bTex;					// Texture ou materiau 
-            XMFLOAT2 remplissage;
 
+            float sunPower;
+            float remplissage;
 
             ShadersParams() :
-                bTex{1}
+                bTex{ 1 }
             {
                 vLumiere = XMVectorSet(-10.0f, 10.0f, -15.0f, 1.0f);
                 vCamera = XMVectorSet(0.0f, 3.0f, -5.0f, 1.0f);
@@ -136,29 +140,29 @@ namespace PM3D
             }
         };
 
-
     public:
-        CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur);
-        CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur);
-        CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter);
+        CObjetMesh(const ShaderCObjectMesh::ShadersParams& shaderParameter, const std::wstring& shaderName, IChargeur& chargeur);
+        //CObjetMesh(string nomfichier, const ShaderCObjectMesh::ShadersParams& shaderParameter, IChargeur& chargeur);
+        CObjetMesh(const std::string& nomfichier, const std::wstring& shaderName, const ShaderCObjectMesh::ShadersParams& shaderParameter);
 
         virtual ~CObjetMesh();
 
-        void Draw();
-        void ConvertToOMB(string totalFileNameIn, const string& totalFileNameOut);
+    public:
+        virtual void Draw();
 
+    public:
+        void setBackFaceCulling(bool backface) noexcept;
 
     protected:
-        // **** Fonctions
         void TransfertObjet(IChargeur& chargeur);
-        void InitEffet();
-        void EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier);
+        void InitEffet(const std::wstring& shaderName);
+        //void EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier);
         void LireFichierBinaire(string nomFichier);
 
+        void drawWithoutBackfaceCulling();
+        void elementaryDraw();
 
     protected:
-        // ****  Données membres
-
         // Pour le dessin
         CDispositifD3D11* pDispositif;		// On prend en note le dispositif
 
@@ -179,7 +183,7 @@ namespace PM3D
         ID3DX11EffectTechnique* pTechnique;
         ID3DX11EffectPass* pPasse;
         ID3D11InputLayout* pVertexLayout;
+
+        void (CObjetMesh::* m_drawPtrMethod)();
     };
-
 }
-

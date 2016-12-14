@@ -99,6 +99,22 @@ namespace PirateSimulator
         static D3D11_INPUT_ELEMENT_DESC Terrain::layout[];
         static UINT numElements;
 
+    protected:
+        PM3D::CDispositifD3D11* pDispositif;
+
+        ID3D11Buffer* pVertexBuffer;
+        ID3D11Buffer* pIndexBuffer;
+
+        ID3D11InputLayout* pVertexLayout;
+
+        // Définitions des valeurs d'animation
+        ID3D11Buffer* pConstantBuffer;
+
+        //Pour texture
+        Material m_material;
+
+        Effect m_textureEffect;
+
     private:
         int m_terrainWidth;
         int m_terrainHeight;
@@ -116,6 +132,7 @@ namespace PirateSimulator
         // Destructeur
         virtual ~Terrain();
 
+    public:
         virtual void Anime(float tempsEcoule);
 
         void Draw();
@@ -125,6 +142,29 @@ namespace PirateSimulator
         void addSommet(Vertex v);
         void addTriangle(Triangle t);
         float getHeight(XMVECTOR pos);
+        
+        float getScale()
+        {
+            return m_terrainScale;
+        }
+        int getWidth()
+        {
+            return m_terrainWidth;
+        }
+
+        int getHeight()
+        {
+            return m_terrainHeight;
+        }
+        std::vector<CSommetBloc>& getSommetsArray()
+        {
+            return std::move(m_csommetsArray);
+        }
+        std::vector<unsigned int>& getIndex()
+        {
+            return std::move(m_index_bloc);
+        }
+
 
 		void setTexture(PM3D::CTexture* texture);
 
@@ -133,23 +173,6 @@ namespace PirateSimulator
     protected:
         // Constructeur par défaut
         void InitShaders();
-
-        PM3D::CDispositifD3D11* pDispositif;
-
-        ID3D11Buffer* pVertexBuffer;
-        ID3D11Buffer* pIndexBuffer;
-
-        ID3D11VertexShader*  pVertexShader;
-        ID3D11PixelShader*  pPixelShader;
-        ID3D11InputLayout* pVertexLayout;
-
-        // Définitions des valeurs d'animation
-        ID3D11Buffer* pConstantBuffer;
-
-		//Pour texture
-        Material m_material;
-
-        Effect m_textureEffect;
     };
 
 }

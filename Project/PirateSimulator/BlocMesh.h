@@ -6,6 +6,8 @@
 #include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
 #include "RendererManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Resource.h"
+#include "../PetitMoteur3D/PetitMoteur3D/sommetbloc.h"
+#include "CameraManager.h"
 
 #include <directxmath.h>
 #include <wtypes.h>

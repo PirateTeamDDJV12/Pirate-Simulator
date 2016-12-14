@@ -1,12 +1,15 @@
 cbuffer param
 { 
 	float4x4 matWorldViewProj;   // la matrice totale 
+	float3 sunCoeff;
+	
+	float uselessFill;
 }
 
 struct VS_Sortie
 {
 	float4 Pos : SV_Position;
-	float2 coordTex : TEXCOORD0; 
+	float2 coordTex : TEXCOORD0;
 };
 
 VS_Sortie MiniPhongSkyVS(float4 Pos : POSITION, float2 coordTex: TEXCOORD)  
@@ -28,8 +31,12 @@ float4 MiniPhongSkyPS( VS_Sortie vs ) : SV_Target
 	float4 couleurTexture;  
 
 	// Échantillonner la couleur du pixel à partir de la texture  
-	couleurTexture = textureEntree.Sample(SampleState, vs.coordTex);   
+	couleurTexture = textureEntree.Sample(SampleState, vs.coordTex);  
 
+	couleurTexture.x *= sunCoeff.x;
+	couleurTexture.y *= sunCoeff.y;
+	couleurTexture.z *= sunCoeff.z;
+	
 	return couleurTexture;
 }
 

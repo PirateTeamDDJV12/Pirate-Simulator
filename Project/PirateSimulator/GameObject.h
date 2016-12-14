@@ -105,6 +105,11 @@ namespace PirateSimulator
 		{
 			static_assert(std::is_convertible<ComponentAttribute*, Component*>::value, "You want to get something that is not component!");
 
+            if(m_attachedComponent.size() == 0)
+            {
+                return nullptr;
+            }
+
 			for (auto iter = m_attachedComponent.begin(); iter != m_attachedComponent.end(); ++iter)
 			{
 				if (Component::sameTypeIdAs((*iter)->getTypeId(), ComponentAttribute::typeId()))
