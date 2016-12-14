@@ -14,7 +14,7 @@
 //Shape
 #include "VehicleShape.h"
 #include "TerrainShape.h"
-
+#include "TunnelShape.h"
 //Behavior
 #include "PlayerBehaviour.h"
 
@@ -183,6 +183,7 @@ void GameFabric::createTunnel(const Transform& tunnelTransform)
     tunnelMesh->setBackFaceCulling(false);
 
     tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
-
+    auto tunnelshape = new TunnelShape();
+    tunnel->addComponent<ShapeComponent>(tunnelshape);
     PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(tunnelMesh);
 }
