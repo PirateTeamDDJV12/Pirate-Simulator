@@ -28,8 +28,8 @@ void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)
     if (meshToRemove)
     {
         std::vector<IMesh*>* areaToConsider = findStaticMeshInArea(
-            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.getPosition().vector4_f32[0]), 
-            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.getPosition().vector4_f32[2])
+            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.getPosition().vector4_f32[0] / AREA_WIDTH),
+            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.getPosition().vector4_f32[2] / AREA_WIDTH)
         );
 
         for (auto iter = areaToConsider->begin(); iter != areaToConsider->end(); ++iter)
@@ -37,6 +37,7 @@ void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)
             if (*iter == meshToRemove)
             {
                 areaToConsider->erase(iter);
+                break;
             }
         }
     }

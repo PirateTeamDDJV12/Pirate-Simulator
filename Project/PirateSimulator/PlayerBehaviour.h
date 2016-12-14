@@ -28,12 +28,14 @@ namespace PirateSimulator
         {
             m_gameObject = parent;
         }
+        
 
         virtual void move(Move::Translation::Direction direction);
 
         virtual void rotate(Move::Rotation::Direction direction);
 
         virtual void anime(float ellapsedTime);
+        void moveMesh(physx::PxTransform newPos);
     };
 
 }

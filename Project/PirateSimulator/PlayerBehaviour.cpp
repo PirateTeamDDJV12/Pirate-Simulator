@@ -10,7 +10,7 @@
 
 using namespace PirateSimulator;
 using namespace DirectX;
-
+using namespace physx;
 PlayerBehaviour::PlayerBehaviour() : m_speed{5000.0f}, m_cameraRef{CameraManager::singleton.getMainCameraGO()}, m_tangling{0.0f}, m_smooth{0.05f}
 {}
 
@@ -18,6 +18,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 {
     //Get Actor shape to move it
     ShapeComponent* boatShape = PhysicsManager::singleton.getVehiculeShape();
+	
     // Change the boat forward to match camera forward 
     GameObjectRef camera = CameraManager::singleton.getMainCameraGO();
     const XMVECTOR &boatForward = m_gameObject->m_transform.getForward();
@@ -54,7 +55,6 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
             physx::PxVec3 dir(tmp.vector4_f32[0], tmp.vector4_f32[1], tmp.vector4_f32[2]);
             boatShape->pxActor().addForce(dir * 50.0f);
             break;
-
         }
         default:
             break;
@@ -82,15 +82,17 @@ void PlayerBehaviour::anime(float ellapsedTime)
     {
         move(Move::Translation::FORWARD);
     }
+	
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_A))
     {
         move(Move::Translation::LEFT);
     }
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_D))
-    {
+	{
         move(Move::Translation::RIGHT);
     }
 
+	
     // Boat tangling
     physx::PxTransform pose = boatShape->pose();
     m_tangling += 0.05f;

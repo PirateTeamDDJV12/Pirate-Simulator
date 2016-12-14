@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "PhysicsManager.h"
 #include "ICollisionHandler.h"
+#include <memory>
 
 
 namespace physx
@@ -20,9 +21,9 @@ namespace PirateSimulator
     {
         
     protected:
-        const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
+        const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.0f, 0.0f, 0.0f);
         physx::PxShape* m_shape;
-        physx::PxRigidDynamic* m_actor;
+        physx::unique_ptr<physx::PxRigidDynamic> m_actor;
         Piece* m_piece;
         ICollisionHandlerRef handler;
     public:
@@ -43,13 +44,10 @@ namespace PirateSimulator
 
 
     public:
-        physx::unique_ptr<physx::PxRigidStatic> ShapeComponent::createPxActor()
-        {
-        return physx::unique_ptr<physx::PxRigidStatic>(
-            PhysicsManager::singleton.physics().createRigidStatic(physx::PxTransform::createIdentity())
-            );
-        }
-        physx::PxRigidDynamic& pxActor();
+        physx::PxRigidDynamic* ShapeComponent::pxActor();
+
+        virtual bool isBoat() = 0;
+        virtual bool isPiece() = 0;
 
         virtual physx::PxTransform pose();
         void setPose(const physx::PxTransform &iPose);

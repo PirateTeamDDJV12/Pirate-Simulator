@@ -10,6 +10,15 @@ struct MouseState
     float       m_sensibility;
 };
 
+enum KeyStates
+{
+    KeyHold,
+    KeyDown,
+    KeyUp,
+    KeyRealesed
+};
+
+
 class CDIManipulateur
 {
 public:
@@ -18,7 +27,9 @@ public:
 
 	bool CDIManipulateur::Init(HINSTANCE hInstance, HWND hWnd);
 	void StatutClavier();
-	bool ToucheAppuyee(UINT touche) const;
+	bool getKey(UINT touche) const;
+    bool getButtonDown(UINT touche);
+    bool getButtonUp(UINT touche);
 	void SaisirEtatSouris();
 
 	const MouseState& EtatSouris() { return m_mouseState;}
@@ -31,8 +42,12 @@ protected:
 
 	static bool bDejaInit;
 
-	char tamponClavier[256];
+	//char tamponClavier[256];
 	DIMOUSESTATE mouseInfo;
     MouseState  m_mouseState;
+    char newKeyboardState[256];
+    char oldKeyboardState[256];
+    unsigned int keyStatus[256];
+    //DIMOUSESTATE mouseState;
 };
 

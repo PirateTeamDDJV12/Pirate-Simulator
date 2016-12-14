@@ -81,7 +81,7 @@ void GameFabric::createField(const Transform& fieldTransform)
 
     // Add the shape for Terrain
     auto fieldShape = new TerrainShape();
-    //terrain->addComponent<ShapeComponent>(fieldShape);
+    field->addComponent<ShapeComponent>(fieldShape);
 
 
     //Set the pairedTarget of the camera in case the camera is Level type camera

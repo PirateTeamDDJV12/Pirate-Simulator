@@ -105,8 +105,6 @@ namespace PirateSimulator
         ID3D11Buffer* pVertexBuffer;
         ID3D11Buffer* pIndexBuffer;
 
-        ID3D11VertexShader*  pVertexShader;
-        ID3D11PixelShader*  pPixelShader;
         ID3D11InputLayout* pVertexLayout;
 
         // Définitions des valeurs d'animation
@@ -144,6 +142,29 @@ namespace PirateSimulator
         void addSommet(Vertex v);
         void addTriangle(Triangle t);
         float getHeight(XMVECTOR pos);
+        
+        float getScale()
+        {
+            return m_terrainScale;
+        }
+        int getWidth()
+        {
+            return m_terrainWidth;
+        }
+
+        int getHeight()
+        {
+            return m_terrainHeight;
+        }
+        std::vector<CSommetBloc>& getSommetsArray()
+        {
+            return std::move(m_csommetsArray);
+        }
+        std::vector<unsigned int>& getIndex()
+        {
+            return std::move(m_index_bloc);
+        }
+
 
 		void setTexture(PM3D::CTexture* texture);
 
