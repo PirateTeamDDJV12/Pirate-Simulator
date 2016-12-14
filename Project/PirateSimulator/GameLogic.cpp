@@ -37,7 +37,8 @@ void GameLogic::loadMusics()
 
     soundManager.loadBackgroundMusics(
         "PirateSimulator/SeaNoise.wav",
-        "PirateSimulator/WaterTunnel.wav"
+        "PirateSimulator/WaterTunnel.wav",
+        "PirateSimulator/PlayBackgroundMusic.mp3"
     );
 
     soundManager.loadNoises(
