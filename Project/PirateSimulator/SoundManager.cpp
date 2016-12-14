@@ -191,8 +191,7 @@ SoundManager::~SoundManager()
 
 void SoundManager::init()
 {
-    SoundManager::singleton.loadMusicFromFile("PirateSimulator/UISoundtrack.mp3", FMOD_LOOP_NORMAL);
-    SoundManager::singleton.playMusic(static_cast<size_t>(0));
+    
 }
 
 void SoundManager::update()
