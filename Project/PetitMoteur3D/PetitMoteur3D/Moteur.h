@@ -3,44 +3,21 @@
 #include "dispositif.h" 
 
 #include "GestionnaireDeTextures.h"
-#include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
-<<<<<<< HEAD
 #include "DIManipulateur.h"
 #include "PanneauPE.h"
-
-#include "../../PirateSimulator/GameConfig.h"
-#include "../../PirateSimulator/Mesh.h"
-#include "../../PirateSimulator/Skybox.h"
-#include "../../PirateSimulator/Plane.h"
-#include "../../PirateSimulator/Terrain.h"
-#include "../../PirateSimulator/LevelCameraBehaviour.h"
-#include "../../PirateSimulator/FreeCameraBehaviour.h"
-#include "../../PirateSimulator/ObjectCameraBehaviour.h"
-#include "../../PirateSimulator/GameObject.h"
-#include "../../PirateSimulator/PlayerBehaviour.h"
-#include "../../PirateSimulator/ShapeComponent.h"
-#include "../../PirateSimulator/VehicleShape.h"
-#include "../../PirateSimulator/TerrainShape.h"
-=======
-
 #include "../../PirateSimulator/GameFabric.h"
 #include "../../PirateSimulator/GameLogic.h"
->>>>>>> Sprint6-UI
 
 // Manager
 #include "../../PirateSimulator/TimeManager.h"
-#include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
 
 //UI
-#include "../../PirateSimulator/UIMenu.h"
 #include "../../PirateSimulator/UIMainMenuLogic.h"
 #include "../../PirateSimulator/UIHUD.h"
-#include "../../PirateSimulator/UIOption.h"
-#include "../../PirateSimulator/UILoading.h"
 #include "../../PirateSimulator/UIPauseLogic.h"
 
 #include <thread>
