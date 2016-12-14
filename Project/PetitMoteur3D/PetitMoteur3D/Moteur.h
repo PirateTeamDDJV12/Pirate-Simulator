@@ -74,7 +74,8 @@ namespace PM3D
                 }
                 else if(pauseMenu.getPauseState() == UIPauseLogic::Leaving)
                 {
-                    return;
+                    bBoucle = false;
+                    break;
                 }
 
                 if (pauseMenu.getPauseState() == UIPauseLogic::Paused)
