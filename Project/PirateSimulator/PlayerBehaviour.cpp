@@ -43,8 +43,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
             m_desiredDirection = XMVECTOR{-boatRight.vector4_f32[0], 0.0f, -boatRight.vector4_f32[2]};
             XMVECTOR tmp = m_desiredDirection * m_speed * ellapsedTime;
             physx::PxVec3 dir(tmp.vector4_f32[0], tmp.vector4_f32[1], tmp.vector4_f32[2]);
-            if(velocity.magnitudeSquared() < (m_maxSpeed * m_maxSpeed))
-                boatShape->pxActor().addForce(dir * 100.0f);
+            boatShape->pxActor().addForce(dir * 50.0f);
             break;
 
         }
@@ -53,8 +52,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
             m_desiredDirection = XMVECTOR{boatRight.vector4_f32[0], 0.0f, boatRight.vector4_f32[2]};
             XMVECTOR tmp = m_desiredDirection * m_speed * ellapsedTime;
             physx::PxVec3 dir(tmp.vector4_f32[0], tmp.vector4_f32[1], tmp.vector4_f32[2]);
-            if(velocity.magnitudeSquared() < (m_maxSpeed * m_maxSpeed))
-                boatShape->pxActor().addForce(dir * 100.0f);
+            boatShape->pxActor().addForce(dir * 50.0f);
             break;
 
         }
@@ -80,7 +78,6 @@ void PlayerBehaviour::anime(float ellapsedTime)
 
     // Nake the boat look at the movement direction
     //m_gameObject->m_transform.setForward(velocity.x, velocity.y, velocity.z);
-
     if(rGestionnaireDeSaisie.ToucheAppuyee(DIK_W))
     {
         move(Move::Translation::FORWARD);

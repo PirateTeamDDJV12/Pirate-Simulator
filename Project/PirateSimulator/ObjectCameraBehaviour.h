@@ -31,15 +31,15 @@ namespace PirateSimulator
             cameraModule::Camera* m_cameraComponent;
 
             bool                        m_firstPersonPositionOk;
-            float                       m_maxAngleX = 0.0f;
-            float                       m_minAngleX = -85.0f;
+            float                       m_maxAngleX;
+            float                       m_minAngleX;
             float                       m_distanceFromTarget;
             float                       m_rotationAroundY;
             float                       m_rotationAroundX;
             float                       m_newAngleX;
             float                       m_newAngleY;
-            float                       m_rotationSmooth = 0.01f;
-            float                       m_translationSmooth = 0.01f;
+            float                       m_rotationSmooth;
+            float                       m_translationSmooth;
             GameObjectRef               m_target;
             CameraState                 m_state;
             DirectX::XMVECTOR           m_desiredPosition;
@@ -47,13 +47,15 @@ namespace PirateSimulator
         public:
             ObjectCameraBehaviour(GameObjectRef target) :
                 m_firstPersonPositionOk{false},
+                m_maxAngleX {0.0f},
+                m_minAngleX{-85.0f},
                 m_distanceFromTarget{60.0f},
                 m_rotationAroundY{0.0f},
                 m_rotationAroundX{0.0f},
                 m_newAngleX{0.0f},
                 m_newAngleY{0.0f},
-                m_rotationSmooth{0.01f},
-                m_translationSmooth{0.2f},
+                m_rotationSmooth{0.1f},
+                m_translationSmooth{0.1f},
                 m_target{target},
                 m_state{CameraState::ThirdPersonCamera}
             {}

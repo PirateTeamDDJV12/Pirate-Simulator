@@ -17,7 +17,7 @@ namespace PirateSimulator
         float                    m_tangling;
         float                    m_speed;
         float                    m_smooth;
-        const float              m_maxSpeed = 5000.0f;
+        const float              m_maxSpeed = 10000.0f;
         DirectX::XMVECTOR        m_desiredDirection;
         GameObjectRef            m_cameraRef;
 

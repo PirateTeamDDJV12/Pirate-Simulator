@@ -116,8 +116,8 @@ void ObjectCameraBehaviour::anime(float ellapsedTime)
             m_state = CameraState::ThirdPersonCamera;
             m_maxAngleX = -85.0f;
             m_maxAngleX = -10.0f;
-            m_rotationSmooth = 0.01f;
-            m_translationSmooth = 0.05f;
+            m_rotationSmooth = 0.1f;
+            m_translationSmooth = 0.1f;
             m_firstPersonPositionOk = false;
         }
     }
