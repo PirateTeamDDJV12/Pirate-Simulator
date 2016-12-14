@@ -121,6 +121,10 @@ namespace PirateSimulator
             m_distanceToCenter = sqrtf(m_vectorToCenter.x * m_vectorToCenter.x + m_vectorToCenter.y * m_vectorToCenter.y);
 
             m_angle = acosf(m_vectorToCenter.x / m_distanceToCenter);
+            if (asinf(m_vectorToCenter.x / m_distanceToCenter) < 0.f)
+            {
+                m_angle = DirectX::XM_2PI - m_angle;
+            }
         }
 
 
@@ -234,10 +238,10 @@ LightManager::LightManager()
     m_lightArray[Light::type::DIRECTIONAL][Light::modality::DARKNESS] = {};
 
 
-    DirectX::XMFLOAT3 pointLightStart   { 800.f, -20.f, 950.f };
-    DirectX::XMFLOAT3 pointLightEnd     { 1100.f, -20.f, 950.f };
-    DirectX::XMFLOAT3 firstControlPoint { 900, -20.f, 1200.f };
-    DirectX::XMFLOAT3 secondControlPoint{ 1000.f, -20.f, 700.f };
+    DirectX::XMFLOAT3 pointLightStart   { 250.f, -20.f, 750.f };
+    DirectX::XMFLOAT3 pointLightEnd     { 220.f, -20.f, 1250.f };
+    DirectX::XMFLOAT3 firstControlPoint { 190.f, -20.f, 950.f };
+    DirectX::XMFLOAT3 secondControlPoint{ 185.f, -20.f, 1050.f };
 
 
     m_lightArray[Light::type::POINT][Light::modality::BRIGHT] =

@@ -7,50 +7,57 @@ using namespace DirectX;
 namespace PM3D
 {
 
-class CParametresChargement
-{
-public:
-	CParametresChargement()
-	{
-		bInverserCulling = false;
-		bMainGauche = false;
-	}
-	
-	string NomFichier; 
-	string NomChemin;
-	bool bInverserCulling;
-	bool bMainGauche;
-};
+    class CParametresChargement
+    {
+    public:
+        CParametresChargement()
+        {
+            bInverserCulling = false;
+            bMainGauche = false;
+        }
 
-class IChargeur
-{
-public:
-	IChargeur(){}
-	virtual ~IChargeur(void){}
+        CParametresChargement(string NomChemin, string NomFichier, bool bInverserCulling, bool bMainGauche) :
+            NomChemin{ NomChemin }, NomFichier{ NomFichier }, bMainGauche{ bMainGauche }, bInverserCulling{ bInverserCulling }
+        {}
 
-	virtual void Chargement( const CParametresChargement& param) = 0; 
+        string NomChemin;
+        string NomFichier;
+        bool bMainGauche;
+        bool bInverserCulling;
+    };
 
-	virtual int	 GetNombreSommets() = 0;
-	virtual int  GetNombreIndex() = 0;
-	virtual void* GetIndexData() = 0;
-	virtual int  GetNombreSubset() = 0;
-	virtual int  GetNombreMaterial() = 0;
-	virtual void GetMaterial(int _i,
-					string& _NomFichierTexture,
-					string& _NomMateriau,
-					XMFLOAT4& _Ambient,
-					XMFLOAT4& _Diffuse,
-					XMFLOAT4& _Specular,
-					float& _Puissance) = 0;
+    class IChargeur
+    {
+    public:
+        IChargeur() {}
+        virtual ~IChargeur(void) {}
 
-	virtual string GetMaterialName(int i) = 0;
+        virtual void Chargement(const CParametresChargement& param) = 0;
 
-	virtual void CopieSubsetIndex(vector<int>& dest) = 0;
+        virtual unsigned int GetNombreSubmesh() = 0;
+        virtual unsigned int GetNombreSommetsSubmesh(unsigned int n) = 0;
+        virtual XMFLOAT3 GetPosition(int noMesh, int NoSommet) = 0;
+        virtual XMFLOAT2 GetCoordTex(int noMesh, int NoSommet) = 0;
+        virtual XMFLOAT3 GetNormale(int noMesh, int NoSommet) = 0;
+        virtual unsigned int GetIndice(int noMesh, int noPoly, int NoIndice) = 0;
+        virtual unsigned int GetNombrePolygonesSubmesh(int noMesh) = 0;
 
-	virtual XMFLOAT3 GetPosition(int NoSommet) = 0;
-	virtual XMFLOAT2 GetCoordTex(int NoSommet) = 0;
-	virtual XMFLOAT3 GetNormale(int NoSommet) = 0;
+        virtual unsigned int  GetNombreMaterial() = 0;
+        virtual void GetMaterial(int _i,
+            string& _NomFichierTexture,
+            string& _NomMateriau,
+            XMFLOAT4& _Ambient,
+            XMFLOAT4& _Diffuse,
+            XMFLOAT4& _Specular,
+            float& _Puissance) = 0;
 
-};
+        virtual int GetMaterialIndex(int i) = 0;
 
-}	
+    protected:
+        CParametresChargement parametres;
+
+
+    };
+
+
+}

@@ -13,16 +13,21 @@ namespace PirateSimulator
     class CSommetSky
     {
     public:
-        CSommetSky() {}
-        CSommetSky(DirectX::XMFLOAT3 p, DirectX::XMFLOAT2 c = DirectX::XMFLOAT2(0.0f, 0.0f))
-        {
-            position = p;
-            coordTex = c;
-        }
-        DirectX::XMFLOAT3 position;
-        DirectX::XMFLOAT2 coordTex;
         static UINT numElements;
         static D3D11_INPUT_ELEMENT_DESC layout[];
+
+
+    public:
+        DirectX::XMFLOAT3 m_position;
+        DirectX::XMFLOAT2 m_coordTex;
+        
+
+    public:
+        CSommetSky() {}
+        CSommetSky(DirectX::XMFLOAT3 vertexPosition, DirectX::XMFLOAT2 textureCoordinate = DirectX::XMFLOAT2(0.0f, 0.0f)) :
+            m_position{ vertexPosition },
+            m_coordTex{ textureCoordinate }
+        {}
     };
 
     namespace ShaderCSkyBox
@@ -30,24 +35,16 @@ namespace PirateSimulator
         struct ShadersParams
         {
             DirectX::XMMATRIX matWorldViewProj;
+
+            DirectX::XMFLOAT3 sunCoefficient;
+
+            float uselessFill;
         };
     }
 
     class CSkybox : public Mesh<ShaderCSkyBox::ShadersParams>
     {
-    public:
-        CSkybox();
-        virtual ~CSkybox(void);
-        void Draw();
-        void SetTexture(PM3D::CTexture* pTexture);
-
-    protected:
-        //CSkybox() :
-        //    Mesh<ShaderCSkyBox::ShadersParams>(ShaderCSkyBox::ShadersParams()),
-        //    pDispositif { PirateSimulator::RendererManager::singleton.getDispositif() }
-        //{}
-
-        void InitEffet();
+    private:
         PM3D::CDispositifD3D11* pDispositif;
         ID3D11Buffer* pVertexBuffer;
         ID3D11Buffer* pIndexBuffer;
@@ -58,6 +55,21 @@ namespace PirateSimulator
         // Pour les effets
         ID3D11ShaderResourceView* pTextureD3D;
         Effect m_effect;
+
+
+    public:
+        CSkybox();
+        virtual ~CSkybox(void);
+
+
+    public:
+        void Draw();
+        void setTexture(const std::wstring& fileName);
+
+
+    protected:
+        void InitEffet();
+        void setSunAngleCoeff(float sunAngle);
     };
 }
 

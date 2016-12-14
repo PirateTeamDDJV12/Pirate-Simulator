@@ -82,11 +82,11 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	
 	sortie.Pos = mul(sortie.Pos, matWorldViewProj);
 
-	sortie.Norm = mul(Normale, matWorld); 
+	sortie.Norm = normalize(mul(Normale, matWorld)); 
 	
  	float3 PosWorld = mul(Pos, matWorld);
 
-	sortie.vDirLum = vSunLight; 
+	sortie.vDirLum = normalize(vSunLight); 
 	sortie.vLum1 = vLightPoint1 - PosWorld;
 	sortie.vLum2 = vLightPoint2 - PosWorld;
 	sortie.vLum3 = vLightPoint3 - PosWorld;
@@ -117,7 +117,17 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 	sortie.dlLight2.z = 1.f / sortie.dlLight2.z;
 	sortie.dlLight2.w = 1.f / sortie.dlLight2.w;
 	
-	sortie.vDirCam = vCamera - PosWorld; 
+	//Normalisation
+	sortie.vLum1 *= sortie.dlLight1.x;
+	sortie.vLum2 *= sortie.dlLight1.y;
+	sortie.vLum3 *= sortie.dlLight1.z;
+	sortie.vLum4 *= sortie.dlLight1.w;
+	sortie.vLum5 *= sortie.dlLight2.x;
+	sortie.vLum6 *= sortie.dlLight2.y;
+	sortie.vLum7 *= sortie.dlLight2.z;
+	sortie.vLum8 *= sortie.dlLight2.w;
+	
+	sortie.vDirCam = normalize(vCamera - PosWorld); 
 
     // Coordonnées d'application de texture
     sortie.coordTex = coordTex;
@@ -128,31 +138,26 @@ VS_Sortie MiniPhongVS(float4 Pos : POSITION, float3 Normale : NORMAL, float2 coo
 
 float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 {
-	// Normaliser les paramètres
-	float3 N = normalize(vs.Norm);
- 	float3 L = normalize(vs.vDirLum);
-	float3 V = normalize(vs.vDirCam);
-	
 	float2 glitch = vs.coordTex + undertow;
 	// Échantillonner la couleur du pixel à partir de la texture  
 	float4 couleurTexture = textureEntree.Sample(SampleState, glitch);   
 	
 	float4 textureColorUnderDiffuse = couleurTexture * vDEcl;
 	
-	float3 NDouble = 2.f * N;
+	float3 NDouble = 2.f * vs.Norm;
 	
 	
 	/********************AMBIENT***********************/
 	// Valeur de la composante diffuse
-	float4 diff = saturate(dot(N, -L)) + vAEcl; 
+	float4 diff = saturate(dot(vs.Norm, -vs.vDirLum)) + vAEcl; 
 	
 	float3 RCoeff = diff * NDouble;
 	
 	// R = 2 * (N.L) * N – L
-	float3 R = normalize(RCoeff - L) ;
+	float3 R = normalize(RCoeff - vs.vDirLum) ;
     
 	// Calcul de la spécularité 
-	float4 S = pow(saturate(dot(R, V)), puissance) * vAEcl; 
+	float4 S = pow(saturate(dot(R, vs.vDirCam)), puissance) * vAEcl; 
 	
 	// I = A + D * N.L + (R.V)n
 	float4 couleur =  couleurTexture * vAEcl * sunPower + 
@@ -162,32 +167,28 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 	
 
 	/*********************POINT 1***********************/
-	L = normalize(vs.vLum1);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum1));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum1);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	float4 point1Color = (textureColorUnderDiffuse * vs.dlLight1.x * diff) * mappedLightPointPowerCoeff1.x;
 	
 	
 	
 	/*********************POINT 2***********************/
-	L = normalize(vs.vLum2);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum2));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum2);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	
 	float4 point2Color = (textureColorUnderDiffuse * vs.dlLight1.y * diff) * mappedLightPointPowerCoeff1.y;
@@ -195,16 +196,14 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 	
 	
 	/*********************POINT 3***********************/
-	L = normalize(vs.vLum3);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum3));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum3);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	
 	float4 point3Color = (textureColorUnderDiffuse * vs.dlLight1.z * diff) * mappedLightPointPowerCoeff1.z;
@@ -212,32 +211,28 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 	
 	
 	/*********************POINT 4***********************/
-	L = normalize(vs.vLum4);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum4));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum4);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	float4 point4Color = (textureColorUnderDiffuse * vs.dlLight1.w * diff) * mappedLightPointPowerCoeff1.w;
 	
 	
 	
 	/*********************POINT 5***********************/
-	L = normalize(vs.vLum5);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum5));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum5);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	
 	float4 point5Color = (textureColorUnderDiffuse * vs.dlLight2.x * diff) * mappedLightPointPowerCoeff2.x;
@@ -247,16 +242,14 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 	
 	
 	/*********************POINT 6***********************/
-	L = normalize(vs.vLum6);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum6));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum6);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	
 	float4 point6Color = (textureColorUnderDiffuse * vs.dlLight2.y * diff) * mappedLightPointPowerCoeff2.y;
@@ -266,16 +259,14 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 	
 	
 	/*********************POINT 7***********************/
-	L = normalize(vs.vLum7);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum7));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum7);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	
 	float4 point7Color = (textureColorUnderDiffuse * vs.dlLight2.z * diff) * mappedLightPointPowerCoeff2.z;
@@ -285,16 +276,14 @@ float4 MiniPhongPS( VS_Sortie vs ) : SV_Target
 	
 	
 	/*********************POINT 8***********************/
-	L = normalize(vs.vLum8);
-	
-	diff = saturate(dot(N, -L));
+	diff = saturate(dot(vs.Norm, -vs.vLum8));
 	
 	RCoeff = diff * NDouble;
 	
-	R = normalize(RCoeff - L);
+	R = normalize(RCoeff - vs.vLum8);
 	
 	// Calcul de la spécularité 
-	S = pow(saturate(dot(R, V)), puissance);
+	S = pow(saturate(dot(R, vs.vDirCam)), puissance);
 	
 	
 	float4 point8Color = (textureColorUnderDiffuse * vs.dlLight2.w * diff) * mappedLightPointPowerCoeff2.w;

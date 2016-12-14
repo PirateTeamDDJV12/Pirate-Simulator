@@ -54,7 +54,7 @@ public:
     }
 };
 
-PieceAdministrator::PieceAdministrator()
+PieceAdministrator::PieceAdministrator(): m_currentScore{0}
 {
     m_pieceArray.reserve(PIECE_COUNT);
 }
