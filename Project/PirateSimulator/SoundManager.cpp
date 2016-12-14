@@ -229,16 +229,19 @@ void SoundManager::loadMusicFromFile(const char* fileName)
 
 void SoundManager::loadMusicFromFile(const char* fileName, int mode)
 {
-    std::string name{ fileName };
-    for (auto iter = m_musicBank.begin(); iter != m_musicBank.end(); ++iter)
+    if (!fileName)
     {
-        if (iter->getName().size() == name.size() && iter->getName() == name)
+        std::string name{ fileName };
+        for (auto iter = m_musicBank.begin(); iter != m_musicBank.end(); ++iter)
         {
-            return;
+            if (iter->getName().size() == name.size() && iter->getName() == name)
+            {
+                return;
+            }
         }
-    }
 
-    m_musicBank.emplace_back(m_systemBloc->m_lowLevelSystem, name, mode);
+        m_musicBank.emplace_back(m_systemBloc->m_lowLevelSystem, name, mode);
+    }
 }
 
 void SoundManager::setVolume(float volume)

@@ -18,10 +18,15 @@ namespace PirateSimulator
             SPAWNTASK,
         };
 
+    public:
+        GameLogic() = default;
+
 
     public:
         //create the flow of the game
-        static void createAllTask();
+        void createAllTask();
+
+        void loadMusics();
     };
 }
 

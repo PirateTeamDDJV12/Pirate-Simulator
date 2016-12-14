@@ -1,6 +1,7 @@
 #include "GameLogic.h"
 
 #include "TaskManager.h"
+#include "SoundManager.h"
 
 // Tasks
 #include "TimeTask.h"
@@ -24,4 +25,24 @@ void GameLogic::createAllTask()
     taskManager->addTask<PirateSimulator::PlayerTask>(PLAYERTASK);
     taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
     taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
+}
+
+void GameLogic::loadMusics()
+{
+    SoundManager& soundManager = SoundManager::singleton;
+
+    // for the menu. First Music
+    soundManager.playMusic("PirateSimulator/UISoundtrack.mp3");
+    
+
+    soundManager.loadBackgroundMusics(
+        "PirateSimulator/SeaNoise.wav",
+        "PirateSimulator/WaterTunnel.wav"
+    );
+
+    soundManager.loadNoises(
+        "PirateSimulator/Collision1Noise.wav",
+        "PirateSimulator/SeagullNoise.mp3",
+        "PirateSimulator/JackpotPieceNoise.mp3"
+    );
 }

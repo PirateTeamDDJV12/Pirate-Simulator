@@ -112,7 +112,7 @@ namespace PirateSimulator
 
 
         template<typename ... Args>
-        void loadNoises(Args ... args)
+        void loadNoises(Args&& ... args)
         {
             const char* noiseArray[sizeof...(Args)]{ reinterpret_cast<const char*>(args)... };
 
@@ -123,7 +123,7 @@ namespace PirateSimulator
         }
 
         template<typename ... Args>
-        void loadBackgroundMusics(Args ... args)
+        void loadBackgroundMusics(Args&& ... args)
         {
             const char* noiseArray[sizeof...(Args)]{ reinterpret_cast<const char*>(args)... };
 
