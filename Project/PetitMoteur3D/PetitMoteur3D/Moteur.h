@@ -10,6 +10,7 @@
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
 #include "DIManipulateur.h"
+#include "PanneauPE.h"
 
 #include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/Mesh.h"
@@ -91,6 +92,9 @@ namespace PM3D
         {
             using PirateSimulator::UIPauseLogic;
 
+            auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
+            std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>(pDispositif);
+
             bool bBoucle = true;
             PirateSimulator::UIPauseLogic pauseMenu;
 
@@ -102,10 +106,12 @@ namespace PM3D
                 CDIManipulateur& input = PirateSimulator::InputManager::singleton.getManipulator();
                 if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Resuming)
                 {
+                    PirateSimulator::RendererManager::singleton.setSortingMesh(false);
                     pauseMenu.setPauseState(UIPauseLogic::Paused);
                 }
                 else if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Paused)
                 {
+                    PirateSimulator::RendererManager::singleton.setSortingMesh(true);
                     pauseMenu.setPauseState(UIPauseLogic::Resuming);
                 }
                 else if(pauseMenu.getPauseState() == UIPauseLogic::Leaving)
@@ -128,14 +134,41 @@ namespace PM3D
                     ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                     pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
+                    BeginRenderSceneSpecific();
+
+                    pPanneauPE->DebutPostEffect();
+
+                    // Scene sur surface de rendu POST-EFFECT
+                    BeginRenderSceneSpecific();
+
                     PirateSimulator::RendererManager::singleton.draw();
 
+                    EndRenderSceneSpecific();
+
                     // Display the pause
+
                     pauseMenu();
+                    //Unbind RenderTarget because it can`t be set to both a texture to a shader and a render target view...
+                    ID3D11RenderTargetView* pNullRTV = NULL;
+                    pImmediateContext->OMSetRenderTargets(1, &pNullRTV, NULL);
+
+                    if (pNullRTV)
+                    {
+                        pNullRTV->Release();
+                    }
+
+                    pPanneauPE->FinPostEffect();
+
+
+                    pPanneauPE->Draw();
+
+
+                    EndRenderSceneSpecific();
+
 
                     pDispositif->Present();
 
-                    std::this_thread::sleep_for(17ms);
+                    std::this_thread::sleep_for(50ms);
                 }
                 else
                 {
@@ -181,6 +214,7 @@ namespace PM3D
                 }
                 // Get the Input
                 PirateSimulator::InputManager::singleton.update();
+
                 // Render
                 auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
                 ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
@@ -247,6 +281,7 @@ namespace PM3D
         {
             // Vider les textures
             TexturesManager.Cleanup();
+
             //Vider les objets physiques
             PirateSimulator::PhysicsManager::singleton.reset();
         }
@@ -302,8 +337,6 @@ namespace PM3D
 
         bool InitObjets()
         {
-            // TODO - Get this with a config
-
             PirateSimulator::Transform transformBoat;
 
             //transformBoat.m_position = {300,0,300,0};

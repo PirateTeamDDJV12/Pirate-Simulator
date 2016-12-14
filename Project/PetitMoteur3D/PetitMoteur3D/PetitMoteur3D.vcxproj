@@ -172,6 +172,7 @@
     <ClCompile Include="Moteur.cpp" />
     <ClCompile Include="MoteurWindows.cpp" />
     <ClCompile Include="ObjetMesh.cpp" />
+    <ClCompile Include="PanneauPE.cpp" />
     <ClCompile Include="PetitMoteur3D.cpp" />
     <ClCompile Include="sommetbloc.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -262,6 +263,7 @@
     <ClInclude Include="Moteur.h" />
     <ClInclude Include="MoteurWindows.h" />
     <ClInclude Include="ObjetMesh.h" />
+    <ClInclude Include="PanneauPE.h" />
     <ClInclude Include="PetitMoteur3D.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="sommetbloc.h" />

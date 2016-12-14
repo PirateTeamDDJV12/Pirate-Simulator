@@ -282,6 +282,9 @@
     <ClCompile Include="..\..\PirateSimulator\UIPauseLogic.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
+    <ClCompile Include="PanneauPE.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Moteur.h">
@@ -553,6 +556,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIPauseLogic.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PanneauPE.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
