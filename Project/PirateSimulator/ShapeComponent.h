@@ -20,7 +20,7 @@ namespace PirateSimulator
     {
         
     protected:
-        const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(20.5f, 20.5f, 20.1f);
+        const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.0f, 0.0f, 0.0f);
         physx::PxShape* m_shape;
         physx::PxRigidDynamic* m_actor;
         Piece* m_piece;

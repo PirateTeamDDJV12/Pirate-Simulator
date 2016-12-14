@@ -8,7 +8,6 @@ namespace PirateSimulator
 	class VehicleShape : public ShapeComponent
 	{
 	public:
-
         bool isBoat()
         {
             return true;

@@ -73,15 +73,18 @@ namespace PirateSimulator
 
         PxRigidStatic &m_actor = *PhysicsManager::singleton.physics().createRigidStatic(parent->m_transform.getPose());
         
-        PxShape *_shape = m_actor.createShape(PxHeightFieldGeometry(_heightField.get(), PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale),
+       PxShape *_shape = m_actor.createShape(PxHeightFieldGeometry(_heightField.get(), PxMeshGeometryFlag::eDOUBLE_SIDED, scale, scale, scale),
              *m_material);
          m_shape = _shape;
        
-        PhysicsManager::singleton.scene().addActor(m_actor);
         PxFilterData filterData;
+
         filterData.word0 = EACTORTERRAIN;
-        filterData.word1 = EACTORVEHICLE;
+        filterData.word1 = 0;
+        m_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+        
         m_shape->setSimulationFilterData(filterData);
+        PhysicsManager::singleton.scene().addActor(m_actor);
          //Register shape
         setHandler(ICollisionHandlerRef(new CollisionTerrainHandler));
         m_actor.userData = parent;
