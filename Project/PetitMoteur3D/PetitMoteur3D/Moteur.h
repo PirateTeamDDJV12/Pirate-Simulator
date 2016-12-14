@@ -6,7 +6,6 @@
 #include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
 
-#include "../../PirateSimulator/GameConfig.h"
 #include "../../PirateSimulator/GameFabric.h"
 #include "../../PirateSimulator/GameLogic.h"
 
@@ -18,14 +17,10 @@
 #include "../../PirateSimulator/TaskManager.h"
 
 //UI
-#include "../../PirateSimulator/UIElement.h"
 #include "../../PirateSimulator/UIMenu.h"
 
 #include <thread>
 #include <vector>
-#include "../../PirateSimulator/Tunnel.h"
-
-
 
 
 namespace PM3D
@@ -55,7 +50,7 @@ namespace PM3D
         {
             bool bBoucle = true;
 
-            while (bBoucle)
+            while(bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
@@ -128,7 +123,6 @@ namespace PM3D
 
             return 0;
         }
-
         CGestionnaireDeTextures& GetTextureManager()
         {
             return TexturesManager;
@@ -179,9 +173,9 @@ namespace PM3D
             // Dans notre cas, ces matrices sont fixes
             Transform cameraTransform;
 
-            cameraTransform.setPosition({ 0.f, 0.f, -10.f, 0.f }); //XMVectorSet before
-            cameraTransform.setUp({ 0.f, 1.f, 0.f, 0.f }); //XMVectorSet before
-            cameraTransform.setForward({ 0.f, 0.f, 1.f, 0.f }); //XMVectorSet before
+            cameraTransform.setPosition({0.f, 0.f, -10.f, 0.f}); //XMVectorSet before
+            cameraTransform.setUp({0.f, 1.f, 0.f, 0.f}); //XMVectorSet before
+            cameraTransform.setForward({0.f, 0.f, 1.f, 0.f}); //XMVectorSet before
 
 
             Transform transformBoat;
@@ -190,7 +184,7 @@ namespace PM3D
             transformBoat.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             transformBoat.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
-            
+
             Transform TransformTerrain;
 
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
@@ -201,11 +195,11 @@ namespace PM3D
 
             Transform transformTunnel;
 
-            transformTunnel.setPosition(150.f, 0.f, 1000.f );
-            transformTunnel.setUp({ 0.0f, 1.0f, 0.0f, 0.0f });
-            transformTunnel.setForward({ 0.0f, 0.0f, -1.0f, 0.0f }); 
+            transformTunnel.setPosition(150.f, 0.f, 1000.f);
+            transformTunnel.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            transformTunnel.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
-            
+
 
             GameFabric gameFabric;
 
@@ -236,15 +230,8 @@ namespace PM3D
 
 
     protected:
-
         // Le gestionnaire de texture
         CGestionnaireDeTextures TexturesManager;
-
-        // Pour le texte
-        CAfficheurTexte* pTexte1;
-        wstring str;
-
-        Gdiplus::Font* pPolice;
     };
 
 

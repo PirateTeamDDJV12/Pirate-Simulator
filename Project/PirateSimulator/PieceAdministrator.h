@@ -20,7 +20,7 @@ namespace PirateSimulator
 
             PIECE_COUNT = PIECE_COUNT_IN_A_COLUMN * PIECE_COUNT_IN_A_ROW,
 
-            PIECE_RESPAWN_TIME = 3 * 1000
+            PIECE_RESPAWN_TIME = 20 * 1000
         };
 
         static constexpr const float PIECE_HEIGHT_FROM_SOIL = 5.f;

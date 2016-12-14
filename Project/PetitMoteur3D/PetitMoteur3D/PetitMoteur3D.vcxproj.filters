@@ -288,6 +288,9 @@
     <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\SpawnTask.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Tasks</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\GameFabric.cpp">
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
@@ -577,6 +580,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIButton.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\SpawnTask.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Tasks</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameFabric.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>

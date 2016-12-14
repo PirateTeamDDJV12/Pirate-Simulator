@@ -15,6 +15,7 @@ namespace PirateSimulator
             PLAYERTASK,
             RENDERTASK,
             SOUNDTASK,
+            SPAWNTASK,
         };
 
 

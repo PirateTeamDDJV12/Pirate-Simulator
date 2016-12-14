@@ -6,6 +6,8 @@
 #include "GameObjectManager.h"
 #include "PieceShape.h"
 #include <algorithm>
+#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
+#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxRigidDynamic.h"
 using namespace PirateSimulator;
 
 
@@ -83,6 +85,8 @@ void Piece::destroyPiece()
     if (isInstanciated())
     {
         RendererManager::singleton.removeAStaticSortableMesh(m_pieceInstance->getComponent<IMesh>());
+        m_pieceInstance->getComponent<ShapeComponent>()->cleanUp();
+        //PhysicsManager::singleton.scene().removeActor(actor);
         GameObjectManager::singleton.unspawnGameObject(m_pieceInstance->m_name);
         m_pieceInstance = GameObjectRef();
         m_unspawnedTime = TimeManager::msNow().count();

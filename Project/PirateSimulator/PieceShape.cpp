@@ -4,6 +4,7 @@
 #include "Piece.h"
 #include "GameObjectManager.h"
 #include "ICollisionHandler.h"
+#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 
 using namespace PirateSimulator;
 using namespace physx;
@@ -11,53 +12,30 @@ using namespace physx;
 class CollisionPieceHandler : public ICollisionHandler
 {
     void onContact(const physx::PxContactPair &aContactPair) override
-    {
-        GameObject* actor0 = static_cast<GameObject*>(aContactPair.shapes[0]->getActor()->userData);
-        GameObject* actor1 = static_cast<GameObject*>(aContactPair.shapes[1]->getActor()->userData);
-
-        
-
-        if (actor1->getComponent<ShapeComponent>()->isPiece())
-
-        {
-            GameObjectManager::singleton.getPieceAdministrator()->addScore();
-            //unspawn the piece UNCOMMENT WHEN FONCTIONS WORKS
-
-            //remove Mesh
-            //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
-            //remove physX actor from scene
-            PhysicsManager::singleton.scene().removeActor(actor1->getComponent<ShapeComponent>()->pxActor());
-            
-        }
-
-
-        else if (actor0->getComponent<ShapeComponent>()->isPiece()) //the piece is not actor1, so it is actor0
-
-        {
-
-            //actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
-            PhysicsManager::singleton.scene().removeActor(actor1->getComponent<ShapeComponent>()->pxActor());
-        }
-    }
+    {}
 
     void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
     {
+        if(actorShape == nullptr || contactShape == nullptr)
+        {
+            return;
+        }
+
         auto actor0 = static_cast<GameObject*>(contactShape->getActor()->userData);
         auto actor1 = static_cast<GameObject*>(actorShape->getActor()->userData);
 
-        if(actor1->getComponent<ShapeComponent>()->getPiece() != nullptr)
+        if(triggerEnter)
         {
-            if(triggerEnter)
+            if(actor1->getComponent<ShapeComponent>()->isPiece() && actor0->getComponent<ShapeComponent>()->isBoat())
             {
-                GameObjectManager::singleton.getPieceAdministrator()->addScore();                
+                GameObjectManager::singleton.getPieceAdministrator()->addScore();
+                GameObjectManager::singleton.destroyCoin(actor1->getComponent<ShapeComponent>()->getPiece());
             }
-            //unspawn the piece
-            //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
-        }
-        else if(actor0->getComponent<ShapeComponent>()->getPiece() != nullptr) //the piece is not actor1, so it is actor0
-        {
-
-            //actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
+            else if(actor0->getComponent<ShapeComponent>()->isPiece() && actor1->getComponent<ShapeComponent>()->isBoat())
+            {
+                GameObjectManager::singleton.getPieceAdministrator()->addScore();
+                GameObjectManager::singleton.destroyCoin(actor0->getComponent<ShapeComponent>()->getPiece());
+            }
         }
     }
 };
@@ -71,7 +49,7 @@ void PieceShape::setGameObject(GameObject* parent)
         parent->m_transform.getPosition().vector4_f32[0],
         parent->m_transform.getPosition().vector4_f32[1],
         parent->m_transform.getPosition().vector4_f32[2]));
-    m_actor = PhysicsManager::singleton.physics().createRigidDynamic(parentTransform);
+    m_actor = physx::unique_ptr<physx::PxRigidDynamic>(PhysicsManager::singleton.physics().createRigidDynamic(parentTransform));
 
     m_shape = m_actor->createShape(physx::PxBoxGeometry(10.f, 25.f, 20.f), *m_material);
     PhysicsManager::singleton.scene().addActor(*m_actor);

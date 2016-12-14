@@ -143,6 +143,7 @@
     <ClCompile Include="..\..\PirateSimulator\SoundManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\SoundTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\SpawnTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TerrainShape.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
     <ClInclude Include="..\..\PirateSimulator\SoundManager.h" />
     <ClInclude Include="..\..\PirateSimulator\SoundTask.h" />
+    <ClInclude Include="..\..\PirateSimulator\SpawnTask.h" />
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TerrainShape.h" />
