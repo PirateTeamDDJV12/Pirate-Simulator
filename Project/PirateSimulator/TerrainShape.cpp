@@ -85,11 +85,27 @@ namespace PirateSimulator
         
         m_shape->setSimulationFilterData(filterData);
         PhysicsManager::singleton.scene().addActor(m_actor);
-         //Register shape
+        
+        //Register shape
         setHandler(ICollisionHandlerRef(new CollisionTerrainHandler));
         m_actor.userData = parent;
         PhysicsManager::singleton.registerNewComponent(this);
         m_gameObject = parent;
+
+
+        //Cylindre du tunnel
+       /* PxRigidStatic &actorTunnel = *PhysicsManager::singleton.physics().createRigidStatic(parent->m_transform.getPose());
+        PxShape *shapeTunnel = actorTunnel.createShape(PxBoxGeometry(10.f, 25.f, 20.f), *m_material);
+        PxFilterData filterDataCylindre;
+        filterDataCylindre.word0 = EACTORTERRAIN;
+        filterDataCylindre.word1 = EACTORVEHICLE;
+        shapeTunnel->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
+
+        shapeTunnel->setSimulationFilterData(filterDataCylindre);
+        PhysicsManager::singleton.scene().addActor(actorTunnel);
+
+        //Register shape
+        setHandler(ICollisionHandlerRef(new CollisionTerrainHandler));*/
     }
 
 }

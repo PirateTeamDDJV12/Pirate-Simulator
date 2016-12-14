@@ -23,6 +23,7 @@
 
 //Loader
 #include "..\PetitMoteur3D\PetitMoteur3D\ChargeurAssimp.h"
+#include "TunnelShape.h"
 
 
 using namespace PirateSimulator;
@@ -183,6 +184,7 @@ void GameFabric::createTunnel(const Transform& tunnelTransform)
     tunnelMesh->setBackFaceCulling(false);
 
     tunnel->addComponent<PirateSimulator::IMesh>(tunnelMesh);
-
+    auto tunnelshape = new TunnelShape();
+    tunnel->addComponent<ShapeComponent>(tunnelshape);
     PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(tunnelMesh);
 }
