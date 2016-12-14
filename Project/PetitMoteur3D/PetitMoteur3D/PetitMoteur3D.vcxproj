@@ -56,8 +56,8 @@
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files\Assimp\include\assimp;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files\Assimp\lib\x86;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -81,8 +81,9 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>dxguid.lib;winmm.lib;d3d11.lib;DXGI.lib;effects11d.lib;d3dcompiler.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxguid.lib;winmm.lib;d3d11.lib;DXGI.lib;effects11d.lib;d3dcompiler.lib;dinput8.lib;;assimp.lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\fmodstudioL_vc.lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib\fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;C:\Program Files (x86)\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -116,6 +117,8 @@
     <ClCompile Include="..\..\PirateSimulator\FilesManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\GameFabric.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\GameLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
@@ -137,6 +140,8 @@
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RenderTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\SoundManager.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\SoundTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\ShapeComponent.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TaskManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Terrain.cpp" />
@@ -145,7 +150,9 @@
     <ClCompile Include="..\..\PirateSimulator\TimeTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Transform.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Tunnel.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\UIHUD.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleBehaviour.cpp" />
@@ -155,6 +162,7 @@
     <ClCompile Include="AfficheurTexte.cpp" />
     <ClCompile Include="Bloc.cpp" />
     <ClCompile Include="BlocEffet1.cpp" />
+    <ClCompile Include="ChargeurAssimp.cpp" />
     <ClCompile Include="ChargeurOBJ.cpp" />
     <ClCompile Include="Config\Config.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
@@ -186,6 +194,8 @@
     <ClInclude Include="..\..\PirateSimulator\FilesManager.h" />
     <ClInclude Include="..\..\PirateSimulator\FreeCameraBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameFabric.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
     <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />
@@ -217,6 +227,8 @@
     <ClInclude Include="..\..\PirateSimulator\Effect.h" />
     <ClInclude Include="..\..\PirateSimulator\ShapeComponent.h" />
     <ClInclude Include="..\..\PirateSimulator\Skybox.h" />
+    <ClInclude Include="..\..\PirateSimulator\SoundManager.h" />
+    <ClInclude Include="..\..\PirateSimulator\SoundTask.h" />
     <ClInclude Include="..\..\PirateSimulator\TaskManager.h" />
     <ClInclude Include="..\..\PirateSimulator\Terrain.h" />
     <ClInclude Include="..\..\PirateSimulator\TerrainShape.h" />
@@ -224,7 +236,9 @@
     <ClInclude Include="..\..\PirateSimulator\TimeTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Transform.h" />
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
+    <ClInclude Include="..\..\PirateSimulator\Tunnel.h" />
     <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
+    <ClInclude Include="..\..\PirateSimulator\UIHUD.h" />
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
@@ -236,6 +250,7 @@
     <ClInclude Include="Bloc.h" />
     <ClInclude Include="BlocEffet1.h" />
     <ClInclude Include="chargeur.h" />
+    <ClInclude Include="ChargeurAssimp.h" />
     <ClInclude Include="ChargeurOBJ.h" />
     <ClInclude Include="Config\Config.hpp" />
     <ClInclude Include="DDSTextureLoader.h" />

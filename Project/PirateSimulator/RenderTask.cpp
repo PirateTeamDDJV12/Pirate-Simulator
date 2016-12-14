@@ -9,11 +9,24 @@ using namespace PirateSimulator;
 
 void RenderTask::init()
 {
-    RendererManager::singleton.init(PM3D::CDS_FENETRE, PM3D::CMoteurWindows::GetInstance().getMainWindowHandle());
+    // Init afficheur texte
+    PM3D::CAfficheurTexte::Init();
+
+    PirateSimulator::RendererManager& rendererManager = PirateSimulator::RendererManager::singleton;
+
+    rendererManager.init(PM3D::CDS_FENETRE, PM3D::CMoteurWindows::GetInstance().getMainWindowHandle());
+
+    rendererManager.setSortingMesh(true);
+    rendererManager.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
 }
 
 void RenderTask::update()
 {
+    // Affichage optimisé 
+    RendererManager::singleton.getDispositif()->Present();
+
+    RendererManager::singleton.update();
+
     auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
     ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
     ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();

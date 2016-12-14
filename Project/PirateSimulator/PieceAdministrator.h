@@ -8,6 +8,8 @@
 
 namespace PirateSimulator
 {
+    class Piece;
+
     class PieceAdministrator
     {
     public:
@@ -26,6 +28,7 @@ namespace PirateSimulator
 
     private:
         std::vector<Piece> m_pieceArray;
+        unsigned int m_currentScore;
 
 
     public:
@@ -33,6 +36,18 @@ namespace PirateSimulator
 
 
     public:
+        unsigned int getScore() const
+        {
+            return m_currentScore;
+        }
+        void addScore()
+        {
+            ++m_currentScore;
+        }
+        void resetScore()
+        {
+            m_currentScore = 0;
+        }
         void init();
         void update(float elapsedTime);
     };

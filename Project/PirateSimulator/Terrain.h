@@ -99,6 +99,24 @@ namespace PirateSimulator
         static D3D11_INPUT_ELEMENT_DESC Terrain::layout[];
         static UINT numElements;
 
+    protected:
+        PM3D::CDispositifD3D11* pDispositif;
+
+        ID3D11Buffer* pVertexBuffer;
+        ID3D11Buffer* pIndexBuffer;
+
+        ID3D11VertexShader*  pVertexShader;
+        ID3D11PixelShader*  pPixelShader;
+        ID3D11InputLayout* pVertexLayout;
+
+        // Définitions des valeurs d'animation
+        ID3D11Buffer* pConstantBuffer;
+
+        //Pour texture
+        Material m_material;
+
+        Effect m_textureEffect;
+
     private:
         int m_terrainWidth;
         int m_terrainHeight;
@@ -116,6 +134,7 @@ namespace PirateSimulator
         // Destructeur
         virtual ~Terrain();
 
+    public:
         virtual void Anime(float tempsEcoule);
 
         void Draw();
@@ -156,23 +175,6 @@ namespace PirateSimulator
     protected:
         // Constructeur par défaut
         void InitShaders();
-
-        PM3D::CDispositifD3D11* pDispositif;
-
-        ID3D11Buffer* pVertexBuffer;
-        ID3D11Buffer* pIndexBuffer;
-
-        ID3D11VertexShader*  pVertexShader;
-        ID3D11PixelShader*  pPixelShader;
-        ID3D11InputLayout* pVertexLayout;
-
-        // Définitions des valeurs d'animation
-        ID3D11Buffer* pConstantBuffer;
-
-		//Pour texture
-        Material m_material;
-
-        Effect m_textureEffect;
     };
 
 }

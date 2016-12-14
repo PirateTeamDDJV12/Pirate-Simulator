@@ -54,28 +54,31 @@ namespace PirateSimulator {
 
         virtual void onTrigger(PxTriggerPair* pairs, PxU32 count) override
         {
-            for (int i = 0; i < (int)count; ++i)
+            for(int i = 0; i < (int)count; ++i)
             {
+                GameObject *go1 = static_cast<GameObject*>(pairs[i].triggerActor->userData);
+                GameObject *go2 = static_cast<GameObject*>(pairs[i].otherActor->userData);
+
                 bool triggerEnter = false;
-                if (pairs->status == PxPairFlag::eNOTIFY_TOUCH_FOUND)
+                if(pairs->status == PxPairFlag::eNOTIFY_TOUCH_FOUND)
                     triggerEnter = true;
-                else if (pairs->status == PxPairFlag::eNOTIFY_TOUCH_LOST)
+                else if(pairs->status == PxPairFlag::eNOTIFY_TOUCH_LOST)
                     triggerEnter = false;
                 else
                     continue;
 
                 ICollisionHandler *trigger = nullptr;
-                if (!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_TRIGGER))
-                    trigger = static_cast<ICollisionHandler*>(pairs[i].triggerShape->getActor()->userData);
+                if(!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_TRIGGER))
+                    trigger = static_cast<ICollisionHandler *>(go1->getComponent<ShapeComponent>()->getHandler());
 
                 ICollisionHandler* other = nullptr;
-                if (!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_OTHER))
-                    other = static_cast<ICollisionHandler*>(pairs[i].otherShape->getActor()->userData);
+                if(!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_OTHER))
+                    other = static_cast<ICollisionHandler *>(go2->getComponent<ShapeComponent>()->getHandler());
 
-                if (trigger)
+                if(trigger)
                     trigger->onTrigger(triggerEnter, pairs[i].triggerShape, other ? pairs[i].otherShape : nullptr);
 
-                if (other)
+                if(other)
                     other->onTrigger(triggerEnter, pairs[i].otherShape, trigger ? pairs[i].triggerShape : nullptr);
             }
         }
@@ -130,7 +133,7 @@ namespace PirateSimulator {
         {
             if (remainingTimeToSimulate > durationStep)
             {
-                _scene->simulate(durationStep);
+                _scene->simulate(static_cast<physx::PxReal>(durationStep));
                 remainingTimeToSimulate -= durationStep;
             }
             else

@@ -3,12 +3,13 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Singleton.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "../PetitMoteur3D/PetitMoteur3D/util.h"
+#include "LightManager.h"
+#include "CameraManager.h"
 
 #include <d3d11.h>
 #include <winnt.h>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
-#include <DirectXMathMatrix.inl>
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -197,10 +198,16 @@ void CSkybox::InitEffet()
     DXRelacher(pD3DDevice);
 }
 
-void CSkybox::SetTexture(CTexture* pTexture)
+void CSkybox::setTexture(const std::wstring& fileName)
 {
-    DXRelacher(pTextureD3D);
-    pTextureD3D = pTexture->GetD3DTexture();
+    PM3D::CGestionnaireDeTextures& TexturesManager = PM3D::CMoteurWindows::GetInstance().GetTextureManager();
+    auto texture = TexturesManager.GetNewTexture(fileName.c_str());
+
+    if (texture)
+    {
+        DXRelacher(pTextureD3D);
+        pTextureD3D = texture->GetD3DTexture();
+    }
 }
 
 CSkybox::~CSkybox(void)
@@ -237,10 +244,13 @@ void CSkybox::Draw()
     XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
 
     m_shaderParameter.matWorldViewProj = XMMatrixTranspose(m_matWorld * viewProj);
+
+    this->setSunAngleCoeff(LightManager::singleton.getSunAngle());
+
     pImmediateContext->UpdateSubresource(m_effect.m_constantBuffer, 0, NULL, &m_shaderParameter, 0, 0);
     ID3DX11EffectConstantBuffer* pCB = m_effect.m_effect->GetConstantBufferByName("param"); // Nous n'avons qu'un seul CBuffer
-        pCB->SetConstantBuffer(m_effect.m_constantBuffer);
-
+    pCB->SetConstantBuffer(m_effect.m_constantBuffer);
+    DXRelacher(pCB);
 
     // Activation de la texture
     ID3DX11EffectShaderResourceVariable* variableTexture;
@@ -267,4 +277,54 @@ void CSkybox::Draw()
     // Réactiver Culling et ZBuffer
     pDispositif->ActiverCulling();
     pDispositif->ActiverZBuffer();
+}
+
+void CSkybox::setSunAngleCoeff(float sunAngle)
+{
+    //Do not change those values unless you know what you're doing. (obtained with some twiking)
+    const float MIN_ANGLE_SIN = XM_PI / 32.f;
+    const float ZENITH_FRONTIER = XM_PI / 6.f;
+    const float SUN_RISE_FRONTIER = 11 * XM_PI / 6.f;
+
+    if (sunAngle > (7.f * XM_PI / 6.f) && sunAngle < SUN_RISE_FRONTIER) // night time
+    {
+        float sinus = sinf(MIN_ANGLE_SIN);
+
+        m_shaderParameter.sunCoefficient.x = sinus;
+        m_shaderParameter.sunCoefficient.y = sinus;
+        m_shaderParameter.sunCoefficient.z = sinus;
+    }
+    else if (sunAngle >= SUN_RISE_FRONTIER || sunAngle < ZENITH_FRONTIER) // rising sun
+    {
+        float sinus = sinf((sunAngle - SUN_RISE_FRONTIER) + MIN_ANGLE_SIN);
+
+        m_shaderParameter.sunCoefficient.x = sinus;
+        m_shaderParameter.sunCoefficient.y = sinus;
+        m_shaderParameter.sunCoefficient.z = sinus;
+    }
+    else if (sunAngle >= ZENITH_FRONTIER && sunAngle < XM_PIDIV2) // morning zenith
+    {
+        float sinus = sinf(XM_PIDIV2 - (sunAngle / 3.65f));
+
+        m_shaderParameter.sunCoefficient.x = sinus;
+        m_shaderParameter.sunCoefficient.y = sinus;
+        m_shaderParameter.sunCoefficient.z = sinus;
+    }
+    else if (sunAngle >= XM_PIDIV2 && sunAngle < (XM_PI * 5.f / 6.f)) // afternoon zenith
+    {
+        float sinus = sinf(XM_PIDIV2 + (sunAngle / 5.f));
+
+        m_shaderParameter.sunCoefficient.x = sinus;
+        m_shaderParameter.sunCoefficient.y = sinus;
+        m_shaderParameter.sunCoefficient.z = sinus;
+    }
+    else // twilight
+    {
+        float sinus = sinf((29.f / 32.f * (sunAngle - 5 * ZENITH_FRONTIER)) + (XM_2PI / 3.f)); //LERP
+        float opposedSinus = (1.f - sinus);
+
+        m_shaderParameter.sunCoefficient.x = sinus + opposedSinus * opposedSinus * sinus * sinus;
+        m_shaderParameter.sunCoefficient.y = sinus;
+        m_shaderParameter.sunCoefficient.z = sinus;
+    }
 }

@@ -2,8 +2,10 @@
 #include "resource.h"
 #include "MoteurWindows.h"
 #include "util.h"
+#include "..\..\PirateSimulator\RendererManager.h"
 
 using namespace UtilitairesDX;
+using namespace DirectX;
 
 namespace PM3D
 {
@@ -27,7 +29,7 @@ namespace PM3D
     };
 
 
-    CAfficheurSprite::CAfficheurSprite(CDispositifD3D11* _pDispositif) :
+    CAfficheurSprite::CAfficheurSprite() :
         PirateSimulator::Mesh<ShaderCAfficheurSprite::ShadersParams>(ShaderCAfficheurSprite::ShadersParams())
     {
         pVertexBuffer = 0;
@@ -38,7 +40,7 @@ namespace PM3D
         pVertexLayout = 0;
         pSampleState = 0;
 
-        pDispositif = _pDispositif;  // Prendre en note le dispositif
+        pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();  // Prendre en note le dispositif
 
         // Création du vertex buffer et copie des sommets
         ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
@@ -185,6 +187,7 @@ namespace PM3D
             pEffet->GetVariableByName("textureEntree")->AsShaderResource();
 
         pDispositif->ActiverMelangeAlpha();
+        pDispositif->DesactiverZBuffer();
 
         // Faire le rendu de tous nos sprites
         for (size_t i = 0; i < tabSprites.size(); ++i)
@@ -206,8 +209,7 @@ namespace PM3D
         }
 
         pDispositif->DesactiverMelangeAlpha();
-
-
+        pDispositif->ActiverZBuffer();
     }
 
     void CAfficheurSprite::AjouterSprite(string NomTexture,
@@ -306,14 +308,13 @@ namespace PM3D
         }
 
         // Position en coordonnées du monde
-        XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();
+        /*XMMATRIX viewProj = PirateSimulator::CameraManager::singleton.getMatViewProj();*/
         pPanneau->position = _position;
 
         pPanneau->matPosDim = XMMatrixScaling(pPanneau->dimension.x,
                                               pPanneau->dimension.y, 1.0f) *
             XMMatrixTranslation(pPanneau->position.x,
-                                pPanneau->position.y, pPanneau->position.z) *
-            viewProj;
+                                pPanneau->position.y, pPanneau->position.z);
 
         // On l'ajoute à notre vecteur
         tabSprites.push_back(pPanneau);

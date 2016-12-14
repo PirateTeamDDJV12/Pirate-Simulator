@@ -65,8 +65,8 @@ float4 couleur;
 
 	float4 couleurTexture;  
 
-	if (bTex>0)
-	{
+	/*if (bTex>0)
+	{*/
 		// Échantillonner la couleur du pixel à partir de la texture  
 		couleurTexture = textureEntree.Sample(SampleState, vs.coordTex);   
 
@@ -74,12 +74,12 @@ float4 couleur;
 		couleur =  couleurTexture * vAEcl  + 
 				   couleurTexture * vDEcl * diff +
 				   vSEcl * vSMat * S;
-	}
+	/*}
 	else
 	{
 		couleur =  vAEcl * vAMat + vDEcl * vDMat * diff  + 
 					vSEcl * vSMat * S;
-    }
+    }*/
 	return couleur;
 }
 

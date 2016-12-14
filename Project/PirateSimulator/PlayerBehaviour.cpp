@@ -1,9 +1,9 @@
 #include "PlayerBehaviour.h"
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
-#include "PhysicsManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
-#include <dinput.h>
 #include "InputManager.h"
+#include "CameraManager.h"
+
+#include <dinput.h>
 
 using namespace PirateSimulator;
 using namespace DirectX;
@@ -30,6 +30,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
     //Get Actor shape to move it
     ShapeComponent* boatShape = PhysicsManager::singleton.getVehiculeShape();
+
     auto boatPose = boatShape->pose();
     boatPose.q = PxQuat::createIdentity();
     boatShape->setPose(boatPose);
@@ -59,6 +60,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
         moveMesh(boatPose);
 
+
     }
     break;
 
@@ -86,6 +88,7 @@ void PlayerBehaviour::move(Move::Translation::Direction direction)
 
         moveMesh(boatPose);
     }
+
         break;
 
         default:
