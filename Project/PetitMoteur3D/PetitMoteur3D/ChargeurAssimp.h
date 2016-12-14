@@ -11,7 +11,7 @@ namespace PM3D
         public IChargeur
     {
     protected:
-        // Objet de classe Importer (Assimp)
+        // Objet de classe Importer (Assimp) 
         Assimp::Importer* pImporter;
         const aiScene* scene;
 

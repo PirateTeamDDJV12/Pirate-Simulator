@@ -83,6 +83,15 @@ namespace PirateSimulator
         {
             return &m_pieceAdministrator;
         }
+        void reset()
+        {
+            for (auto go : m_gameObjectArray)
+            {
+                go->cleanup();
+            }
+            m_gameObjectArray.clear();
+            m_pieceAdministrator.reset();
+        }
 
 
     private:
@@ -97,6 +106,8 @@ namespace PirateSimulator
         {
             return GameObjectRef(newGameObject);
         }
+
+        
     };
 }
 

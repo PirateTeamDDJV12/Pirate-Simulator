@@ -155,7 +155,6 @@ namespace PM3D
             // Vider les textures
             TexturesManager.Cleanup();
             //Vider les objets physiques
-            PirateSimulator::PhysicsManager::singleton.reset();
         }
 
         virtual int InitScene()

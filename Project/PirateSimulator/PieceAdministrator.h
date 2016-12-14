@@ -50,6 +50,14 @@ namespace PirateSimulator
         }
         void init();
         void update(float elapsedTime);
+        void reset()
+        {
+            for (auto piece : m_pieceArray)
+            {
+                piece.erasePiece();
+            }
+            m_pieceArray.clear();
+        }
     };
 }
 

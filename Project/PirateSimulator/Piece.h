@@ -38,6 +38,10 @@ namespace PirateSimulator
     public:
         GameObjectRef createPiece();
         void destroyPiece();
+        void erasePiece()
+        {
+            m_pieceInstance = nullptr;
+        }
     };
 }
 

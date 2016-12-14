@@ -74,6 +74,7 @@ namespace PirateSimulator
         ShapeComponent* getVehiculeShape();
 
     };
+    
 
     enum ACTOR
     {

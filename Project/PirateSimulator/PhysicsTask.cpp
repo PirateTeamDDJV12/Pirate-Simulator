@@ -27,5 +27,6 @@ void PhysicsTask::update()
 
 void PhysicsTask::cleanup()
 {
+    GameObjectManager::singleton.reset();
     PhysicsManager::singleton.reset();
 }
