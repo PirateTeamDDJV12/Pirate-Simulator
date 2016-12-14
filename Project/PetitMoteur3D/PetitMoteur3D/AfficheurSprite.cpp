@@ -5,6 +5,7 @@
 #include "..\..\PirateSimulator\RendererManager.h"
 
 using namespace UtilitairesDX;
+using namespace DirectX;
 
 namespace PM3D
 {

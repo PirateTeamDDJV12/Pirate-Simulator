@@ -64,7 +64,7 @@ namespace PirateSimulator
 
     public:
         void Draw();
-        void SetTexture(PM3D::CTexture* pTexture);
+        void setTexture(const std::wstring& fileName);
 
 
     protected:

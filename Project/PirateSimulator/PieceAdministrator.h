@@ -8,6 +8,8 @@
 
 namespace PirateSimulator
 {
+    class Piece;
+
     class PieceAdministrator
     {
     public:

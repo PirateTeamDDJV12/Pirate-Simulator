@@ -21,7 +21,7 @@ namespace PirateSimulator
     {
         
     protected:
-        const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.5f, 0.5f, 0.1f);
+        const physx::PxMaterial* m_material = PhysicsManager::singleton.physics().createMaterial(0.0f, 0.0f, 0.0f);
         physx::PxShape* m_shape;
         physx::unique_ptr<physx::PxRigidDynamic> m_actor;
         Piece* m_piece;
@@ -45,6 +45,9 @@ namespace PirateSimulator
 
     public:
         physx::PxRigidDynamic* ShapeComponent::pxActor();
+
+        virtual bool isBoat() = 0;
+        virtual bool isPiece() = 0;
 
         virtual physx::PxTransform pose();
         void setPose(const physx::PxTransform &iPose);

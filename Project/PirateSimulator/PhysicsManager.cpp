@@ -145,7 +145,7 @@ namespace PirateSimulator
         {
             if(remainingTimeToSimulate > durationStep)
             {
-                _scene->simulate(durationStep);
+                _scene->simulate(static_cast<physx::PxReal>(durationStep));
                 remainingTimeToSimulate -= durationStep;
             }
             else
@@ -285,7 +285,7 @@ namespace PirateSimulator
 
         for(auto shape : m_components)
         {
-            if(shape->getPiece() == nullptr)
+            if (shape->isBoat())
                 vehicle = shape;
         }
         return vehicle;
