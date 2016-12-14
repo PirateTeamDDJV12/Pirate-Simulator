@@ -105,8 +105,6 @@ namespace PirateSimulator
         ID3D11Buffer* pVertexBuffer;
         ID3D11Buffer* pIndexBuffer;
 
-        ID3D11VertexShader*  pVertexShader;
-        ID3D11PixelShader*  pPixelShader;
         ID3D11InputLayout* pVertexLayout;
 
         // Définitions des valeurs d'animation
