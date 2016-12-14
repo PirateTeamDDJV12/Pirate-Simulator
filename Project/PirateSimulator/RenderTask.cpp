@@ -12,7 +12,12 @@ void RenderTask::init()
     // Init afficheur texte
     PM3D::CAfficheurTexte::Init();
 
-    RendererManager::singleton.init(PM3D::CDS_FENETRE, PM3D::CMoteurWindows::GetInstance().getMainWindowHandle());
+    PirateSimulator::RendererManager& rendererManager = PirateSimulator::RendererManager::singleton;
+
+    rendererManager.init(PM3D::CDS_FENETRE, PM3D::CMoteurWindows::GetInstance().getMainWindowHandle());
+
+    rendererManager.setSortingMesh(true);
+    rendererManager.setDetailLevel(PirateSimulator::RendererManager::DEEP_ARRANGEMENT);
 }
 
 void RenderTask::update()

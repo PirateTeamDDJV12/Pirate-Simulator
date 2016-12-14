@@ -1,11 +1,12 @@
 #include <dinput.h>
 
 #include "PlayerBehaviour.h"
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
-#include "PhysicsManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "CameraManager.h"
+
+#include <dinput.h>
 
 using namespace PirateSimulator;
 using namespace DirectX;

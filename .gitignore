@@ -1,5 +1,4 @@
 *.vs
-*.obj
 *.db
 *.opendb
 *.ipch
@@ -7,6 +6,7 @@
 *.jpg
 *.mp3
 *.lib
+*.obj
 **/testOutput.txt
 **/OldheightmapOutput.txt
 **/heightmapOutput.txt

@@ -3,17 +3,15 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Singleton.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "../PetitMoteur3D/PetitMoteur3D/util.h"
+#include "TimeManager.h"
+#include "CameraManager.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
+#include "LightManager.h"
 
 #include <d3d11.h>
 #include <winnt.h>
 #include <d3dcompiler.h>
 #include <algorithm>
-#include "TimeManager.h"
-#include <chrono>
-#include <comdef.h>
-#include "CameraManager.h"
-#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
-#include "LightManager.h"
 
 using namespace PirateSimulator;
 using namespace PM3D;
@@ -371,69 +369,3 @@ void Plane::loadTexture(const std::string& filename)
     UtilitairesDX::DXRelacher(pTextureInterface);
     UtilitairesDX::DXRelacher(pD3DDevice);
 }
-
-
-//void Plane::InitSin()
-//{
-//    // Création d'une texture de même dimension sur la carte graphique
-//    D3D11_TEXTURE1D_DESC texDesc;
-//    texDesc.Width = SIN_ARRAY_ELEMENTS_COUNT;
-//    texDesc.MipLevels = 1;
-//    texDesc.ArraySize = 1;
-//    texDesc.Format = DXGI_FORMAT_R32_FLOAT;
-//    texDesc.Usage = D3D11_USAGE_DEFAULT;
-//    texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-//    texDesc.CPUAccessFlags = 0;
-//    texDesc.MiscFlags = 0;
-//    
-//
-//    // Create the sinus Array;
-//    const float angleCoefficient = XM_2PI / static_cast<float>(SIN_ARRAY_ELEMENTS_COUNT);
-//
-//    for (int iter = 0; iter < SIN_ARRAY_ELEMENTS_COUNT; ++iter)
-//    {
-//        m_sinArray[iter] = sinf(static_cast<float>(iter) * angleCoefficient);
-//    }
-//
-//    //Put the sin array into the GPU Memory
-//    D3D11_SUBRESOURCE_DATA data;
-//    data.pSysMem = m_sinArray;
-//    data.SysMemPitch = SIN_ARRAY_ELEMENTS_COUNT * sizeof(float);
-//    data.SysMemSlicePitch = 0;
-//
-//
-//
-//    /*pSinTex->QueryInterface<ID3D11Texture1D>(&pSinText1D);
-//    pSinText1D->GetDesc(&texDesc);*/
-//
-//    //// Création de la texture à partir des données du bitmap
-//    ID3D11Device* pD3DDevice = pDispositif->GetD3DDevice();
-//    HRESULT hr = pD3DDevice->CreateTexture1D(&texDesc, &data, &pSinText1D);
-//
-//    /*ID3D11Resource* pResource;
-//    pSinTex->GetResource(&pResource);
-//    pResource->QueryInterface<ID3D11Texture1D>(&pSinText1D);*/
-//    pSinText1D->GetDesc(&texDesc);
-//    pSinText1D->QueryInterface<ID3D11ShaderResourceView>(&pSinTex);
-//
-//
-//    // Initialisation des paramètres de sampling de la texture
-//    D3D11_SAMPLER_DESC samplerDesc;
-//
-//    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-//    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-//    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-//    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-//    samplerDesc.MipLODBias = 0.0f;
-//    samplerDesc.MaxAnisotropy = 4;
-//    samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-//    samplerDesc.BorderColor[0] = 0;
-//    samplerDesc.BorderColor[1] = 0;
-//    samplerDesc.BorderColor[2] = 0;
-//    samplerDesc.BorderColor[3] = 0;
-//    samplerDesc.MinLOD = 0;
-//    samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-//
-//    // Création de l'état de sampling
-//    pD3DDevice->CreateSamplerState(&samplerDesc, &pSinSampler);
-//}

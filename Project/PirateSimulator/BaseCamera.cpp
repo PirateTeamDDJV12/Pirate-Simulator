@@ -16,7 +16,7 @@ Camera::Camera(const CameraProjectionParameters& defaultParameters)
 
 void Camera::initProjMatrix()
 {
-    m_proj = XMMatrixPerspectiveFovLH(
+    m_proj = DirectX::XMMatrixPerspectiveFovLH(
         m_Parameters.angle,
         m_Parameters.aspectRatio(),
         m_Parameters.nearest,
