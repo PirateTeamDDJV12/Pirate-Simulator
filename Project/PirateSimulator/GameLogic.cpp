@@ -51,9 +51,22 @@ void GameLogic::startGameMusic() const
     //stop the title Screen music
     soundManager.stopMusic("PirateSimulator/UISoundtrack.mp3");
 
+
     //Play the background music of the main game
     soundManager.playMusic("PirateSimulator/PlayBackgroundMusic.mp3");  
     soundManager.playMusic("PirateSimulator/SeaNoise.wav");
+
+
+    //Define the timed song
+    constexpr const long long seagulScreamMinTimer = 2800;
+    constexpr const long long seagulScreamMaxTimer = 9800;
+
+    PirateSimulator::defineTimedSound(
+        "PirateSimulator/SeagullNoise.mp3", 
+        seagulScreamMinTimer, 
+        seagulScreamMaxTimer
+    ); //I want seagull to scream at random interval
+
 
     //reduce the sound of the Sea Noise to let the magnificent background music be well listened
     constexpr const float seaNoiseSoundVolume = 0.65f;

@@ -3,6 +3,11 @@
 #include "FMOD/fmod_studio.hpp"
 #include "FMOD/fmod.hpp"
 
+#include "TimeManager.h"
+
+#include "Randomisator.h"
+
+
 using namespace PirateSimulator;
 
 
@@ -173,9 +178,129 @@ public:
     }
 };
 
+namespace PirateSimulator
+{
+    class TimedSound
+    {
+    public:
+        size_t m_musicIndex;
+
+        Randomisator m_randomisator;
+
+        long long m_maxTimer;
+        long long m_minTimer;
+        long long m_currentTimer;
+        long long m_lastPlay;
+
+
+
+    public:
+        TimedSound(size_t musicIndex, long long minTimer, long long maxTimer) :
+            m_musicIndex{ musicIndex },
+            m_minTimer{ minTimer },
+            m_maxTimer{ maxTimer },
+            m_lastPlay{ 0 }
+        {
+            increaseTimer();
+        }
+
+
+    public:
+        void update(long long currentTime)
+        {
+            if (currentTime - m_lastPlay > m_currentTimer)
+            {
+                SoundManager::singleton.playMusic(m_musicIndex);
+                m_lastPlay = currentTime;
+                increaseTimer();
+            }
+        }
+
+
+    private:
+        void increaseTimer()
+        {
+            m_currentTimer = m_randomisator.get(m_minTimer, m_maxTimer);
+        }
+    };
+
+    struct TimedSoundAdmin
+    {
+    private:
+        static TimedSoundAdmin singleton;
+
+
+    private:
+        std::vector<PirateSimulator::TimedSound> m_timedSound;
+
+
+    private:
+        TimedSoundAdmin() {}
+
+        TimedSoundAdmin(TimedSoundAdmin&) = delete;
+        TimedSoundAdmin& operator=(TimedSoundAdmin&) = delete;
+
+
+    public:
+        friend void defineTimedSound(const char* fileName, long long minTimer, long long maxTimer);
+        friend void updateTimedSong(long long current);
+    };
+
+    TimedSoundAdmin TimedSoundAdmin::singleton;
+
+    void defineTimedSound(const char* fileName, long long minTimer, long long maxTimer)
+    {
+        SoundManager& soundManager = SoundManager::singleton;
+        TimedSoundAdmin& adminSong = TimedSoundAdmin::singleton;
+
+        std::string nameFile{ fileName };
+
+        //find if the sound exists
+        for (size_t iter = 0; iter < soundManager.m_musicBank.size(); ++iter)
+        {
+            if (soundManager.m_musicBank[iter].getName().size() == nameFile.size() && soundManager.m_musicBank[iter].getName() == nameFile)
+            {
+                //we have found a sound corresponding to the file
+
+                //Find if the Timed Sound doesn't already exists
+                for (auto jiter = adminSong.m_timedSound.begin(); jiter != adminSong.m_timedSound.end(); ++jiter)
+                {
+                    if (jiter->m_musicIndex == iter)
+                    {
+                        //it exists
+                        return;
+                    }
+                }
+
+                //doesn't exists, we're creating a new timed sound
+                adminSong.m_timedSound.emplace_back(iter, minTimer, maxTimer);
+
+                return;
+            }
+        }
+
+        //the sound doesn't exists.
+        soundManager.m_musicBank.emplace_back(soundManager.m_systemBloc->m_lowLevelSystem, fileName, SoundManager::LOOP_OFF_PLAY);
+        adminSong.m_timedSound.emplace_back(soundManager.m_musicBank.size() - 1, minTimer, maxTimer);
+    }
+
+    void updateTimedSong(long long current)
+    {
+        TimedSoundAdmin& adminSong = TimedSoundAdmin::singleton;
+
+        for (auto iter = adminSong.m_timedSound.begin(); iter!= adminSong.m_timedSound.end(); ++iter)
+        {
+            iter->update(current);
+        }
+    }
+
+    void noUpdateTimedSong(long long current) {}
+}
+
 
 SoundManager::SoundManager() :
-    m_systemBloc{ new FMODSystemBloc }
+    m_systemBloc{ new FMODSystemBloc },
+    m_timedCallback{ noUpdateTimedSong }
 {
     m_musicBank.reserve(SoundManager::CHANNEL_MAX_COUNT);
 
@@ -191,12 +316,14 @@ SoundManager::~SoundManager()
 
 void SoundManager::init()
 {
-    
+    m_timedCallback = PirateSimulator::updateTimedSong;
 }
 
 void SoundManager::update()
 {
     m_systemBloc->m_lowLevelSystem->update();
+
+    m_timedCallback(TimeManager::GetInstance().msNow().count());
 }
 
 void SoundManager::cleanup()
