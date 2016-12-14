@@ -11,7 +11,15 @@ namespace PirateSimulator
     public:
         
        // void onContact(const physx::PxContactPair &aContactPair) ;
+        bool isBoat()
+        {
+            return false;
+        };
 
+        bool isPiece()
+        {
+            return true;
+        };
  
         static std::string typeId() noexcept
         {
