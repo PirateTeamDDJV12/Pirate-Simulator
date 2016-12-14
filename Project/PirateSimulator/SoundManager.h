@@ -18,6 +18,13 @@ namespace PirateSimulator
             CHANNEL_MAX_COUNT = 1024
         };
 
+        enum
+        {
+            DEFAULT_PLAY = 0x0,
+            LOOP_OFF_PLAY = 0x1,
+            LOOP_ON_PLAY = 0x2
+        };
+
         static constexpr const float MAX_VOLUME     = 1.0f;
         static constexpr const float MUTE_VOLUME    = 0.f;
 
