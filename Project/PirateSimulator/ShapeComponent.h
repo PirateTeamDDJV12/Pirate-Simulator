@@ -36,7 +36,8 @@ namespace PirateSimulator
         {
             EACTORTERRAIN = 1<<0,
             EACTORVEHICLE = 1<<1,
-            EACTORPIECE = 1<<2
+            EACTORPIECE = 1<<2,
+            EACTORTUNNEL=1<<3
         };
 
 

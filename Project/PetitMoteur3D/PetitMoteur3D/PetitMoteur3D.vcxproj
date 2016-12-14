@@ -153,6 +153,7 @@
     <ClCompile Include="..\..\PirateSimulator\Triangle.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIButton.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Tunnel.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\TunnelShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIHUD.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="..\..\PirateSimulator\Triangle.h" />
     <ClInclude Include="..\..\PirateSimulator\UIButton.h" />
     <ClInclude Include="..\..\PirateSimulator\Tunnel.h" />
+    <ClInclude Include="..\..\PirateSimulator\TunnelShape.h" />
     <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
     <ClInclude Include="..\..\PirateSimulator\UIMainMenuLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\UIHUD.h" />
