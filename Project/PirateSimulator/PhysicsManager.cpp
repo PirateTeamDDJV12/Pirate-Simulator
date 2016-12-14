@@ -75,23 +75,28 @@ namespace PirateSimulator
                 ICollisionHandler *trigger = nullptr;
                 if(!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_TRIGGER))
                 {
-                    auto shapeComp = go1->getComponent<ShapeComponent>();
-                    if(shapeComp != nullptr)
+                    if (go1 != nullptr)
                     {
-                        trigger = static_cast<ICollisionHandler *>(shapeComp->getHandler());
+                        auto shapeComp = go1->getComponent<ShapeComponent>();
+                        if (shapeComp != nullptr)
+                        {
+                            trigger = static_cast<ICollisionHandler *>(shapeComp->getHandler());
+                        }
                     }
                 }
 
+                if (go2 != nullptr)
+                {
+                    ICollisionHandler* other = nullptr;
+                    if (!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_OTHER))
+                        other = static_cast<ICollisionHandler *>(go2->getComponent<ShapeComponent>()->getHandler());
 
-                ICollisionHandler* other = nullptr;
-                if(!(pairs->flags & PxTriggerPairFlag::eDELETED_SHAPE_OTHER))
-                    other = static_cast<ICollisionHandler *>(go2->getComponent<ShapeComponent>()->getHandler());
+                    if (trigger)
+                        trigger->onTrigger(triggerEnter, pairs[i].triggerShape, other ? pairs[i].otherShape : nullptr);
 
-                if(trigger)
-                    trigger->onTrigger(triggerEnter, pairs[i].triggerShape, other ? pairs[i].otherShape : nullptr);
-
-                if(other)
-                    other->onTrigger(triggerEnter, pairs[i].otherShape, trigger ? pairs[i].triggerShape : nullptr);
+                    if (other)
+                        other->onTrigger(triggerEnter, pairs[i].otherShape, trigger ? pairs[i].triggerShape : nullptr);
+                }
             }
         }
 
