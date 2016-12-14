@@ -1,6 +1,6 @@
 #include "UIHUD.h"
 #include "RendererManager.h"
-#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
+#include "GameObjectManager.h"
 
 PirateSimulator::UIHUD::UIHUD() : GameObject(Transform(), "HUDGO")
 {

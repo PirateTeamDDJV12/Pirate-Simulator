@@ -3,21 +3,22 @@
 #include "dispositif.h" 
 
 #include "GestionnaireDeTextures.h"
-#include "AfficheurSprite.h"
 #include "AfficheurTexte.h"
-
+#include "DIManipulateur.h"
+#include "PanneauPE.h"
 #include "../../PirateSimulator/GameFabric.h"
 #include "../../PirateSimulator/GameLogic.h"
 
 // Manager
 #include "../../PirateSimulator/TimeManager.h"
-#include "../../PirateSimulator/GameObjectManager.h"
 #include "../../PirateSimulator/RendererManager.h"
 #include "../../PirateSimulator/InputManager.h"
 #include "../../PirateSimulator/TaskManager.h"
 
 //UI
-#include "../../PirateSimulator/UIMenu.h"
+#include "../../PirateSimulator/UIMainMenuLogic.h"
+#include "../../PirateSimulator/UIHUD.h"
+#include "../../PirateSimulator/UIPauseLogic.h"
 
 #include <thread>
 #include <vector>
@@ -25,7 +26,6 @@
 
 namespace PM3D
 {
-
     const int IMAGESPARSECONDE = 60;
 
     //
@@ -48,17 +48,91 @@ namespace PM3D
 
         virtual void Run()
         {
+            using PirateSimulator::UIPauseLogic;
+
+            std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>();
+
             bool bBoucle = true;
+            PirateSimulator::UIPauseLogic pauseMenu;
 
             while(bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
 
-                PirateSimulator::TaskManager::GetInstance().update();
+                CDIManipulateur& input = PirateSimulator::InputManager::singleton.getManipulator();
+                if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Resuming)
+                {
+                    PirateSimulator::RendererManager::singleton.setSortingMesh(false);
+                    pauseMenu.setPauseState(UIPauseLogic::Paused);
+                }
+                else if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Paused)
+                {
+                    PirateSimulator::RendererManager::singleton.setSortingMesh(true);
+                    pauseMenu.setPauseState(UIPauseLogic::Resuming);
+                }
+                else if(pauseMenu.getPauseState() == UIPauseLogic::Leaving)
+                {
+                    return;
+                }
 
+                if (pauseMenu.getPauseState() == UIPauseLogic::Paused)
+                {
+                    // Get the Input
+                    PirateSimulator::InputManager::singleton.update();
+
+                    // Render
+                    auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
+                    ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
+                    ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
+
+                    float Couleur[4] = { 0.0f, 0.5f, 0.0f, 1.0f };  //  RGBA - Vert pour le moment
+                    pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
+
+                    ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
+                    pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+                    BeginRenderSceneSpecific();
+
+                    pPanneauPE->DebutPostEffect();
+
+                    // Scene sur surface de rendu POST-EFFECT
+                    BeginRenderSceneSpecific();
+
+                    PirateSimulator::RendererManager::singleton.draw();
+
+                    EndRenderSceneSpecific();
+
+                    // Display the pause
+
+                    pauseMenu();
+                    //Unbind RenderTarget because it can`t be set to both a texture to a shader and a render target view...
+                    ID3D11RenderTargetView* pNullRTV = NULL;
+                    pImmediateContext->OMSetRenderTargets(1, &pNullRTV, NULL);
+
+                    if (pNullRTV)
+                    {
+                        pNullRTV->Release();
+                    }
+
+                    pPanneauPE->FinPostEffect();
+
+
+                    pPanneauPE->Draw();
+
+
+                    EndRenderSceneSpecific();
+
+
+                    pDispositif->Present();
+
+                    std::this_thread::sleep_for(50ms);
+                }
+                else
+                {
+                    PirateSimulator::TaskManager::GetInstance().update();
+                }
             }
-
         }
 
         virtual int Initialisations()
@@ -98,6 +172,7 @@ namespace PM3D
                 }
                 // Get the Input
                 PirateSimulator::InputManager::singleton.update();
+
                 // Render
                 auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
                 ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
@@ -152,6 +227,7 @@ namespace PM3D
         {
             // Vider les textures
             TexturesManager.Cleanup();
+
             //Vider les objets physiques
             PirateSimulator::PhysicsManager::singleton.reset();
         }
@@ -177,21 +253,17 @@ namespace PM3D
             cameraTransform.setUp({0.f, 1.f, 0.f, 0.f}); //XMVectorSet before
             cameraTransform.setForward({0.f, 0.f, 1.f, 0.f}); //XMVectorSet before
 
-
             Transform transformBoat;
 
             transformBoat.setPosition(950.0f, 0.0f, 900.0f);
             transformBoat.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             transformBoat.setForward({0.0f, 0.0f, -1.0f, 0.0f});
-
-
+			
             Transform TransformTerrain;
 
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
             TransformTerrain.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             TransformTerrain.setForward({0.0f, 0.0f, -1.0f, 0.0f});
-
-
 
             Transform transformTunnel;
 
@@ -234,6 +306,4 @@ namespace PM3D
         CGestionnaireDeTextures TexturesManager;
     };
 
-
 } // namespace PM3D
-
