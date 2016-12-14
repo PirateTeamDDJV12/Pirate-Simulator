@@ -13,32 +13,6 @@ class CollisionPieceHandler : public ICollisionHandler
 {
     void onContact(const physx::PxContactPair &aContactPair) override
     {
-        GameObject* actor0 = static_cast<GameObject*>(aContactPair.shapes[0]->getActor()->userData);
-        GameObject* actor1 = static_cast<GameObject*>(aContactPair.shapes[1]->getActor()->userData);
-
-        
-
-        if (actor1->getComponent<ShapeComponent>()->isPiece())
-
-        {
-            GameObjectManager::singleton.getPieceAdministrator()->addScore();
-            //unspawn the piece UNCOMMENT WHEN FONCTIONS WORKS
-
-            //remove Mesh
-            //actor1->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
-            //remove physX actor from scene
-            PhysicsManager::singleton.scene().removeActor(actor1->getComponent<ShapeComponent>()->pxActor());
-            
-        }
-
-
-        else if (actor0->getComponent<ShapeComponent>()->isPiece()) //the piece is not actor1, so it is actor0
-
-        {
-
-            //actor0->getComponent<ShapeComponent>()->getPiece()->destroyPiece();
-            PhysicsManager::singleton.scene().removeActor(actor1->getComponent<ShapeComponent>()->pxActor());
-        }
     }
 
     void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
