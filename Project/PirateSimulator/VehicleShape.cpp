@@ -18,7 +18,20 @@ class CollisionVehicleHandler : public ICollisionHandler
 
     void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
     {
-
+        if (actorShape == nullptr || contactShape == nullptr)
+        {
+            return;
+        }
+        auto actor0 = static_cast<GameObject*>(contactShape->getActor()->userData);
+        auto actor1 = static_cast<GameObject*>(actorShape->getActor()->userData);
+        
+        if (triggerEnter)
+        {
+            if (actor1->getComponent<ShapeComponent>()->isBoat() && actor0->getComponent<ShapeComponent>()->isTrigger())
+            {
+                //Behaviour Here
+            }
+        }
     }
 };
 

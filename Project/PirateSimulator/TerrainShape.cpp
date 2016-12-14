@@ -93,7 +93,6 @@ namespace PirateSimulator
         PhysicsManager::singleton.registerNewComponent(this);
         m_gameObject = parent;
 
-
         
     }
 
