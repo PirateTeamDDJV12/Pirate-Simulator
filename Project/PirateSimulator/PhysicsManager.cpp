@@ -141,11 +141,8 @@ namespace PirateSimulator
         aSceneDesc->filterShader = &SimulationFilterShader;
     }
 
-    void PhysicsManager::update()
+    void PhysicsManager::update(float remainingTimeToSimulate)
     {
-        auto &timeManager = TimeManager::GetInstance();
-        auto remainingTimeToSimulate = timeManager.getElapsedTimeFrame();
-
         auto durationStep = 100;
         while (remainingTimeToSimulate > 0)
         {
