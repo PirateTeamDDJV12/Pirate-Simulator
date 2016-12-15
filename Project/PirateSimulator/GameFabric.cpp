@@ -128,6 +128,25 @@ void GameFabric::createHUD()
     GameObjectManager::singleton.subscribeAGameObject(new UIHUD());
 }
 
+void GameFabric::createCrystal(const Transform& crystalTransform)
+{
+    PirateSimulator::GameObjectRef crystal = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+        new PirateSimulator::GameObject(crystalTransform, "crystal")
+    );
+
+    PM3D::CChargeurAssimp chargeur;
+
+    // Création du mesh du crystal à partir d'un fichier .OBJ
+    PM3D::CParametresChargement paramCrystal(".\\modeles\\Crystal\\", "crystal.obj", false, true);
+    chargeur.Chargement(paramCrystal);
+
+    auto crystalMesh = new PM3D::CObjetMesh(PM3D::ShaderCObjectMesh::ShadersParams(), L"MiniPhongField.fx", chargeur);
+    crystalMesh->setBackFaceCulling(false);
+
+    crystal->addComponent<PirateSimulator::IMesh>(crystalMesh);
+    PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(crystalMesh);
+}
+
 void GameFabric::createTunnel(const Transform& tunnelTransform)
 {
     PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(

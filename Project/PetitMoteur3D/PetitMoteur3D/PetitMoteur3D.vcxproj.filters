@@ -272,7 +272,7 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UIOption.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
