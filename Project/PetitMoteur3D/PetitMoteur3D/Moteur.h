@@ -58,7 +58,6 @@ namespace PM3D
             PirateSimulator::GameLogic().startGameMusic();
 
             bool bBoucle = true;
-            std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>();
             PirateSimulator::GameManager *gameManager = PirateSimulator::GameManager::getInstance();
 
             while(gameManager->getGameState() != PirateSimulator::GameState::Quitting && bBoucle)
@@ -150,7 +149,6 @@ namespace PM3D
 
             std::vector<std::thread> beginThread;
 
-
             beginThread.emplace_back([this, &resultInit]() {
                 //Loading of some noises
                 PirateSimulator::GameLogic().loadMusics();
@@ -194,14 +192,7 @@ namespace PM3D
 
                 std::this_thread::sleep_for(5ms);
             }
-
-            // REGLE LE SOUCIS DU CRASH HUD MAIS PAS SUR
-            for(size_t iter = 0; iter < beginThread.size(); ++iter)
-            {
-                beginThread[iter].join();
-            }
-            //beginThread.front().detach();
-
+            
             // Start the game time when all menu and loading screen are close to begin the game
             TimeManager::GetInstance().startGameTime();
 
