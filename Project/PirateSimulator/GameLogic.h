@@ -16,11 +16,29 @@ namespace PirateSimulator
             SPAWNTASK,
         };
 
+    public:
+        GameLogic() = default;
+
+
+    private:
+        GameLogic(GameLogic&) = delete;
+        GameLogic& operator=(GameLogic&) = delete;
+
 
     public:
         //create the flow of the game
-        static void createAllTask();
+        void createAllTask() const;
 
+        // load all musics in the game and start the title Screen Music music
+        void loadMusics() const;
+
+        // start the game music and stop the titleScreen music
+        void startGameMusic() const;
+
+        // start the titleScreen music
+        void startTitleScreenMusic() const;
+      
+      
         static void cleanAllTasks();
     };
 }

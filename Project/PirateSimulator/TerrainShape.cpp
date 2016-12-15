@@ -2,6 +2,7 @@
 #include "TerrainShape.h"
 #include "ICollisionHandler.h"
 #include "GameObjectManager.h"
+#include "SoundManager.h"
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
@@ -15,15 +16,15 @@ namespace PirateSimulator
 
         void onContact(const physx::PxContactPair &aContactPair) override
         {
-            auto actor0 = static_cast<ShapeComponent*>(aContactPair.shapes[0]->getActor()->userData);
-            auto actor1 = static_cast<ShapeComponent*>(aContactPair.shapes[1]->getActor()->userData);
+            
             //Todo Set Behaviour
+
+            PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/Collision1Noise.wav");
         }
 
         void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
         {
-            auto actor0 = static_cast<ShapeComponent*>(contactShape->getActor()->userData);
-            auto actor1 = static_cast<ShapeComponent*>(actorShape->getActor()->userData);
+            
 
         }
     };

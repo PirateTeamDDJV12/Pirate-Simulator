@@ -298,7 +298,10 @@
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\TunnelShape.cpp">
-      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>  
+	</ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Randomisator.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\GameManager.cpp">
       <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
@@ -604,6 +607,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\GameManager.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Randomisator.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\TriggerShape.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>

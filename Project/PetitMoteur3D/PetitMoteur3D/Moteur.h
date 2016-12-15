@@ -52,6 +52,11 @@ namespace PM3D
         {
             using PirateSimulator::UIPauseLogic;
 
+
+            std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>();
+
+            PirateSimulator::GameLogic().startGameMusic();
+
             bool bBoucle = true;
             std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>();
             PirateSimulator::GameManager *gameManager = PirateSimulator::GameManager::getInstance();
@@ -136,7 +141,9 @@ namespace PM3D
             InitialisationsSpecific();
 
             // Création des tasks
-            PirateSimulator::GameLogic::createAllTask();
+            PirateSimulator::GameLogic mainThreadGameLogic;
+            mainThreadGameLogic.createAllTask();
+            mainThreadGameLogic.startTitleScreenMusic();
             PirateSimulator::GameManager::getInstance()->initialize();
 
             bool resultInit = false;
@@ -145,6 +152,9 @@ namespace PM3D
 
 
             beginThread.emplace_back([this, &resultInit]() {
+                //Loading of some noises
+                PirateSimulator::GameLogic().loadMusics();
+
                 // * Initialisation de la scène
                 InitScene();
                 resultInit = true;
