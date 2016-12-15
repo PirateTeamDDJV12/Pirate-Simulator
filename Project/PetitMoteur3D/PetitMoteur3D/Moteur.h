@@ -159,10 +159,13 @@ namespace PM3D
                 resultInit = true;
             });
 
-            //for(size_t iter = 0; iter < beginThread.size(); ++iter)
-            //{
-            //    beginThread[iter].join();
-            //}
+            /*for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            {
+                beginThread[iter].join();
+            }*/
+
+            // Create the HUD here (to prevent thread bug (it call the same pDispositif as the menu called)
+            PirateSimulator::GameFabric().createHUD();
 
             PirateSimulator::UIMainMenuLogic mainMenu;
 
@@ -294,8 +297,8 @@ namespace PM3D
             //// Skybox
             gameFabric.createSkybox();
 
-            // HUD
-            gameFabric.createHUD();
+            //create our pieces
+            gameFabric.createPieces();
 
             // Add our water plane
             gameFabric.createWater(TransformTerrain);

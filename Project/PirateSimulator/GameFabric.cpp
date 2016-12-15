@@ -157,3 +157,8 @@ void GameFabric::createTunnel(const Transform& tunnelTransform)
     auto triggerShape = new TriggerShape();
     tunnelTrigger->addComponent<ShapeComponent>(triggerShape);
 }
+
+void GameFabric::createPieces()
+{
+    GameObjectManager::singleton.init();
+}

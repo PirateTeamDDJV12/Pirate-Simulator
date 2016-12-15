@@ -9,7 +9,6 @@ using namespace PirateSimulator;
 void PhysicsTask::init()
 {
     PhysicsManager::singleton.initialize();
-    GameObjectManager::singleton.init();
     
 }
 
