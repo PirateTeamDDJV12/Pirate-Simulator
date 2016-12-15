@@ -16,7 +16,6 @@ UILoading::UILoading() :
     m_policeFont = std::make_unique<Gdiplus::Font>(&Gdiplus::FontFamily{ L"Edwardian Script ITC", NULL }, 70.0, Gdiplus::FontStyleBold, Gdiplus::UnitPixel);
     m_loadingMessage = std::make_unique<PM3D::CAfficheurTexte>(260, 90, m_policeFont.get(), Gdiplus::Color(255, 255, 255, 255));
 
-
     // ajout de panneaux 
     m_afficheurSprite->AjouterPanneau(
         "PirateSimulator/PirateFlag.dds",
@@ -36,7 +35,7 @@ UILoading::UILoading() :
     m_customLoadingDisplayer->AjouterPanneau(
         "PirateSimulator/ShipWheel.dds",
         { 0.75f, -0.75f, 0.0f },
-        0.5f, 0.5f
+        0.4f, 0.4f
     );
 }
 
@@ -68,14 +67,6 @@ bool UILoading::update()
 
     m_lastUpdateTime = m_currentTime;
 
-    //if (m_currentTime - m_launchTime > UILoading::MINIMUM_LOADING_TIME_IN_MILLISECONDS)
-    //{
-    //    GameManager::getInstance()->setGameState(GameState::InGame);
-    //}
-    //else
-    //{
-    //    return false;
-    //}
     return true;
 }
 

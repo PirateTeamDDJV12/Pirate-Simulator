@@ -66,10 +66,10 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
 
     // Prevent camera from flipping
     // You can change the values to block the camera before 90
-    if(m_newAngleX < m_minAngleX)
-        m_newAngleX = m_minAngleX;
-    else if(m_newAngleX > m_maxAngleX)
-        m_newAngleX = m_maxAngleX;
+    //if(m_newAngleX < m_minAngleX)
+    //    m_newAngleX = m_minAngleX;
+    //else if(m_newAngleX > m_maxAngleX)
+    //    m_newAngleX = m_maxAngleX;
 
     float angleXFinal;
     float angleYFinal;

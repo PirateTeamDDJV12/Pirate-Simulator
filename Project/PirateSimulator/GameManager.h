@@ -31,6 +31,7 @@ namespace PirateSimulator
         UIMenu      m_mainScreen;
         UILoading   m_loadingScreen;
         UIPause     m_pauseScreen;
+        UIVictory     m_victoryScreen;
 
     public:
         GameManager(const GameManager &) = delete;

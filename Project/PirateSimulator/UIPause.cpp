@@ -31,7 +31,7 @@ UIPause::UIPause()
     PM3D::CAfficheurSprite* quitHighlightedSprites = new PM3D::CAfficheurSprite();
 
     // Start Button Highlighting
-    resumeSprite->AjouterPanneau("Assets/UI/MainMenu/Start.dds", XMFLOAT3(-0.7f, 0.2f, -1.0f));
+    resumeSprite->AjouterPanneau("Assets/UI/PauseMenu/Resume.dds", XMFLOAT3(-0.7f, 0.2f, -1.0f));
     resumeHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Highlighted Start.dds", XMFLOAT3(-1.1f, 0.15f, -1.0f));
     resumeHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Separation.dds", XMFLOAT3(-0.7f, 0.2f, -1.0f));
     
@@ -39,7 +39,7 @@ UIPause::UIPause()
     m_buttons[0]->setSelectedSpriteDrawer(resumeHighlightedSprites);
 
     // Quit Button Highlighting
-    quitSprite->AjouterPanneau("Assets/UI/MainMenu/Quit.dds", XMFLOAT3(-0.7f, 0.0f, -1.0f));
+    quitSprite->AjouterPanneau("Assets/UI/PauseMenu/WhiteQuit.dds", XMFLOAT3(-0.7f, 0.0f, -1.0f));
     quitHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Highlighted Quit.dds", XMFLOAT3(-1.1f, -0.05f, -1.0f));
     quitHighlightedSprites->AjouterPanneau("Assets/UI/MainMenu/Separation.dds", XMFLOAT3(-0.7f, 0.0f, -1.0f));
     

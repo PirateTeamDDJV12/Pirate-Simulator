@@ -22,7 +22,7 @@ namespace PirateSimulator
 
     private:
         PM3D::CAfficheurSprite  *m_mainMenuImages;
-        IUIButton                *m_buttons[4];
+        IUIButton                *m_buttons[2];
         unsigned int            m_currentButton;
     };
 }
