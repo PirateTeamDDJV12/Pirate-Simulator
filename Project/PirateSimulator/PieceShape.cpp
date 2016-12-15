@@ -31,14 +31,14 @@ class CollisionPieceHandler : public ICollisionHandler
             {
                 GameObjectManager::singleton.getPieceAdministrator()->addScore();
                 GameObjectManager::singleton.destroyCoin(actor1->getComponent<ShapeComponent>()->getPiece());
+                PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/JackpotPieceNoise.wav");
             }
             else if(actor0->getComponent<ShapeComponent>()->isPiece() && actor1->getComponent<ShapeComponent>()->isBoat())
             {
                 GameObjectManager::singleton.getPieceAdministrator()->addScore();
                 GameObjectManager::singleton.destroyCoin(actor0->getComponent<ShapeComponent>()->getPiece());
+                PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/JackpotPieceNoise.wav");
             }
-
-            PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/JackpotPieceNoise.wav");
         }
     }
 };
