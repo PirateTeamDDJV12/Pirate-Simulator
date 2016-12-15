@@ -4,6 +4,7 @@
 #include "Piece.h"
 
 #include <vector>
+#include "TimeManager.h"
 
 
 namespace PirateSimulator
@@ -17,7 +18,6 @@ namespace PirateSimulator
         {
             PIECE_COUNT_IN_A_COLUMN = 10,
             PIECE_COUNT_IN_A_ROW = 10,
-
             PIECE_COUNT = PIECE_COUNT_IN_A_COLUMN * PIECE_COUNT_IN_A_ROW,
 
             PIECE_RESPAWN_TIME = 20 * 1000
@@ -43,6 +43,7 @@ namespace PirateSimulator
         void addScore()
         {
             ++m_currentScore;
+            TimeManager::GetInstance().increaseTime(5s);
         }
         void resetScore()
         {
@@ -50,6 +51,7 @@ namespace PirateSimulator
         }
         void init();
         void update(float elapsedTime);
+        void cleanUp();
     };
 }
 

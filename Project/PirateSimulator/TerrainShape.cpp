@@ -2,6 +2,7 @@
 #include "TerrainShape.h"
 #include "ICollisionHandler.h"
 #include "GameObjectManager.h"
+#include "SoundManager.h"
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
@@ -15,15 +16,16 @@ namespace PirateSimulator
 
         void onContact(const physx::PxContactPair &aContactPair) override
         {
-            auto actor0 = static_cast<ShapeComponent*>(aContactPair.shapes[0]->getActor()->userData);
-            auto actor1 = static_cast<ShapeComponent*>(aContactPair.shapes[1]->getActor()->userData);
+            
             //Todo Set Behaviour
+
+            PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/Collision1Noise.wav");
+            TimeManager::GetInstance().increaseTime(-5s);
         }
 
         void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
         {
-            auto actor0 = static_cast<ShapeComponent*>(contactShape->getActor()->userData);
-            auto actor1 = static_cast<ShapeComponent*>(actorShape->getActor()->userData);
+            
 
         }
     };
@@ -81,7 +83,7 @@ namespace PirateSimulator
         PxFilterData filterData;
 
         filterData.word0 = EACTORTERRAIN;
-        filterData.word1 = 0;
+        filterData.word1 = EACTORVEHICLE;
         m_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
         
         m_shape->setSimulationFilterData(filterData);
@@ -92,7 +94,6 @@ namespace PirateSimulator
         m_actor.userData = parent;
         PhysicsManager::singleton.registerNewComponent(this);
         m_gameObject = parent;
-
 
         
     }

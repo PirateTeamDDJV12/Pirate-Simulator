@@ -93,6 +93,12 @@ namespace PM3D
         return RegisterClassEx(&wcex);
     }
 
+    void DisableCloseButton(HWND hwnd)
+    {
+        EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE,
+                       MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+    }
+
 
     //  FONCTION : WndProc(HWND, unsigned, WORD, LONG)
     //
@@ -108,7 +114,7 @@ namespace PM3D
         int wmId, wmEvent;
         PAINTSTRUCT ps;
         HDC hdc;
-
+        DisableCloseButton(hWnd);
         switch (message)
         {
         case WM_COMMAND:

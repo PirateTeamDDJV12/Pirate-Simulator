@@ -282,13 +282,7 @@
     <ClCompile Include="..\..\PirateSimulator\UIButton.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp">
-      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UIPause.cpp">
-      <Filter>Fichiers sources\PirateSimulator\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\PirateSimulator\UIPauseLogic.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
     <ClCompile Include="PanneauPE.cpp">
@@ -304,7 +298,19 @@
       <Filter>Fichiers sources\PirateSimulator</Filter>
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\TunnelShape.cpp">
+      <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>  
+	</ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\Randomisator.cpp">
+      <Filter>Fichiers sources\PirateSimulator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\GameManager.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\TriggerShape.cpp">
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+	</ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PieceMesh.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -581,16 +587,10 @@
     <ClInclude Include="..\..\PirateSimulator\UILoading.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\UIMainMenuLogic.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIButton.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\UIPause.h">
-      <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\PirateSimulator\UIPauseLogic.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\UI</Filter>
     </ClInclude>
     <ClInclude Include="PanneauPE.h">
@@ -607,6 +607,18 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\TunnelShape.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\GameManager.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\Randomisator.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\TriggerShape.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+	</ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PieceMesh.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,8 @@ namespace PirateSimulator
         void createTunnel(const Transform& tunnelTransform);
 
         void createCameraAndBoat(const Transform& cameraTransform, const Transform& boatTransform);
+
+        void createPieces();
     };
 }
 

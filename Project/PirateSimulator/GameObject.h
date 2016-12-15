@@ -103,11 +103,15 @@ namespace PirateSimulator
         {
             static_assert(std::is_convertible<ComponentAttribute*, Component*>::value, "You want to get something that is not component!");
 
-            for(auto iter = 0; iter != m_attachedComponent.size(); ++iter)
+            size_t size = m_attachedComponent.size();
+            if (size > 0 && size < 0xFFF) //4095 is a huge number. just a dirty bug fix
             {
-                if(Component::sameTypeIdAs(m_attachedComponent[iter]->getTypeId(), ComponentAttribute::typeId()))
+                for (auto iter = m_attachedComponent.begin(); iter != m_attachedComponent.end(); ++iter)
                 {
-                    return m_attachedComponent[iter]->as<ComponentAttribute>();
+                    if (Component::sameTypeIdAs((*iter)->getTypeId(), ComponentAttribute::typeId()))
+                    {
+                        return (*iter)->as<ComponentAttribute>();
+                    }
                 }
             }
 
@@ -160,6 +164,8 @@ namespace PirateSimulator
         {
             (this->*m_pSetMatrix)(world);
         }
+
+        void cleanUp();
 
     private:
         void setWorldMatrixWhenHaving(const DirectX::XMMATRIX& world)

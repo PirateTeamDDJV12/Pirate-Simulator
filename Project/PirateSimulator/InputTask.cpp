@@ -12,6 +12,9 @@ void InputTask::init()
     PirateSimulator::InputManager::singleton.InitManipulator(winMoteur.getApplicationInstance(), winMoteur.getMainWindowHandle());
 }
 
+void InputTask::cleanup()
+{}
+
 void InputTask::update()
 {
     InputManager::singleton.update();

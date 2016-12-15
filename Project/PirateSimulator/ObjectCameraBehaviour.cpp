@@ -35,11 +35,10 @@ void ObjectCameraBehaviour::move(Move::Translation::Direction direction)
         if(!m_firstPersonPositionOk)
         {
             XMVECTOR diff = m_desiredPosition - m_gameObject->m_transform.getPosition();
-            if(fabs(diff.vector4_f32[0]) < 0.2f &&  fabs(diff.vector4_f32[1]) < 0.2f && fabs(diff.vector4_f32[2] < 0.2f))
+            if(fabs(diff.vector4_f32[0]) < 3.0f &&  fabs(diff.vector4_f32[1]) < 3.0f && fabs(diff.vector4_f32[2] < 3.0f))
             {
                 m_firstPersonPositionOk = true;
                 m_rotationSmooth = 0.5f;
-                m_translationSmooth = 1.0f;
             }
             XMVECTOR currentPosition = m_gameObject->m_transform.getPosition();
 
@@ -67,10 +66,10 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
 
     // Prevent camera from flipping
     // You can change the values to block the camera before 90
-    if(m_rotationAroundX < m_minAngleX)
-        m_rotationAroundX = m_minAngleX;
-    else if(m_rotationAroundX > m_maxAngleX)
-        m_rotationAroundX = m_maxAngleX;
+    //if(m_newAngleX < m_minAngleX)
+    //    m_newAngleX = m_minAngleX;
+    //else if(m_newAngleX > m_maxAngleX)
+    //    m_newAngleX = m_maxAngleX;
 
     float angleXFinal;
     float angleYFinal;
@@ -93,7 +92,7 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
     m_gameObject->m_transform.setForward(XMVECTOR{sinY * cosX, sinX, cosX * cosY});
 }
 
-void ObjectCameraBehaviour::anime(float ellapsedTime)
+void ObjectCameraBehaviour::anime(float elapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
@@ -104,7 +103,7 @@ void ObjectCameraBehaviour::anime(float ellapsedTime)
         {
             m_state = CameraState::FirstPersonCamera;
             m_maxAngleX = -85.0f;
-            m_maxAngleX = 85.0f;
+            m_minAngleX = 85.0f;
             m_rotationSmooth = 0.5f;
             m_translationSmooth = 0.5f;
         }
@@ -112,7 +111,7 @@ void ObjectCameraBehaviour::anime(float ellapsedTime)
         {
             m_state = CameraState::ThirdPersonCamera;
             m_maxAngleX = -85.0f;
-            m_maxAngleX = -10.0f;
+            m_minAngleX = -10.0f;
             m_rotationSmooth = 0.1f;
             m_translationSmooth = 0.1f;
             m_firstPersonPositionOk = false;

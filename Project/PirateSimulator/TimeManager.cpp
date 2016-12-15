@@ -31,6 +31,12 @@ milliseconds TimeManager::getRemainingFastTime() const
     return remaining <= 0ms ? 0ms : remaining;
 }
 
+milliseconds TimeManager::getRemainingStartTime() const
+{
+    milliseconds remaining = m_turnTimeLimit - getTimeFromStart();
+    return remaining <= 0ms ? 0ms : remaining;
+}
+
 void TimeManager::update()
 {
     auto tempCurrent = msNow();
@@ -41,6 +47,12 @@ void TimeManager::update()
         m_timeCurrent = tempCurrent;
         m_timeNextFrame = tempCurrent + m_ecartTemps;
     }
+}
+
+void TimeManager::endPause()
+{
+    milliseconds elapsedTime = getTimeBetweenTwoPoints(system_clock::now(), getPoint("beginPause"));
+    m_startGameTime += elapsedTime;
 }
 
 time_point<system_clock> TimeManager::getPoint(std::string name)

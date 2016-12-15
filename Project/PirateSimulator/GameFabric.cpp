@@ -15,6 +15,7 @@
 #include "VehicleShape.h"
 #include "TerrainShape.h"
 #include "TunnelShape.h"
+#include "TriggerShape.h"
 //Behavior
 #include "PlayerBehaviour.h"
 
@@ -152,6 +153,11 @@ void GameFabric::createTunnel(const Transform& tunnelTransform)
     PirateSimulator::GameObjectRef tunnel = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
         new PirateSimulator::GameObject(tunnelTransform, "tunnel")
     );
+    //game object copy to create trigger shape (can't define two shapes for one go)
+    PirateSimulator::GameObjectRef tunnelTrigger = PirateSimulator::GameObjectManager::singleton.subscribeAGameObject(
+        new PirateSimulator::GameObject(tunnelTransform, "tunnelTrigger")
+    );
+
 
     PM3D::CChargeurAssimp chargeur;
 
@@ -166,4 +172,12 @@ void GameFabric::createTunnel(const Transform& tunnelTransform)
     auto tunnelshape = new TunnelShape();
     tunnel->addComponent<ShapeComponent>(tunnelshape);
     PirateSimulator::RendererManager::singleton.addAStaticSortableMesh(tunnelMesh);
+
+    auto triggerShape = new TriggerShape();
+    tunnelTrigger->addComponent<ShapeComponent>(triggerShape);
+}
+
+void GameFabric::createPieces()
+{
+    GameObjectManager::singleton.init();
 }

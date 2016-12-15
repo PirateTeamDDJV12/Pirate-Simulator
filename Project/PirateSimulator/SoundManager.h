@@ -10,12 +10,25 @@ class FMODBank;
 
 namespace PirateSimulator
 {
+    class TimedSoundAdmin;
     class SoundManager
     {
+    private:
+        using TimedSoundCallback = typename void(*)(long long elapsed);
+
+
     public:
         enum
         {
             CHANNEL_MAX_COUNT = 1024
+        };
+
+        enum
+        {
+            DEFAULT_PLAY = 0x0, //FMOD_DEFAULT
+            LOOP_OFF_PLAY = 0x1, //FMOD_LOOP_OFF
+            LOOP_ON_PLAY = 0x2, //FMOD_LOOP_NORMAL
+            LOOP_BIDIRECTIONAL = 0x4 //FMOD_LOOP_BIDI
         };
 
         static constexpr const float MAX_VOLUME     = 1.0f;
@@ -30,6 +43,8 @@ namespace PirateSimulator
         FMODSystemBloc* m_systemBloc;
 
         std::vector<FMODBank> m_musicBank;
+
+        TimedSoundCallback m_timedCallback;
 
 
     private:
@@ -104,8 +119,36 @@ namespace PirateSimulator
         size_t musicCount() const noexcept;
 
 
+        template<typename ... Args>
+        void loadNoises(Args&& ... args)
+        {
+            const char* noiseArray[sizeof...(Args)]{ reinterpret_cast<const char*>(args)... };
+
+            for (auto iter = 0; iter < sizeof...(Args); ++iter)
+            {
+                this->loadMusicFromFile(noiseArray[iter], LOOP_OFF_PLAY);
+            }
+        }
+
+        template<typename ... Args>
+        void loadBackgroundMusics(Args&& ... args)
+        {
+            const char* noiseArray[sizeof...(Args)]{ reinterpret_cast<const char*>(args)... };
+
+            for (auto iter = 0; iter < sizeof...(Args); ++iter)
+            {
+
+                this->loadMusicFromFile(noiseArray[iter], LOOP_ON_PLAY);
+            }
+        }
+
+
     private:
         std::vector<FMODBank>::iterator findMusic(const char* fileName);
+
+
+    public:
+        friend void defineTimedSound(const char* fileName, long long minTimer, long long maxTimer);
     };
 }
 

@@ -1,8 +1,9 @@
 #include "PieceShape.h"
 #include "PhysicsManager.h"
+#include "GameObjectManager.h"
+#include "SoundManager.h"
 #include "ShapeComponent.h"
 #include "Piece.h"
-#include "GameObjectManager.h"
 #include "ICollisionHandler.h"
 #include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 
@@ -30,11 +31,13 @@ class CollisionPieceHandler : public ICollisionHandler
             {
                 GameObjectManager::singleton.getPieceAdministrator()->addScore();
                 GameObjectManager::singleton.destroyCoin(actor1->getComponent<ShapeComponent>()->getPiece());
+                PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/JackpotPieceNoise.wav");
             }
             else if(actor0->getComponent<ShapeComponent>()->isPiece() && actor1->getComponent<ShapeComponent>()->isBoat())
             {
                 GameObjectManager::singleton.getPieceAdministrator()->addScore();
                 GameObjectManager::singleton.destroyCoin(actor0->getComponent<ShapeComponent>()->getPiece());
+                PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/JackpotPieceNoise.wav");
             }
         }
     }

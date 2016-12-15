@@ -62,7 +62,7 @@ namespace PirateSimulator
 
 
     public:
-        void update();
+        void update(float remainingTimeToSimulate);
         void initialize();
         void registerNewComponent(ShapeComponent* component)
         {

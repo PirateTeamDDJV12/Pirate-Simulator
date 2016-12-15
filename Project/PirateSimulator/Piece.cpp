@@ -1,13 +1,15 @@
 #include "Piece.h"
 #include "IBehaviour.h"
-#include "BlocMeshStructure.h"
-#include "BlocMesh.h"
+#include "PieceMesh.h"
 #include "TimeManager.h"
 #include "GameObjectManager.h"
+#include "RendererManager.h"
 #include "PieceShape.h"
-#include <algorithm>
 #include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 #include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxRigidDynamic.h"
+#include "../PetitMoteur3D/PetitMoteur3D/ChargeurAssimp.h"
+#include "../PetitMoteur3D/PetitMoteur3D/ObjetMesh.h"
+#include <algorithm>
 using namespace PirateSimulator;
 
 
@@ -59,7 +61,13 @@ GameObjectRef Piece::createPiece()
 
         GameObjectManager::singleton.setSubscribingStrategy(GameObjectManager::NONE);
 
-        auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
+        PM3D::CChargeurAssimp chargeur;
+
+        // Création du mesh du boat à partir d'un fichier .OBJ
+        PM3D::CParametresChargement paramPiece(".\\PirateSimulator\\", "PieceCoin.obj", false, false);
+        chargeur.Chargement(paramPiece);
+
+        auto pieceMesh = new PieceMesh(PirateSimulator::ShaderPieceMesh::ShadersParams(), L"PieceShader.fx", chargeur);
         auto pieceShape = new PirateSimulator::PieceShape();
 
         m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());

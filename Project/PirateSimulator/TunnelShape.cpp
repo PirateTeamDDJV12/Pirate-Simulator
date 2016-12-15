@@ -4,6 +4,8 @@
 #include "ShapeComponent.h"
 #include "ICollisionHandler.h"
 #include "GameObject.h"
+#include "SoundManager.h"
+#include "TimeManager.h"
 
 using namespace PirateSimulator;
 using namespace physx;
@@ -12,7 +14,8 @@ class CollisionTunnelHandler : public ICollisionHandler
 {
     void onContact(const physx::PxContactPair &aContactPair)
     {
-
+        PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/Collision1Noise.wav");
+        TimeManager::GetInstance().increaseTime(-5s);
     }
 
     void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override

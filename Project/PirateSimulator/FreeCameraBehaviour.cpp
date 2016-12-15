@@ -94,7 +94,7 @@ void FreeCameraBehaviour::rotate(Move::Rotation::Direction direction)
     m_cameraComponent->updateViewMatrix();
 }
 
-void FreeCameraBehaviour::anime(float ellapsedTime)
+void FreeCameraBehaviour::anime(float elapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();

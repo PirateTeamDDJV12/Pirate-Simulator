@@ -5,6 +5,7 @@
 *.lnk
 *.jpg
 *.mp3
+*.wav
 *.lib
 *.obj
 *.blend*

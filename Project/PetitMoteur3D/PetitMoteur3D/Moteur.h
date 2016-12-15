@@ -23,6 +23,7 @@
 
 #include <thread>
 #include <vector>
+#include "../../PirateSimulator/GameManager.h"
 
 
 namespace PM3D
@@ -51,33 +52,26 @@ namespace PM3D
         {
             using PirateSimulator::UIPauseLogic;
 
+
             std::unique_ptr<CPanneauPE> pPanneauPE = std::make_unique<CPanneauPE>();
 
-            bool bBoucle = true;
-            PirateSimulator::UIPauseLogic pauseMenu;
+            PirateSimulator::GameLogic().startGameMusic();
 
-            while(bBoucle)
+            bool bBoucle = true;
+            PirateSimulator::GameManager *gameManager = PirateSimulator::GameManager::getInstance();
+
+            while(gameManager->getGameState() != PirateSimulator::GameState::Quitting && bBoucle)
             {
                 // Propre à la plateforme - (Conditions d'arrêt, interface, messages)
                 bBoucle = RunSpecific();
 
                 CDIManipulateur& input = PirateSimulator::InputManager::singleton.getManipulator();
-                if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Resuming)
+                if(input.getButtonDown(DIK_ESCAPE))
                 {
-                    PirateSimulator::RendererManager::singleton.setSortingMesh(false);
-                    pauseMenu.setPauseState(UIPauseLogic::Paused);
-                }
-                else if (input.getButtonDown(DIK_ESCAPE) && pauseMenu.getPauseState() == UIPauseLogic::Paused)
-                {
-                    PirateSimulator::RendererManager::singleton.setSortingMesh(true);
-                    pauseMenu.setPauseState(UIPauseLogic::Resuming);
-                }
-                else if(pauseMenu.getPauseState() == UIPauseLogic::Leaving)
-                {
-                    return;
+                    gameManager->pause();
                 }
 
-                if (pauseMenu.getPauseState() == UIPauseLogic::Paused)
+                if(gameManager->getGameState() == PirateSimulator::GameState::Pause)
                 {
                     // Get the Input
                     PirateSimulator::InputManager::singleton.update();
@@ -87,7 +81,7 @@ namespace PM3D
                     ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
                     ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
 
-                    float Couleur[4] = { 0.0f, 0.5f, 0.0f, 1.0f };  //  RGBA - Vert pour le moment
+                    float Couleur[4] = {0.0f, 0.5f, 0.0f, 1.0f};  //  RGBA - Vert pour le moment
                     pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
 
                     ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
@@ -106,12 +100,13 @@ namespace PM3D
 
                     // Display the pause
 
-                    pauseMenu();
+                    gameManager->update();
+                    //pauseMenu();
                     //Unbind RenderTarget because it can`t be set to both a texture to a shader and a render target view...
                     ID3D11RenderTargetView* pNullRTV = NULL;
                     pImmediateContext->OMSetRenderTargets(1, &pNullRTV, NULL);
 
-                    if (pNullRTV)
+                    if(pNullRTV)
                     {
                         pNullRTV->Release();
                     }
@@ -134,6 +129,9 @@ namespace PM3D
                     PirateSimulator::TaskManager::GetInstance().update();
                 }
             }
+
+            // Exit the game loop so cleanup
+            PirateSimulator::GameLogic::cleanAllTasks();
         }
 
         virtual int Initialisations()
@@ -142,27 +140,30 @@ namespace PM3D
             InitialisationsSpecific();
 
             // Création des tasks
-            PirateSimulator::GameLogic::createAllTask();
+            PirateSimulator::GameLogic mainThreadGameLogic;
+            mainThreadGameLogic.createAllTask();
+            mainThreadGameLogic.startTitleScreenMusic();
+            PirateSimulator::GameManager::getInstance()->initialize();
 
             bool resultInit = false;
 
             std::vector<std::thread> beginThread;
 
-
             beginThread.emplace_back([this, &resultInit]() {
+                //Loading of some noises
+                PirateSimulator::GameLogic().loadMusics();
+
                 // * Initialisation de la scène
                 InitScene();
                 resultInit = true;
             });
 
-            //for(size_t iter = 0; iter < beginThread.size(); ++iter)
-            //{
-            //    beginThread[iter].join();
-            //}
-
-            PirateSimulator::UIMainMenuLogic mainMenu;
-
-            while(true)
+            // Create the HUD here (to prevent thread bug (it call the same pDispositif as the menu called)
+            PirateSimulator::GameFabric().createHUD();
+			
+            PirateSimulator::GameManager *gameManager = PirateSimulator::GameManager::getInstance();
+            const PirateSimulator::GameState &gameState = PirateSimulator::GameManager::getInstance()->getGameState();
+            while(gameManager->getGameState() != PirateSimulator::GameState::InGame)
             {
                 // Update the window
                 if(!RunSpecific())
@@ -185,21 +186,28 @@ namespace PM3D
                 ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                 pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
                 // Display the mainMenu
-                if((mainMenu() && resultInit))
+                if(gameState == PirateSimulator::GameState::Loading && resultInit)
+                {
+                    gameManager->setGameState(PirateSimulator::GameState::InGame);
                     break;
+                }
+                gameManager->update();
                 pDispositif->Present();
 
                 std::this_thread::sleep_for(5ms);
             }
-
-            beginThread.front().detach();
-
+            
             // Start the game time when all menu and loading screen are close to begin the game
             TimeManager::GetInstance().startGameTime();
 
+            for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            {
+                beginThread[iter].join();
+            }
+
             return 0;
         }
-		
+
         CGestionnaireDeTextures& GetTextureManager()
         {
             return TexturesManager;
@@ -229,9 +237,6 @@ namespace PM3D
         {
             // Vider les textures
             TexturesManager.Cleanup();
-
-            //Vider les objets physiques
-            PirateSimulator::PhysicsManager::singleton.reset();
         }
 
         virtual int InitScene()
@@ -253,11 +258,11 @@ namespace PM3D
             // Initialisation des matrices View et Proj
             // Dans notre cas, ces matrices sont fixes
             Transform cameraTransform;
-            
+
             cameraTransform.setPosition({0.f, 0.f, -10.f, 0.f}); //XMVectorSet before
             cameraTransform.setUp({0.f, 1.f, 0.f, 0.f}); //XMVectorSet before
             cameraTransform.setForward({0.f, 0.f, 1.f, 0.f}); //XMVectorSet before
-			
+
             Transform boatTransform;
 
             boatTransform.setPosition(950.0f, 0.0f, 900.0f);
@@ -291,8 +296,8 @@ namespace PM3D
             //// Skybox
             gameFabric.createSkybox();
 
-            // HUD
-            gameFabric.createHUD();
+            //create our pieces
+            gameFabric.createPieces();
 
             // Add our water plane
             gameFabric.createWater(TransformTerrain);
