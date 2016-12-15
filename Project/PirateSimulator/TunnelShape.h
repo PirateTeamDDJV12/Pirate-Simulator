@@ -17,6 +17,10 @@ namespace PirateSimulator
         {
             return false;
         };
+        bool isTrigger()
+        {
+            return false;
+        }
 
         static std::string typeId() noexcept
         {
