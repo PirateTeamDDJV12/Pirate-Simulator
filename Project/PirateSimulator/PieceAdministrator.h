@@ -17,8 +17,9 @@ namespace PirateSimulator
         {
             PIECE_COUNT_IN_A_COLUMN = 10,
             PIECE_COUNT_IN_A_ROW = 10,
-
             PIECE_COUNT = PIECE_COUNT_IN_A_COLUMN * PIECE_COUNT_IN_A_ROW,
+
+            PIECE_COUNT_IN_FILE = 50,
 
             PIECE_RESPAWN_TIME = 20 * 1000
         };

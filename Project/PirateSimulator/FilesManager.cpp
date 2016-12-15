@@ -69,3 +69,44 @@ std::vector<float> FilesManager::readFileHeightMap(std::string filePath)
 //    std::ifstream ifs(filePath);
 //    return v(std::istream_iterator<float>(ifs), {});
 //}
+
+std::vector<float> FilesManager::readPiecePositionFile(const std::string& fileName) const
+{
+    const size_t coordinateCount = 2;
+
+    std::vector<float> pos;
+    std::ifstream is{ fileName,std::ios::binary };
+
+    char* posBuffer = new char[4];
+    is.read(posBuffer, sizeof(size_t));
+
+    BinaryFast binaryFast;
+
+    size_t posCount;
+    binaryFast.put<BinaryFast::Load>(posBuffer, 0);
+
+    delete[] posBuffer;
+
+    posCount = binaryFast.getUint32();
+    pos.reserve(posCount);
+
+    size_t totalCount = posCount * sizeof(float) * coordinateCount;
+
+    posBuffer = new char[totalCount];
+    
+    is.read(posBuffer, totalCount);
+
+    for (size_t offset = 0; offset < totalCount; offset += 4)
+    {
+        binaryFast.put<BinaryFast::Load>(posBuffer, offset);
+
+        pos.emplace_back(binaryFast.getFloat());
+    }
+
+    delete[] posBuffer;
+
+    // Close the file
+    is.close();
+
+    return std::move(pos);
+}
