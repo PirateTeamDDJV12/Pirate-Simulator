@@ -158,6 +158,9 @@ namespace PM3D
                 resultInit = true;
             });
 
+            // Create the HUD here (to prevent thread bug (it call the same pDispositif as the menu called)
+            PirateSimulator::GameFabric().createHUD();
+			
             PirateSimulator::GameManager *gameManager = PirateSimulator::GameManager::getInstance();
             const PirateSimulator::GameState &gameState = PirateSimulator::GameManager::getInstance()->getGameState();
             while(gameManager->getGameState() != PirateSimulator::GameState::InGame)
@@ -280,8 +283,8 @@ namespace PM3D
             //// Skybox
             gameFabric.createSkybox();
 
-            // HUD
-            gameFabric.createHUD();
+            //create our pieces
+            gameFabric.createPieces();
 
             // Add our water plane
             gameFabric.createWater(TransformTerrain);

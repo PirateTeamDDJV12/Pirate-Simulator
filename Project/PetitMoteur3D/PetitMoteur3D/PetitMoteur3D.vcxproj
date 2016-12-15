@@ -134,6 +134,7 @@
     <ClCompile Include="..\..\PirateSimulator\PhysicsTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Piece.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PieceAdministrator.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\PieceMesh.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PieceShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Plane.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="..\..\PirateSimulator\PhysicsTask.h" />
     <ClInclude Include="..\..\PirateSimulator\Piece.h" />
     <ClInclude Include="..\..\PirateSimulator\PieceAdministrator.h" />
+    <ClInclude Include="..\..\PirateSimulator\PieceMesh.h" />
     <ClInclude Include="..\..\PirateSimulator\PieceShape.h" />
     <ClInclude Include="..\..\PirateSimulator\Plane.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
