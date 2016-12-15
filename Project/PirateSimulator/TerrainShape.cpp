@@ -2,6 +2,7 @@
 #include "TerrainShape.h"
 #include "ICollisionHandler.h"
 #include "GameObjectManager.h"
+#include "SoundManager.h"
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
@@ -17,6 +18,8 @@ namespace PirateSimulator
         {
             
             //Todo Set Behaviour
+
+            PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/Collision1Noise.wav");
         }
 
         void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
