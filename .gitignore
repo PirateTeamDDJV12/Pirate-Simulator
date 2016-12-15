@@ -7,6 +7,7 @@
 *.mp3
 *.lib
 *.obj
+*.blend*
 **/testOutput.txt
 **/OldheightmapOutput.txt
 **/heightmapOutput.txt
