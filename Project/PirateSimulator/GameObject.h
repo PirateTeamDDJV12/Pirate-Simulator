@@ -102,9 +102,10 @@ namespace PirateSimulator
         ComponentAttribute* getComponent()
         {
             static_assert(std::is_convertible<ComponentAttribute*, Component*>::value, "You want to get something that is not component!");
-            if (m_attachedComponent.size() )
-            {
 
+            size_t size = m_attachedComponent.size();
+            if (size > 0 && size < 0xFFF) //4095 is a huge number. just a dirty bug fix
+            {
                 for (auto iter = m_attachedComponent.begin(); iter != m_attachedComponent.end(); ++iter)
                 {
                     if (Component::sameTypeIdAs((*iter)->getTypeId(), ComponentAttribute::typeId()))

@@ -269,17 +269,24 @@ namespace PM3D
             boatTransform.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             boatTransform.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
+            Transform transformCrystal;
+
+            transformCrystal.setPosition(1050.0f, 30.f, 1125.0f);
+            transformCrystal.setUp({ 0.0f, 1.0f, 0.0f, 0.0f });
+            transformCrystal.setForward({ 0.0f, 0.0f, -1.0f, 0.0f });
+
+            Transform transformTunnel;
+
+            transformTunnel.setPosition(150.f, 0.f, 1050.f);
+            transformTunnel.setUp({0.0f, 1.0f, 0.0f, 0.0f});
+            transformTunnel.setForward({0.0f, 0.0f, -1.0f, 0.0f});
+
             Transform TransformTerrain;
 
             TransformTerrain.setPosition(0.0f, 0.0f, 0.0f);
             TransformTerrain.setUp({0.0f, 1.0f, 0.0f, 0.0f});
             TransformTerrain.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
-            Transform transformTunnel;
-
-            transformTunnel.setPosition(150.f, 0.f, 1000.f);
-            transformTunnel.setUp({0.0f, 1.0f, 0.0f, 0.0f});
-            transformTunnel.setForward({0.0f, 0.0f, -1.0f, 0.0f});
 
             GameFabric gameFabric;
 
@@ -295,11 +302,15 @@ namespace PM3D
             // Add our water plane
             gameFabric.createWater(TransformTerrain);
 
+            // Add Tunnel
+            gameFabric.createTunnel(transformTunnel);
+
+            // Add Tunnel
+            gameFabric.createCrystal(transformCrystal);
+
             // Add our terrain
             gameFabric.createField(TransformTerrain);
 
-            // Add Tunnel
-            gameFabric.createTunnel(transformTunnel);
 
             return true;
         }

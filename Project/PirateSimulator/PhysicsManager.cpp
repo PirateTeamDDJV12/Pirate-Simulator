@@ -87,6 +87,7 @@ namespace PirateSimulator
                     }
                 }
 
+
                 ICollisionHandler* other = nullptr;
                 if (go2 != nullptr && go2->getComponent<ShapeComponent>() != nullptr)
                 {
