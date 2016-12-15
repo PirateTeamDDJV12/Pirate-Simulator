@@ -133,6 +133,8 @@ namespace PirateSimulator
 
         void removeAStaticSortableMesh(IMesh* meshToRemove);
 
+        void removeAllMesh();
+
         size_t getObligatoryMeshBeforeCount() const noexcept
         {
             return m_obligatoryBeforeMesh.size();

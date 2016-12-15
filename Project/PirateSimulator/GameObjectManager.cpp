@@ -9,6 +9,17 @@ using namespace PirateSimulator;
 GameObjectManager GameObjectManager::singleton;
 
 
+void GameObjectManager::cleanAllGameObjects()
+{
+    m_pieceAdministrator.cleanUp();
+
+    for(int i = m_gameObjectArray.size() - 1; i < 0; ++i)
+    {
+        m_gameObjectArray[i]->cleanUp();
+    }
+    m_gameObjectArray.clear();
+}
+
 void GameObjectManager::animAllGameObject(float elapsedTime)
 {
     std::for_each(

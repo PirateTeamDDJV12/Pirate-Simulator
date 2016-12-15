@@ -7,7 +7,6 @@
 
 using namespace PirateSimulator;
 
-
 void RenderTask::init()
 {
     // Init afficheur texte
@@ -31,8 +30,7 @@ void RenderTask::update()
     auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
     ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
     ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
-
-
+    
     // On efface la surface de rendu
     float Couleur[4] = {0.0f, 0.5f, 0.0f, 1.0f};  //  RGBA - Vert pour le moment
     pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
@@ -45,4 +43,9 @@ void RenderTask::update()
     // (tampon d'arrière plan)
     // Appeler les fonctions de dessin de chaque objet de la scène
     PirateSimulator::RendererManager::singleton.draw();
+}
+
+void RenderTask::cleanup()
+{
+    PirateSimulator::RendererManager::singleton.removeAllMesh();
 }

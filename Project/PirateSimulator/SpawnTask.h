@@ -9,8 +9,7 @@ namespace PirateSimulator
     public:
         void init() override
         {}
-        void cleanup() override
-        {}
+        void cleanup() override;
         void update() override;
     };
 }

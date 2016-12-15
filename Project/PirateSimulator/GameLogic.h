@@ -3,8 +3,6 @@
 
 namespace PirateSimulator
 {
-    class Transform;
-
     class GameLogic
     {
         enum TasksOrder
@@ -22,6 +20,8 @@ namespace PirateSimulator
     public:
         //create the flow of the game
         static void createAllTask();
+
+        static void cleanAllTasks();
     };
 }
 

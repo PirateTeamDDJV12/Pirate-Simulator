@@ -2,6 +2,7 @@
 #include "CameraManager.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include <DirectXMath.h>
+#include "GameObjectManager.h"
 
 using namespace PirateSimulator;
 using namespace cameraModule;
@@ -60,4 +61,10 @@ void GameObject::setPosition(const DirectX::XMVECTOR &newPos)
 void GameObject::rotate(float angle, const XMVECTOR &axis)
 {
    
+}
+
+void GameObject::cleanUp()
+{
+    RendererManager::singleton.removeAStaticSortableMesh(m_mesh);
+    GameObjectManager::singleton.unspawnGameObject(m_name);
 }
