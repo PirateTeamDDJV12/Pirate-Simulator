@@ -20,6 +20,7 @@ namespace PirateSimulator
             //Todo Set Behaviour
 
             PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/Collision1Noise.wav");
+            TimeManager::GetInstance().increaseTime(-5s);
         }
 
         void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
