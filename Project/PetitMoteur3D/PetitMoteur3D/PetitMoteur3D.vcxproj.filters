@@ -272,7 +272,7 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\FreeCameraBehaviour.cpp">
       <Filter>Fichiers sources\PirateSimulator\Behaviour</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\UIOption.cpp">
       <Filter>Fichiers sources\PirateSimulator\UI</Filter>
     </ClCompile>
@@ -305,6 +305,9 @@
     </ClCompile>
     <ClCompile Include="..\..\PirateSimulator\TunnelShape.cpp">
       <Filter>Fichiers sources\PirateSimulator\ShapeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\PirateSimulator\PieceMesh.cpp">
+      <Filter>Fichiers sources\PirateSimulator\Meshs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -607,6 +610,9 @@
     </ClInclude>
     <ClInclude Include="..\..\PirateSimulator\TunnelShape.h">
       <Filter>Fichiers d%27en-tête\PirateSimulator\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\PirateSimulator\PieceMesh.h">
+      <Filter>Fichiers d%27en-tête\PirateSimulator\Meshs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

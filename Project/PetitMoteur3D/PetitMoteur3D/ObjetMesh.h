@@ -65,7 +65,7 @@ namespace PM3D
 
     class CObjetMesh : public PirateSimulator::Mesh<ShaderCObjectMesh::ShadersParams>
     {
-    protected:
+    public:
         class CSommetMesh
         {
         public:
