@@ -1,12 +1,15 @@
 #include "Piece.h"
-
 #include "IBehaviour.h"
-#include "BlocMeshStructure.h"
-#include "BlocMesh.h"
-
-#include <algorithm>
+#include "PieceMesh.h"
 #include "TimeManager.h"
-
+#include "GameObjectManager.h"
+#include "RendererManager.h"
+#include "PieceShape.h"
+#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
+#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxRigidDynamic.h"
+#include "../PetitMoteur3D/PetitMoteur3D/ChargeurAssimp.h"
+#include "../PetitMoteur3D/PetitMoteur3D/ObjetMesh.h"
+#include <algorithm>
 using namespace PirateSimulator;
 
 
@@ -34,7 +37,7 @@ private:
         m_xAngle = m_xAngle + (elapsedTime * PIECE_ANGULAR_SPEED);
 
         // modifier la matrice de l'objet X
-        m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.m_position));
+        m_gameObject->setWorldMatrix(DirectX::XMMatrixRotationY(m_xAngle) * DirectX::XMMatrixTranslationFromVector(m_gameObject->m_transform.getPosition()));
     };
 };
 
@@ -44,6 +47,7 @@ Piece::Piece(const Transform& spawnPosition, size_t pieceID) :
     m_pieceID{ pieceID },
     m_unspawnedTime{ TimeManager::msNow().count() }
 {}
+
 
 
 GameObjectRef Piece::createPiece()
@@ -57,10 +61,24 @@ GameObjectRef Piece::createPiece()
 
         GameObjectManager::singleton.setSubscribingStrategy(GameObjectManager::NONE);
 
-        auto pieceMesh = new BlocMesh<BlocStructure>(10.f, 10.f, 1.f, ShaderBloc::ShadersParams(), L"MiniPhong.vhl", L"PieceShader.phl");
+        PM3D::CChargeurAssimp chargeur;
+
+        // Création du mesh du boat à partir d'un fichier .OBJ
+        PM3D::CParametresChargement paramPiece(".\\PirateSimulator\\", "PieceCoin.obj", false, false);
+        chargeur.Chargement(paramPiece);
+
+        auto pieceMesh = new PieceMesh(PirateSimulator::ShaderPieceMesh::ShadersParams(), L"PieceShader.fx", chargeur);
+        auto pieceShape = new PirateSimulator::PieceShape();
 
         m_pieceInstance->addComponent<IBehaviour>(new PieceBehaviour());
         m_pieceInstance->addComponent<IMesh>(pieceMesh);
+        m_pieceInstance->addComponent<ShapeComponent>(pieceShape);
+        pieceShape->setPiece(this);
+        //m_pieceInstance->addComponent<DynamicSimulationComponent>();
+
+
+     //   std::shared_ptr<DynamicSimulationComponent> simulationComponent;
+
 
         RendererManager::singleton.addAStaticSortableMesh(pieceMesh);
     }
@@ -75,6 +93,8 @@ void Piece::destroyPiece()
     if (isInstanciated())
     {
         RendererManager::singleton.removeAStaticSortableMesh(m_pieceInstance->getComponent<IMesh>());
+        m_pieceInstance->getComponent<ShapeComponent>()->cleanUp();
+        //PhysicsManager::singleton.scene().removeActor(actor);
         GameObjectManager::singleton.unspawnGameObject(m_pieceInstance->m_name);
         m_pieceInstance = GameObjectRef();
         m_unspawnedTime = TimeManager::msNow().count();

@@ -4,15 +4,12 @@
 #include "Material.h"
 #include "Effect.h"
 #include "Mesh.h"
-#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
-#include <DirectXMath.h>
-#include <d3d11.h>
-#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
 #include <vector>
 #include <DirectXMath.h>
-#include <math.h>
+#include <d3d11.h>
+
 namespace PirateSimulator
 {
     class SommetPlane
@@ -61,7 +58,13 @@ namespace PirateSimulator
             DirectX::XMVECTOR vLightPoint2;
             DirectX::XMVECTOR vLightPoint3;
             DirectX::XMVECTOR vLightPoint4;
-            DirectX::XMVECTOR mappedLightPointScope;
+            DirectX::XMVECTOR mappedLightPointPower1;
+
+            DirectX::XMVECTOR vLightPoint5;
+            DirectX::XMVECTOR vLightPoint6;
+            DirectX::XMVECTOR vLightPoint7;
+            DirectX::XMVECTOR vLightPoint8;
+            DirectX::XMVECTOR mappedLightPointPower2;
 
             DirectX::XMVECTOR vAEcl; 			// la valeur ambiante de l'éclairage
             DirectX::XMVECTOR vAMat; 			// la valeur ambiante du matériau
@@ -158,9 +161,9 @@ namespace PirateSimulator
         static constexpr const float DEFAULT_Y_LEVEL_WATER_PLANE = 0.f;
 
         static constexpr const float TICK_INCREMENT = 0.04806f;
-        static constexpr const float WAVE_AMPLITUDE = 1.1f;
+        static constexpr const float WAVE_AMPLITUDE = 0.5f;
         static constexpr const float WAVE_FREQUENCY = 0.70f;
-        static constexpr const float WAVE_SPEED_COEFFICIENT = 0.455f;
+        static constexpr const float WAVE_SPEED_COEFFICIENT = 0.01f;
 
 
     private:

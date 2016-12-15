@@ -2,6 +2,7 @@
 
 #include "MoteurWindows.h"
 #include "../../PirateSimulator/InputManager.h"
+#include "../../PirateSimulator/PhysicsManager.h"
 
 using namespace PirateSimulator;
 
@@ -44,9 +45,9 @@ namespace PM3D
         MyRegisterClass(hAppInstance);
 
         hMainWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-                                CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hAppInstance, NULL);
+            CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hAppInstance, NULL);
 
-        if(!hMainWnd)
+        if (!hMainWnd)
         {
             return false;
         }
@@ -92,6 +93,12 @@ namespace PM3D
         return RegisterClassEx(&wcex);
     }
 
+    void DisableCloseButton(HWND hwnd)
+    {
+        EnableMenuItem(GetSystemMenu(hwnd, FALSE), SC_CLOSE,
+                       MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+    }
+
 
     //  FONCTION : WndProc(HWND, unsigned, WORD, LONG)
     //
@@ -107,41 +114,42 @@ namespace PM3D
         int wmId, wmEvent;
         PAINTSTRUCT ps;
         HDC hdc;
-
-        switch(message)
+        DisableCloseButton(hWnd);
+        switch (message)
         {
-            case WM_COMMAND:
-                wmId = LOWORD(wParam);
-                wmEvent = HIWORD(wParam);
-                // Analyse les sélections de menu :
-                switch(wmId)
-                {
-                    case IDM_ABOUT:
-                        DialogBox(hAppInstance, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)About);
-                        break;
-                    case IDM_EXIT:
-                        DestroyWindow(hWnd);
-                        break;
-                    default:
-                        return DefWindowProc(hWnd, message, wParam, lParam);
-                }
+        case WM_COMMAND:
+            wmId = LOWORD(wParam);
+            wmEvent = HIWORD(wParam);
+            // Analyse les sélections de menu :
+            switch (wmId)
+            {
+            case IDM_ABOUT:
+                DialogBox(hAppInstance, (LPCTSTR)IDD_ABOUTBOX, hWnd, (DLGPROC)About);
                 break;
-            case WM_PAINT:
-                hdc = BeginPaint(hWnd, &ps);
-                // Évitez d'ajouter du code ici...
-                EndPaint(hWnd, &ps);
-                break;
-            case WM_DESTROY:
-                PostQuitMessage(0);
+            case IDM_EXIT:
+                DestroyWindow(hWnd);
                 break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
+            }
+            break;
+        case WM_PAINT:
+            hdc = BeginPaint(hWnd, &ps);
+            // Évitez d'ajouter du code ici...
+            EndPaint(hWnd, &ps);
+            break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
         }
         return 0;
     }
 
     int CMoteurWindows::Show()
     {
+        ShowCursor(FALSE);
         ShowWindow(hMainWnd, SW_SHOWNORMAL);
         UpdateWindow(hMainWnd);
 
@@ -152,18 +160,18 @@ namespace PM3D
     INT_PTR CALLBACK CMoteurWindows::About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     {
         UNREFERENCED_PARAMETER(lParam);
-        switch(message)
+        switch (message)
         {
-            case WM_INITDIALOG:
-                return (INT_PTR)TRUE;
+        case WM_INITDIALOG:
+            return (INT_PTR)TRUE;
 
-            case WM_COMMAND:
-                if(LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-                {
-                    EndDialog(hDlg, LOWORD(wParam));
-                    return (INT_PTR)TRUE;
-                }
-                break;
+        case WM_COMMAND:
+            if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+            {
+                EndDialog(hDlg, LOWORD(wParam));
+                return (INT_PTR)TRUE;
+            }
+            break;
         }
         return (INT_PTR)FALSE;
     }
@@ -183,13 +191,13 @@ namespace PM3D
         bool bBoucle = true;
 
         // Y-a-t'il un message Windows à traiter?
-        if(::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+        if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
             // Est-ce un message de fermeture ?
-            if(msg.message == WM_QUIT) bBoucle = false;
+            if (msg.message == WM_QUIT) bBoucle = false;
 
             // distribuer le message
-            if(!::TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            if (!::TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
             {
                 ::TranslateMessage(&msg);
                 ::DispatchMessage(&msg);

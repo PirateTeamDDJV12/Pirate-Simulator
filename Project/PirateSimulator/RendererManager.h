@@ -45,7 +45,7 @@ namespace PirateSimulator
     public:
         enum
         {
-            AREA_EDGE_COUNT = 6,
+            AREA_EDGE_COUNT = 3,
             AREA_TOTAL_COUNT = AREA_EDGE_COUNT * AREA_EDGE_COUNT,
             AREA_WIDTH = (GameGlobals::SceneGlobals::MAX_X - GameGlobals::SceneGlobals::MIN_X) / AREA_EDGE_COUNT + 1,
             VISIBLE_AREA = (AREA_TOTAL_COUNT < MAX_VISIBLE_AREA) ? AREA_TOTAL_COUNT : MAX_VISIBLE_AREA,
@@ -132,6 +132,8 @@ namespace PirateSimulator
         void addAStaticSortableMesh(IMesh* mesh);
 
         void removeAStaticSortableMesh(IMesh* meshToRemove);
+
+        void removeAllMesh();
 
         size_t getObligatoryMeshBeforeCount() const noexcept
         {

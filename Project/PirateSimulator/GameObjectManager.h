@@ -26,6 +26,7 @@ namespace PirateSimulator
 
     private:
         std::vector<GameObjectRef> m_gameObjectArray;
+        std::vector<Piece*> m_coinsToDestroy;
 
         PieceAdministrator m_pieceAdministrator;
 
@@ -75,9 +76,30 @@ namespace PirateSimulator
             }
         }
 
+        void cleanAllGameObjects();
+
+        void destroyCoin(Piece *coin)
+        {
+            m_coinsToDestroy.emplace_back(coin);
+        }
+
+        void unspawnCoinsList()
+        {
+            for(auto coin : m_coinsToDestroy)
+            {
+                coin->destroyPiece();
+            }
+            m_coinsToDestroy.clear();
+        }
+
         void animAllGameObject(float elapsedTime);
 
         void init();
+
+        PieceAdministrator* getPieceAdministrator()
+        {
+            return &m_pieceAdministrator;
+        }
 
 
     private:

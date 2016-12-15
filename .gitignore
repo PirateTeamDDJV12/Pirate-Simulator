@@ -1,10 +1,14 @@
 *.vs
-*.obj
 *.db
 *.opendb
 *.ipch
 *.lnk
 *.jpg
+*.mp3
+*.wav
+*.lib
+*.obj
+*.blend*
 **/testOutput.txt
 **/OldheightmapOutput.txt
 **/heightmapOutput.txt
@@ -21,3 +25,5 @@ Project/*/*/ipch/*
 Project/*/Debug/*
 Project/*/Release/*
 Project/*/x64/*
+
+Project/PetitMoteur3D/PetitMoteur3D/PhysX/*

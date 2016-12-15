@@ -13,21 +13,25 @@ namespace PirateSimulator
         class FreeCameraBehaviour : public IBehaviour
         {
         protected:
-            cameraModule::BaseCamera* m_cameraComponent;
+            cameraModule::Camera*   m_cameraComponent;
 
-            AngleRad m_rotationAroundX;
-            AngleRad m_rotationAroundY;
+            AngleRad                m_rotationAroundX;
+            AngleRad                m_rotationAroundY;
+            float                   m_speed;
+            float                   m_rotationSpeed;
 
             std::chrono::time_point<std::chrono::system_clock> m_lastTime;
 
         public:
+            FreeCameraBehaviour(float speed = 50.0f, float rotationSpeed = 5.0f) : m_speed{speed}, m_rotationSpeed {rotationSpeed}
+            {}
             void setGameObject(GameObject* parent)
             {
                 m_gameObject = parent;
-                m_cameraComponent = m_gameObject->getComponent<BaseCamera>();
+                m_cameraComponent = m_gameObject->getComponent<Camera>();
             }
 
-            virtual void anime(float ellapsedTime);
+            virtual void anime(float elapsedTime);
 
             virtual void move(Move::Translation::Direction direction);
             virtual void rotate(Move::Rotation::Direction rotation);

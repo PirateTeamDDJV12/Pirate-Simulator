@@ -4,8 +4,10 @@
 #include "GameConfig.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\Config\Config.hpp"
 #include "TimeManager.h"
+#include "FilesManager.h"
 
 #include <algorithm>
+#include <string>
 
 
 using namespace PirateSimulator;
@@ -14,13 +16,19 @@ using namespace PirateSimulator;
 struct PieceSpawnPosition
 {
 public:
-    Transform m_spawnPos[PieceAdministrator::PIECE_COUNT];
+    std::vector<Transform> m_spawnPos;
 
 
 public:
     PieceSpawnPosition(unsigned int sceneWidth, unsigned int sceneHeight, float mapScale)
     {
+        m_spawnPos.reserve(PieceAdministrator::PIECE_COUNT);
         mapSpawn(sceneWidth, sceneHeight, mapScale);
+    }
+
+    PieceSpawnPosition(const std::string& fileName)
+    {
+        mapFromFile(fileName);
     }
 
 
@@ -40,9 +48,7 @@ public:
             std::begin(m_spawnPos),
             std::end(m_spawnPos),
             [&](Transform& pos) {
-                pos.m_position.vector4_f32[0] = xPos;
-                pos.m_position.vector4_f32[1] = PieceAdministrator::PIECE_HEIGHT_FROM_SOIL;
-                pos.m_position.vector4_f32[2] = zPos;
+                pos.setPosition(xPos, PieceAdministrator::PIECE_HEIGHT_FROM_SOIL, zPos);
 
                 xPos += separatorX;
 
@@ -54,9 +60,27 @@ public:
             }
         );
     }
+
+    void mapFromFile(const std::string& fileName)
+    {
+        std::vector<float> position = FilesManager().readPiecePositionFile(fileName);
+
+        m_spawnPos.resize(position.size() / 2);
+
+        size_t count = 0;
+
+        std::for_each(
+            std::begin(m_spawnPos),
+            std::end(m_spawnPos),
+            [&](Transform& pos) {
+                pos.setPosition(position[count], PieceAdministrator::PIECE_HEIGHT_FROM_SOIL, position[count + 1]);
+                count += 2;
+            }
+        );
+    }
 };
 
-PieceAdministrator::PieceAdministrator()
+PieceAdministrator::PieceAdministrator(): m_currentScore{0}
 {
     m_pieceArray.reserve(PIECE_COUNT);
 }
@@ -64,14 +88,9 @@ PieceAdministrator::PieceAdministrator()
 
 void PieceAdministrator::init()
 {
-    PieceSpawnPosition pieceSpawnPos(
-        Config::getInstance()->getWidth(),
-        Config::getInstance()->getHeight(),
-        Config::getInstance()->getMapScale()
-    );
+    PieceSpawnPosition pieceSpawnPos("PirateSimulator/PiecePosition.bin");
 
-    for (size_t id = 0; id < PIECE_COUNT; ++id)
-
+    for (size_t id = 0; id < pieceSpawnPos.m_spawnPos.size(); ++id)
     {
         m_pieceArray.emplace_back(pieceSpawnPos.m_spawnPos[id], id);
         m_pieceArray[id].createPiece();
@@ -98,4 +117,12 @@ void PieceAdministrator::update(float elapsedTime)
             }
         }
     );
+}
+
+void PieceAdministrator::cleanUp()
+{
+    for(int iter = 0; iter < m_pieceArray.size(); ++iter)
+    {
+        m_pieceArray[iter].destroyPiece();
+    }
 }

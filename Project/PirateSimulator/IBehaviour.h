@@ -13,12 +13,13 @@ namespace PirateSimulator
         static std::string typeId() noexcept { return "BehaviourComponent"; }
         virtual std::string getTypeId() const noexcept { return IBehaviour::typeId(); }
 
-        virtual void anime(float ellapsedTime) {};
+        virtual void anime(float elapsedTime) {};
 
         virtual void move(float x, float y, float z) {}
         virtual void rotate(float xAngle, float yAngle) {}
         virtual void move(Move::Translation::Direction direction) {}
         virtual void rotate(Move::Rotation::Direction rotation) {}
+
     };
 }
 

@@ -39,7 +39,7 @@ namespace PM3D
     class CAfficheurSprite : public PirateSimulator::Mesh<ShaderCAfficheurSprite::ShadersParams>
     {
     public:
-        CAfficheurSprite(CDispositifD3D11* _pDispositif);
+        CAfficheurSprite();
         virtual ~CAfficheurSprite(void);
         virtual void Anime(float tempsEcoule) {};
         virtual	void Draw();
@@ -90,8 +90,6 @@ namespace PM3D
 
         // Tous nos sprites
         vector<CSprite*> tabSprites;
-
-
 
 
     protected:

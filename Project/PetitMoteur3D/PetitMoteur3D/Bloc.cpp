@@ -4,6 +4,8 @@
 
 #include "resource.h"
 #include "MoteurWindows.h"
+#include "..\..\PirateSimulator\CameraManager.h"
+
 using namespace UtilitairesDX;
 
 namespace PM3D

@@ -28,18 +28,33 @@ void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)
     if (meshToRemove)
     {
         std::vector<IMesh*>* areaToConsider = findStaticMeshInArea(
-            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[0]), 
-            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.m_position.vector4_f32[2])
+            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.getPosition().vector4_f32[0] / AREA_WIDTH),
+            static_cast<size_t>(meshToRemove->getGameObject()->m_transform.getPosition().vector4_f32[2] / AREA_WIDTH)
         );
 
-        for (auto iter = areaToConsider->begin(); iter != areaToConsider->end(); ++iter)
+        if (areaToConsider)
         {
-            if (*iter == meshToRemove)
+            for (auto iter = areaToConsider->begin(); iter != areaToConsider->end(); ++iter)
             {
-                areaToConsider->erase(iter);
+                if (*iter == meshToRemove)
+                {
+                    areaToConsider->erase(iter);
+                    break;
+                }
             }
         }
     }
+}
+
+void RendererManager::removeAllMesh()
+{
+    for(auto area : m_staticMeshArray)
+    {
+        area.meshArray.clear();
+    }
+    m_obligatoryBeforeMesh.clear();
+    m_obligatoryEndMesh.clear();
+    m_movingMeshArray.clear();
 }
 
 void RendererManager::drawSorting()
@@ -92,8 +107,8 @@ void RendererManager::drawAll()
 
 void RendererManager::addAStaticSortableMesh(PirateSimulator::IMesh* mesh)
 {
-    size_t x = static_cast<size_t>(mesh->getGameObject()->m_transform.m_position.vector4_f32[0] / AREA_WIDTH);
-    size_t z = static_cast<size_t>(mesh->getGameObject()->m_transform.m_position.vector4_f32[2] / AREA_WIDTH);
+    size_t x = static_cast<size_t>(mesh->getGameObject()->m_transform.getPosition().vector4_f32[0] / AREA_WIDTH);
+    size_t z = static_cast<size_t>(mesh->getGameObject()->m_transform.getPosition().vector4_f32[2] / AREA_WIDTH);
 
     auto meshArray = findStaticMeshInArea(x, z);
     if(meshArray)
@@ -122,15 +137,17 @@ void RendererManager::deepAddToStack(size_t x, size_t z) noexcept
     std::vector<IMesh*>* toAddToStack = findStaticMeshInArea(x, z);
     if(toAddToStack && !toAddToStack->empty())
     {
-        float xCam = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0];
-        float zCam = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[2];
+        XMVECTOR position = CameraManager::singleton.getMainCameraGO()->m_transform.getPosition();
+        float xCam = position.vector4_f32[0];
+        float zCam = position.vector4_f32[2];
 
         std::for_each(
             toAddToStack->begin(),
             toAddToStack->end(),
             [&](IMesh* mesh) {
-            float xM = mesh->getGameObject()->m_transform.m_position.vector4_f32[0] - xCam;
-            float zM = mesh->getGameObject()->m_transform.m_position.vector4_f32[2] - zCam;
+            XMVECTOR position = mesh->getGameObject()->m_transform.getPosition();
+            float xM = position.vector4_f32[0] - xCam;
+            float zM = position.vector4_f32[2] - zCam;
 
             if((xM*xM + zM*zM) < LONG_CAMERA_SQUARE_RANGE)
             {
@@ -144,8 +161,9 @@ void RendererManager::deepAddToStack(size_t x, size_t z) noexcept
 
 void RendererManager::updateRenderedStack()
 {
-    float xCameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[0];
-    float zCameraPosition = CameraManager::singleton.getMainCameraGO()->m_transform.m_position.vector4_f32[2];
+    XMVECTOR position = CameraManager::singleton.getMainCameraGO()->m_transform.getPosition();
+    float xCameraPosition = position.vector4_f32[0];
+    float zCameraPosition = position.vector4_f32[2];
 
     size_t xCameraArea = static_cast<size_t>(xCameraPosition < 0.f ? 0 : xCameraPosition / AREA_WIDTH);
     size_t zCameraArea = static_cast<size_t>(zCameraPosition < 0.f ? 0 : zCameraPosition / AREA_WIDTH);
@@ -475,8 +493,9 @@ void RendererManager::updateRenderedStack()
         // Add the moving objects in the stack
         for(auto iter = m_movingMeshArray.begin(); iter != m_movingMeshArray.end(); ++iter)
         {
-            float xM = (*iter)->getGameObject()->m_transform.m_position.vector4_f32[0] - xCameraPosition;
-            float zM = (*iter)->getGameObject()->m_transform.m_position.vector4_f32[2] - zCameraPosition;
+            XMVECTOR position = (*iter)->getGameObject()->m_transform.getPosition();
+            float xM = position.vector4_f32[0] - xCameraPosition;
+            float zM = position.vector4_f32[2] - zCameraPosition;
 
             if((xM*xM + zM*zM) < LONG_CAMERA_SQUARE_RANGE)
             {
