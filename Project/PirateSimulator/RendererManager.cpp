@@ -43,6 +43,17 @@ void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)
     }
 }
 
+void RendererManager::removeAllMesh()
+{
+    for(auto area : m_staticMeshArray)
+    {
+        area.meshArray.clear();
+    }
+    m_obligatoryBeforeMesh.clear();
+    m_obligatoryEndMesh.clear();
+    m_movingMeshArray.clear();
+}
+
 void RendererManager::drawSorting()
 {
     auto iter = m_obligatoryBeforeMesh.begin();

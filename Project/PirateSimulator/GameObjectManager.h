@@ -76,6 +76,8 @@ namespace PirateSimulator
             }
         }
 
+        void cleanAllGameObjects();
+
         void destroyCoin(Piece *coin)
         {
             m_coinsToDestroy.emplace_back(coin);

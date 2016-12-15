@@ -41,6 +41,11 @@ namespace PirateSimulator
             m_gameState = state;
         }
 
+        GameState getState() const
+        {
+            return m_gameState;
+        }
+
         bool operator()();
     };
 }

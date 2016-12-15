@@ -3,8 +3,6 @@
 
 namespace PirateSimulator
 {
-    class Transform;
-
     class GameLogic
     {
         enum TasksOrder
@@ -39,6 +37,9 @@ namespace PirateSimulator
 
         // start the titleScreen music
         void startTitleScreenMusic() const;
+      
+      
+        static void cleanAllTasks();
     };
 }
 

@@ -37,7 +37,8 @@ namespace PirateSimulator
             EACTORTERRAIN = 1<<0,
             EACTORVEHICLE = 1<<1,
             EACTORPIECE = 1<<2,
-            EACTORTUNNEL=1<<3
+            EACTORTUNNEL=1<<3,
+            EACTORTRIGGER=1<<4 
         };
 
 
@@ -49,7 +50,7 @@ namespace PirateSimulator
 
         virtual bool isBoat() = 0;
         virtual bool isPiece() = 0;
-
+        virtual bool isTrigger() = 0;
         virtual physx::PxTransform pose();
         void setPose(const physx::PxTransform &iPose);
         void cleanUp();

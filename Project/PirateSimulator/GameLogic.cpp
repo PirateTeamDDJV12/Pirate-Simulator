@@ -27,6 +27,7 @@ void GameLogic::createAllTask() const
     taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
 }
 
+
 void GameLogic::loadMusics() const
 {
     SoundManager& soundManager = SoundManager::singleton;
@@ -80,4 +81,10 @@ void GameLogic::startTitleScreenMusic() const
 
     //start the title Screen music
     soundManager.playMusic("PirateSimulator/UISoundtrack.mp3"); //Loyd's Yohoho music ( ... -_-' )
+}
+
+void GameLogic::cleanAllTasks()
+{
+    PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
+    taskManager->reset();
 }

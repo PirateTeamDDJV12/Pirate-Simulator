@@ -88,6 +88,8 @@ void PlayerBehaviour::anime(float ellapsedTime)
     // Boat tangling
     physx::PxTransform pose = boatShape->pose();
     m_tangling += 0.05f;
+    pose.p.y = 0;
+    boatShape->setPose(pose);
     float angle = sinf(m_tangling);
     m_gameObject->setPosition(pose.p.x, angle * 0.5f, pose.p.z);
 }

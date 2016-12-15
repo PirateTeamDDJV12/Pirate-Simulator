@@ -84,7 +84,7 @@ namespace PirateSimulator
         PxFilterData filterData;
 
         filterData.word0 = EACTORTERRAIN;
-        filterData.word1 = 0;
+        filterData.word1 = EACTORVEHICLE;
         m_shape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, true);
         
         m_shape->setSimulationFilterData(filterData);
@@ -95,7 +95,6 @@ namespace PirateSimulator
         m_actor.userData = parent;
         PhysicsManager::singleton.registerNewComponent(this);
         m_gameObject = parent;
-
 
         
     }

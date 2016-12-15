@@ -77,7 +77,8 @@ namespace PM3D
                 }
                 else if(pauseMenu.getPauseState() == UIPauseLogic::Leaving)
                 {
-                    return;
+                    bBoucle = false;
+                    break;
                 }
 
                 if (pauseMenu.getPauseState() == UIPauseLogic::Paused)
@@ -137,6 +138,9 @@ namespace PM3D
                     PirateSimulator::TaskManager::GetInstance().update();
                 }
             }
+
+            // Exit the game loop so cleanup
+            PirateSimulator::GameLogic::cleanAllTasks();
         }
 
         virtual int Initialisations()
@@ -195,8 +199,17 @@ namespace PM3D
                 ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
                 pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
                 // Display the mainMenu
-                if((mainMenu() && resultInit))
-                    break;
+                if(mainMenu())
+                {
+                    if(mainMenu.getState() == PirateSimulator::Quitting)
+                    {
+                        return 1;
+                    }
+                    if(resultInit)
+                    {
+                        break;                        
+                    }
+                }
                 pDispositif->Present();
 
                 std::this_thread::sleep_for(5ms);
@@ -239,9 +252,6 @@ namespace PM3D
         {
             // Vider les textures
             TexturesManager.Cleanup();
-
-            //Vider les objets physiques
-            PirateSimulator::PhysicsManager::singleton.reset();
         }
 
         virtual int InitScene()
