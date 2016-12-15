@@ -1,6 +1,7 @@
 #include "UIHUD.h"
 #include "RendererManager.h"
 #include "GameObjectManager.h"
+#include "PhysicsManager.h"
 
 PirateSimulator::UIHUD::UIHUD() : GameObject(Transform(), "HUDGO")
 {
@@ -42,4 +43,7 @@ void PirateSimulator::UIHUD::anime(float elapsedTime)
 
     m_score->Ecrire(L"Score: " + std::to_wstring(GameObjectManager::singleton.getPieceAdministrator()->getScore()));
     // TODO - update speed text
+    int speed = PhysicsManager::singleton.getVehiculeShape()->pxActor()->getLinearVelocity().magnitude()/100;
+
+    m_speed-> Ecrire(L"" +std::to_wstring(speed) + L"noeud");
 }
