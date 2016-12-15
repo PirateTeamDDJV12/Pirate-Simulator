@@ -35,6 +35,7 @@ public:
     void startGameTime()
     {
         m_startGameTime = system_clock::now();
+        setTurnLimitTime(60s);
     }
     milliseconds getTimeFromStart() const
     {
@@ -69,6 +70,8 @@ public:
     // Get the remaining time between the fast save and now
     milliseconds getRemainingFastTime() const;
 
+    milliseconds getRemainingStartTime() const;
+
     void update();
 
     bool isTimeToUpdate() const
@@ -85,6 +88,8 @@ public:
         }
         return elapsed.count() * m_echelleTemps;// <= 0 ? 0.0001f : elapsed.count()
     }
+
+    void endPause();
 };
 
 #endif //TIME_MANAGER_HEADER

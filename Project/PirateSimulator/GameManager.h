@@ -46,7 +46,6 @@ namespace PirateSimulator
         void GameManager::initialize();
         void GameManager::setGameState(const GameState &state);
         const GameState &getGameState() const;
-        const milliseconds &getRemainingTime() const;
         void pause();
         void update();
     };

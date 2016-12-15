@@ -92,7 +92,7 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
     m_gameObject->m_transform.setForward(XMVECTOR{sinY * cosX, sinX, cosX * cosY});
 }
 
-void ObjectCameraBehaviour::anime(float ellapsedTime)
+void ObjectCameraBehaviour::anime(float elapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();

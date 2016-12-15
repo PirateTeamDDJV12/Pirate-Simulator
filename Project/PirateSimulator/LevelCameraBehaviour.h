@@ -39,7 +39,7 @@ namespace PirateSimulator
 
             void move(Move::Translation::Direction direction);
             void rotate(Move::Rotation::Direction direction);
-            void anime(float ellapsedTime);
+            void anime(float elapsedTime);
 
             void setTerrain(GameObjectRef fieldObject)
             {

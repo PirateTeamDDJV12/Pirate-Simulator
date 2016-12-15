@@ -19,8 +19,6 @@ void GameManager::setGameState(const GameState &state)
     m_gameState = state;
     if(state == GameState::Loading)
         m_loadingScreen.initialize();
-    if(state == GameState::InGame)
-        TimeManager::GetInstance().startGameTime();
 }
 
 const GameState &GameManager::getGameState() const
@@ -52,11 +50,14 @@ void GameManager::update()
 void GameManager::pause()
 {
     if(m_gameState == GameState::InGame)
+    {
         m_gameState = GameState::Pause;
+        TimeManager::GetInstance().savePoint("beginPause");
+    }
     else
     {
+        TimeManager::GetInstance().endPause();
         m_gameState = GameState::InGame;
-        TimeManager::GetInstance().startGameTime();
     }
 }
 

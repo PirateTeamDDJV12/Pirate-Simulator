@@ -31,7 +31,7 @@ namespace PirateSimulator
                 m_cameraComponent = m_gameObject->getComponent<Camera>();
             }
 
-            virtual void anime(float ellapsedTime);
+            virtual void anime(float elapsedTime);
 
             virtual void move(Move::Translation::Direction direction);
             virtual void rotate(Move::Rotation::Direction rotation);

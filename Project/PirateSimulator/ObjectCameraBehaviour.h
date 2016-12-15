@@ -75,7 +75,7 @@ namespace PirateSimulator
 
             virtual void rotate(Move::Rotation::Direction direction);
 
-            virtual void anime(float ellapsedTime);
+            virtual void anime(float elapsedTime);
         };
     }
 }
