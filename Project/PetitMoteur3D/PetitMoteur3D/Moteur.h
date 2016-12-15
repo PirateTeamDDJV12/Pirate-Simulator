@@ -189,6 +189,7 @@ namespace PM3D
                 if(gameState == PirateSimulator::GameState::Loading && resultInit)
                 {
                     gameManager->setGameState(PirateSimulator::GameState::InGame);
+                    break;
                 }
                 gameManager->update();
                 pDispositif->Present();
@@ -198,6 +199,11 @@ namespace PM3D
             
             // Start the game time when all menu and loading screen are close to begin the game
             TimeManager::GetInstance().startGameTime();
+
+            for(size_t iter = 0; iter < beginThread.size(); ++iter)
+            {
+                beginThread[iter].join();
+            }
 
             return 0;
         }
