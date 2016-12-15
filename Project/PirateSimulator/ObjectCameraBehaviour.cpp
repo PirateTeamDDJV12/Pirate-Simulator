@@ -35,11 +35,10 @@ void ObjectCameraBehaviour::move(Move::Translation::Direction direction)
         if(!m_firstPersonPositionOk)
         {
             XMVECTOR diff = m_desiredPosition - m_gameObject->m_transform.getPosition();
-            if(fabs(diff.vector4_f32[0]) < 0.2f &&  fabs(diff.vector4_f32[1]) < 0.2f && fabs(diff.vector4_f32[2] < 0.2f))
+            if(fabs(diff.vector4_f32[0]) < 3.0f &&  fabs(diff.vector4_f32[1]) < 3.0f && fabs(diff.vector4_f32[2] < 3.0f))
             {
                 m_firstPersonPositionOk = true;
                 m_rotationSmooth = 0.5f;
-                m_translationSmooth = 1.0f;
             }
             XMVECTOR currentPosition = m_gameObject->m_transform.getPosition();
 

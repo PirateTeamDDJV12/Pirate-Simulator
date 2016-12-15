@@ -5,43 +5,23 @@
 #include <map>
 
 #include "UIElement.h"
+#include "GameManager.h"
+
 
 namespace PirateSimulator
 {
-    enum GameState
-    {
-        MainMenu,
-        Loading,
-        Options,
-        Credits,
-        Quitting,
-        Starting
-    };
-
-
     class UIMainMenuLogic
     {
-    private:
+   /* private:
         UIRef m_mainScreen;
         UIRef m_optionsScreen;
         UIRef m_creditsScreen;
         UIRef m_loadingScreen;
-        GameState m_gameState;
-        std::map<GameState, UIRef> m_ptrTab;
 
     public:
         UIMainMenuLogic();
-        
-        void setGameState(GameState state)
-        {
-            if(state == Loading)
-            {
-                m_loadingScreen->initialize();
-            }
-            m_gameState = state;
-        }
 
-        bool operator()();
+        bool operator()();*/
     };
 }
 

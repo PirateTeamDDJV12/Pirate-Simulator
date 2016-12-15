@@ -7,26 +7,19 @@
 
 #include "..\PetitMoteur3D\PetitMoteur3D\DIManipulateur.h"
 
-#include <DirectXMath.h>
+#include "GameManager.h"
 
 
 using namespace PirateSimulator;
 using namespace DirectX;
 
 
-UIPause::UIPause(UIPauseLogic* parent) : m_parent { parent }
+UIPause::UIPause()
 {
-    PirateSimulator::Transform transform;
-
-    transform.setPosition({ 0,0,0,0 });
-    transform.setRight({ 1,0,0,0 });
-    transform.setUp({ 0,1,0,0 });
-    transform.setForward({ 0,0,-1,0 });
-
     // Buttons for the pause menu
     m_mainMenuImages = new PM3D::CAfficheurSprite();
-    m_buttons[0] = createButton([this]() {m_parent->setPauseState(UIPauseLogic::PauseState::Resuming); });
-    m_buttons[1] = createButton([this]() {m_parent->setPauseState(UIPauseLogic::PauseState::Leaving); });
+    m_buttons[0] = createButton([this]() {GameManager::getInstance()->pause(); });
+    m_buttons[1] = createButton([this]() {GameManager::getInstance()->setGameState(GameState::Quitting); });
 
     m_currentButton = 0;
 

@@ -2,25 +2,24 @@
 
 #include "UIMenu.h"
 #include "GameObjectManager.h"
+#include "GameManager.h"
 #include "InputManager.h"
 
 using namespace PirateSimulator;
 using namespace DirectX;
 
-UIMenu::UIMenu(UIMainMenuLogic *parent) : m_parent{parent}
+UIMenu::UIMenu()
 {
-    PirateSimulator::Transform transform;
+    
+}
 
-    transform.setPosition({0,0,0,0});
-    transform.setRight({1,0,0,0});
-    transform.setUp({0,1,0,0});
-    transform.setForward({0,0,-1,0});
-
+void UIMenu::initialize()
+{
     m_mainMenuImages = new PM3D::CAfficheurSprite();
-    m_buttons[0] = createButton([this]() {m_parent->setGameState(GameState::Loading); });
-    m_buttons[1] = createButton([this]() {m_parent->setGameState(GameState::Options); });
-    m_buttons[2] = createButton([this]() {m_parent->setGameState(GameState::Credits); });
-    m_buttons[3] = createButton([this]() {m_parent->setGameState(GameState::Quitting); });
+    m_buttons[0] = createButton([this]() {GameManager::getInstance()->setGameState(GameState::Loading); });
+    m_buttons[1] = createButton([this]() {GameManager::getInstance()->setGameState(GameState::Options); });
+    m_buttons[2] = createButton([this]() {GameManager::getInstance()->setGameState(GameState::Credits); });
+    m_buttons[3] = createButton([this]() {GameManager::getInstance()->setGameState(GameState::Quitting); });
 
     m_currentButton = 0;
     // ajout de panneaux 
@@ -82,9 +81,6 @@ UIMenu::UIMenu(UIMainMenuLogic *parent) : m_parent{parent}
 
     m_buttons[m_currentButton]->onSelect();
 }
-
-void UIMenu::initialize()
-{}
 
 bool UIMenu::update()
 {

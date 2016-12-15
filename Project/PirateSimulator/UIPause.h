@@ -12,13 +12,12 @@ namespace PirateSimulator
     class UIPause : public UIElementBase
     {
     private:
-        UIPauseLogic* m_parent;
         PM3D::CAfficheurSprite* m_mainMenuImages;
         IUIButton* m_buttons[2];
         unsigned int m_currentButton;
 
     public:
-        UIPause(UIPauseLogic* parent);
+        UIPause();
 
     public:
         virtual void initialize();
