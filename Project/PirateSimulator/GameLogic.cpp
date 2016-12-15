@@ -59,18 +59,19 @@ void GameLogic::startGameMusic() const
 
 
     //Define the timed song
-    constexpr const long long seagulScreamMinTimer = 2800;
-    constexpr const long long seagulScreamMaxTimer = 9800;
+    constexpr const long long seagulScreamMinTimer = 4800;
+    constexpr const long long seagulScreamMaxTimer = 13800;
 
     PirateSimulator::defineTimedSound(
         "PirateSimulator/SeagullNoise.mp3", 
         seagulScreamMinTimer, 
         seagulScreamMaxTimer
     ); //I want seagull to scream at random interval
+    soundManager.setVolumeMusic("PirateSimulator/SeagullNoise.mp3", 0.75f);
 
 
     //reduce the sound of the Sea Noise to let the magnificent background music be well listened
-    constexpr const float seaNoiseSoundVolume = 0.65f;
+    constexpr const float seaNoiseSoundVolume = 0.75f;
 
     soundManager.setVolumeMusic("PirateSimulator/SeaNoise.wav", seaNoiseSoundVolume);
 }
