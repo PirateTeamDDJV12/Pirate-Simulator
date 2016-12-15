@@ -32,12 +32,15 @@ void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)
             static_cast<size_t>(meshToRemove->getGameObject()->m_transform.getPosition().vector4_f32[2] / AREA_WIDTH)
         );
 
-        for (auto iter = areaToConsider->begin(); iter != areaToConsider->end(); ++iter)
+        if (areaToConsider)
         {
-            if (*iter == meshToRemove)
+            for (auto iter = areaToConsider->begin(); iter != areaToConsider->end(); ++iter)
             {
-                areaToConsider->erase(iter);
-                break;
+                if (*iter == meshToRemove)
+                {
+                    areaToConsider->erase(iter);
+                    break;
+                }
             }
         }
     }
