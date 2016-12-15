@@ -90,6 +90,11 @@ public:
     }
 
     void endPause();
+
+    void increaseTime(milliseconds increaseT)
+    {
+        m_startGameTime += increaseT;
+    }
 };
 
 #endif //TIME_MANAGER_HEADER
