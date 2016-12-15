@@ -4,6 +4,7 @@
 #include "Piece.h"
 
 #include <vector>
+#include "TimeManager.h"
 
 
 namespace PirateSimulator
@@ -42,6 +43,7 @@ namespace PirateSimulator
         void addScore()
         {
             ++m_currentScore;
+            TimeManager::GetInstance().increaseTime(5s);
         }
         void resetScore()
         {

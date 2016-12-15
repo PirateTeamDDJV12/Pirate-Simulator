@@ -119,6 +119,7 @@
     <ClCompile Include="..\..\PirateSimulator\GameConfig.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameFabric.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameLogic.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\GameManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObject.cpp" />
     <ClCompile Include="..\..\PirateSimulator\GameObjectManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\InputManager.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="..\..\PirateSimulator\Plane.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerBehaviour.cpp" />
     <ClCompile Include="..\..\PirateSimulator\PlayerTask.cpp" />
+    <ClCompile Include="..\..\PirateSimulator\Randomisator.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RendererManager.cpp" />
     <ClCompile Include="..\..\PirateSimulator\RenderTask.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Skybox.cpp" />
@@ -157,13 +159,11 @@
     <ClCompile Include="..\..\PirateSimulator\Tunnel.cpp" />
     <ClCompile Include="..\..\PirateSimulator\TunnelShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIElement.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\UIMainMenuLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIHUD.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UILoading.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIMenu.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIOption.cpp" />
     <ClCompile Include="..\..\PirateSimulator\UIPause.cpp" />
-    <ClCompile Include="..\..\PirateSimulator\UIPauseLogic.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vect3f.cpp" />
     <ClCompile Include="..\..\PirateSimulator\VehicleShape.cpp" />
     <ClCompile Include="..\..\PirateSimulator\Vertex.cpp" />
@@ -206,6 +206,7 @@
     <ClInclude Include="..\..\PirateSimulator\GameConfig.h" />
     <ClInclude Include="..\..\PirateSimulator\GameFabric.h" />
     <ClInclude Include="..\..\PirateSimulator\GameLogic.h" />
+    <ClInclude Include="..\..\PirateSimulator\GameManager.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObject.h" />
     <ClInclude Include="..\..\PirateSimulator\GameObjectManager.h" />
     <ClInclude Include="..\..\PirateSimulator\GameUtils.h" />
@@ -231,6 +232,7 @@
     <ClInclude Include="..\..\PirateSimulator\Plane.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerBehaviour.h" />
     <ClInclude Include="..\..\PirateSimulator\PlayerTask.h" />
+    <ClInclude Include="..\..\PirateSimulator\Randomisator.h" />
     <ClInclude Include="..\..\PirateSimulator\RendererManager.h" />
     <ClInclude Include="..\..\PirateSimulator\RenderTask.h" />
     <ClInclude Include="..\..\PirateSimulator\RessourceManager.h" />
@@ -253,14 +255,12 @@
     <ClInclude Include="..\..\PirateSimulator\Tunnel.h" />
     <ClInclude Include="..\..\PirateSimulator\TunnelShape.h" />
     <ClInclude Include="..\..\PirateSimulator\UIElement.h" />
-    <ClInclude Include="..\..\PirateSimulator\UIMainMenuLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\UIHUD.h" />
     <ClInclude Include="..\..\PirateSimulator\UILoading.h" />
     <ClInclude Include="..\..\PirateSimulator\UIMenu.h" />
     <ClInclude Include="..\..\PirateSimulator\UIOption.h" />
     <ClInclude Include="..\..\PirateSimulator\UIOptionSelector.h" />
     <ClInclude Include="..\..\PirateSimulator\UIPause.h" />
-    <ClInclude Include="..\..\PirateSimulator\UIPauseLogic.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect2f.h" />
     <ClInclude Include="..\..\PirateSimulator\Vect3f.h" />
     <ClInclude Include="..\..\PirateSimulator\VehicleShape.h" />

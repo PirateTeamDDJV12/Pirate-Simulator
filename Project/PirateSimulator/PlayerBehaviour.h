@@ -30,11 +30,11 @@ namespace PirateSimulator
         }
         
 
-        virtual void move(Move::Translation::Direction direction);
+        virtual void move(Move::Translation::Direction direction, float elapsedTime);
 
         virtual void rotate(Move::Rotation::Direction direction);
 
-        virtual void anime(float ellapsedTime);
+        virtual void anime(float elapsedTime);
         void moveMesh(physx::PxTransform newPos);
     };
 

@@ -1,6 +1,7 @@
 #include "UIHUD.h"
 #include "RendererManager.h"
 #include "GameObjectManager.h"
+#include "PhysicsManager.h"
 
 PirateSimulator::UIHUD::UIHUD() : GameObject(Transform(), "HUDGO")
 {
@@ -21,7 +22,7 @@ PirateSimulator::UIHUD::UIHUD() : GameObject(Transform(), "HUDGO")
 
     // Add time text
     m_time = new PM3D::CAfficheurTexte(250, 50, m_police, Gdiplus::Color(255, 255, 255, 255));
-    std::chrono::milliseconds timeFromStart = TimeManager::GetInstance().getTimeFromStart();
+    std::chrono::milliseconds timeFromStart = TimeManager::GetInstance().getRemainingStartTime();
     m_time->Ecrire(TimeUtils::timeToString(timeFromStart));
 
     // Add all text to the afficheur sprite
@@ -37,9 +38,12 @@ PirateSimulator::UIHUD::UIHUD() : GameObject(Transform(), "HUDGO")
 void PirateSimulator::UIHUD::anime(float elapsedTime)
 {
     // Update time text
-    std::chrono::milliseconds timeFromStart = TimeManager::GetInstance().getTimeFromStart();
+    std::chrono::milliseconds timeFromStart = TimeManager::GetInstance().getRemainingStartTime();
     m_time->Ecrire(TimeUtils::timeToString(timeFromStart));
 
     m_score->Ecrire(L"Score: " + std::to_wstring(GameObjectManager::singleton.getPieceAdministrator()->getScore()));
     // TODO - update speed text
+    int speed = PhysicsManager::singleton.getVehiculeShape()->pxActor()->getLinearVelocity().magnitude()/100;
+
+    m_speed-> Ecrire(L"" +std::to_wstring(speed-2) + L"noeuds");
 }

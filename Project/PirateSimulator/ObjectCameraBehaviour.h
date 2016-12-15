@@ -47,7 +47,7 @@ namespace PirateSimulator
         public:
             ObjectCameraBehaviour(GameObjectRef target) :
                 m_firstPersonPositionOk{false},
-                m_maxAngleX {0.0f},
+                m_maxAngleX {-10.0f},
                 m_minAngleX{-85.0f},
                 m_distanceFromTarget{60.0f},
                 m_rotationAroundY{0.0f},
@@ -75,7 +75,7 @@ namespace PirateSimulator
 
             virtual void rotate(Move::Rotation::Direction direction);
 
-            virtual void anime(float ellapsedTime);
+            virtual void anime(float elapsedTime);
         };
     }
 }

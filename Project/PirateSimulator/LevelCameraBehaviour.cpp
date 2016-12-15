@@ -97,7 +97,7 @@ void LevelCameraBehaviour::rotate(Move::Rotation::Direction direction)
     m_cameraComponent->updateViewMatrix();
 }
 
-void LevelCameraBehaviour::anime(float ellapsedTime)
+void LevelCameraBehaviour::anime(float elapsedTime)
 {
     // Pour les mouvements, nous utilisons le gestionnaire de saisie
     CDIManipulateur& rGestionnaireDeSaisie = InputManager::singleton.getManipulator();
