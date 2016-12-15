@@ -330,8 +330,11 @@ void SoundManager::cleanup()
 {
     for (auto iter = m_musicBank.begin(); iter != m_musicBank.end(); ++iter)
     {
+        iter->stop();
         iter->unload();
     }
+
+    m_musicBank.clear();
 
     if (m_systemBloc->m_lowLevelSystem)
     {

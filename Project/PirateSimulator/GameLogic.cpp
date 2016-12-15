@@ -103,3 +103,8 @@ void GameLogic::cleanAllTasks()
     PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
     taskManager->reset();
 }
+
+void GameLogic::killEveryMusicFlow() const
+{
+    SoundManager::singleton.cleanup();
+}
