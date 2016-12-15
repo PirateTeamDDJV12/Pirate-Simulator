@@ -54,8 +54,8 @@ void GameLogic::startGameMusic() const
 
 
     //Play the background music of the main game
-    soundManager.playMusic("PirateSimulator/PlayBackgroundMusic.mp3");  
     soundManager.playMusic("PirateSimulator/SeaNoise.wav");
+    soundManager.playMusic("PirateSimulator/PlayBackgroundMusic.mp3");  
 
 
     //Define the timed song
@@ -67,6 +67,20 @@ void GameLogic::startGameMusic() const
         seagulScreamMinTimer, 
         seagulScreamMaxTimer
     ); //I want seagull to scream at random interval
+
+
+    //Duration in milliseconds of the Background music.
+    constexpr const long long backgroundTimer = 165000; //2min45
+
+    //Fix the music problem (the background isn't an audio music that can loop back)
+    PirateSimulator::defineTimedSound(
+        "PirateSimulator/PlayBackgroundMusic.mp3",
+        backgroundTimer,
+        backgroundTimer
+    );
+
+
+    //reduce the sound of seagull because they're screaming too loudly
     soundManager.setVolumeMusic("PirateSimulator/SeagullNoise.mp3", 0.75f);
 
 

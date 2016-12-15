@@ -27,7 +27,8 @@ namespace PirateSimulator
         {
             DEFAULT_PLAY = 0x0, //FMOD_DEFAULT
             LOOP_OFF_PLAY = 0x1, //FMOD_LOOP_OFF
-            LOOP_ON_PLAY = 0x2 //FMOD_LOOP_NORMAL
+            LOOP_ON_PLAY = 0x2, //FMOD_LOOP_NORMAL
+            LOOP_BIDIRECTIONAL = 0x4 //FMOD_LOOP_BIDI
         };
 
         static constexpr const float MAX_VOLUME     = 1.0f;
