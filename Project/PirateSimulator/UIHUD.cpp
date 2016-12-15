@@ -45,5 +45,5 @@ void PirateSimulator::UIHUD::anime(float elapsedTime)
     // TODO - update speed text
     int speed = PhysicsManager::singleton.getVehiculeShape()->pxActor()->getLinearVelocity().magnitude()/100;
 
-    m_speed-> Ecrire(L"" +std::to_wstring(speed) + L"noeud");
+    m_speed-> Ecrire(L"" +std::to_wstring(speed-2) + L"noeuds");
 }
