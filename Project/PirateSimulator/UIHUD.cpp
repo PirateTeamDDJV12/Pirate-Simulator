@@ -41,9 +41,14 @@ void PirateSimulator::UIHUD::anime(float elapsedTime)
     std::chrono::milliseconds timeFromStart = TimeManager::GetInstance().getRemainingStartTime();
     m_time->Ecrire(TimeUtils::timeToString(timeFromStart));
 
+    // Update score text
     m_score->Ecrire(L"Score: " + std::to_wstring(GameObjectManager::singleton.getPieceAdministrator()->getScore()));
-    // TODO - update speed text
-    int speed = PhysicsManager::singleton.getVehiculeShape()->pxActor()->getLinearVelocity().magnitude()/100;
 
-    m_speed-> Ecrire(L"" +std::to_wstring(speed-2) + L"noeuds");
+    // Update speed text
+    int speed = PhysicsManager::singleton.getVehiculeShape()->pxActor()->getLinearVelocity().magnitude()/100;
+    if(speed > 99)
+    {
+        speed = 99;
+    }
+    m_speed-> Ecrire(L"" +std::to_wstring(speed) + L"noeuds");
 }
