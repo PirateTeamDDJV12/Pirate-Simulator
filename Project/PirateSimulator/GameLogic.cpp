@@ -25,3 +25,9 @@ void GameLogic::createAllTask()
     taskManager->addTask<PirateSimulator::SoundTask>(SOUNDTASK);
     taskManager->addTask<PirateSimulator::SpawnTask>(SPAWNTASK);
 }
+
+void GameLogic::cleanAllTasks()
+{
+    PirateSimulator::TaskManager* taskManager = &PirateSimulator::TaskManager::GetInstance();
+    taskManager->reset();
+}

@@ -1,16 +1,11 @@
-#ifndef TERRAIN_SHAPE_H
-#define TERRAIN_SHAPE_H
+#ifndef TRIGGER_SHAPE_H
+#define TRIGGER_SHAPE_H
 #include "ShapeComponent.h"
-
 namespace PirateSimulator
 {
-    class TerrainShape : public ShapeComponent
+    class TriggerShape : public ShapeComponent
     {
     public:
-        
-        std::unique_ptr<physx::PxHeightFieldSample[]> _heightMap;
-        physx::unique_ptr<physx::PxHeightField> _heightField;
-
         bool isBoat()
         {
             return false;
@@ -19,28 +14,24 @@ namespace PirateSimulator
         {
             return false;
         };
-
         bool isTrigger()
         {
-            return false;
+            return true;
         }
-        
+
         static std::string typeId() noexcept
         {
             return "ShapeComponent";
         }
-        
+
 
         std::string getTypeId() const noexcept override
         {
-            return TerrainShape::typeId();
+            return TriggerShape::typeId();
         }
 
-        void setGameObject(GameObject* parent) override;
+        void setGameObject(PirateSimulator::GameObject* parent) override;
         
     };
-    
 }
-
-
-#endif // ifndef TERRAIN_SHAPE_H
+#endif

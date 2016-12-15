@@ -125,6 +125,9 @@ namespace PM3D
                     PirateSimulator::TaskManager::GetInstance().update();
                 }
             }
+
+            // Exit the game loop so cleanup
+            PirateSimulator::GameLogic::cleanAllTasks();
         }
 
         virtual int Initialisations()
@@ -224,9 +227,6 @@ namespace PM3D
         {
             // Vider les textures
             TexturesManager.Cleanup();
-
-            //Vider les objets physiques
-            PirateSimulator::PhysicsManager::singleton.reset();
         }
 
         virtual int InitScene()

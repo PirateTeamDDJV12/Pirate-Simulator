@@ -12,16 +12,6 @@ namespace PirateSimulator
 {
     class UIMainMenuLogic
     {
-   /* private:
-        UIRef m_mainScreen;
-        UIRef m_optionsScreen;
-        UIRef m_creditsScreen;
-        UIRef m_loadingScreen;
-
-    public:
-        UIMainMenuLogic();
-
-        bool operator()();*/
     };
 }
 

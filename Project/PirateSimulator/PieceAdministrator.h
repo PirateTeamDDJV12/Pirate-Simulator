@@ -50,6 +50,7 @@ namespace PirateSimulator
         }
         void init();
         void update(float elapsedTime);
+        void cleanUp();
     };
 }
 
