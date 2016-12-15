@@ -161,6 +161,8 @@ namespace PirateSimulator
             (this->*m_pSetMatrix)(world);
         }
 
+        void cleanUp();
+
     private:
         void setWorldMatrixWhenHaving(const DirectX::XMMATRIX& world)
         {

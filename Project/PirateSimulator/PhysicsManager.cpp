@@ -230,9 +230,9 @@ namespace PirateSimulator
                 std::cout << "createScene failed!"; //PB
 
             _scene->setSimulationEventCallback(&gDefaultSimulationCallback);
-    }
+        }
 
-}
+    }
 
 
 
@@ -260,21 +260,20 @@ namespace PirateSimulator
 
     void PhysicsManager::reset()
     {
-        for(auto shape : m_components)
+        for(int i = 0; i < m_components.size(); ++i)
         {
-            shape->cleanUp();
-            //shape->~ShapeComponent();
-            //m_components.pop_back();
+            m_components[i]->cleanUp();
         }
-        m_components.clear();
-        /*specificRelease(_foundation);
 
-        specificRelease(_physics);
-        specificRelease(_scene);
-        specificRelease(_cpuDispatcher);
-        specificRelease(_cudaContextManager);
-        specificRelease(_visualDebuggerConnection);
-        _profileZoneManager->release();*/
+        m_components.clear();
+        _scene.reset();
+        _cpuDispatcher.reset();
+        _visualDebuggerConnection.reset();
+        PxCloseExtensions();
+        _physics.reset();
+        _cudaContextManager.reset();
+        _profileZoneManager.reset();
+        _foundation.reset();
     }
 
 
@@ -284,7 +283,7 @@ namespace PirateSimulator
 
         for(auto shape : m_components)
         {
-            if (shape->isBoat())
+            if(shape->isBoat())
                 vehicle = shape;
         }
         return vehicle;
