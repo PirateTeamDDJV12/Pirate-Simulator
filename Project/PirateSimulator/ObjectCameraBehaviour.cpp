@@ -66,10 +66,10 @@ void ObjectCameraBehaviour::rotate(Move::Rotation::Direction direction)
 
     // Prevent camera from flipping
     // You can change the values to block the camera before 90
-    if(m_rotationAroundX < m_minAngleX)
-        m_rotationAroundX = m_minAngleX;
-    else if(m_rotationAroundX > m_maxAngleX)
-        m_rotationAroundX = m_maxAngleX;
+    if(m_newAngleX < m_minAngleX)
+        m_newAngleX = m_minAngleX;
+    else if(m_newAngleX > m_maxAngleX)
+        m_newAngleX = m_maxAngleX;
 
     float angleXFinal;
     float angleYFinal;
@@ -103,7 +103,7 @@ void ObjectCameraBehaviour::anime(float elapsedTime)
         {
             m_state = CameraState::FirstPersonCamera;
             m_maxAngleX = -85.0f;
-            m_maxAngleX = 85.0f;
+            m_minAngleX = 85.0f;
             m_rotationSmooth = 0.5f;
             m_translationSmooth = 0.5f;
         }
@@ -111,7 +111,7 @@ void ObjectCameraBehaviour::anime(float elapsedTime)
         {
             m_state = CameraState::ThirdPersonCamera;
             m_maxAngleX = -85.0f;
-            m_maxAngleX = -10.0f;
+            m_minAngleX = -10.0f;
             m_rotationSmooth = 0.1f;
             m_translationSmooth = 0.1f;
             m_firstPersonPositionOk = false;
