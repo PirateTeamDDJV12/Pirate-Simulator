@@ -195,6 +195,20 @@ namespace PM3D
                 pDispositif->Present();
 
                 std::this_thread::sleep_for(5ms);
+
+                //exit via title screen menu
+                if (gameManager->getGameState() == PirateSimulator::GameState::Quitting)
+                {
+                    PirateSimulator::GameLogic().killEveryMusicFlow();
+                    for (size_t iter = 0; iter < beginThread.size(); ++iter)
+                    {
+                        beginThread[iter].join();
+                    }
+
+                    PirateSimulator::GameLogic::cleanAllTasks();
+
+                    return 1;
+                }
             }
             
             // Start the game time when all menu and loading screen are close to begin the game

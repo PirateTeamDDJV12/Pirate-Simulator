@@ -38,6 +38,8 @@ namespace PirateSimulator
         // start the titleScreen music
         void startTitleScreenMusic() const;
       
+        //stop the music
+        void killEveryMusicFlow() const;
       
         static void cleanAllTasks();
     };

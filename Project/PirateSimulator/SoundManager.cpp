@@ -333,6 +333,8 @@ void SoundManager::cleanup()
         iter->unload();
     }
 
+    m_musicBank.clear();
+
     if (m_systemBloc->m_lowLevelSystem)
     {
         m_systemBloc->m_lowLevelSystem->release();
