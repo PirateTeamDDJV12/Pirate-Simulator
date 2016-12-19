@@ -3,13 +3,12 @@
 #include "../PetitMoteur3D/PetitMoteur3D/resource.h"
 #include "../PetitMoteur3D/PetitMoteur3D/util.h"
 #include "../PetitMoteur3D/PetitMoteur3D/DispositifD3D11.h"
-#include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
-#include "../PetitMoteur3D/PetitMoteur3D/GestionnaireDeTextures.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 #include "RessourceManager.h"
 #include "RendererManager.h"
 #include "LightManager.h"
 #include "CameraManager.h"
+#include "Triangle.h"
 
 #include <DirectXMath.h>
 
@@ -223,7 +222,7 @@ namespace PirateSimulator
         m_csommetsArray.push_back(c);
     }
 
-    void Terrain::addTriangle(PirateSimulator::Triangle t)
+    void Terrain::addTriangle(const PirateSimulator::Triangle& t)
     {
         m_index_bloc.push_back(t.firstPointIndex());
         m_index_bloc.push_back(t.secondPointIndex());

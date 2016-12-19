@@ -15,7 +15,6 @@
 
 #include <string>
 #include <fstream>
-#include <d3dcompiler.h>
 
 
 using namespace UtilitairesDX;
@@ -315,7 +314,7 @@ namespace PirateSimulator
 
 
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble (+1 car 0 est default)
-        for (int i = 0; i < chargeur.GetNombreSubmesh(); ++i)
+        for (unsigned int i = 0; i < chargeur.GetNombreSubmesh(); ++i)
         {
             SubsetMaterialIndex.push_back(chargeur.GetMaterialIndex(i) + 1);
         }

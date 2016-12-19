@@ -1,6 +1,7 @@
 #include "PhysicsTask.h"
 #include "GameObjectManager.h"
 #include "RendererManager.h"
+#include "TimeManager.h"
 #include "LightManager.h"
 #include "PhysicsManager.h"
 

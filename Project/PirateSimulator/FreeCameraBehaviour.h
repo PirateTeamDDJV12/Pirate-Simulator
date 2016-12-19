@@ -3,7 +3,8 @@
 
 #include "Angle.h"
 #include "BaseCamera.h"
-#include "GameObject.h"
+#include "IBehaviour.h"
+
 #include <chrono>
 
 namespace PirateSimulator
@@ -25,11 +26,8 @@ namespace PirateSimulator
         public:
             FreeCameraBehaviour(float speed = 50.0f, float rotationSpeed = 5.0f) : m_speed{speed}, m_rotationSpeed {rotationSpeed}
             {}
-            void setGameObject(GameObject* parent)
-            {
-                m_gameObject = parent;
-                m_cameraComponent = m_gameObject->getComponent<Camera>();
-            }
+
+            void setGameObject(GameObject* parent);
 
             virtual void anime(float elapsedTime);
 

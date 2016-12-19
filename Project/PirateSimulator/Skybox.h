@@ -2,11 +2,15 @@
 #define SKYBOX_H
 
 #include "Mesh.h"
-#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
-#include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
-#include <DirectXMath.h>
-#include <d3d11.h>
 #include "Effect.h"
+
+#include <DirectXMath.h>
+
+namespace PM3D
+{
+    class CTexture;
+    class CDispositifD3D11;
+}
 
 namespace PirateSimulator
 {
@@ -69,6 +73,8 @@ namespace PirateSimulator
 
     protected:
         void InitEffet();
+
+        //Set the sun angle coefficient for the skybox in regard to its position (does the day/night cycle on the skybox)
         void setSunAngleCoeff(float sunAngle);
     };
 }

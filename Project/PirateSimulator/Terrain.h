@@ -4,11 +4,8 @@
 #include "Material.h"
 #include "Effect.h"
 #include "Vertex.h"
-#include "Triangle.h"
 #include "Mesh.h"
 #include "../PetitMoteur3D/PetitMoteur3D/sommetbloc.h"
-#include "../PetitMoteur3D/PetitMoteur3D/DispositifD3D11.h"
-#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
 #include <vector>
 #include <string>
@@ -16,10 +13,13 @@
 namespace PM3D
 {
 	class CTexture;
+    class CDispositifD3D11;
 }
 
 namespace PirateSimulator
 {
+    class Triangle;
+
     namespace ShaderTerrain
     {
         struct ShadersParams
@@ -140,7 +140,7 @@ namespace PirateSimulator
         void Init(const std::string& textureFileName);
 
         void addSommet(Vertex v);
-        void addTriangle(Triangle t);
+        void addTriangle(const Triangle& t);
         float getHeight(XMVECTOR pos);
         
         float getScale()

@@ -3,10 +3,10 @@
 
 #include "UIElement.h"
 
-#include <memory>
-#include <gdiplus.h>
 #include "..\PetitMoteur3D\PetitMoteur3D\AfficheurTexte.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\AfficheurSprite.h"
+#include <memory>
+#include <gdiplus.h>
 
 
 namespace PirateSimulator 

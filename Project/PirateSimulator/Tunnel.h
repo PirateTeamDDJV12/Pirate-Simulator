@@ -4,10 +4,13 @@
 #include "..\PetitMoteur3D\PetitMoteur3D\ObjetMesh.h"
 #include "Material.h"
 #include "Effect.h"
-#include "..\PetitMoteur3D\PetitMoteur3D\Texture.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\sommetbloc.h"
-#include "terrain.h"
 
+
+namespace PM3D
+{
+    class CTexture;
+}
 
 namespace PirateSimulator
 {
@@ -24,11 +27,13 @@ namespace PirateSimulator
         Material m_material;
         Effect m_textureEffect;
 
+
     public:
         Tunnel(const PM3D::ShaderCObjectMesh::ShadersParams& shaderParameter,
-               const std::wstring& shaderName, 
-               PM3D::IChargeur& chargeur, 
-               const std::string& textureFileName);
+            const std::wstring& shaderName,
+            PM3D::IChargeur& chargeur,
+            const std::string& textureFileName);
+
 
     public:
         void InitShaders();

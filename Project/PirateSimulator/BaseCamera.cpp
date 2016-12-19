@@ -1,5 +1,5 @@
 #include "BaseCamera.h"
-#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
+#include "GameObject.h"
 
 using namespace PirateSimulator;
 using namespace PirateSimulator::cameraModule;
@@ -36,4 +36,14 @@ void Camera::setGameObject(GameObject* parent)
     m_gameObject = parent;
 
     this->updateViewMatrix();
+}
+
+void Camera::updateViewMatrix()
+{
+    setMatrixView(DirectX::XMMatrixLookToLH(
+        m_gameObject->m_transform.getPosition(),
+        m_gameObject->m_transform.getForward(),
+        m_gameObject->m_transform.getUp())
+    );
+    //this->*m_pUpdateViewMatrix)();
 }

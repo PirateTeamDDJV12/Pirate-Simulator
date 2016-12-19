@@ -1,13 +1,24 @@
 #include "GameObject.h"
 #include "CameraManager.h"
-#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
-#include <DirectXMath.h>
 #include "GameObjectManager.h"
+#include "RendererManager.h"
+
+#include <DirectXMath.h>
 
 using namespace PirateSimulator;
 using namespace cameraModule;
 using namespace DirectX;
 
+
+GameObject::GameObject(const Transform& transform, const std::string& name) :
+    m_name{ name },
+    m_transform{ transform },
+    m_mesh{ nullptr },
+    m_pSetMatrix{ &GameObject::setWorldMatrixWhenNotHavingAMesh },
+    m_pAnim{ &GameObject::animNothing }
+{
+    m_attachedComponent.push_back(ComponentRef(new IBehaviour()));
+}
 
 void GameObject::translate(float x, float y, float z)
 {

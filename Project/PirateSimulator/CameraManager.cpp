@@ -6,7 +6,6 @@
 #include "FreeCameraBehaviour.h"
 #include "ObjectCameraBehaviour.h"
 
-#include <algorithm>
 #include <string>
 
 using PirateSimulator::CameraManager;

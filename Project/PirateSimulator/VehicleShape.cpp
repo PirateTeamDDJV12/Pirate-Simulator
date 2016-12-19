@@ -4,7 +4,6 @@
 #include "ICollisionHandler.h"
 #include "GameObject.h"
 #include "PlayerBehaviour.h"
-#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 
 using namespace PirateSimulator;
 using namespace physx;

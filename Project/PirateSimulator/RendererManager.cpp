@@ -1,12 +1,10 @@
 #include "RendererManager.h"
 #include "GameObject.h"
 #include "CameraManager.h"
-#include "..\PetitMoteur3D\PetitMoteur3D\util.h"
 #include "DebugD3D11Custom.h"
 
 #include <algorithm>
 
-#include <DirectXMath.h>
 using namespace PirateSimulator;
 using namespace DirectX;
 
@@ -21,6 +19,11 @@ RendererManager::~RendererManager()
     debug.reportLiveObject();
 
     delete m_pDispositif;
+}
+
+void RendererManager::init(const PM3D::CDS_MODE cdsMode, HWND hMainWnd)
+{
+    m_pDispositif = new PM3D::CDispositifD3D11(cdsMode, hMainWnd);
 }
 
 void RendererManager::removeAStaticSortableMesh(IMesh* meshToRemove)

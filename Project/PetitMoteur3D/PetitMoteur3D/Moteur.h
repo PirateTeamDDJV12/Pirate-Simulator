@@ -127,6 +127,53 @@ namespace PM3D
                 else
                 {
                     PirateSimulator::TaskManager::GetInstance().update();
+
+                    if (gameManager->getGameState() == PirateSimulator::GameState::PartyFinished)
+                    {
+                        //PirateSimulator::GameLogic().stopGameMusic(); //buggy
+
+                        while (gameManager->getGameState() != PirateSimulator::GameState::InGame)
+                        {
+                            // Update the window
+                            if (!RunSpecific())
+                            {
+                                return;
+                            }
+                            // Get the Input
+                            PirateSimulator::InputManager::singleton.update();
+
+                            // Render
+                            auto pDispositif = PirateSimulator::RendererManager::singleton.getDispositif();
+                            ID3D11DeviceContext* pImmediateContext = pDispositif->GetImmediateContext();
+                            ID3D11RenderTargetView* pRenderTargetView = pDispositif->GetRenderTargetView();
+
+                            float Couleur[4] = { 0.0f, 0.5f, 0.0f, 1.0f };  //  RGBA - Vert pour le moment
+                            pImmediateContext->ClearRenderTargetView(pRenderTargetView, Couleur);
+
+                            ID3D11DepthStencilView* pDepthStencilView = pDispositif->GetDepthStencilView();
+                            pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+                            // Display the mainMenu
+                            if (gameManager->getGameState() == PirateSimulator::GameState::Loading)
+                            {
+                                gameManager->setGameState(PirateSimulator::GameState::InGame);
+                                //PirateSimulator::GameLogic().restartGameMusic(); //buggy
+                                TimeManager::GetInstance().startGameTime();
+                                break;
+                            }
+                            gameManager->update();
+                            pDispositif->Present();
+
+                            //exit via title screen menu
+                            if (gameManager->getGameState() == PirateSimulator::GameState::Quitting)
+                            {
+                                PirateSimulator::GameLogic().killEveryMusicFlow();
+
+                                PirateSimulator::GameLogic::cleanAllTasks();
+
+                                return;
+                            }
+                        }
+                    }
                 }
             }
 

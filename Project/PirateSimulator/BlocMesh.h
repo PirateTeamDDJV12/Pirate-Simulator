@@ -9,9 +9,6 @@
 #include "../PetitMoteur3D/PetitMoteur3D/sommetbloc.h"
 #include "CameraManager.h"
 
-#include <directxmath.h>
-#include <wtypes.h>
-#include <d3d11.h>
 
 namespace PirateSimulator
 {

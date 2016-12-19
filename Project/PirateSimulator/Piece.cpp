@@ -5,11 +5,10 @@
 #include "GameObjectManager.h"
 #include "RendererManager.h"
 #include "PieceShape.h"
-#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
-#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxRigidDynamic.h"
 #include "../PetitMoteur3D/PetitMoteur3D/ChargeurAssimp.h"
 #include "../PetitMoteur3D/PetitMoteur3D/ObjetMesh.h"
-#include <algorithm>
+
+
 using namespace PirateSimulator;
 
 
@@ -27,6 +26,7 @@ private:
     {
         return "PieceBehaviour";
     }
+
     virtual std::string getTypeId() const noexcept
     {
         return IBehaviour::typeId();

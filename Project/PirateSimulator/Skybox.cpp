@@ -1,14 +1,11 @@
 #include "Skybox.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Resource.h"
-#include "../PetitMoteur3D/PetitMoteur3D/Singleton.h"
 #include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "../PetitMoteur3D/PetitMoteur3D/util.h"
+#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
 #include "LightManager.h"
 #include "CameraManager.h"
 
-#include <d3d11.h>
-#include <winnt.h>
-#include <d3dcompiler.h>
 #include <DirectXMath.h>
 
 using namespace PirateSimulator;

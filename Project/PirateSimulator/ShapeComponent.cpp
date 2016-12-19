@@ -1,5 +1,4 @@
 #include "ShapeComponent.h"
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "PhysicsManager.h"
 #include "GameObject.h"
 #include "Piece.h"

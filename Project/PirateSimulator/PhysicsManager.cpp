@@ -1,13 +1,11 @@
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "PhysicsManager.h"
 #include "ShapeComponent.h"
 
-#include  "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 #include "GameObject.h"
 #include "TimeManager.h"
-#include <iostream>
-#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysics.h"
 #include "ICollisionHandler.h"
+
+#include <iostream>
 using namespace physx;
 
 
@@ -265,7 +263,7 @@ namespace PirateSimulator
 
     void PhysicsManager::reset()
     {
-        for (int i = 0; i < m_components.size(); ++i)
+        for (size_t i = 0; i < m_components.size(); ++i)
         {
             m_components[i]->cleanUp();
         }

@@ -1,7 +1,8 @@
-#pragma once
+#ifndef _AFFICHEURTEXTE_H_
+#define _AFFICHEURTEXTE_H_
+
 
 #include <string.h>
-#include "dispositifD3D11.h"
 #include <Gdiplus.h>
 #include <string>
 using namespace Gdiplus;
@@ -10,12 +11,13 @@ using namespace std;
 
 namespace PM3D
 {
+    class CDispositifD3D11;
 
     class CAfficheurTexte
     {
     public:
         CAfficheurTexte(int largeur, int hauteur, Gdiplus::Font* pPolice,
-                        Gdiplus::Color couleurTexte = Gdiplus::Color(255, 255, 255, 255), Gdiplus::Color couleurTex = Gdiplus::Color(0, 0, 0, 0));
+            Gdiplus::Color couleurTexte = Gdiplus::Color(255, 255, 255, 255), Gdiplus::Color couleurTex = Gdiplus::Color(0, 0, 0, 0));
         ~CAfficheurTexte();
         void Ecrire(wstring s);
         ID3D11ShaderResourceView* GetTextureView()
@@ -46,3 +48,5 @@ namespace PM3D
     };
 
 }
+
+#endif

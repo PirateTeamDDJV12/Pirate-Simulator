@@ -5,7 +5,6 @@
 #include "UIMenu.h"
 #include "UILoading.h"
 #include "UIPause.h"
-#include "TimeManager.h"
 
 namespace PirateSimulator
 {

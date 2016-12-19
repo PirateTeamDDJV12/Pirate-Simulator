@@ -4,13 +4,10 @@
 #include "Piece.h"
 
 #include <vector>
-#include "TimeManager.h"
 
 
 namespace PirateSimulator
 {
-    class Piece;
-
     class PieceAdministrator
     {
     public:
@@ -36,19 +33,10 @@ namespace PirateSimulator
 
 
     public:
-        unsigned int getScore() const
-        {
-            return m_currentScore;
-        }
-        void addScore()
-        {
-            ++m_currentScore;
-            TimeManager::GetInstance().increaseTime(5s);
-        }
-        void resetScore()
-        {
-            m_currentScore = 0;
-        }
+        unsigned int getScore() const noexcept;
+        void addScore() noexcept;
+        void resetScore() noexcept;
+
         void init();
         void update(float elapsedTime);
         void cleanUp();

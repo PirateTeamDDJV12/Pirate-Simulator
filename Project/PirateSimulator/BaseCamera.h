@@ -2,7 +2,6 @@
 #define CAMERA_H
 
 #include "Component.h"
-#include "GameObject.h"
 
 #include <type_traits>
 
@@ -11,6 +10,8 @@
 
 namespace PirateSimulator
 {
+    class GameObject;
+
     namespace cameraModule
     {
         struct CameraProjectionParameters
@@ -57,20 +58,12 @@ namespace PirateSimulator
             DirectX::XMMATRIX  m_proj;      // Projection matrix
 
         public:
-            Camera(
-                const CameraProjectionParameters& defaultProjParameters);
+            Camera(const CameraProjectionParameters& defaultProjParameters);
 
             static std::string typeId() noexcept { return "CameraComponent"; }
             virtual std::string getTypeId() const noexcept { return Camera::typeId(); }
 
-            void updateViewMatrix() {
-                setMatrixView(XMMatrixLookToLH(
-                    m_gameObject->m_transform.getPosition(),
-                    m_gameObject->m_transform.getForward(),
-                    m_gameObject->m_transform.getUp())
-                );
-                //this->*m_pUpdateViewMatrix)();
-            }
+            void updateViewMatrix();
 
         public:
             // Initialize camera's perspective Projection matrix

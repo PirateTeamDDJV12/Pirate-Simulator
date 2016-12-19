@@ -1,6 +1,6 @@
 #include "TaskManager.h"
-#include <algorithm>
 #include "TimeManager.h"
+#include <algorithm>
 
 using namespace std;
 using namespace PirateSimulator;

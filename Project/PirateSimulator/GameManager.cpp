@@ -1,5 +1,7 @@
 #include "GameManager.h"
 
+#include "TimeManager.h"
+
 using namespace PirateSimulator;
 
 GameManager *GameManager::m_instance;
@@ -30,6 +32,7 @@ void GameManager::update()
 {
     switch(m_gameState)
     {
+        case GameState::PartyFinished:
         case GameState::MainMenu :
             m_mainScreen.update();
             break;

@@ -1,9 +1,11 @@
-#include <DirectXMath.h>
-
 #include "UIMenu.h"
+#include "UIButton.h"
 #include "GameObjectManager.h"
 #include "GameManager.h"
 #include "InputManager.h"
+
+#include <DirectXMath.h>
+
 
 using namespace PirateSimulator;
 using namespace DirectX;

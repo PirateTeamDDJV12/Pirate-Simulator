@@ -1,8 +1,8 @@
 #ifndef _UIBUTTON_H_
 #define _UIBUTTON_H_
 
-#include <vector>
 #include "..\PetitMoteur3D\PetitMoteur3D\AfficheurSprite.h"
+#include <vector>
 
 namespace PirateSimulator
 {

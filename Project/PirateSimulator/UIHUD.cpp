@@ -1,13 +1,21 @@
 #include "UIHUD.h"
 #include "RendererManager.h"
+#include "TimeManager.h"
 #include "GameObjectManager.h"
 #include "PhysicsManager.h"
+#include "GameManager.h"
+#include "VehicleShape.h"
+#include "../PetitMoteur3D/PetitMoteur3D/AfficheurSprite.h"
+#include "../PetitMoteur3D/PetitMoteur3D/AfficheurTexte.h"
+
+#include <Gdiplus.h>
+#pragma comment(lib, "gdiplus.lib")
 
 PirateSimulator::UIHUD::UIHUD() : GameObject(Transform(), "HUDGO")
 {
     // Create the police
     const FontFamily oFamily(L"Edwardian Script ITC", NULL);
-    m_police = new Font(&oFamily, 40.00, FontStyleBold, UnitPixel);
+    m_police = new Gdiplus::Font(&oFamily, 40.00, FontStyleBold, UnitPixel);
 
     // Create afficheur sprite
     m_afficheurSprite = new PM3D::CAfficheurSprite();
@@ -40,6 +48,11 @@ void PirateSimulator::UIHUD::anime(float elapsedTime)
     // Update time text
     std::chrono::milliseconds timeFromStart = TimeManager::GetInstance().getRemainingStartTime();
     m_time->Ecrire(TimeUtils::timeToString(timeFromStart));
+
+    if (timeFromStart <= 0ms)
+    {
+        GameManager::getInstance()->setGameState(PirateSimulator::GameState::PartyFinished);
+    }
 
     // Update score text
     m_score->Ecrire(L"Score: " + std::to_wstring(GameObjectManager::singleton.getPieceAdministrator()->getScore()));

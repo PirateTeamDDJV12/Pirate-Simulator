@@ -2,12 +2,7 @@
 #define MATERIAL_H
 
 
-#include "Mesh.h"
-#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
-#include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
-
 #include <string>
-
 
 
 namespace PirateSimulator

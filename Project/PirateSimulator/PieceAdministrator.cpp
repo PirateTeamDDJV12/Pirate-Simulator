@@ -1,6 +1,5 @@
 #include "PieceAdministrator.h"
 
-
 #include "GameConfig.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\Config\Config.hpp"
 #include "TimeManager.h"
@@ -121,8 +120,24 @@ void PieceAdministrator::update(float elapsedTime)
 
 void PieceAdministrator::cleanUp()
 {
-    for(int iter = 0; iter < m_pieceArray.size(); ++iter)
+    for(unsigned int iter = 0; iter < m_pieceArray.size(); ++iter)
     {
         m_pieceArray[iter].destroyPiece();
     }
+}
+
+unsigned int PieceAdministrator::getScore() const noexcept
+{
+    return m_currentScore;
+}
+
+void PieceAdministrator::addScore() noexcept
+{
+    ++m_currentScore;
+    TimeManager::GetInstance().increaseTime(5s);
+}
+
+void PieceAdministrator::resetScore() noexcept
+{
+    m_currentScore = 0;
 }

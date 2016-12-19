@@ -23,7 +23,7 @@
 #define _WIN32_IE 0x0600	// Attribuez la valeur appropriée à cet élément pour cibler d'autres versions d'Internet Explorer.
 #endif
 
-#define WIN32_LEAN_AND_MEAN		// Exclure les en-têtes Windows rarement utilisés
+//#define WIN32_LEAN_AND_MEAN		// Exclure les en-têtes Windows rarement utilisés
 // Fichiers d'en-tête Windows :
 #include <windows.h>
 

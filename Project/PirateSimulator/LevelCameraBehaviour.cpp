@@ -1,11 +1,18 @@
 #include "LevelCameraBehaviour.h"
-#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "InputManager.h"
-
+#include "Terrain.h"
+#include "GameObject.h"
 
 using namespace PirateSimulator;
 using namespace cameraModule;
 using namespace DirectX;
+
+
+void LevelCameraBehaviour::setGameObject(GameObject* parent)
+{
+    m_gameObject = parent;
+    m_cameraComponent = m_gameObject->getComponent<Camera>();
+}
 
 void LevelCameraBehaviour::move(Move::Translation::Direction direction)
 {
@@ -147,4 +154,9 @@ void LevelCameraBehaviour::anime(float elapsedTime)
     {
         rotate(Move::Rotation::X_CLOCKWISE);
     }
+}
+
+void LevelCameraBehaviour::setTerrain(GameObjectRef fieldObject)
+{
+    m_terrain = fieldObject->getComponent<IMesh>()->as<Terrain>();
 }
