@@ -5,6 +5,8 @@
 #include "TimeManager.h"
 #include "GameManager.h"
 
+#include "..\PetitMoteur3D\PetitMoteur3D\dispositifD3D11.h"
+
 using namespace PirateSimulator;
 
 UILoading::UILoading() :

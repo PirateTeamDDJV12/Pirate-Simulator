@@ -1,8 +1,7 @@
 #ifndef PIECESHAPE_H
-#define  PIECESHAPE_H
+#define PIECESHAPE_H
 
 #include "ShapeComponent.h"
-#include "PhysicsManager.h"
 
 namespace PirateSimulator
 {
@@ -13,12 +12,12 @@ namespace PirateSimulator
         bool isBoat()
         {
             return false;
-        };
+        }
 
         bool isPiece()
         {
             return true;
-        };
+        }
         bool isTrigger()
         {
             return false;

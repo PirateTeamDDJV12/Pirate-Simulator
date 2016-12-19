@@ -5,6 +5,7 @@ namespace PirateSimulator
 {
     class Transform;
 
+    //fabric class. Fabrik the instance of our GO
     class GameFabric
     {
     public:

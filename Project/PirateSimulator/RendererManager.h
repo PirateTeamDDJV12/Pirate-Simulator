@@ -3,15 +3,20 @@
 
 //#include "dispositif.h" 
 #include "GameConfig.h"
-#include "Mesh.h"
 
-#include <vector>
-#include "../PetitMoteur3D/PetitMoteur3D/Moteur.h"
 #include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
 
+#include <vector>
+
+namespace PM3D
+{
+    class CDispositifD3D11;
+}
 
 namespace PirateSimulator
 {
+    class IMesh;
+
     struct RenderArea
     {
         size_t x;
@@ -41,6 +46,7 @@ namespace PirateSimulator
 
         static constexpr float LONG_CAMERA_SQUARE_RANGE =
             GameGlobals::CameraGlobals::FARTHEST_PLANE * GameGlobals::CameraGlobals::FARTHEST_PLANE + RENDERED_VISION_MARGIN;
+
 
     public:
         enum
@@ -121,14 +127,17 @@ namespace PirateSimulator
         {
             m_obligatoryBeforeMesh.push_back(mesh);
         }
+
         void addAMovingSortableMesh(IMesh* mesh)
         {
             m_movingMeshArray.push_back(mesh);
         }
+
         void addAnObligatoryMeshToDrawAtEnd(IMesh* mesh)
         {
             m_obligatoryEndMesh.push_back(mesh);
         }
+
         void addAStaticSortableMesh(IMesh* mesh);
 
         void removeAStaticSortableMesh(IMesh* meshToRemove);
@@ -139,18 +148,22 @@ namespace PirateSimulator
         {
             return m_obligatoryBeforeMesh.size();
         }
+
         size_t getObligatoryMeshEndCount() const noexcept
         {
             return m_obligatoryEndMesh.size();
         }
+
         size_t getMovingSecondaryMeshCount() const noexcept
         {
             return m_movingMeshArray.size();
         }
+
         size_t getAreaCount() const noexcept
         {
             return m_staticMeshArray.size();
         }
+
         size_t getStaticMeshInArea(size_t x, size_t z) const noexcept
         {
             return m_staticMeshArray[x * z].meshArray.size();
@@ -175,6 +188,7 @@ namespace PirateSimulator
             return m_pDispositif;
         }
 
+        //set the LOD, between deep (does "area separation" (like octree), distance and camera forward/back) or light (does area separation)
         void setDetailLevel(DetailLevel level) noexcept
         {
             switch (level)
@@ -200,19 +214,19 @@ namespace PirateSimulator
             return nullptr;
         }
 
-        void init(const PM3D::CDS_MODE cdsMode, HWND hMainWnd)
-        {
-            m_pDispositif = new PM3D::CDispositifD3D11(cdsMode, hMainWnd);
-        }
+        //initialize the renderer dispositif
+        void init(const PM3D::CDS_MODE cdsMode, HWND hMainWnd);
 
         void draw()
         {
             (this->*m_pMeshDraw)();
         }
+
         void update()
         {
             (this->*m_pUpdate)();
         }
+
 
     private:
         void drawSorting();
@@ -226,7 +240,6 @@ namespace PirateSimulator
         void lightAddToStack(size_t x, size_t z) noexcept;
 
         void deepAddToStack(size_t x, size_t z) noexcept;
-
     };
 }
 

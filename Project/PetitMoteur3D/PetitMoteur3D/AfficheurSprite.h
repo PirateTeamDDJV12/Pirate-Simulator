@@ -1,15 +1,17 @@
-#pragma once
-#include <string>
+#ifndef _AFFICHEURSPRITE_H_
+#define _AFFICHEURSPRITE_H_
+
 #include "d3dx11effect.h"
 #include "../../PirateSimulator/Mesh.h"
-#include "DispositifD3D11.h"
-#include "Texture.h"
 #include <vector>
+#include <string>
 
 using namespace std;
 
 namespace PM3D
 {
+    class CDispositifD3D11;
+    class CTexture;
 
     class CSommetSprite
     {
@@ -46,7 +48,7 @@ namespace PM3D
 
         void AjouterSprite(string NomTexture, int _x, int _y, int _dx = 0, int _dy = 0);
         void AjouterPanneau(string NomTexture, const DirectX::XMFLOAT3& _position,
-                            float _dx = 0.0f, float _dy = 0.0f);
+            float _dx = 0.0f, float _dy = 0.0f);
         void AjouterSpriteTexte(ID3D11ShaderResourceView* pTexture, int _x, int _y);
 
     protected:
@@ -101,3 +103,4 @@ namespace PM3D
 
 }
 
+#endif // _AFFICHEURSPRITE_H_

@@ -16,6 +16,7 @@ namespace PirateSimulator
             SPAWNTASK,
         };
 
+
     public:
         GameLogic() = default;
 
@@ -38,6 +39,10 @@ namespace PirateSimulator
         // start the titleScreen music
         void startTitleScreenMusic() const;
       
+        //Not functional for now. Do not use. Must stop the In games music or restart it.
+        void stopGameMusic();
+        void restartGameMusic();
+
         //stop the music
         void killEveryMusicFlow() const;
       

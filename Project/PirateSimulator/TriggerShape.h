@@ -9,11 +9,11 @@ namespace PirateSimulator
         bool isBoat()
         {
             return false;
-        };
+        }
         bool isPiece()
         {
             return false;
-        };
+        }
         bool isTrigger()
         {
             return true;

@@ -15,7 +15,6 @@
 
 #include <string>
 #include <fstream>
-#include <d3dcompiler.h>
 
 
 using namespace UtilitairesDX;

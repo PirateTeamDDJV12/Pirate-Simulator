@@ -2,12 +2,16 @@
 #define UIPAUSE_H_INCLUDED
 
 #include "UIElement.h"
-#include "UIButton.h"
 
+namespace PM3D
+{
+    class CAfficheurSprite;
+}
 
 namespace PirateSimulator
 {
     class UIPauseLogic;
+    class IUIButton;
 
     class UIPause : public UIElementBase
     {

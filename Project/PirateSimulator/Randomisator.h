@@ -14,6 +14,7 @@ namespace PirateSimulator
             MIN_VALUE = 0
         };
 
+
     private:
         class FloatingVal{};
         class IntegerVal{};
@@ -32,6 +33,7 @@ namespace PirateSimulator
 
 
     public:
+        //get a random value between min and max. The type of min and max determines the return type
         template<class Type>
         Type get(Type min, Type max)
         {
@@ -53,7 +55,6 @@ namespace PirateSimulator
         {
             return std::uniform_int_distribution<Type>(min, max)(m_random);
         }
-
     };
 }
 

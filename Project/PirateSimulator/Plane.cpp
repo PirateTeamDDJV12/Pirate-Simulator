@@ -8,9 +8,6 @@
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 #include "LightManager.h"
 
-#include <d3d11.h>
-#include <winnt.h>
-#include <d3dcompiler.h>
 #include <algorithm>
 
 using namespace PirateSimulator;
@@ -279,6 +276,11 @@ void Plane::Draw()
 
     pDispositif->ActiverCulling();
     DXRelacher(pCB);
+}
+
+void Plane::setTexture(PM3D::CTexture* texture) 
+{ 
+    m_material.pTextureD3D = texture->GetD3DTexture(); 
 }
 
 void Plane::loadTexture(const std::string& filename)

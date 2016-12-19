@@ -1,11 +1,10 @@
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "TunnelShape.h"
 #include "PhysicsManager.h"
+#include "SoundManager.h"
+#include "TimeManager.h"
 #include "ShapeComponent.h"
 #include "ICollisionHandler.h"
 #include "GameObject.h"
-#include "SoundManager.h"
-#include "TimeManager.h"
 
 using namespace PirateSimulator;
 using namespace physx;

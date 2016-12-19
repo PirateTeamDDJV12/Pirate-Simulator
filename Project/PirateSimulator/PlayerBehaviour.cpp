@@ -2,10 +2,12 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "CameraManager.h"
+#include "ShapeComponent.h"
 
 using namespace PirateSimulator;
 using namespace DirectX;
 using namespace physx;
+
 PlayerBehaviour::PlayerBehaviour() : m_speed{5000.0f}, m_cameraRef{CameraManager::singleton.getMainCameraGO()}, m_tangling{0.0f}, m_smooth{0.05f}
 {}
 
@@ -90,4 +92,9 @@ void PlayerBehaviour::anime(float elapsedTime)
     boatShape->setPose(pose);
     float angle = sinf(m_tangling);
     m_gameObject->setPosition(pose.p.x, angle * 0.5f, pose.p.z);
+}
+
+void PlayerBehaviour::setGameObject(GameObject* parent)
+{
+    m_gameObject = parent;
 }

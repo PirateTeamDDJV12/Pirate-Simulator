@@ -1,9 +1,7 @@
 #include "InputManager.h"
 
-#include "..\PetitMoteur3D\PetitMoteur3D\MoteurWindows.h"
 
 using PirateSimulator::InputManager;
-using namespace PM3D;
 
 
 InputManager InputManager::singleton;

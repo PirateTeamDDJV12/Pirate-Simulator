@@ -4,11 +4,15 @@
 #include "Material.h"
 #include "Effect.h"
 #include "Mesh.h"
-#include "../PetitMoteur3D/PetitMoteur3D/Texture.h"
 
 #include <vector>
 #include <DirectXMath.h>
-#include <d3d11.h>
+
+namespace PM3D
+{
+    class CTexture;
+    class CDispositifD3D11;
+}
 
 namespace PirateSimulator
 {
@@ -209,7 +213,7 @@ namespace PirateSimulator
 
 
     protected:
-        void setTexture(PM3D::CTexture* texture) { m_material.pTextureD3D = texture->GetD3DTexture(); }
+        void setTexture(PM3D::CTexture* texture);
         void loadTexture(const std::string& filename);    
 
         //void InitSin();

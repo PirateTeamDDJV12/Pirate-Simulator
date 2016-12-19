@@ -1,8 +1,8 @@
-#include "ShapeComponent.h"
-#include "PhysicsManager.h"
-
 #ifndef VEHICLE_SHAPE
-#define  VEHICLE_SHAPE
+#define VEHICLE_SHAPE
+
+#include "ShapeComponent.h"
+
 namespace PirateSimulator
 {
 	class VehicleShape : public ShapeComponent
@@ -11,11 +11,11 @@ namespace PirateSimulator
         bool isBoat()
         {
             return true;
-        };
+        }
         bool isPiece()
         {
             return false;
-        };
+        }
         bool isTrigger()
         {
             return false;

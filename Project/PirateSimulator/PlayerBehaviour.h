@@ -3,8 +3,8 @@
 
 #include "IBehaviour.h"
 #include "BaseCamera.h"
-
 #include "GameObject.h"
+
 
 static bool movedBoat = false;
 
@@ -24,18 +24,13 @@ namespace PirateSimulator
     public:
         PlayerBehaviour();
 
-        void setGameObject(GameObject* parent)
-        {
-            m_gameObject = parent;
-        }
+        void setGameObject(GameObject* parent);
         
-
         virtual void move(Move::Translation::Direction direction, float elapsedTime);
 
         virtual void rotate(Move::Rotation::Direction direction);
 
         virtual void anime(float elapsedTime);
-        void moveMesh(physx::PxTransform newPos);
     };
 
 }

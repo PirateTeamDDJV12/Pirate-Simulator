@@ -1,10 +1,7 @@
 #ifndef MESH_H_INCLUDED
 #define MESH_H_INCLUDED
 
-#include "../PetitMoteur3D/PetitMoteur3D/dispositif.h"
-
 #include "Component.h"
-
 
 
 namespace PirateSimulator

@@ -108,3 +108,19 @@ void GameLogic::killEveryMusicFlow() const
 {
     SoundManager::singleton.cleanup();
 }
+
+void GameLogic::stopGameMusic()
+{
+    SoundManager& soundManager = SoundManager::singleton;
+    soundManager.pauseMusic("PirateSimulator/SeaNoise.wav");
+    soundManager.pauseMusic("PirateSimulator/PlayBackgroundMusic.mp3");
+    soundManager.pauseMusic("PirateSimulator/SeagullNoise.mp3");
+}
+
+void GameLogic::restartGameMusic()
+{
+    SoundManager& soundManager = SoundManager::singleton;
+    soundManager.restartMusic("PirateSimulator/SeaNoise.wav");
+    soundManager.restartMusic("PirateSimulator/PlayBackgroundMusic.mp3");
+    soundManager.restartMusic("PirateSimulator/SeagullNoise.mp3");
+}

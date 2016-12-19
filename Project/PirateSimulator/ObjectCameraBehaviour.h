@@ -1,6 +1,3 @@
-/*
-Created by Sun-lay Gagneux
-*/
 #ifndef OBJECTCAMERABEHAVIOUR_H
 #define OBJECTCAMERABEHAVIOUR_H
 
@@ -10,8 +7,6 @@ Created by Sun-lay Gagneux
 
 #include "GameObject.h"
 
-#include <sstream>
-
 
 namespace PirateSimulator
 {
@@ -20,12 +15,12 @@ namespace PirateSimulator
         class ObjectCameraBehaviour : public IBehaviour
         {
         public:
-
             enum CameraState
             {
                 ThirdPersonCamera,
                 FirstPersonCamera
             };
+
 
         private:
             cameraModule::Camera* m_cameraComponent;
@@ -43,6 +38,7 @@ namespace PirateSimulator
             GameObjectRef               m_target;
             CameraState                 m_state;
             DirectX::XMVECTOR           m_desiredPosition;
+
 
         public:
             ObjectCameraBehaviour(GameObjectRef target) :

@@ -7,6 +7,7 @@
 
 namespace PirateSimulator
 {
+    // a light
     struct Light
     {
     public:

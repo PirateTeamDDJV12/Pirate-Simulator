@@ -1,8 +1,8 @@
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "TerrainShape.h"
 #include "ICollisionHandler.h"
 #include "GameObjectManager.h"
 #include "SoundManager.h"
+#include "TimeManager.h"
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 

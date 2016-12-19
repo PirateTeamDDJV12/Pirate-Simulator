@@ -1,9 +1,8 @@
 #ifndef PHYSICS_MANAGER_H
 #define PHYSICS_MANAGER_H
 #include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
-#include <memory>
+
 #include <vector>
-#include <algorithm>
 
 namespace physx
 {
