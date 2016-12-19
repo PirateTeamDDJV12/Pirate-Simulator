@@ -1,9 +1,7 @@
-#ifndef EFFECT_H
-#define EFFECT_H
+#ifndef EFFECT_H_INCLUDED
+#define EFFECT_H_INCLUDED
 
 
-#include "Mesh.h"
-#include "../PetitMoteur3D/PetitMoteur3D/dispositifD3D11.h"
 #include "../PetitMoteur3D/PetitMoteur3D/d3dx11effect.h"
 
 
@@ -44,4 +42,4 @@ namespace PirateSimulator
 }
 
 
-#endif //!EFFECT_H
+#endif //!EFFECT_H_INCLUDED

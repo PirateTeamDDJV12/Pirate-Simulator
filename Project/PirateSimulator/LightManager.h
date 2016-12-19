@@ -32,11 +32,15 @@ namespace PirateSimulator
 
 
     public:
+        //get the bright sun (sun which light the map) 
         LightRef getBrightSun() const noexcept;
+
+        //get the dark sun (sun which darken the map) 
         LightRef getDarkSun()   const noexcept;
         const std::vector<LightRef>& getBrightPointsLights()  const noexcept;
         const std::vector<LightRef>& getDarkPointsLights()    const noexcept;
 
+        //get the bright sun angle
         float getSunAngle() const noexcept;
 
         // get the ambient light. Store it before use. Algorithm used inside
@@ -47,6 +51,7 @@ namespace PirateSimulator
 
 
     public:
+        //update the sun position, its angle, everything...
         void update(float elapsedTime);
     };
 }

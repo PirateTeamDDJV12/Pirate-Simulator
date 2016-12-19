@@ -2,7 +2,6 @@
 #define _UIELEMENT_H_
 
 #include <memory>
-#include <map>
 
 namespace PirateSimulator
 {

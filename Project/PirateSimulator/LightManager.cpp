@@ -1,11 +1,9 @@
 #include "LightManager.h"
 
 #include "GameConfig.h"
-
-#include <algorithm>
-#include <directxmath.h>
 #include "..\PetitMoteur3D\PetitMoteur3D\Config\Config.hpp"
 #include "BezierCurve.h"
+
 
 using namespace PirateSimulator;
 

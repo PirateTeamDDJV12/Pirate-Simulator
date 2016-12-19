@@ -45,6 +45,7 @@ namespace PirateSimulator
 
 
     public:
+        //set the subscribing strategy (wether it is a piece GO that we register or not)
         void setSubscribingStrategy(SubsribingStrategy strategy) noexcept;
 
         GameObjectRef subscribeAGameObject(GameObject* newGameObject)
@@ -78,11 +79,13 @@ namespace PirateSimulator
 
         void cleanAllGameObjects();
 
+        //add a coin to the destroy list
         void destroyCoin(Piece *coin)
         {
             m_coinsToDestroy.emplace_back(coin);
         }
 
+        //at the end. Destroy everything
         void unspawnCoinsList()
         {
             for(auto coin : m_coinsToDestroy)

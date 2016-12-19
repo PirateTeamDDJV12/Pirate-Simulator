@@ -1,11 +1,12 @@
 #include "FilesManager.h"
+#include "BinaryFast.h"
+#include "Vertex.h"
+#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
+
 #include <fstream>
 #include <vector>
 #include <iterator>
 #include <string>
-#include "BinaryFast.h"
-#include "Vertex.h"
-#include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
 using namespace PirateSimulator;
 

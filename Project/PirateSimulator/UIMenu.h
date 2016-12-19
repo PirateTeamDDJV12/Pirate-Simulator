@@ -1,14 +1,18 @@
 #ifndef UIMENU_H_INCLUDED
 #define UIMENU_H_INCLUDED
 
-#include <memory>
-
 #include "UIElement.h"
-#include "UIButton.h"
-#include "..\PetitMoteur3D\PetitMoteur3D\AfficheurSprite.h"
+
+
+namespace PM3D
+{
+    class CAfficheurSprite;
+}
 
 namespace PirateSimulator 
 {
+    class IUIButton;
+
     class UIMenu : public UIElementBase
     {
     public:

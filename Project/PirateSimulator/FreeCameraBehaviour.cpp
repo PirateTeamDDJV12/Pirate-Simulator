@@ -1,14 +1,17 @@
-#include <iostream>
-#include <sstream>
-
 #include "FreeCameraBehaviour.h"
-#include "../PetitMoteur3D/PetitMoteur3D/MoteurWindows.h"
 #include "InputManager.h"
+#include "GameObject.h"
+
 
 using namespace PirateSimulator;
 using namespace cameraModule;
 using namespace DirectX;
 
+void FreeCameraBehaviour::setGameObject(GameObject* parent)
+{
+    m_gameObject = parent;
+    m_cameraComponent = m_gameObject->getComponent<Camera>();
+}
 
 void FreeCameraBehaviour::move(Move::Translation::Direction direction)
 {

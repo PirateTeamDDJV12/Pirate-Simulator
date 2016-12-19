@@ -1,11 +1,18 @@
 #ifndef UIHUD_H_INCLUDED
 #define UIHUD_H_INCLUDED
 
-#include "../PetitMoteur3D/PetitMoteur3D/AfficheurSprite.h"
-#include "../PetitMoteur3D/PetitMoteur3D/AfficheurTexte.h"
-#include <Gdiplus.h>
 #include "GameObject.h"
-#pragma comment(lib, "gdiplus.lib")
+
+namespace PM3D
+{
+    class CAfficheurSprite;
+    class CAfficheurTexte;
+}
+
+namespace Gdiplus
+{
+    class Font;
+}
 
 namespace PirateSimulator
 {

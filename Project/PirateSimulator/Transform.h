@@ -15,6 +15,7 @@ namespace PirateSimulator {
         DirectX::XMVECTOR m_right;
         physx::PxTransform m_pose;
 
+
     public:
          Transform() :
             m_position{ 0.f, 0.f, 0.f, 0.f },
@@ -47,14 +48,17 @@ namespace PirateSimulator {
         {
             return m_position;
         }
+
         const DirectX::XMVECTOR& getForward() const noexcept
         {
             return m_forward;
         }
+
         const DirectX::XMVECTOR& getUp() const noexcept
         {
             return m_up;
         }
+
         const DirectX::XMVECTOR& getRight() const noexcept
         {
             return m_right;
@@ -93,8 +97,6 @@ namespace PirateSimulator {
             m_right = DirectX::XMVector3Cross(m_up, m_forward);
         }
 
-
-
         void setForward(const DirectX::XMVECTOR& forward)
         {
             m_forward = DirectX::XMVector3Normalize(forward);
@@ -123,13 +125,10 @@ namespace PirateSimulator {
 
         void translate(const DirectX::XMVECTOR &dir)
         {
-            
             m_position += dir;
             physx::PxVec3 newPos(m_position.vector4_f32[0], m_position.vector4_f32[1], m_position.vector4_f32[2]);
 
-
             m_pose.p = newPos;
-
         }
     };
 }

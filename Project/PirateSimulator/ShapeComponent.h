@@ -1,4 +1,3 @@
-
 #ifndef SHAPE_COMPONENT_H
 #define SHAPE_COMPONENT_H
 #include "Component.h"
@@ -70,8 +69,6 @@ namespace PirateSimulator
             }
         }
     };
-
-
-
 }
-#endif // 
+
+#endif //ifndef SHAPE_COMPONENT_H

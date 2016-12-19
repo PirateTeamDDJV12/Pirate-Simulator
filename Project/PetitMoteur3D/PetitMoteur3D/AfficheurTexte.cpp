@@ -1,6 +1,6 @@
 #include "AfficheurTexte.h"
 #include "../../PirateSimulator/RendererManager.h"
-
+#include "dispositifD3D11.h"
 
 namespace PM3D
 {

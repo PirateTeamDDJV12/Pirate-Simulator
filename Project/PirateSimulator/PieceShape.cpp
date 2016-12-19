@@ -5,7 +5,6 @@
 #include "ShapeComponent.h"
 #include "Piece.h"
 #include "ICollisionHandler.h"
-#include "../PetitMoteur3D/PetitMoteur3D/PhysX/Include/PxPhysicsAPI.h"
 
 using namespace PirateSimulator;
 using namespace physx;
@@ -64,8 +63,8 @@ void PieceShape::setGameObject(GameObject* parent)
     filterData.word1 = EACTORVEHICLE;
     m_shape->setSimulationFilterData(filterData);
 
+    //Register Shape
     PhysicsManager::singleton.registerNewComponent(this);
-
     setHandler(ICollisionHandlerRef(new CollisionPieceHandler));
 
     m_actor->setMass(0.0001f);

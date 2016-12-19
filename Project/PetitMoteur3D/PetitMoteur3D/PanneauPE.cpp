@@ -146,7 +146,7 @@ namespace PM3D
 
         // Cette texture sera utilisée comme cible de rendu et comme ressource de shader
         textureDesc.Width = pDispositif->GetLargeur();
-        textureDesc.Height = pDispositif->GetHauteur();;
+        textureDesc.Height = pDispositif->GetHauteur();
         textureDesc.MipLevels = 1;
         textureDesc.ArraySize = 1;
         textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

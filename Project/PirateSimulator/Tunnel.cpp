@@ -10,9 +10,9 @@
 #include "..\PetitMoteur3D\PetitMoteur3D\MoteurWindows.h"
 #include "..\PetitMoteur3D\PetitMoteur3D\Resource.h"
 #include "Light.h"
+#include "Terrain.h"
 
 #include <string>
-#include <d3dcompiler.h>
 
 
 using namespace PirateSimulator;

@@ -1,8 +1,6 @@
-
 #ifndef TUNNEL_SHAPE_H
-#define  TUNNEL_SHAPE_H
+#define TUNNEL_SHAPE_H
 #include "ShapeComponent.h"
-#include "PhysicsManager.h"
 
 namespace PirateSimulator
 {
@@ -12,11 +10,11 @@ namespace PirateSimulator
         bool isBoat()
         {
             return false;
-        };
+        }
         bool isPiece()
         {
             return false;
-        };
+        }
         bool isTrigger()
         {
             return false;
@@ -38,4 +36,4 @@ namespace PirateSimulator
     };
 }
 
-#endif
+#endif //TUNNEL_SHAPE_H

@@ -1,8 +1,7 @@
 #ifndef PIECESHAPE_H
-#define  PIECESHAPE_H
+#define PIECESHAPE_H
 
 #include "ShapeComponent.h"
-#include "PhysicsManager.h"
 
 namespace PirateSimulator
 {
@@ -10,16 +9,15 @@ namespace PirateSimulator
     {
     public:
         
-       // void onContact(const physx::PxContactPair &aContactPair) ;
         bool isBoat()
         {
             return false;
-        };
+        }
 
         bool isPiece()
         {
             return true;
-        };
+        }
         bool isTrigger()
         {
             return false;
@@ -46,4 +44,4 @@ namespace PirateSimulator
     };
 }
 
-#endif
+#endif // ifndef PIECE_SHAPE_H

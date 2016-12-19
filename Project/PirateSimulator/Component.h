@@ -1,8 +1,5 @@
-/*
-Created by Sun-lay Gagneux
-*/
-#ifndef COMPONENENT_H
-#define COMPONENENT_H
+#ifndef COMPONENENT_H_INCLUDED
+#define COMPONENENT_H_INCLUDED
 
 #include <string>
 
@@ -22,6 +19,7 @@ namespace PirateSimulator
     public:
         Component() : m_enabled{true}
         {}
+
         virtual void setGameObject(GameObject* parent)
         {
             m_gameObject = parent;
@@ -32,24 +30,24 @@ namespace PirateSimulator
             return m_gameObject;
         }
 
-        bool    isEnabled() const
+        bool isEnabled() const
         {
             return m_enabled;
         }
 
-        void    enable(bool state)
+        void enable(bool state)
         {
             m_enabled = state;
         }
 
         virtual std::string getTypeId() const noexcept = 0;
 
+
     public:
         static bool sameTypeIdAs(const std::string& fromCompare, const std::string& toCompare) noexcept
         {
             return fromCompare.size() == toCompare.size() && fromCompare == toCompare;
         }
-
 
 
     public:
@@ -63,4 +61,4 @@ namespace PirateSimulator
     };
 }
 
-#endif //!COMPONENENT_H
+#endif //!COMPONENENT_H_INCLUDED

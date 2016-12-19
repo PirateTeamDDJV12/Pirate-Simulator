@@ -14,11 +14,11 @@ namespace PirateSimulator
         bool isBoat()
         {
             return false;
-        };
+        }
         bool isPiece()
         {
             return false;
-        };
+        }
 
         bool isTrigger()
         {
@@ -38,9 +38,7 @@ namespace PirateSimulator
 
         void setGameObject(GameObject* parent) override;
         
-    };
-    
+    };    
 }
-
 
 #endif // ifndef TERRAIN_SHAPE_H

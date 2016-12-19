@@ -1,8 +1,6 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
 
-#include <wtypes.h>
-
 #include "..\PetitMoteur3D\PetitMoteur3D\DIManipulateur.h"
 
 

@@ -1,4 +1,3 @@
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "TriggerShape.h"
 #include "PhysicsManager.h"
 #include "ShapeComponent.h"

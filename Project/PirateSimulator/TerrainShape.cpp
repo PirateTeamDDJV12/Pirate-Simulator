@@ -1,8 +1,8 @@
-#include "../PetitMoteur3D/PetitMoteur3D/stdafx.h"
 #include "TerrainShape.h"
 #include "ICollisionHandler.h"
 #include "GameObjectManager.h"
 #include "SoundManager.h"
+#include "TimeManager.h"
 #include "Terrain.h"
 #include "../PetitMoteur3D/PetitMoteur3D/Config/Config.hpp"
 
@@ -17,8 +17,6 @@ namespace PirateSimulator
         void onContact(const physx::PxContactPair &aContactPair) override
         {
             
-            //Todo Set Behaviour
-
             PirateSimulator::SoundManager::singleton.playMusic("PirateSimulator/Collision1Noise.wav");
             TimeManager::GetInstance().increaseTime(-5s);
         }
@@ -33,7 +31,7 @@ namespace PirateSimulator
     void TerrainShape::setGameObject(GameObject* parent)
     {
    
-        //On récupère le Terrain
+        //Get Terrain Data
         Terrain* terrainData = GameObjectManager::singleton.getGameObjectByName("terrain")->getComponent<Terrain>();
         int width = terrainData->getWidth();
         int height = terrainData->getHeight();
@@ -59,7 +57,7 @@ namespace PirateSimulator
             }
         }
   
-        //HeightMapData
+        //HeightFieldData
         
         PxHeightFieldDesc heightMapDesc;
         heightMapDesc.format = PxHeightFieldFormat::eS16_TM;
@@ -93,9 +91,7 @@ namespace PirateSimulator
         setHandler(ICollisionHandlerRef(new CollisionTerrainHandler));
         m_actor.userData = parent;
         PhysicsManager::singleton.registerNewComponent(this);
-        m_gameObject = parent;
-
-        
+        m_gameObject = parent;        
     }
 
 }

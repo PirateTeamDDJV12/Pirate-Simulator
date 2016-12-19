@@ -2,11 +2,9 @@
 #define PIECEMESH_H_INCLUDED
 
 
-
 #include "Mesh.h"
 #include "Material.h"
 #include "Effect.h"
-#include "..\PetitMoteur3D\PetitMoteur3D\dispositifD3D11.h"
 
 #include <vector>
 #include <DirectXMath.h>
@@ -15,6 +13,7 @@
 namespace PM3D
 {
     class IChargeur;
+    class CDispositifD3D11;
 }
 
 namespace PirateSimulator
@@ -73,8 +72,7 @@ namespace PirateSimulator
 
         std::vector<Material> m_materials;		// Vecteur des matériaux
 
-                                                // Pour les effets et shaders
-        Effect m_effect;
+        Effect m_effect;                        // Pour les effets et shaders
 
 
     public:
@@ -94,7 +92,6 @@ namespace PirateSimulator
         void InitEffet(const std::wstring& shaderName);
         //void EcrireFichierBinaire(IChargeur& chargeur, const string& nomFichier);
         void LireFichierBinaire(const std::string& nomFichier);
-
     };
 }
 
