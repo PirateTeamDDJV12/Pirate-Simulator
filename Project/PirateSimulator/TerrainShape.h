@@ -38,9 +38,7 @@ namespace PirateSimulator
 
         void setGameObject(GameObject* parent) override;
         
-    };
-    
+    };    
 }
-
 
 #endif // ifndef TERRAIN_SHAPE_H

@@ -34,4 +34,5 @@ namespace PirateSimulator
         
     };
 }
-#endif
+
+#endif// ifndef TRIGGER_SHAPE_H
