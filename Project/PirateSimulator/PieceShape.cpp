@@ -64,8 +64,8 @@ void PieceShape::setGameObject(GameObject* parent)
     filterData.word1 = EACTORVEHICLE;
     m_shape->setSimulationFilterData(filterData);
 
+    //Register Shape
     PhysicsManager::singleton.registerNewComponent(this);
-
     setHandler(ICollisionHandlerRef(new CollisionPieceHandler));
 
     m_actor->setMass(0.0001f);
