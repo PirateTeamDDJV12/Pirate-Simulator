@@ -120,7 +120,7 @@ void PieceAdministrator::update(float elapsedTime)
 
 void PieceAdministrator::cleanUp()
 {
-    for(int iter = 0; iter < m_pieceArray.size(); ++iter)
+    for(unsigned int iter = 0; iter < m_pieceArray.size(); ++iter)
     {
         m_pieceArray[iter].destroyPiece();
     }

@@ -263,7 +263,7 @@ namespace PirateSimulator
 
     void PhysicsManager::reset()
     {
-        for (int i = 0; i < m_components.size(); ++i)
+        for (size_t i = 0; i < m_components.size(); ++i)
         {
             m_components[i]->cleanUp();
         }

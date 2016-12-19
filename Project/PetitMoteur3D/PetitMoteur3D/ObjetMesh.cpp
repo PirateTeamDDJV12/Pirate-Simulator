@@ -372,7 +372,7 @@ namespace PM3D
 
 
         // 4c) Trouver l'index du materiau pour chaque sous-ensemble (+1 car 0 est default)
-        for (int i = 0; i < chargeur.GetNombreSubmesh(); ++i)
+        for (unsigned int i = 0; i < chargeur.GetNombreSubmesh(); ++i)
         {
             SubsetMaterialIndex.push_back(chargeur.GetMaterialIndex(i) + 1);
         }
