@@ -37,4 +37,4 @@ namespace PirateSimulator
 	};
 }
 
-#endif
+#endif // ifndef VEHICLE_SHAPE_H

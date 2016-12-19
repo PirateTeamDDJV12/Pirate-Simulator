@@ -70,8 +70,6 @@ namespace PirateSimulator
             }
         }
     };
-
-
-
 }
-#endif // 
+
+#endif //ifndef SHAPE_COMPONENT_H

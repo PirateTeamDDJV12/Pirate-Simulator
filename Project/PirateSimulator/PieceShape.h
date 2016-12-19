@@ -10,7 +10,6 @@ namespace PirateSimulator
     {
     public:
         
-       // void onContact(const physx::PxContactPair &aContactPair) ;
         bool isBoat()
         {
             return false;
@@ -46,4 +45,4 @@ namespace PirateSimulator
     };
 }
 
-#endif
+#endif // ifndef PIECE_SHAPE_H

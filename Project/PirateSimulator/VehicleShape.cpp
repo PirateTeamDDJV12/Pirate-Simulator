@@ -13,7 +13,7 @@ class CollisionVehicleHandler : public ICollisionHandler
 {
     void onContact(const physx::PxContactPair &aContactPair)
     {
-        
+
     }
 
     void onTrigger(bool triggerEnter, physx::PxShape *actorShape, physx::PxShape *contactShape) override
@@ -29,8 +29,7 @@ class CollisionVehicleHandler : public ICollisionHandler
         {
             if (actor1->getComponent<ShapeComponent>()->isBoat() && actor0->getComponent<ShapeComponent>()->isTrigger())
             {
-                //Behaviour Here
-                bool t=true;
+                
             }
         }
     }
@@ -58,6 +57,7 @@ void VehicleShape::setGameObject(GameObject* parent)
     setHandler(ICollisionHandlerRef(new CollisionVehicleHandler));
     m_actor->userData = parent;
 
+    //Register shape
     PhysicsManager::singleton.scene().addActor(*m_actor);
     PhysicsManager::singleton.registerNewComponent(this);
 }
